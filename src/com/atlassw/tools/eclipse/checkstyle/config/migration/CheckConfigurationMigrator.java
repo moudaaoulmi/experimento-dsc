@@ -22,6 +22,7 @@ package com.atlassw.tools.eclipse.checkstyle.config.migration;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -219,19 +220,22 @@ public final class CheckConfigurationMigrator
 
                 OutputStream out = null;
                 
-                if (file.getParentFile() != null)
-                {
-                    file.getParentFile().mkdirs();
-                }
-                out = new BufferedOutputStream(new FileOutputStream(file));
-                ConfigurationWriter.writeNewConfiguration(out, mCurrentConfiguration);
-            
-                IOUtils.closeQuietly(out);
+                internalEnsureFileExists(file,out);
                
                 return true;
             }
 
             return true;
+        }
+
+        private void internalEnsureFileExists(File file, OutputStream out) throws CheckstylePluginException
+        {
+            if (file.getParentFile() != null)
+            {
+                file.getParentFile().mkdirs();
+            }
+            out = new BufferedOutputStream(new FileOutputStream(file));
+            ConfigurationWriter.writeNewConfiguration(out, mCurrentConfiguration);
         }
 
         /**
