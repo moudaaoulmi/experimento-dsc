@@ -368,7 +368,7 @@ public class CheckConfigurationWorkingSetEditor
         return rightButtons;
     }
 
-    private Shell getShell()
+    public Shell getShell() //Foi alterado a visibilidade para que o aspecto pudesse acessar
     {
         return mViewer.getControl().getShell();
     }

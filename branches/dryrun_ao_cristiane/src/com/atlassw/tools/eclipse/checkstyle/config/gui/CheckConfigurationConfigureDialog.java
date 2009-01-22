@@ -139,7 +139,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     private PageController mController = new PageController();
 
     /** the list of modules. */
-    private List mModules;
+    List mModules;
 
     /** Flags if the check configuration was changed. */
     private boolean mIsDirty;
