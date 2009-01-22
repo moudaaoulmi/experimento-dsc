@@ -2,13 +2,13 @@ package com.atlassw.tools.eclipse.checkstyle.config.savefilter;
 
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
-public aspect SaveFiltersHandler
+public aspect SavefilterHandler
 {
-    declare soft: Exception : internalHandler();
+    declare soft: Exception : saveFilters_internalHandler();
     
-    pointcut internalHandler() : execution(* SaveFilters.internal(..));
+    pointcut saveFilters_internalHandler() : execution(* SaveFilters.internal(..));
     
-    void around() : internalHandler(){
+    void around() : saveFilters_internalHandler(){
         try{
             proceed();
         }

@@ -14,30 +14,31 @@ import java.util.ResourceBundle;
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.Attributes;
 import org.eclipse.osgi.util.NLS;
+import org.xml.sax.InputSource;
 
-public privileged aspect MetadataFactoryHandler
+public privileged aspect MetaHandler
 {
-    declare soft: Exception : internalRuleMetadataHandler() || internalStartElementHandler();
-    declare soft: CheckstylePluginException : refreshHandler() || startElementHandler();
-    declare soft: SAXParseException : internalDoInitializationHandler();
-    declare soft: SAXException : internalDoInitializationHandler();
-    declare soft: ParserConfigurationException : internalDoInitializationHandler();
-    declare soft: IOException : internalDoInitializationHandler() || resolveEntityHandler();
-    declare soft: ClassNotFoundException: startElementHandler();
-    declare soft: InstantiationException: startElementHandler();
-    declare soft: IllegalAccessException: startElementHandler();
+    declare soft: Exception : metadataFactory_internalRuleMetadataHandler() || metadataFactory_internalStartElementHandler();
+    declare soft: CheckstylePluginException : metadataFactory_refreshHandler() || metadataFactory_startElementHandler();
+    declare soft: SAXParseException : metadataFactory_internalDoInitializationHandler();
+    declare soft: SAXException : metadataFactory_internalDoInitializationHandler();
+    declare soft: ParserConfigurationException : metadataFactory_internalDoInitializationHandler();
+    declare soft: IOException : metadataFactory_internalDoInitializationHandler() || metadataFactory_resolveEntityHandler();
+    declare soft: ClassNotFoundException: metadataFactory_startElementHandler();
+    declare soft: InstantiationException: metadataFactory_startElementHandler();
+    declare soft: IllegalAccessException: metadataFactory_startElementHandler();
     
-    pointcut internalRuleMetadataHandler() : execution(* MetadataFactory.internalRuleMetadata(..));
-    pointcut refreshHandler() : call (* MetadataFactory.doInitialization(..)) && withincode(* MetadataFactory.refresh(..));
-    pointcut internalDoInitializationHandler() : execution(* MetadataFactory.internalDoInitialization(..));
-    pointcut getMetadataI18NBundleHandler() : execution(* MetadataFactory.getMetadataI18NBundle(..));
-    pointcut resolveEntityHandler() : execution(* MetadataFactory.MetaDataHandler.internalResolveEntity(..));
-    pointcut internalStartElementHandler() : execution(* MetadataFactory.MetaDataHandler.internalStartElement(..));
-    pointcut localizeHandler() : execution(* MetadataFactory.MetaDataHandler.localize(..));
-    pointcut internalDoHandler() : execution(* MetadataFactory.internalDo(..));
-    pointcut startElementHandler() : execution(* MetadataFactory.MetaDataHandler.startElement(..));
+    pointcut metadataFactory_internalRuleMetadataHandler() : execution(* MetadataFactory.internalRuleMetadata(..));
+    pointcut metadataFactory_refreshHandler() : call (* MetadataFactory.doInitialization(..)) && withincode(* MetadataFactory.refresh(..));
+    pointcut metadataFactory_internalDoInitializationHandler() : execution(* MetadataFactory.internalDoInitialization(..));
+    pointcut metadataFactory_getMetadataI18NBundleHandler() : execution(* MetadataFactory.getMetadataI18NBundle(..));
+    pointcut metadataFactory_resolveEntityHandler() : execution(* MetadataFactory.MetaDataHandler.internalResolveEntity(..));
+    pointcut metadataFactory_internalStartElementHandler() : execution(* MetadataFactory.MetaDataHandler.internalStartElement(..));
+    pointcut metadataFactory_localizeHandler() : execution(* MetadataFactory.MetaDataHandler.localize(..));
+    pointcut metadataFactory_internalDoHandler() : execution(* MetadataFactory.internalDo(..));
+    pointcut metadataFactory_startElementHandler() : execution(* MetadataFactory.MetaDataHandler.startElement(..));
     
-    String around(Module module,String parent): internalRuleMetadataHandler() && args(module,parent){
+    String around(Module module,String parent): metadataFactory_internalRuleMetadataHandler() && args(module,parent){
         try {
             return proceed(module,parent);
         }catch (Exception e){
@@ -47,7 +48,7 @@ public privileged aspect MetadataFactoryHandler
         return parent;
     }
     
-    void around() : refreshHandler(){
+    void around() : metadataFactory_refreshHandler(){
         try{
             proceed();
         }
@@ -56,7 +57,7 @@ public privileged aspect MetadataFactoryHandler
         }
     }
     void around(ClassLoader customsLoader, String metadataFile,
-            InputStream metadataStream): internalDoInitializationHandler() && args(customsLoader,metadataFile,metadataStream){
+            InputStream metadataStream): metadataFactory_internalDoInitializationHandler() && args(customsLoader,metadataFile,metadataStream){
         try {
             proceed(customsLoader,metadataFile,metadataStream);
         }
@@ -79,7 +80,7 @@ public privileged aspect MetadataFactoryHandler
             IOUtils.closeQuietly(metadataStream);
         }
     }
-    ResourceBundle around() : getMetadataI18NBundleHandler(){
+    ResourceBundle around() : metadataFactory_getMetadataI18NBundleHandler(){
         try{
             return proceed();
         }
@@ -87,13 +88,19 @@ public privileged aspect MetadataFactoryHandler
             return null;
         }
     }
-
-    after() throwing(Exception e) throws SAXException : 
-            resolveEntityHandler(){    
+    
+    InputSource around () throws SAXException : metadataFactory_resolveEntityHandler(){
+        try
+        {
+            return proceed();
+        }
+        catch (IOException e)
+        {
             throw new SAXException("" + e, e); //$NON-NLS-1$
+        }
     }
     
-    int around(Attributes attributes,int priority): internalStartElementHandler() && args(attributes,priority){
+    int around(Attributes attributes,int priority): metadataFactory_internalStartElementHandler() && args(attributes,priority){
         try {
             return proceed(attributes,priority);
         }catch (Exception e){
@@ -103,7 +110,7 @@ public privileged aspect MetadataFactoryHandler
         return priority;
     }
     
-    String around(String localizationCandidate): localizeHandler() && args(localizationCandidate){
+    String around(String localizationCandidate): metadataFactory_localizeHandler() && args(localizationCandidate){
         String retorno = localizationCandidate;
         try {
             return proceed(localizationCandidate);
@@ -111,7 +118,7 @@ public privileged aspect MetadataFactoryHandler
             return retorno;
         }
     }
-    void around(ClassLoader contextClassLoader): internalDoHandler() && args(contextClassLoader){
+    void around(ClassLoader contextClassLoader): metadataFactory_internalDoHandler() && args(contextClassLoader){
         try {
             proceed(contextClassLoader);
         }finally{
@@ -120,7 +127,7 @@ public privileged aspect MetadataFactoryHandler
         }
     }
     
-    void around() throws SAXException : startElementHandler(){
+    void around() throws SAXException : metadataFactory_startElementHandler(){
         try{
             proceed();
         }catch (CheckstylePluginException e){
@@ -135,3 +142,4 @@ public privileged aspect MetadataFactoryHandler
 
     }
 }
+
