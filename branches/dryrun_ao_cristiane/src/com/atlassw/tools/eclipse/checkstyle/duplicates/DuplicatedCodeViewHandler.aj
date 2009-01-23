@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 public privileged aspect DuplicatedCodeViewHandler
 {
-    declare soft: CoreException : selectHandler() || internalGetChildrenHandler() || internalRunHandler() 
+    /*declare soft: CoreException : selectHandler() || internalGetChildrenHandler() || internalRunHandler() 
                     || internalHandler() || internal2Handler() || internalGetChildren2Handler();
     declare soft : BadLocationException : selectAndRevealDuplicatedLinesHandler();
     declare soft : PartInitException : internalHandler() || internal2Handler(); 
@@ -83,5 +83,5 @@ public privileged aspect DuplicatedCodeViewHandler
             CheckstyleLog.errorDialog(dcv.mViewer.getControl().getShell(),
                     ErrorMessages.errorWhileOpeningEditor, e, true);
         }
-    }
+    }*/
 }

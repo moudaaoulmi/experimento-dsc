@@ -11,7 +11,7 @@ import org.eclipse.ui.PartInitException;
 
 public privileged aspect DuplicatedCodeActionHandler
 {
-    declare soft: CheckstyleException : internalCreateCheckerHandler();
+    /*declare soft: CheckstyleException : internalCreateCheckerHandler();
     declare soft: CoreException : addJavaFilesToSetHandler();
     declare soft: PartInitException: findDuplicatedCodeViewHandler();
     
@@ -49,5 +49,5 @@ public privileged aspect DuplicatedCodeActionHandler
                     e, true);
         }
         return resultado;
-    }
+    }*/
 }
