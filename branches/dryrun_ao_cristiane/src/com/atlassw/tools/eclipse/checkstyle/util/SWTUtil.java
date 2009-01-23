@@ -217,7 +217,7 @@ public final class SWTUtil
      * 
      * @author Lars Ködderitzsch
      */
-    private static final class ShellResizeSupportListener extends ShellAdapter implements
+    public static final class ShellResizeSupportListener extends ShellAdapter implements //Mudar a visibilidade para o aspecto acessar
             ControlListener, DisposeListener
     {
 
@@ -248,7 +248,7 @@ public final class SWTUtil
         //
 
         /** the current bounds of the dialog shell. */
-        private Rectangle mNewBounds;
+        Rectangle mNewBounds;
 
         /** the maximized state of the shell. */
         private boolean mMaximized;

@@ -11,7 +11,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
  * @author juliana
  *
  */
-public privileged aspect VotingPreferencePageHandler {
+public privileged aspect VotingHandler {
     
 declare soft : Exception : castHandler();
     
