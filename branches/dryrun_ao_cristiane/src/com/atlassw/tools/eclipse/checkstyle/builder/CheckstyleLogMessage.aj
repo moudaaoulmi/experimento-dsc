@@ -14,10 +14,10 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 public privileged aspect CheckstyleLogMessage
 {
     
-    declare soft: CoreException: addErrorHandle();
-    pointcut addErrorHandle(): execution (* Auditor.CheckstyleAuditListener.addError(..)) ;
+    declare soft: CoreException: auditor_addErrorHandle();
+    pointcut auditor_addErrorHandle(): execution (* Auditor.CheckstyleAuditListener.addError(..)) ;
     
-    void around(): addErrorHandle() {
+    void around(): auditor_addErrorHandle() {
         try{
             proceed();
         } catch (CoreException e) {
@@ -25,11 +25,11 @@ public privileged aspect CheckstyleLogMessage
         }
     }
     
-    declare soft: BadLocationException: calculateMarkerOffsetHandle();
-    pointcut calculateMarkerOffsetHandle(): 
+    declare soft: BadLocationException: auditor_calculateMarkerOffsetHandle();
+    pointcut auditor_calculateMarkerOffsetHandle(): 
         execution (* Auditor.CheckstyleAuditListener.calculateMarkerOffset(..)) ;
     
-    void around(): calculateMarkerOffsetHandle() {
+    void around(): auditor_calculateMarkerOffsetHandle() {
         try{
             proceed();
         } catch (BadLocationException e) {
@@ -39,13 +39,13 @@ public privileged aspect CheckstyleLogMessage
         }
     }
     
-    declare soft: SAXException: getPackageNameInteration3Handle();
-    declare soft: IOException: getPackageNameInteration3Handle();
+    declare soft: SAXException: packageNamesLoader_getPackageNameInteration3Handle();
+    declare soft: IOException: packageNamesLoader_getPackageNameInteration3Handle();
     
-    pointcut getPackageNameInteration3Handle(): 
+    pointcut packageNamesLoader_getPackageNameInteration3Handle(): 
         execution (* PackageNamesLoader.getPackageNameInteration3(..)) ;
     
-    void around(PackageNamesLoader nameLoader, URL aPackageFile): getPackageNameInteration3Handle() 
+    void around(PackageNamesLoader nameLoader, URL aPackageFile): packageNamesLoader_getPackageNameInteration3Handle() 
             && args(nameLoader, aPackageFile) {
         try{
             proceed(nameLoader, aPackageFile);
@@ -57,12 +57,11 @@ public privileged aspect CheckstyleLogMessage
         }
     }
     
- declare soft: JavaModelException: addToClassPathHandle();
-    
-    pointcut addToClassPathHandle(): 
+    declare soft: JavaModelException: projectClassLoader_addToClassPathHandle();
+    pointcut projectClassLoader_addToClassPathHandle(): 
         execution (* ProjectClassLoader.addToClassPath(..)) ;
     
-    void around(): addToClassPathHandle() {
+    void around(): projectClassLoader_addToClassPathHandle() {
         try{
             proceed();
         } catch (JavaModelException jme) {
@@ -70,12 +69,11 @@ public privileged aspect CheckstyleLogMessage
         }
     }
     
-    declare soft: MalformedURLException: handlePathHandle();
-    
-    pointcut handlePathHandle(): 
+    declare soft: MalformedURLException: projectClassLoader_handlePathHandle();
+    pointcut projectClassLoader_handlePathHandle(): 
         execution (* ProjectClassLoader.handlePath(..)) ;
     
-    void around(): handlePathHandle() {
+    void around(): projectClassLoader_handlePathHandle() {
         try{
             proceed();
         } catch (MalformedURLException mfe) { 

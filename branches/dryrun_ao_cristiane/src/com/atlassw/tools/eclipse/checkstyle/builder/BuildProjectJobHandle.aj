@@ -5,10 +5,10 @@ import org.eclipse.core.runtime.IStatus;
 
 public aspect BuildProjectJobHandle
 {
-    declare soft: CoreException: runHandle();
-    pointcut runHandle(): execution (* BuildProjectJob.run(..)) ;
+    declare soft: CoreException: buildProjectJob_runHandler();
+    pointcut buildProjectJob_runHandler(): execution (* BuildProjectJob.run(..)) ;
     
-    IStatus around(): runHandle() {
+    IStatus around(): buildProjectJob_runHandler() {
         IStatus result = null;
         try{
            result = proceed();
