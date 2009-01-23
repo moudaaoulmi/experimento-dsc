@@ -10,11 +10,11 @@ import org.eclipse.core.runtime.CoreException;
 
 public aspect CheckstyleBuilderHandle
 {
-    declare soft: CheckstylePluginException: buildHandle();
+    declare soft: CheckstylePluginException: checkstyleBuilder_buildHandler();
     
-    pointcut buildHandle(): execution(* CheckstyleBuilder.build(..)) ;
+    pointcut checkstyleBuilder_buildHandler(): execution(* CheckstyleBuilder.build(..)) ;
     
-    IProject[] around() throws CoreException:  buildHandle() {
+    IProject[] around() throws CoreException:  checkstyleBuilder_buildHandler() {
         IProject[] result = null;
         try{
             result = proceed();
@@ -28,11 +28,11 @@ public aspect CheckstyleBuilderHandle
         return result;
     }
     
-    declare soft: CheckstylePluginException: handleBuildSelectionHandle();
+    declare soft: CheckstylePluginException: checkstyleBuilder_handleBuildSelectionHandler();
     
-    pointcut handleBuildSelectionHandle(): execution(* CheckstyleBuilder.handleBuildSelection(..));
+    pointcut checkstyleBuilder_handleBuildSelectionHandler(): execution(* CheckstyleBuilder.handleBuildSelection(..));
     
-    void around()throws CoreException: handleBuildSelectionHandle() {
+    void around()throws CoreException: checkstyleBuilder_handleBuildSelectionHandler() {
        try{
            proceed();
        } catch (CheckstylePluginException e)

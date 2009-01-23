@@ -5,14 +5,14 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 public privileged aspect PackageObjectFactoryHandle
 {
-    declare soft: ClassNotFoundException: createObjectHandle();
-    declare soft: InstantiationException: createObjectHandle();
-    declare soft: IllegalAccessException: createObjectHandle();
+    declare soft: ClassNotFoundException: packageObjectFactory_createObjectHandle();
+    declare soft: InstantiationException: packageObjectFactory_createObjectHandle();
+    declare soft: IllegalAccessException: packageObjectFactory_createObjectHandle();
     
-    pointcut createObjectHandle(): 
+    pointcut packageObjectFactory_createObjectHandle(): 
         execution (* PackageObjectFactory.createObject(..)) ;
     
-    Object around(String aClassName)throws CheckstyleException: createObjectHandle() && args(aClassName) {
+    Object around(String aClassName)throws CheckstyleException: packageObjectFactory_createObjectHandle() && args(aClassName) {
         Object result = null;
         try{
             result = proceed(aClassName);
@@ -30,12 +30,12 @@ public privileged aspect PackageObjectFactoryHandle
         return result;
     }
  
-    declare soft: CheckstyleException: createModuleInternalHandle();
+    declare soft: CheckstyleException: packageObjectFactory_createModuleInternalHandle();
     
-    pointcut createModuleInternalHandle(): 
+    pointcut packageObjectFactory_createModuleInternalHandle(): 
         execution (* PackageObjectFactory.createModuleInternal(..)) ;
     
-    Object around(String aName)throws CheckstyleException: createModuleInternalHandle() && args(aName) {
+    Object around(String aName)throws CheckstyleException: packageObjectFactory_createModuleInternalHandle() && args(aName) {
         Object result = null;
         try{
             result = proceed(aName);
@@ -45,12 +45,12 @@ public privileged aspect PackageObjectFactoryHandle
         return result;
     }
     
-    declare soft: CheckstyleException: createModuleHandle();
+    declare soft: CheckstyleException: packageObjectFactory_createModuleHandle();
     
-    pointcut createModuleHandle(): 
+    pointcut packageObjectFactory_createModuleHandle(): 
         execution (* PackageObjectFactory.createModule(..)) ;
     
-    Object around(String aName)throws CheckstyleException: createModuleHandle() && args(aName) {
+    Object around(String aName)throws CheckstyleException: packageObjectFactory_createModuleHandle() && args(aName) {
         Object result = null;
         try{
             result = proceed(aName);
@@ -61,12 +61,12 @@ public privileged aspect PackageObjectFactoryHandle
         return result;
     }
     
-    declare soft: CheckstyleException: doMakeObjectHandle();
+    declare soft: CheckstyleException: packageObjectFactory_doMakeObjectHandle();
     
-    pointcut doMakeObjectHandle(): 
+    pointcut packageObjectFactory_doMakeObjectHandle(): 
         execution (* PackageObjectFactory.doMakeObject(..)) ;
     
-    Object around(String aName)throws CheckstyleException: doMakeObjectHandle() && args(aName) {
+    Object around(String aName)throws CheckstyleException: packageObjectFactory_doMakeObjectHandle() && args(aName) {
         Object result = null;
         try{
             result = proceed(aName);
@@ -77,12 +77,12 @@ public privileged aspect PackageObjectFactoryHandle
         return result;
     }
     
-    declare soft: CheckstyleException: doMakeObjectInternal2Handle();
+    declare soft: CheckstyleException: packageObjectFactory_doMakeObjectInternal2Handle();
     
-    pointcut doMakeObjectInternal2Handle(): 
+    pointcut packageObjectFactory_doMakeObjectInternal2Handle(): 
         execution (* PackageObjectFactory.doMakeObjectInternal2(..)) ;
     
-    Object around(String className): doMakeObjectInternal2Handle() && args(className) {
+    Object around(String className): packageObjectFactory_doMakeObjectInternal2Handle() && args(className) {
         Object result = null;
         try{
             result = proceed(className);
