@@ -6,7 +6,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 public aspect DuplicatedCodeHandler
 {
-    pointcut internalHandler() : execution(* DuplicatedCode.internal(..));
+    /*pointcut internalHandler() : execution(* DuplicatedCode.internal(..));
     pointcut internalGetNumberOfDuplicatedLinesHandler() : execution(* DuplicatedCode.internalGetNumberOfDuplicatedLines(..));
     
     void around() : internalHandler(){
@@ -27,5 +27,5 @@ public aspect DuplicatedCodeHandler
             result = 0;
         }
         return result;
-    }
+    }*/
 }

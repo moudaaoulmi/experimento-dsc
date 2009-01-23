@@ -7,7 +7,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 public privileged aspect CheckSelectedFilesActionHandle
 
 {
-    declare soft: CoreException : runHandle();
+    /*declare soft: CoreException : runHandle();
     pointcut runHandle(): execution (* CheckSelectedFilesAction.run(..)) ;
     
     void around(): runHandle(){
@@ -18,5 +18,5 @@ public privileged aspect CheckSelectedFilesActionHandle
                 (CheckSelectedFilesAction) thisJoinPoint.getThis();
             CheckstyleLog.errorDialog( c.mPart.getSite().getShell(), e, true);
         }
-    }
+    }*/
 }

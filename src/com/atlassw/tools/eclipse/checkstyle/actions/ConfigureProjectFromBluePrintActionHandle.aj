@@ -8,7 +8,7 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 
 public privileged aspect ConfigureProjectFromBluePrintActionHandle
 {
-    declare soft: CheckstylePluginException : runInWorkspaceHandle();
+    /*declare soft: CheckstylePluginException : runInWorkspaceHandle();
     pointcut runInWorkspaceHandle():  
         execution (* ConfigureProjectFromBluePrintAction.BulkConfigureJob.runInWorkspace(IProgressMonitor)); 
     
@@ -22,5 +22,5 @@ public privileged aspect ConfigureProjectFromBluePrintActionHandle
         }
         
         return result;
-    }
+    }*/
 }
