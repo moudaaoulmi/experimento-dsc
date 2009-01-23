@@ -47,18 +47,6 @@ public aspect MigrationHandler
             IOUtils.closeQuietly(out);
         }
     }
-   
-    
-    void around() throws SAXException: checkConfigurationMigrator_endElementHandler() {
-        try
-        {
-           proceed();
-        }
-        catch (CheckstylePluginException e)
-        {
-            throw new SAXException(e);
-        }
-    }
     
     void around(String name) throws CheckstylePluginException : checkConfigurationMigrator_internalStartElementHandler() && args(name){
         CheckConfigurationMigrator.OldConfigurationHandler ccmh = ((CheckConfigurationMigrator.OldConfigurationHandler)thisJoinPoint.getThis());
@@ -89,7 +77,7 @@ public aspect MigrationHandler
         }
     }
     
-    void around() throws SAXException : checkConfigurationMigrator_startElementHandler(){
+    void around() throws SAXException : checkConfigurationMigrator_startElementHandler() || checkConfigurationMigrator_endElementHandler() {
         try{
             proceed();
         }catch (CheckstylePluginException e){
