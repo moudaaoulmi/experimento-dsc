@@ -9,12 +9,12 @@ import org.eclipse.core.runtime.Status;
 
 public aspect RunCheckstyleOnFilesJobHandle
 {
-    declare soft: CheckstylePluginException: runInWorkspaceHandle();
+    declare soft: CheckstylePluginException: runCheckstyleOnFilesJob_runInWorkspaceHandle();
     
-    pointcut runInWorkspaceHandle(): 
+    pointcut runCheckstyleOnFilesJob_runInWorkspaceHandle(): 
         execution (* RunCheckstyleOnFilesJob.runInWorkspace(..)) ;
     
-    IStatus around() throws CoreException: runInWorkspaceHandle() {
+    IStatus around() throws CoreException: runCheckstyleOnFilesJob_runInWorkspaceHandle() {
         try{
             proceed();
         } catch (CheckstylePluginException e) { 

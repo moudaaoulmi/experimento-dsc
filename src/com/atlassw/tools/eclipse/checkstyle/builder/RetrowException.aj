@@ -13,14 +13,25 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 public privileged aspect RetrowException
 {
-    declare soft: IOException: runAuditHandle();
-    declare soft: CoreException: runAuditHandle();
-    declare soft: CheckstyleException: runAuditHandle();
+    declare soft: IOException: auditor_runAuditHandle();
+    declare soft: CoreException: auditor_runAuditHandle();
+    declare soft: CheckstyleException: auditor_runAuditHandle();
+    declare soft: CoreException: checkstyleBuilder_buildProjectsHandleHandle();
+    declare soft: IOException: packageNamesLoader_getPackageNameInteration1Handle();
+    declare soft: ParserConfigurationException: packageNamesLoader_getPackageNamesHandle();
+    declare soft: SAXException: packageNamesLoader_getPackageNamesHandle();
+    declare soft: IOException: packageNamesLoader_getPackageNamesHandle();
     
-    pointcut runAuditHandle(): 
+    
+    pointcut auditor_runAuditHandle(): 
         execution (* Auditor.runAudit(..)) ;
+    pointcut checkstyleBuilder_buildProjectsHandleHandle(): execution(* CheckstyleBuilder.buildProjectsHandle(..));
+    pointcut packageNamesLoader_getPackageNameInteration1Handle(): 
+        execution (* PackageNamesLoader.getPackageNameInteration1(..)) ;
+    pointcut packageNamesLoader_getPackageNamesHandle(): 
+        execution (* PackageNamesLoader.getPackageNames(..)) ;
     
-    void around()throws CheckstylePluginException: runAuditHandle() {
+    void around()throws CheckstylePluginException: auditor_runAuditHandle() {
         try{
             proceed();
         } catch (IOException e) {
@@ -32,11 +43,8 @@ public privileged aspect RetrowException
         }
     }
     
-    declare soft: CoreException: buildProjectsHandleHandle();
-    
-    pointcut buildProjectsHandleHandle(): execution(* CheckstyleBuilder.buildProjectsHandle(..));
-    
-    void around() throws CheckstylePluginException: buildProjectsHandleHandle() {
+   
+    void around() throws CheckstylePluginException: checkstyleBuilder_buildProjectsHandleHandle() {
        try{
            proceed();
        } catch (CoreException e)
@@ -45,27 +53,16 @@ public privileged aspect RetrowException
        }
     }
     
-    declare soft: IOException: getPackageNameInteration1Handle();
-    
-    pointcut getPackageNameInteration1Handle(): 
-        execution (* PackageNamesLoader.getPackageNameInteration1(..)) ;
-    
-    void around()throws CheckstylePluginException: getPackageNameInteration1Handle() {
+    void around()throws CheckstylePluginException: packageNamesLoader_getPackageNameInteration1Handle() {
         try{
             proceed();
         }catch (IOException e) {
             retrowException(e); //$NON-NLS-1$
         }
-    }
+    }   
+   
     
-    declare soft: ParserConfigurationException: getPackageNamesHandle();
-    declare soft: SAXException: getPackageNamesHandle();
-    declare soft: IOException: getPackageNamesHandle();
-    
-    pointcut getPackageNamesHandle(): 
-        execution (* PackageNamesLoader.getPackageNames(..)) ;
-    
-    List around()throws CheckstylePluginException: getPackageNamesHandle() {
+    List around()throws CheckstylePluginException: packageNamesLoader_getPackageNamesHandle() {
         List result = null;
         try{
             result = proceed();
