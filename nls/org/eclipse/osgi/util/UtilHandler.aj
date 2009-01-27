@@ -12,12 +12,12 @@ import java.lang.IllegalArgumentException;
  * @author juliana
  *
  */
-public aspect NLSHandler {
+public aspect UtilHandler {
     
-    pointcut internalBindHandler(): call(* Integer.parseInt(..)) &&
+    pointcut NLS_internalBindHandler(): call(* Integer.parseInt(..)) &&
                 withincode(* NLS.internalBind(..));
     
-    int around() : internalBindHandler() {
+    int around() : NLS_internalBindHandler() {
             try{
                 return proceed();
             }catch (NumberFormatException e) {
