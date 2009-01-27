@@ -25,13 +25,13 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public aspect PropertiesHandler
 {
     
-declare soft : CoreException : setElementHandler() || internalRunHandler();
-declare soft : IllegalAccessException : openFilterEditorHandler();
-declare soft : InstantiationException : openFilterEditorHandler();
-declare soft : CheckstylePluginException :addFileSetHandler() || editFileSetHandler() || internalsetMatchPatternHandler() ||
-                                        widgetSelectedHandler() || widgetSelectedHandler2() || internalFileMatchPatternHandler() || 
-                                        setElementHandler() || createContentsHandler() ||
-                                        isValidHandler() || performOkHandler() ||createFileSetsAreaHandler();
+    declare soft : CoreException : setElementHandler() || internalRunHandler();
+    declare soft : IllegalAccessException : openFilterEditorHandler();
+    declare soft : InstantiationException : openFilterEditorHandler();
+    declare soft : CheckstylePluginException :addFileSetHandler() || editFileSetHandler() || internalsetMatchPatternHandler() ||
+                                            widgetSelectedHandler() || widgetSelectedHandler2() || internalFileMatchPatternHandler() || 
+                                            setElementHandler() || createContentsHandler() ||
+                                            isValidHandler() || performOkHandler() ||createFileSetsAreaHandler();
 
     
     pointcut internalFileMatchPatternHandler(): execution(* FileMatchPatternEditDialog.internalFileMatchPattern(..));
@@ -181,7 +181,7 @@ declare soft : CheckstylePluginException :addFileSetHandler() || editFileSetHand
         }
     }//around()
     
-
+ 
     List around() : internalRunHandler() {
         List c = null;
         try{
