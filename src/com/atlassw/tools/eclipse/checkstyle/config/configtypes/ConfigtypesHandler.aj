@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+
 import java.net.URLConnection;
 
 import org.apache.commons.io.IOUtils;
@@ -16,29 +18,27 @@ import com.atlassw.tools.eclipse.checkstyle.config.GlobalCheckConfigurationWorki
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.LocalCheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.IFile;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Shell;
 
 import java.lang.IllegalArgumentException;
-import org.eclipse.swt.widgets.Shell;
+
 import java.net.MalformedURLException;
-
-import java.io.FileNotFoundException;
-
 import java.net.Authenticator;
-
 import java.net.UnknownHostException;
+
 import java.util.MissingResourceException;
 
-import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 
 public privileged aspect ConfigtypesHandler
 {
@@ -198,91 +198,25 @@ public privileged aspect ConfigtypesHandler
         return result;
     }
     
-    void around() throws CheckstylePluginException: 
-        RemoteConfigurationEditor_internalGetEditedWorkingCopyHandler(){
+    Object around() throws CheckstylePluginException: 
+        RemoteConfigurationEditor_internalGetEditedWorkingCopyHandler() ||
+        ExternalFileConfiguration_resolveDynamicLocationHandler(){
+        
+        Object result = null;
         try
         {
-            proceed();
+            result = proceed();
         }
         catch (MalformedURLException e)
         {
             CheckstylePluginException.rethrow(e);
         }
-    }
-    
-    String around() throws CheckstylePluginException: 
-        ExternalFileConfiguration_resolveDynamicLocationHandler(){
-        String result = null;
-        try
-        {
-            result = proceed();
-        }
-        catch (CheckstyleException e)
-        {
-            CheckstylePluginException.rethrow(e);
+        catch(CheckstyleException e){
+            CheckstylePluginException.rethrow(e);   
         }
         return result;
     }
-
-    void around(URLConnection connection, InputStream in, byte[] configurationFileData):
-            ConfigurationType_internalGetBytesFromURLConnectionHandler() &&
-            args(connection,in,configurationFileData)
-            {
-        try
-        {
-            proceed(connection, in, configurationFileData);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-        }
-
-    }
-
-    void around(): ConfigurationType_internalStaticHandler(){
-        try
-        {
-            proceed();
-        }
-        catch (Exception e)
-        {
-            CheckstyleLog.log(e);
-        }
-    }
-    void around(IFile file, OutputStream out) throws CheckstylePluginException: 
-        ProjectConfigurationEditor_internalEnsureFileExistsHandler()&& args(file, out){
-        try
-        {
-            proceed(file, out);
-        }
-        catch (IOException ioe)
-        {
-            CheckstylePluginException.rethrow(ioe);
-        }
-        catch (CoreException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(out);
-        }
-    }
-    void around(File file, OutputStream out) throws CheckstylePluginException: 
-        ExternalFileConfiguration_internalEnsureFileExistsHandler() && args(file, out){
-        try
-        {
-            proceed(file, out);
-        }
-        catch (IOException ioe)
-        {
-            CheckstylePluginException.rethrow(ioe);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(out);
-        }
-    }
+    
 
     void around() throws CheckstylePluginException: ExternalFileConfiguration_internalGetEditedWorkingCopyHandler()
     {
@@ -306,7 +240,7 @@ public privileged aspect ConfigtypesHandler
             }
         }
     }
-
+    
     void around(String location) throws CheckstylePluginException: 
         InternalConfigurationEditor_internalGetEditedWorkingCopyHandler2() && args(location){
 
@@ -327,7 +261,112 @@ public privileged aspect ConfigtypesHandler
             }
         }
     }
+    
+    void around() throws CheckstylePluginException :
+        ProjectConfigurationEditor_secInternalEnsureFileExistsHandler(){
+        try
+        {
+            proceed();
+        }
+        catch (IllegalArgumentException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+    }
+        
+    void around(URLConnection connection, InputStream in, byte[] configurationFileData):
+            ConfigurationType_internalGetBytesFromURLConnectionHandler() &&
+            args(connection,in,configurationFileData)
+            {
+        try
+        {
+            proceed(connection, in, configurationFileData);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
+        }
+    }
 
+    void around(): ConfigurationType_internalStaticHandler(){
+        try
+        {
+            proceed();
+        }
+        catch (Exception e)
+        {
+            CheckstyleLog.log(e);
+        }
+    }
+    
+    void around(IFile file, OutputStream out) throws CheckstylePluginException: 
+        ProjectConfigurationEditor_internalEnsureFileExistsHandler() && args(file, out){
+        try
+        {
+            proceed(file, out);
+        }
+         catch (CoreException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+    }
+
+    void around(Object file, OutputStream out) throws CheckstylePluginException: 
+        (ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
+        ExternalFileConfiguration_internalEnsureFileExistsHandler()) && args(file, out){
+        try
+        {
+            proceed(file, out);
+        }
+        catch (IOException ioe)
+        {
+            CheckstylePluginException.rethrow(ioe);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(out);
+        }
+    }
+    void around(ICheckConfiguration checkConfiguration, boolean useCacheFile,
+            CheckstyleConfigurationFile data, String currentRedirects,
+            Authenticator oldAuthenticator) throws CheckstylePluginException: 
+            RemoteConfigurationType_internalGetCheckstyleConfigurationHandler()
+            && args(checkConfiguration, useCacheFile, data, currentRedirects, oldAuthenticator){
+        try
+        {
+            proceed(checkConfiguration, useCacheFile, data, currentRedirects, oldAuthenticator);
+        }
+        catch (UnknownHostException e)
+        {
+            CheckstylePluginException.rethrow(e, NLS.bind(
+                    ErrorMessages.RemoteConfigurationType_errorUnknownHost, e.getMessage()));
+        }
+        catch (FileNotFoundException e)
+        {
+            CheckstylePluginException.rethrow(e, NLS.bind(
+                    ErrorMessages.RemoteConfigurationType_errorFileNotFound, e.getMessage()));
+        }
+        catch (IOException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        finally
+        {
+            Authenticator.setDefault(oldAuthenticator);
+
+            if (currentRedirects != null)
+            {
+                System.setProperty("http.maxRedirects", currentRedirects); //$NON-NLS-1$
+            }
+            else
+            {
+                System.getProperties().remove("http.maxRedirects"); //$NON-NLS-1$
+            }
+        }
+    }
+    
+    
+    
     String around(String location, boolean isConfigurable): 
         ExternalFileConfiguration_isConfigurableHandler() && args(location, isConfigurable){
         String result = null;
@@ -341,19 +380,6 @@ public privileged aspect ConfigtypesHandler
             isConfigurable = false;
         }
         return result;
-    }
-
-    void around() throws IOException: 
-        ExternalFileConfiguration_internalResolveLocationHandler(){
-        try
-        {
-            proceed();
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.log(e);
-            throw new IOException(e.getMessage());
-        }
     }
 
     void around(): InternalConfigurationEditor_widgetSelectedHandler(){
@@ -413,18 +439,6 @@ public privileged aspect ConfigtypesHandler
             }
         }
     }
-
-    void around() throws CheckstylePluginException :
-        ProjectConfigurationEditor_secInternalEnsureFileExistsHandler(){
-        try
-        {
-            proceed();
-        }
-        catch (IllegalArgumentException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-    }
     
     boolean around(ICheckConfiguration checkConfiguration, boolean isConfigurable): 
         ProjectConfigurationType_internalIsConfigurableHandler() && 
@@ -441,6 +455,19 @@ public privileged aspect ConfigtypesHandler
         }
         return result;
     }
+    
+    void around() throws IOException: 
+        ExternalFileConfiguration_internalResolveLocationHandler(){
+        try
+        {
+            proceed();
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.log(e);
+            throw new IOException(e.getMessage());
+        }
+    }
 
     void around(Shell shell): RemoteConfigurationEditor_internalCreateEditorControlHandler() && args(shell){
         try
@@ -455,43 +482,7 @@ public privileged aspect ConfigtypesHandler
   
 
     
-    void around(ICheckConfiguration checkConfiguration, boolean useCacheFile,
-            CheckstyleConfigurationFile data, String currentRedirects,
-            Authenticator oldAuthenticator) throws CheckstylePluginException: 
-            RemoteConfigurationType_internalGetCheckstyleConfigurationHandler()
-            && args(checkConfiguration, useCacheFile, data, currentRedirects, oldAuthenticator){
-        try
-        {
-            proceed(checkConfiguration, useCacheFile, data, currentRedirects, oldAuthenticator);
-        }
-        catch (UnknownHostException e)
-        {
-            CheckstylePluginException.rethrow(e, NLS.bind(
-                    ErrorMessages.RemoteConfigurationType_errorUnknownHost, e.getMessage()));
-        }
-        catch (FileNotFoundException e)
-        {
-            CheckstylePluginException.rethrow(e, NLS.bind(
-                    ErrorMessages.RemoteConfigurationType_errorFileNotFound, e.getMessage()));
-        }
-        catch (IOException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        finally
-        {
-            Authenticator.setDefault(oldAuthenticator);
-
-            if (currentRedirects != null)
-            {
-                System.setProperty("http.maxRedirects", currentRedirects); //$NON-NLS-1$
-            }
-            else
-            {
-                System.getProperties().remove("http.maxRedirects"); //$NON-NLS-1$
-            }
-        }
-    }
+ 
 
     void around(CheckstyleConfigurationFile data, boolean useCacheFile,
             boolean originalFileSuccess, byte[] configurationFileData,
