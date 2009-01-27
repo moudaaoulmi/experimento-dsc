@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.TableColumn;
  * GET ou SET
  *
  */
-public privileged aspect EnhancedTableViewerHandler {
+public privileged aspect TableHandler {
    
     pointcut internalRestoreStateHandler(): execution(* EnhancedTableViewer.internalRestoreState(..));
     pointcut internalRestoreState2Handler(): execution(* EnhancedTableViewer.internalRestoreState2(..)) ;
@@ -38,7 +38,7 @@ public privileged aspect EnhancedTableViewerHandler {
         }catch (NumberFormatException e)
         {
             EnhancedTableViewer obj = (EnhancedTableViewer) thisJoinPoint.getThis();
-            obj.mSortedColumnIndex = obj.DIRECTION_FORWARD;
+            obj.mSortedColumnIndex = EnhancedTableViewer.DIRECTION_FORWARD;
         }
     }
     

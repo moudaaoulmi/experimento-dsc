@@ -11,15 +11,16 @@ import org.eclipse.osgi.util.NLS;
 import org.osgi.service.prefs.BackingStoreException;
 import org.eclipse.swt.widgets.Shell;
 
-public aspect CheckstyleLogMessageHandler
+public aspect PreferencesHandler
 {
-    declare soft: CheckstylePluginException : performOkHandler() || internarPerformOkInternalHandler();
-    declare soft: BackingStoreException : performOkHandler();
+    declare soft: CheckstylePluginException : CheckstylePreferencePage_performOkHandler() || CheckstylePreferencePage_internarPerformOkInternalHandler();
+    declare soft: BackingStoreException : CheckstylePreferencePage_performOkHandler() || PrefsInitializer_internalinitializeDefaultPreferencesHandler();
     
-    pointcut performOkHandler() : execution (* CheckstylePreferencePage.internalPerformOk(..));
-    pointcut internarPerformOkInternalHandler() : execution (* CheckstylePreferencePage.internarPerformOkInternal(..));
+    pointcut CheckstylePreferencePage_performOkHandler() : execution (* CheckstylePreferencePage.internalPerformOk(..));
+    pointcut CheckstylePreferencePage_internarPerformOkInternalHandler() : execution (* CheckstylePreferencePage.internarPerformOkInternal(..));
+    pointcut PrefsInitializer_internalinitializeDefaultPreferencesHandler() : execution(* PrefsInitializer.internalinitializeDefaultPreferences(..));
     
-    void around(Shell shell) : performOkHandler() && args(shell){
+    void around(Shell shell) : CheckstylePreferencePage_performOkHandler() && args(shell){
         try{
             proceed(shell);
         }catch (CheckstylePluginException e){
@@ -32,7 +33,7 @@ public aspect CheckstyleLogMessageHandler
     }
     
     void around(boolean needRebuildAllProjects,
-            Collection projectsToBuild,Shell shell) : internarPerformOkInternalHandler() && 
+            Collection projectsToBuild,Shell shell) : CheckstylePreferencePage_internarPerformOkInternalHandler() && 
             args(needRebuildAllProjects,projectsToBuild,shell){
         try{
             proceed(needRebuildAllProjects,projectsToBuild,shell);
@@ -43,11 +44,7 @@ public aspect CheckstyleLogMessageHandler
         }
     }
     
-    declare soft: BackingStoreException : internalinitializeDefaultPreferencesHandler();
-    
-    pointcut internalinitializeDefaultPreferencesHandler() : execution(* PrefsInitializer.internalinitializeDefaultPreferences(..));
-    
-    void around(IEclipsePreferences prefs): internalinitializeDefaultPreferencesHandler() && args(prefs){
+    void around(IEclipsePreferences prefs): PrefsInitializer_internalinitializeDefaultPreferencesHandler() && args(prefs){
         try {
             proceed(prefs);
         }catch (BackingStoreException e) {
