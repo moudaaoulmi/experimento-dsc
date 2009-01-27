@@ -49,6 +49,9 @@ public privileged aspect BuilderHandler
 
     declare soft: ParserConfigurationException: packageNamesLoader_getPackageNamesHandle();
 
+    declare soft: CheckstylePluginException: runCheckstyleOnFilesJob_runInWorkspaceHandle();
+
+    
     // pointcuts
 
     pointcut buildProjectJob_runHandler(): execution (* BuildProjectJob.run(..)) ;
@@ -97,6 +100,9 @@ public privileged aspect BuilderHandler
     pointcut packageNamesLoader_getPackageNamesHandle(): 
         execution (* PackageNamesLoader.getPackageNames(..)) ;
 
+    pointcut runCheckstyleOnFilesJob_runInWorkspaceHandle(): 
+        execution (* RunCheckstyleOnFilesJob.runInWorkspace(..)) ;
+    
     IStatus around(): buildProjectJob_runHandler() {
         IStatus result = null;
         try
@@ -334,11 +340,6 @@ public privileged aspect BuilderHandler
     {
         CheckstylePluginException.rethrow(e, message);
     }
-
-    declare soft: CheckstylePluginException: runCheckstyleOnFilesJob_runInWorkspaceHandle();
-
-    pointcut runCheckstyleOnFilesJob_runInWorkspaceHandle(): 
-        execution (* RunCheckstyleOnFilesJob.runInWorkspace(..)) ;
 
     // reusado
 
