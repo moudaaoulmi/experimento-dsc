@@ -11,6 +11,7 @@
 
 package org.eclipse.osgi.framework.internal.core;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -67,6 +68,7 @@ public class MessageResourceBundle
 
         /*
          * (non-Javadoc)
+         * 
          * @see java.util.Hashtable#put(java.lang.Object, java.lang.Object)
          */
         public synchronized Object put(Object key, Object value)
@@ -87,13 +89,12 @@ public class MessageResourceBundle
             // can only set value of public static non-final fields
             if ((field.getModifiers() & MOD_MASK) != MOD_EXPECTED)
                 return null;
-            internalPut(isAccessible, field, value);
+            internalPut(value, field);
             return null;
         }
 
-        private void internalPut(boolean isAccessible, Field field, Object value)
+        private void internalPut(Object value, final Field field)
         {
-
             // Check to see if we are allowed to modify the field. If we aren't
             // (for instance
             // if the class is not public) then change the accessible attribute
@@ -110,7 +111,6 @@ public class MessageResourceBundle
             // will fail later in the code and if so then we will see both the
             // NPE and this error.
             field.set(null, value);
-
         }
     }
 
@@ -202,13 +202,13 @@ public class MessageResourceBundle
             // if the field has a a value assigned, there is nothing to do
             if (fieldMap.get(field.getName()) == ASSIGNED)
                 continue;
-            internalComputeMissingMessages(isAccessible, field, bundleName);
+            internalComputeMissingMessages(bundleName, isAccessible, field);
         }
     }
 
-    private static void internalComputeMissingMessages(boolean isAccessible, Field field, String bundleName)
+    private static void internalComputeMissingMessages(String bundleName, boolean isAccessible,
+            Field field)
     {
-
         // Set a value for this empty field. We should never get an exception
         // here because
         // we know we have a public static non-final field. If we do get an
@@ -263,18 +263,11 @@ public class MessageResourceBundle
     private static void internalLoad(final String bundleName, boolean isAccessible, Map fields,
             final String[] variants, int i, final InputStream input)
     {
-            final MessagesProperties properties = new MessagesProperties(fields, bundleName,
-                    isAccessible);
-            properties.load(input);
-            if (input != null){
-                internalInternalLoad(input);
-            }
-            
-    }
 
-    private static void internalInternalLoad(final InputStream input)
-    {
-            input.close();
+        final MessagesProperties properties = new MessagesProperties(fields, bundleName,
+                isAccessible);
+        properties.load(input);
+
     }
 
     static void log(int severity, String msg, Exception e)
