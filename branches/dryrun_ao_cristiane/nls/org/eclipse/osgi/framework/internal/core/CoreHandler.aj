@@ -1,99 +1,75 @@
-package org.eclipse.osgi.framework.internal.core;
 
-import java.lang.Exception;
-import java.lang.reflect.Field;
+package org.eclipse.osgi.framework.internal.core;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.util.Map;
-
+import java.lang.reflect.Field;
 
 public privileged aspect CoreHandler
 {
+    declare soft: Exception:  Core_internalPutHandle() ||
+                              Core_internalComputeMissingMessagesHandler();
 
-    // ---------------------------
-    // Declare soft's
-    // ---------------------------
-    declare soft : Exception : MessageResourceBundle_setHandler() || 
-                               MessageResourceBundle_internalComputeMissingMessagesHandler();
+    declare soft: IOException: Core_internalLoadHandler();
 
-    declare soft: IOException: MessageResourceBundle_internalLoadHandler() ||
-                               MessageResourceBundle_internalInternalLoadHandler() ;
+    pointcut Core_internalPutHandle(): execution(void MessageResourceBundle.MessagesProperties.internalPut(..));
 
-    // ---------------------------
-    // Pointcut's
-    // ---------------------------
-    pointcut MessageResourceBundle_setHandler():
-        execution (* MessageResourceBundle.MessagesProperties.internalPut(..));
+    pointcut Core_internalComputeMissingMessagesHandler(): execution(* MessageResourceBundle.internalComputeMissingMessages(..));
 
-    pointcut MessageResourceBundle_internalComputeMissingMessagesHandler():
-        execution (* MessageResourceBundle.internalComputeMissingMessages(..));
+    pointcut Core_internalLoadHandler(): execution (* MessageResourceBundle.internalLoad(..));
 
-    pointcut MessageResourceBundle_internalInternalLoadHandler():
-         execution(* MessageResourceBundle.internalInternalLoad(..));
-
-    pointcut MessageResourceBundle_internalLoadHandler():
-          execution(* MessageResourceBundle.internalLoad(..)); //&&
-          //withincode (* MessageResourceBundle.internalLoad());
-
-    // ---------------------------
-    // Advice's
-    // ---------------------------
-    void around(): MessageResourceBundle_setHandler(){
-        MessageResourceBundle m = (MessageResourceBundle) thisJoinPoint.getThis();
+    void around(): Core_internalPutHandle() {
         try
         {
             proceed();
         }
         catch (Exception e)
         {
-            m.log(m.SEVERITY_ERROR, "Exception setting field value.", e); //$NON-NLS-1$
+            MessageResourceBundle.log(MessageResourceBundle.SEVERITY_ERROR,
+                    "Exception setting field value.", e); //$NON-NLS-1$
         }
     }
 
-    // // around()
-
-    void around(boolean isAccessible, Field field, String bundleName):
-        MessageResourceBundle_internalComputeMissingMessagesHandler() 
-        && args(isAccessible, field, bundleName){
-        MessageResourceBundle m = (MessageResourceBundle) thisJoinPoint.getThis();
+    void around(String bundleName, boolean isAccessible, Field field): 
+        Core_internalComputeMissingMessagesHandler() && args(bundleName, isAccessible, field){
         try
         {
-            proceed(isAccessible, field, bundleName);
+            proceed(bundleName, isAccessible, field);
         }
         catch (Exception e)
         {
-            m.log(m.SEVERITY_ERROR,
+            MessageResourceBundle.log(MessageResourceBundle.SEVERITY_ERROR,
                     "Error setting the missing message value for: " + field.getName(), e); //$NON-NLS-1$
         }
     }
 
-    void around(): MessageResourceBundle_internalInternalLoadHandler(){
-        try
-        {
-            proceed();
-        }
-        catch (IOException e)
-        {
-            // ignore
-        }
-    }
-
-    void around(final String bundleName, boolean isAccessible, Map fields,
-            final String[] variants, int i, final InputStream input): 
-                MessageResourceBundle_internalLoadHandler() &&
-            args(bundleName, isAccessible, fields, variants, i, input){
-
-        MessageResourceBundle m = (MessageResourceBundle) thisJoinPoint.getThis();
+    void around(final String bundleName, boolean isAccessible, Map fields, final String[] variants,
+            int i, final InputStream input): 
+                Core_internalLoadHandler() &&
+                args (bundleName, isAccessible, fields, variants, i, input){
         try
         {
             proceed(bundleName, isAccessible, fields, variants, i, input);
         }
         catch (IOException e)
         {
-            m.log(m.SEVERITY_ERROR, "Error loading " + variants[i], e); //$NON-NLS-1$
+            MessageResourceBundle.log(MessageResourceBundle.SEVERITY_ERROR,
+                    "Error loading " + variants[i], e); //$NON-NLS-1$
         }
-    }
-}
+        finally
+        {
+            if (input != null)
+                try
+                {
+                    input.close();
+                }
+                catch (IOException e)
+                {
+                    // ignore
+                }
+        }
 
+    }
+
+}
