@@ -13,13 +13,22 @@ import org.eclipse.swt.widgets.Shell;
 
 public aspect PreferencesHandler
 {
+    // ---------------------------
+    // Declare soft's
+    // ---------------------------
     declare soft: CheckstylePluginException : CheckstylePreferencePage_performOkHandler() || CheckstylePreferencePage_internarPerformOkInternalHandler();
     declare soft: BackingStoreException : CheckstylePreferencePage_performOkHandler() || PrefsInitializer_internalinitializeDefaultPreferencesHandler();
     
+    // ---------------------------
+    // Pointcut's
+    // ---------------------------
     pointcut CheckstylePreferencePage_performOkHandler() : execution (* CheckstylePreferencePage.internalPerformOk(..));
     pointcut CheckstylePreferencePage_internarPerformOkInternalHandler() : execution (* CheckstylePreferencePage.internarPerformOkInternal(..));
     pointcut PrefsInitializer_internalinitializeDefaultPreferencesHandler() : execution(* PrefsInitializer.internalinitializeDefaultPreferences(..));
     
+    // ---------------------------
+    // Advice's
+    // ---------------------------
     void around(Shell shell) : CheckstylePreferencePage_performOkHandler() && args(shell){
         try{
             proceed(shell);

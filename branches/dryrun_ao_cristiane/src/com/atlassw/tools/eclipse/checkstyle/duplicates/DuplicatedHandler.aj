@@ -24,15 +24,26 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 public privileged aspect DuplicatedHandler {
     
+    // ---------------------------
+    // Declare soft's
+    // ---------------------------
     declare soft: CheckstyleException : DuplicatedCodeAction_internalCreateCheckerHandler();
-    declare soft: CoreException : DuplicatedCodeAction_addJavaFilesToSetHandler() || DuplicatedCodeView_selectHandler() 
-                        || DuplicatedCodeView_internalGetChildrenHandler() || DuplicatedCodeView_internalRunHandler() 
-                        || DuplicatedCodeView_internalHandler() || DuplicatedCodeView_internal2Handler() || DuplicatedCodeView_internalGetChildren2Handler();
+    declare soft: CoreException : DuplicatedCodeAction_addJavaFilesToSetHandler() 
+                                || DuplicatedCodeView_selectHandler() 
+                                || DuplicatedCodeView_internalGetChildrenHandler() 
+                                || DuplicatedCodeView_internalRunHandler() 
+                                || DuplicatedCodeView_internalHandler() 
+                                || DuplicatedCodeView_internal2Handler() 
+                                || DuplicatedCodeView_internalGetChildren2Handler();
     
-    declare soft: PartInitException: DuplicatedCodeAction_findDuplicatedCodeViewHandler() || DuplicatedCodeView_internalHandler() 
-                        || DuplicatedCodeView_internal2Handler();
+    declare soft: PartInitException: DuplicatedCodeAction_findDuplicatedCodeViewHandler() 
+                                     || DuplicatedCodeView_internalHandler() 
+                                     || DuplicatedCodeView_internal2Handler();
     declare soft : BadLocationException : DuplicatedCodeView_selectAndRevealDuplicatedLinesHandler();
 
+    // ---------------------------
+    // Pointcut's
+    // ---------------------------
     pointcut DuplicatedCodeAction_internalCreateCheckerHandler() : execution(* DuplicatedCodeAction.internalCreateChecker(..));
     pointcut DuplicatedCodeAction_addJavaFilesToSetHandler() : execution(* DuplicatedCodeAction.addJavaFilesToSet(..));
     pointcut DuplicatedCodeAction_findDuplicatedCodeViewHandler() : execution(* DuplicatedCodeAction.findDuplicatedCodeView(..));
@@ -46,8 +57,13 @@ public privileged aspect DuplicatedHandler {
     pointcut DuplicatedCodeView_internal2Handler() : execution (* DuplicatedCodeView.internal2(..));
     pointcut DuplicatedCodeView_internalGetChildren2Handler(): execution (* DuplicatedCodeView.ViewContentProvider.internalGetChildren2(..));
 
-    Object around(): DuplicatedCodeAction_addJavaFilesToSetHandler() || DuplicatedCode_internalHandler() 
-                  || DuplicatedCodeView_selectAndRevealDuplicatedLinesHandler()  || DuplicatedCodeAction_findDuplicatedCodeViewHandler() {
+    // ---------------------------
+    // Advice's
+    // ---------------------------
+    Object around(): DuplicatedCodeAction_addJavaFilesToSetHandler() 
+                    || DuplicatedCode_internalHandler() 
+                    || DuplicatedCodeView_selectAndRevealDuplicatedLinesHandler() 
+                    || DuplicatedCodeAction_findDuplicatedCodeViewHandler() {
         Object result = null;
         try {
             result = proceed();
@@ -82,7 +98,8 @@ public privileged aspect DuplicatedHandler {
         return true;
     }
 
-    Object[] around() : DuplicatedCodeView_internalGetChildrenHandler() || DuplicatedCodeView_internalGetChildren2Handler(){
+    Object[] around() : DuplicatedCodeView_internalGetChildrenHandler() 
+                        || DuplicatedCodeView_internalGetChildren2Handler(){
         Object[] obj = null;
         try{
             return obj = proceed();
@@ -93,7 +110,8 @@ public privileged aspect DuplicatedHandler {
     }
     
     
-    void around() : DuplicatedCodeView_internalHandler() || DuplicatedCodeView_internal2Handler(){ 
+    void around() : DuplicatedCodeView_internalHandler() 
+                || DuplicatedCodeView_internal2Handler(){ 
         DuplicatedCodeView dcv = (DuplicatedCodeView) thisJoinPoint.getThis();
         try{
             proceed();
