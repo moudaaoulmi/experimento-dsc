@@ -11,7 +11,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -21,6 +20,9 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 public privileged aspect ConfigHandle
 {
+    // ---------------------------
+    // Declare soft's
+    // ---------------------------
     declare soft: Exception: CheckConfigurationWorkingCopy_setLocationHandle() 
                             || RetrowException_endElementHandle()
                             || RetrowException_exportConfigurationHandle()
@@ -46,6 +48,9 @@ public privileged aspect ConfigHandle
     declare soft: ParserConfigurationException: RetrowException_runHandle();
     declare soft: TransformerConfigurationException: RetrowException_writeHandle();
     
+    // ---------------------------
+    // Pointcut's
+    // ---------------------------
     //CheckConfigurationWorkingCopy
     pointcut CheckConfigurationWorkingCopy_setLocationHandle(): execution (* CheckConfigurationWorkingCopy.setLocationHandle(..)) ;
     pointcut CheckConfigurationWorkingCopy_setModulesIterationHandle(): execution (* CheckConfigurationWorkingCopy.setModulesIteration(..)) ;
@@ -85,6 +90,9 @@ public privileged aspect ConfigHandle
     
     pointcut RetrowException_storeToPersistenceHandle(): execution (* GlobalCheckConfigurationWorkingSet.storeToPersistence(..)) ;
     
+    // ---------------------------
+    // Advice's
+    // ---------------------------
     void around(String location, String oldLocation) throws CheckstylePluginException: CheckConfigurationWorkingCopy_setLocationHandle() 
             && args(location, oldLocation) {
         try{
@@ -148,7 +156,7 @@ public privileged aspect ConfigHandle
     }
        
     Object around() throws SAXException: RetrowException_resolveEntityHandleHandle() 
-            || RetrowException_endElementHandle() {
+                                         || RetrowException_endElementHandle() {
         Object result = null;
         try {
            result = proceed();
@@ -160,13 +168,18 @@ public privileged aspect ConfigHandle
         return result;
     }
     
-    void around() throws CheckstylePluginException: RetrowException_exportConfigurationHandle() 
-                                                    || RetrowException_getUnresolvedPropertiesIterationHandle()
+    void around() throws CheckstylePluginException: RetrowException_exportConfigurationHandle()
                                                     || RetrowException_setModulesHandle() {
         try{
            proceed();
         } catch (CheckstylePluginException e) {
             retrowException(e);
+        }
+    }
+    
+    void around() throws CheckstylePluginException: RetrowException_getUnresolvedPropertiesIterationHandle() {
+        try{
+           proceed();
         } catch (CheckstyleException e) {
             this.retrowException(e);
         }
@@ -180,25 +193,38 @@ public privileged aspect ConfigHandle
         }
     }
     
-    void around() throws CheckstylePluginException: RetrowException_migrateHandle() 
-                                    || RetrowException_writeHandle()
-                                    || RetrowException_storeToPersistenceHandle() {
+    void around() throws CheckstylePluginException: RetrowException_migrateHandle() {
         try{
            proceed();
         } catch (CheckstylePluginException e) {
             this.retrowException(e, ErrorMessages.errorMigratingConfig);
+        } 
+    }  
+    
+    void around() throws CheckstylePluginException: RetrowException_storeToPersistenceHandle() {
+        try{
+           proceed();
         } catch (CheckstyleException e) {
             this.retrowException(e, ErrorMessages.errorWritingConfigFile);
-        } catch (TransformerConfigurationException e){
+        }
+    }
+    
+    void around() throws CheckstylePluginException: RetrowException_writeHandle() {
+        try{
+           proceed();
+        } catch (TransformerConfigurationException e)
+        {
             this.retrowException(e);
-        } catch (SAXException e) {
+        }
+        catch (SAXException e)
+        {
             Exception ex = e.getException() != null ? e.getException() : e;
             this.retrowException(ex);
         }
-    }     
+    }
     
-    List around() throws CheckstylePluginException: RetrowException_runHandle() {
-        List result = null;
+    Object around() throws CheckstylePluginException: RetrowException_runHandle() {
+        Object result = null;
         try{
            result = proceed();
         } catch (SAXException se)
@@ -216,6 +242,7 @@ public privileged aspect ConfigHandle
         }
         return result;
     }
+    
     
     private void retrowException(Exception e) throws CheckstylePluginException {
         CheckstylePluginException.rethrow(e);        

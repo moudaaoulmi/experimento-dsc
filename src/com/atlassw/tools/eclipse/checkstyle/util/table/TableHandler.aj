@@ -17,11 +17,17 @@ import org.eclipse.swt.widgets.TableColumn;
  */
 public privileged aspect TableHandler {
    
+    // ---------------------------
+    // Pointcut's
+    // ---------------------------
     pointcut internalRestoreStateHandler(): execution(* EnhancedTableViewer.internalRestoreState(..));
     pointcut internalRestoreState2Handler(): execution(* EnhancedTableViewer.internalRestoreState2(..)) ;
     pointcut internalRestoreState3Handler(): execution(* EnhancedTableViewer.internalRestoreState3(..)) ;
     pointcut internalRestoreState4Handler(): execution(* EnhancedTableViewer.internalRestoreState4(..)) ;
     
+    // ---------------------------
+    // Advice's
+    // ---------------------------
     void around() : internalRestoreStateHandler() {
         try{
              proceed();
