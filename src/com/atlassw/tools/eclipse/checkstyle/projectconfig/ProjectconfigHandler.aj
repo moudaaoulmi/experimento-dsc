@@ -17,8 +17,9 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralExceptionHandler;
 
-public privileged aspect ProjectconfigHandler
+public privileged aspect ProjectconfigHandler extends GeneralExceptionHandler
 {
     
     // ---------------------------
@@ -43,7 +44,7 @@ public privileged aspect ProjectconfigHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    pointcut FileMatchPattern_internalSetMatchPatternHandler() : execution (* FileMatchPattern.internalSetMatchPattern(..));
+    /*pointcut FileMatchPattern_internalSetMatchPatternHandler() : execution (* FileMatchPattern.internalSetMatchPattern(..));*/
 
     pointcut FileMatchPattern_cloneHandler(): execution(* FileMatchPattern.clone(..));
 
@@ -63,17 +64,22 @@ public privileged aspect ProjectconfigHandler
 
     pointcut ProjectConfigurationWorkingCopy_internalStoreToPersistenceHandler(): execution(* ProjectConfigurationWorkingCopy.internalStoreToPersistence(..));
 
+    public pointcut exceptionPoints(): execution (* FileMatchPattern.internalSetMatchPattern(..));
+    
     // ---------------------------
     // Advice's
     // ---------------------------
-    void around() throws CheckstylePluginException : 
+    
+    //HERANÇA
+    /*void around() throws CheckstylePluginException : 
         FileMatchPattern_internalSetMatchPatternHandler(){    
         try{
             proceed();
         }catch(Exception e){
             CheckstylePluginException.rethrow(e); // wrap the exception
         }
-    }
+    }*/
+    //HERANÇA
     
     Object around() : FileMatchPattern_cloneHandler() || FileMatchPattern_cloneFileSetHandler() || 
                       FileMatchPattern_cloneProjectHandler() || FileMatchPattern_cloneWorkingCopyHandler(){
