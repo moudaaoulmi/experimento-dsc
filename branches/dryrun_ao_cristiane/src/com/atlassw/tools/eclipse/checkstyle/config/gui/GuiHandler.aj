@@ -3,8 +3,6 @@
  */
 package com.atlassw.tools.eclipse.checkstyle.config.gui;
 
-import java.util.ArrayList;
-
 import org.eclipse.osgi.util.NLS;
 import org.osgi.service.prefs.BackingStoreException;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationWorkingSetEditor;
@@ -23,8 +21,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.gui.widgets.IConfigPropertyWi
  * @author julianasaraiva
  *
  */
-public aspect GuiHandler
-{
+public aspect GuiHandler {
 
     // ---------------------------
     // Declare soft's
