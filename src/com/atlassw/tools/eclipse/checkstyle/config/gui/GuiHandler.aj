@@ -13,7 +13,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
-
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.widgets.IConfigPropertyWidget;
@@ -43,14 +43,13 @@ public aspect GuiHandler
                     internalCheckConfigHandler() ||
                     internalConfigureCheckConfigHandler() ||
                     exportCheckstyleCheckConfigHandler() ||
-                    findPropertyItemsHandler();
+                    findPropertyItemsHandler() ||
+                    secInternalOkPressedHandler();
 
     declare soft: Exception: createConfigurationEditorHandler();
     
     declare soft: BackingStoreException: internalWidgetSelectedHandler();
 
-    declare soft: CheckstylePluginException: secInternalOkPressedHandler();
-    
     // ---------------------------
     // Pointcut's
     // ---------------------------
@@ -105,199 +104,125 @@ public aspect GuiHandler
 
     pointcut secInternalOkPressedHandler():
         execution(* RuleConfigurationEditDialog.secInternalOkPressed(..));
-
+    
     // ---------------------------
     // Advice's
     // ---------------------------
 
-    void around(): ModuleHandler(){
-        CheckConfigurationConfigureDialog cD = (CheckConfigurationConfigureDialog) thisJoinPoint
-                .getThis();
-        try
-        {
+    void around(): ModuleHandler() || findPropertyItemsHandler(){
+        try {
             proceed();
+        } catch (CheckstylePluginException e) {
+            TitleAreaDialog object = (TitleAreaDialog) thisJoinPoint.getThis();
+            CheckstyleLog.errorDialog(object.getShell(), e, true);
         }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.errorDialog(cD.getShell(), e, true);
+    }
+    
+    void around(): internalCheckConfigHandler() ||  exportCheckstyleCheckConfigHandler() {
+        try {
+            proceed();
+        } catch (CheckstylePluginException ex) {
+            CheckConfigurationWorkingSetEditor cW = (CheckConfigurationWorkingSetEditor) thisJoinPoint.getThis();
+            CheckstyleLog.errorDialog(cW.getShell(), ex, true);
         }
     }
     
     void around():createConfigurationEditorHandler(){
-        CheckConfigurationPropertiesDialog cD = (CheckConfigurationPropertiesDialog) thisJoinPoint
-                .getThis();
-        try
-        {
+        try {
             proceed();
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
+            CheckConfigurationPropertiesDialog cD = (CheckConfigurationPropertiesDialog) thisJoinPoint.getThis();
             CheckstyleLog.errorDialog(cD.getShell(), ex, true);
         }
-
     }
 
     void around(): internalCreateButtonBarHandler() || internalWidgetSelectedHandler() {
-        try
-        {
+        try {
             proceed();
-        }
-        catch (BackingStoreException e1)
-        {
+        } catch (BackingStoreException e1) {
             CheckstyleLog.log(e1);
         }
     }
     
     void around():internalOkPressedHandler(){
-        try
-        {
+        try {
             proceed();
-        }
-        catch (IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
             CheckstyleLog.log(e);
         }
     }
     
     void around(): internalSelectionChanged_2Handler(){
-        try
-        {
+        try {
             proceed();
-        }
-        catch (CheckstylePluginException e)
-        {
+        } catch (CheckstylePluginException e) {
             CheckstyleLog.log(e);
         }
     }
  
     void around(): internalSelectionChangedHandler(){
-        try
-        {
+        try {
             proceed();
-        }
-        catch (CheckstylePluginException e)
+        } catch (CheckstylePluginException e)
         {
             // NOOP
         }
     }
 
     void around(): widgetSelectedHandler(){
-        CheckConfigurationPropertiesDialog cD = (CheckConfigurationPropertiesDialog) thisJoinPoint
-                .getThis();
-        try
-        {
+        try {
             proceed();
-        }
-        catch (CheckstylePluginException ex)
-        {
+        } catch (CheckstylePluginException ex) {
+            CheckConfigurationPropertiesDialog cD = (CheckConfigurationPropertiesDialog) thisJoinPoint.getThis();
             cD.setErrorMessage(ex.getLocalizedMessage());
         }
     }
 
     void around():okPressedHandler(){
-        CheckConfigurationPropertiesDialog cD = (CheckConfigurationPropertiesDialog) thisJoinPoint
-                .getThis();
-        try
-        {
+        try {
             proceed();
-        }
-        catch (CheckstylePluginException e)
-        {
+        } catch (CheckstylePluginException e) {
             CheckstyleLog.log(e);
+            CheckConfigurationPropertiesDialog cD = (CheckConfigurationPropertiesDialog) thisJoinPoint.getThis();
             cD.setErrorMessage(e.getLocalizedMessage());
         }
     }
 
-   
 
     void around(CheckConfigurationWorkingCopy config, String checkConfigName, String uniqueName,
             int counter):
             setUniqueNameHandler() && args(config, checkConfigName, uniqueName, counter){
-        try
-        {
+        try {
             proceed(config, checkConfigName, uniqueName, counter);
-        }
-        catch (CheckstylePluginException e)
-        {
+        } catch (CheckstylePluginException e) {
             uniqueName = checkConfigName + " (" + counter + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             counter++;
         }
     }
 
-
-    void around(): internalCheckConfigHandler(){
-        CheckConfigurationWorkingSetEditor cW = (CheckConfigurationWorkingSetEditor) thisJoinPoint
-                .getThis();
-        try
-        {
-            proceed();
-        }
-        catch (CheckstylePluginException ex)
-        {
-            CheckstyleLog.errorDialog(cW.getShell(), ex, true);
-        }
-    }
-    
-    
-    void around(): findPropertyItemsHandler(){
-        ResolvablePropertiesDialog c = (ResolvablePropertiesDialog) thisJoinPoint.getThis();
-        try
-        {
-            proceed();
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.errorDialog(c.getShell(), e, true);
-        }
-    }
-
-    
     void around(CheckConfigurationWorkingCopy config): internalConfigureCheckConfigHandler() && 
-        args(config){
-        CheckConfigurationWorkingSetEditor cC = (CheckConfigurationWorkingSetEditor) thisJoinPoint
-                .getThis();
-        try
-        {
+        args(config) {
+        try {
             proceed(config);
-        }
-        catch (CheckstylePluginException e)
-        {
+        } catch (CheckstylePluginException e) {
+            CheckConfigurationWorkingSetEditor cC = (CheckConfigurationWorkingSetEditor) thisJoinPoint.getThis();
             CheckstyleLog.warningDialog(cC.getShell(), NLS.bind(
                     ErrorMessages.errorCannotResolveCheckLocation, config.getLocation(), config
                             .getName()), e);
         }
     }
 
-
-    
-    void around(): exportCheckstyleCheckConfigHandler(){
-        CheckConfigurationWorkingSetEditor cW = (CheckConfigurationWorkingSetEditor) thisJoinPoint
-                .getThis();
-        try
-        {
-            proceed();
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.errorDialog(cW.getShell(), ErrorMessages.msgErrorFailedExportConfig, e,
-                    true);
-        }
-    }
-    
-
     void around(IConfigPropertyWidget widget, ConfigProperty property):secInternalOkPressedHandler()
         && args (widget, property){
-        RuleConfigurationEditDialog rC = (RuleConfigurationEditDialog) thisJoinPoint.getThis();
-        try
-        {
+        try {
             proceed(widget, property);
-        }
-        catch (CheckstylePluginException e)
-        {
+        } catch (CheckstylePluginException e) {
+            RuleConfigurationEditDialog rC = (RuleConfigurationEditDialog) thisJoinPoint.getThis();
             String message = NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue,
                     property.getMetaData().getName());
             rC.setErrorMessage(message);
             return;
         }
     }
+    
 }//GuiHandler
