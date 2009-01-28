@@ -364,15 +364,14 @@ public privileged aspect ConfigtypesHandler
             }
         }
     }
-    
-    
-    
-    String around(String location, boolean isConfigurable): 
-        ExternalFileConfiguration_isConfigurableHandler() && args(location, isConfigurable){
-        String result = null;
+
+    Object around(Object checkConfiguration, boolean isConfigurable): 
+        (ProjectConfigurationType_internalIsConfigurableHandler() 
+        || ExternalFileConfiguration_isConfigurableHandler()) && args(checkConfiguration, isConfigurable){
+        Object result = null;
         try
         {
-            result = proceed(location, isConfigurable);
+            result = proceed(checkConfiguration, isConfigurable);
         }
         catch (CheckstylePluginException e)
         {
@@ -381,7 +380,7 @@ public privileged aspect ConfigtypesHandler
         }
         return result;
     }
-
+    
     void around(): InternalConfigurationEditor_widgetSelectedHandler(){
         InternalConfigurationEditor icE = (InternalConfigurationEditor) thisJoinPoint.getThis();
         try
@@ -440,21 +439,6 @@ public privileged aspect ConfigtypesHandler
         }
     }
     
-    boolean around(ICheckConfiguration checkConfiguration, boolean isConfigurable): 
-        ProjectConfigurationType_internalIsConfigurableHandler() && 
-        args(checkConfiguration, isConfigurable){
-        boolean result = false;
-        try
-        {
-            result = proceed(checkConfiguration, isConfigurable);
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.log(e);
-            isConfigurable = false;
-        }
-        return result;
-    }
     
     void around() throws IOException: 
         ExternalFileConfiguration_internalResolveLocationHandler(){
@@ -480,9 +464,6 @@ public privileged aspect ConfigtypesHandler
         }
     }
   
-
-    
- 
 
     void around(CheckstyleConfigurationFile data, boolean useCacheFile,
             boolean originalFileSuccess, byte[] configurationFileData,
