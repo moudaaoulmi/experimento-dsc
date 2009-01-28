@@ -38,16 +38,18 @@ import java.net.Authenticator;
 import java.net.UnknownHostException;
 
 import java.util.MissingResourceException;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralExceptionHandler;
 
 
-public privileged aspect ConfigtypesHandler
+public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
 {
     // ---------------------------
     // Declare soft's
     // ---------------------------
     
-    declare soft: IOException : ConfigurationType_getResolvedConfigurationFileURLHandler() ||
-                                ConfigurationType_getCheckstyleConfigurationHandler() ||
+    declare soft: IOException : /*ConfigurationType_getResolvedConfigurationFileURLHandler() ||
+                                ConfigurationType_getCheckstyleConfigurationHandler() ||*/
+                                exceptionPoints() ||
                                 ConfigurationType_internalGetAdditionPropertiesBundleBytesHandler() ||
                                 ExternalFileConfiguration_internalEnsureFileExistsHandler() ||
                                 ProjectConfigurationEditor_internalEnsureFileExistsHandler() || 
@@ -89,13 +91,13 @@ public privileged aspect ConfigtypesHandler
     // Pointcut's
     // ---------------------------
     
-    pointcut ConfigurationType_getResolvedConfigurationFileURLHandler() : 
+    /*pointcut ConfigurationType_getResolvedConfigurationFileURLHandler() : 
             execution (* ConfigurationType.getResolvedConfigurationFileURL(..)) &&
-            within(ConfigurationType);
+            within(ConfigurationType);*/
 
-    pointcut ConfigurationType_getCheckstyleConfigurationHandler() : 
+    /*pointcut ConfigurationType_getCheckstyleConfigurationHandler() : 
             execution (* ConfigurationType.getCheckstyleConfiguration(..)) &&
-            within(ConfigurationType);
+            within(ConfigurationType);*/
 
     pointcut ConfigurationType_internalGetAdditionPropertiesBundleBytesHandler():
             execution (* ConfigurationType.internalGetAdditionPropertiesBundleBytes(..)) &&
@@ -179,12 +181,20 @@ public privileged aspect ConfigtypesHandler
 
     pointcut ResourceBundlePropertyResolver_internalResolveHandle(): 
         execution(* ResourceBundlePropertyResolver.internalResolve(..));
+    
+    public pointcut exceptionPoints():
+        execution (* ConfigurationType.getResolvedConfigurationFileURL(..)) &&
+        within(ConfigurationType) || 
+        execution (* ConfigurationType.getCheckstyleConfiguration(..)) &&
+        within(ConfigurationType);
+        
 
     // ---------------------------
     // Advice's
     // ---------------------------
     
-    Object around () throws CheckstylePluginException:
+    //HERANÇA
+    /*Object around () throws CheckstylePluginException:
             ConfigurationType_getResolvedConfigurationFileURLHandler()||
             ConfigurationType_getCheckstyleConfigurationHandler(){
         
@@ -196,7 +206,8 @@ public privileged aspect ConfigtypesHandler
             CheckstylePluginException.rethrow(e);
         }
         return result;
-    }
+    }*/
+    //HERANÇA
     
     Object around() throws CheckstylePluginException: 
         RemoteConfigurationEditor_internalGetEditedWorkingCopyHandler() ||
