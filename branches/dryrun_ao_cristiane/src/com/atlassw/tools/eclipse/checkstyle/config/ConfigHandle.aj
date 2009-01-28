@@ -51,10 +51,9 @@ public privileged aspect ConfigHandle
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    //CheckConfigurationWorkingCopy
     pointcut CheckConfigurationWorkingCopy_setLocationHandle(): execution (* CheckConfigurationWorkingCopy.setLocationHandle(..)) ;
     pointcut CheckConfigurationWorkingCopy_setModulesIterationHandle(): execution (* CheckConfigurationWorkingCopy.setModulesIteration(..)) ;
-    //CheckstyleLogMessage
+
     pointcut CheckstyleLogMessage_refreshHandle(): execution (* CheckConfigurationFactory.refresh(..)) ;
     pointcut CheckstyleLogMessage_removeCheckConfigurationHandle(): 
         execution (* GlobalCheckConfigurationWorkingSet.removeCheckConfiguration(..)) ;
@@ -109,7 +108,7 @@ public privileged aspect ConfigHandle
     void around(): CheckConfigurationWorkingCopy_setModulesIterationHandle()  {
         try{
            proceed();
-        } catch (CheckstylePluginException e) {
+        } catch (CoreException e) {
             // NOOP - just ignore
         }
     }
