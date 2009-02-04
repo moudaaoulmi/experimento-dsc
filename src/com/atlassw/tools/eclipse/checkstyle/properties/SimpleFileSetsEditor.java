@@ -83,6 +83,9 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
 
     private CheckstylePropertyPage mPropertyPage;
 
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private PropertiesHandler propertiesHandler= new PropertiesHandler();
+
     //
     // constructor
     //
@@ -244,9 +247,10 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
                     }
                     catch (CheckstylePluginException ex)
                     {
-                        CheckstyleLog.warningDialog(mPropertyPage.getShell(), Messages.bind(
+                       /* CheckstyleLog.warningDialog(mPropertyPage.getShell(), Messages.bind(
                                 Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
-                                project, config.getLocation()), ex);
+                                project, config.getLocation()), ex);*/
+                        propertiesHandler.warningDialogHandlerTwo(mPropertyPage, project, config, ex);
                     }
                 }
             }

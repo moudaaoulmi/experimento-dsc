@@ -89,6 +89,10 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
     private Text mFileMatchPatternText;
 
     private FileMatchPattern mPattern;
+    
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private PropertiesHandler propertiesHandler= new PropertiesHandler();
+
 
     // =================================================
     // Constructors & finalizer.
@@ -188,15 +192,18 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
 
             mPattern.setIsIncludePattern(mIncludeButton.getSelection());
         }
+        
         catch (PatternSyntaxException e)
         {
-            this.setErrorMessage(e.getLocalizedMessage());
-            return;
+            /*this.setErrorMessage(e.getLocalizedMessage());
+            return;*/
+            propertiesHandler.setErrorMessageNoCkeckedHandler(this, e);
         }
         catch (CheckstylePluginException e)
         {
-            this.setErrorMessage(e.getLocalizedMessage());
-            return;
+            /*this.setErrorMessage(e.getLocalizedMessage());
+            return;*/
+            propertiesHandler.setErrorMessageCkeckedHandler(this, e);
         }
 
         super.okPressed();
