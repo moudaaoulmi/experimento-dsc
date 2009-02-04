@@ -90,6 +90,10 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
     private List mFileSets;
 
     private CheckstylePropertyPage mPropertyPage;
+    
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private PropertiesHandler propertiesHandler= new PropertiesHandler();
+
 
     // =================================================
     // Constructors & finalizer.
@@ -286,8 +290,10 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.errorDialog(mComposite.getShell(), NLS.bind(
-                    ErrorMessages.errorFailedAddFileset, e.getMessage()), e, true);
+            /*CheckstyleLog.errorDialog(mComposite.getShell(), NLS.bind(
+                    ErrorMessages.errorFailedAddFileset, e.getMessage()), e, true);*/
+            propertiesHandler.errorDialogHandlerThree(mComposite,  ErrorMessages.errorFailedAddFileset, e);
+           
         }
     }
 
@@ -321,8 +327,9 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.errorDialog(mComposite.getShell(), NLS.bind(
-                    ErrorMessages.errorFailedEditFileset, e.getMessage()), e, true);
+           /* CheckstyleLog.errorDialog(mComposite.getShell(), NLS.bind(
+                    ErrorMessages.errorFailedEditFileset, e.getMessage()), e, true);*/
+            propertiesHandler.errorDialogHandlerThree(mComposite,  ErrorMessages.errorFailedEditFileset, e);
         }
     }
 

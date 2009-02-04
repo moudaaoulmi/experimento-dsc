@@ -130,6 +130,10 @@ public class CheckstylePropertyPage extends PropertyPage
     private CheckConfigurationWorkingSetEditor mWorkingSetEditor;
 
     private boolean mCheckstyleInitiallyActivated;
+    
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private PropertiesHandler propertiesHandler= new PropertiesHandler();
+
 
     //
     // methods
@@ -174,13 +178,15 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         catch (CoreException e)
         {
-            CheckstyleLog
-                    .errorDialog(getShell(), ErrorMessages.errorOpeningPropertiesPage, e, true);
+            /*CheckstyleLog
+                    .errorDialog(getShell(), ErrorMessages.errorOpeningPropertiesPage, e, true);*/
+            propertiesHandler.errorDialogHandler(getShell(), ErrorMessages.errorOpeningPropertiesPage, e);
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog
-                    .errorDialog(getShell(), ErrorMessages.errorOpeningPropertiesPage, e, true);
+            /*CheckstyleLog
+                    .errorDialog(getShell(), ErrorMessages.errorOpeningPropertiesPage, e, true);*/
+            propertiesHandler.errorDialogHandler(getShell(), ErrorMessages.errorOpeningPropertiesPage, e);
         }
     }
 
@@ -267,8 +273,9 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog
-                    .errorDialog(getShell(), ErrorMessages.errorOpeningPropertiesPage, e, true);
+            /*CheckstyleLog
+                    .errorDialog(getShell(), ErrorMessages.errorOpeningPropertiesPage, e, true);*/
+            propertiesHandler.errorDialogHandler(getShell(), ErrorMessages.errorOpeningPropertiesPage, e);
         }
 
         return container;
@@ -461,10 +468,11 @@ public class CheckstylePropertyPage extends PropertyPage
                 catch (CheckstylePluginException e)
                 {
 
-                    CheckstyleLog.warningDialog(getShell(), NLS.bind(
+                    /*CheckstyleLog.warningDialog(getShell(), NLS.bind(
                             ErrorMessages.errorCannotResolveCheckLocation, checkConfig
                                     .getLocation(), checkConfig.getName()), e);
-                    return false;
+                    return false;*/
+                    propertiesHandler.warningDialogHandler(getShell(), checkConfig, e);
                 }
             }
         }
@@ -544,7 +552,8 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.errorDialog(getShell(), e, true);
+            //CheckstyleLog.errorDialog(getShell(), e, true);
+            propertiesHandler.errorDialogHandlerTwo(getShell(), e);
         }
         return true;
     }
@@ -626,8 +635,9 @@ public class CheckstylePropertyPage extends PropertyPage
                 }
                 catch (CheckstylePluginException ex)
                 {
-                    CheckstyleLog.errorDialog(getShell(), ErrorMessages.errorChangingFilesetEditor,
-                            ex, true);
+                    /*CheckstyleLog.errorDialog(getShell(), ErrorMessages.errorChangingFilesetEditor,
+                            ex, true);*/
+                    propertiesHandler.errorDialogHandler(getShell(), ErrorMessages.errorChangingFilesetEditor,ex);
                 }
             }
 
@@ -735,11 +745,13 @@ public class CheckstylePropertyPage extends PropertyPage
                     }
                     catch (IllegalAccessException ex)
                     {
-                        CheckstyleLog.errorDialog(getShell(), ex, true);
+                        //CheckstyleLog.errorDialog(getShell(), ex, true);
+                        propertiesHandler.errorDialogHandlerTwo(getShell(), ex);
                     }
                     catch (InstantiationException ex)
                     {
-                        CheckstyleLog.errorDialog(getShell(), ex, true);
+                        //CheckstyleLog.errorDialog(getShell(), ex, true);
+                        propertiesHandler.errorDialogHandlerTwo(getShell(), ex);
                     }
                 }
             }

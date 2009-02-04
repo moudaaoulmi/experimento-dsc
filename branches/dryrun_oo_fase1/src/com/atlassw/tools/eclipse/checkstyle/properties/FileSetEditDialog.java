@@ -71,6 +71,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
@@ -136,6 +137,10 @@ public class FileSetEditDialog extends TitleAreaDialog
     private boolean mIsCreatingNewFileset;
 
     private CheckstylePropertyPage mPropertyPage;
+    
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private PropertiesHandler propertiesHandler= new PropertiesHandler();
+
 
     // =================================================
     // Constructors & finalizer.
@@ -424,7 +429,8 @@ public class FileSetEditDialog extends TitleAreaDialog
                 }
                 catch (CoreException e)
                 {
-                    CheckstyleLog.log(e);
+                    //CheckstyleLog.log(e);
+                    propertiesHandler.logHandler(e);
                 }
 
                 // init the test area
@@ -710,9 +716,11 @@ public class FileSetEditDialog extends TitleAreaDialog
                     }
                     catch (CheckstylePluginException ex)
                     {
-                        CheckstyleLog.warningDialog(mPropertyPage.getShell(), Messages.bind(
+                        /*CheckstyleLog.warningDialog(mPropertyPage.getShell(), Messages.bind(
                                 Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
-                                project, config.getLocation()), ex);
+                                project, config.getLocation()), ex);*/
+                        propertiesHandler.warningDialogHandlerTwo(mPropertyPage, project, config, ex);
+                        
                     }
                 }
             }
