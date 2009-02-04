@@ -103,6 +103,10 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog
 
     /** The list of properties. */
     private List mResolvableProperties;
+    
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private ConfigGuiHandler configGuiHandler = new ConfigGuiHandler();
+
 
     //
     // constructor
@@ -494,7 +498,8 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog
             }
             catch (CheckstylePluginException e)
             {
-                CheckstyleLog.errorDialog(getShell(), e, true);
+                //CheckstyleLog.errorDialog(getShell(), e, true);
+                configGuiHandler.errorDialogHandler(e, getShell());
             }
         }
 

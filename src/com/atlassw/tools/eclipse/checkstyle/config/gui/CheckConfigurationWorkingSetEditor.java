@@ -108,6 +108,9 @@ public class CheckConfigurationWorkingSetEditor
     private ICheckConfigurationWorkingSet mWorkingSet;
 
     private boolean mIsShowUsage;
+    
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private ConfigGuiHandler configGuiHandler = new ConfigGuiHandler();
 
     //
     // constructors
@@ -468,7 +471,8 @@ public class CheckConfigurationWorkingSetEditor
                         }
                         catch (CheckstylePluginException e)
                         {
-                            CheckstyleLog.log(e);
+                            //CheckstyleLog.log(e);
+                            configGuiHandler.logHandler(e);
                         }
                     }
                 }
@@ -504,7 +508,8 @@ public class CheckConfigurationWorkingSetEditor
             }
             catch (CheckstylePluginException ex)
             {
-                CheckstyleLog.errorDialog(getShell(), ex, true);
+                //CheckstyleLog.errorDialog(getShell(), ex, true);
+                configGuiHandler.errorDialogHandler(ex, getShell());
             }
 
         }
@@ -550,9 +555,10 @@ public class CheckConfigurationWorkingSetEditor
             }
             catch (CheckstylePluginException e)
             {
-                CheckstyleLog.warningDialog(getShell(), NLS.bind(
+                /*CheckstyleLog.warningDialog(getShell(), NLS.bind(
                         ErrorMessages.errorCannotResolveCheckLocation, config.getLocation(), config
-                                .getName()), e);
+                                .getName()), e);*/
+                configGuiHandler.warningDialogHandler(e, config, getShell());
             }
         }
     }
@@ -597,7 +603,8 @@ public class CheckConfigurationWorkingSetEditor
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.errorDialog(getShell(), e, true);
+            //CheckstyleLog.errorDialog(getShell(), e, true);
+            configGuiHandler.errorDialogHandler(e, getShell());
         }
     }
 
@@ -695,8 +702,9 @@ public class CheckConfigurationWorkingSetEditor
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog
-                    .errorDialog(getShell(), ErrorMessages.msgErrorFailedExportConfig, e, true);
+            /*CheckstyleLog
+                    .errorDialog(getShell(), ErrorMessages.msgErrorFailedExportConfig, e, true);*/
+            configGuiHandler.errorDialogTwoHandler(e, getShell());
         }
     }
 

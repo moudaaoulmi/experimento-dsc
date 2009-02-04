@@ -92,6 +92,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
     /** The template configuration for a new config. */
     private ICheckConfiguration mTemplate;
 
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private ConfigGuiHandler configGuiHandler = new ConfigGuiHandler();
     //
     // constructor
     //
@@ -281,7 +283,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         gd.horizontalAlignment = GridData.BEGINNING;
         gd.horizontalIndent = 5;
         mBtnProperties.setLayoutData(gd);
-
+        
         mBtnProperties.addSelectionListener(new SelectionListener()
         {
 
@@ -298,7 +300,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
                 }
                 catch (CheckstylePluginException ex)
                 {
+                    
                     setErrorMessage(ex.getLocalizedMessage());
+                    
                 }
             }
 
@@ -374,8 +378,10 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.log(e);
-            this.setErrorMessage(e.getLocalizedMessage());
+            //CheckstyleLog.log(e);
+            configGuiHandler.logHandler(e);
+            //this.setErrorMessage(e.getLocalizedMessage());
+            configGuiHandler.setErrorMessageHandler(this, e);
         }
     }
 
@@ -414,7 +420,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         }
         catch (Exception ex)
         {
-            CheckstyleLog.errorDialog(getShell(), ex, true);
+            //CheckstyleLog.errorDialog(getShell(), ex, true);
+            configGuiHandler.errorDialogHandler(ex, getShell());
         }
     }
 

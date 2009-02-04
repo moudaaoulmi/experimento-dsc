@@ -153,6 +153,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
     /** The tree filter. */
     private TreeFilter mTreeFilter = new TreeFilter();
+    
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private ConfigGuiHandler configGuiHandler = new ConfigGuiHandler();
 
     //
     // constructors
@@ -256,7 +259,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.errorDialog(getShell(), e, true);
+            //CheckstyleLog.errorDialog(getShell(), e, true);
+            configGuiHandler.errorDialogHandler(e, getShell());
         }
 
         super.okPressed();
@@ -438,7 +442,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 }
                 catch (BackingStoreException e1)
                 {
-                    CheckstyleLog.log(e1);
+                    //CheckstyleLog.log(e1);
+                    configGuiHandler.logHandler(e1);
                 }
             }
 
@@ -471,7 +476,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         catch (CheckstylePluginException e)
         {
             mModules = new ArrayList();
-            CheckstyleLog.errorDialog(getShell(), e, true);
+            //CheckstyleLog.errorDialog(getShell(), e, true);
+            configGuiHandler.errorDialogHandler(e, getShell());
+            
         }
         mTableViewer.setInput(mModules);
 
@@ -722,7 +729,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 }
                 catch (CheckstylePluginException e)
                 {
-                    CheckstyleLog.errorDialog(getShell(), e, true);
+                    //CheckstyleLog.errorDialog(getShell(), e, true);
+                    configGuiHandler.errorDialogHandler(e, getShell());
                 }
             }
         }
@@ -797,7 +805,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                         }
                         catch (CheckstylePluginException e)
                         {
-                            CheckstyleLog.errorDialog(getShell(), e, true);
+                            //CheckstyleLog.errorDialog(getShell(), e, true);
+                            configGuiHandler.errorDialogHandler(e, getShell());
                         }
                     }
                 }
