@@ -106,6 +106,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
     private String mTitle;
 
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private ConfigGuiHandler configGuiHandler = new ConfigGuiHandler();
+    
     // =================================================
     // Constructors & finalizer.
     // =================================================
@@ -240,7 +243,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 }
                 catch (BackingStoreException e1)
                 {
-                    CheckstyleLog.log(e1);
+                    //CheckstyleLog.log(e1);
+                    configGuiHandler.logHandler(e1);
                 }
             }
 
@@ -276,7 +280,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 }
                 catch (BackingStoreException e1)
                 {
-                    CheckstyleLog.log(e1);
+                    //CheckstyleLog.log(e1);
+                    configGuiHandler.logHandler(e1);
                 }
             }
 
@@ -406,7 +411,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         }
         catch (IllegalArgumentException e)
         {
-            CheckstyleLog.log(e);
+            //CheckstyleLog.log(e);
+            configGuiHandler.logRunTimeHandler(e);
         }
 
         // Get the comment.
@@ -437,11 +443,13 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 }
                 catch (CheckstylePluginException e)
                 {
-                    String message = NLS.bind(
+                    /*String message = NLS.bind(
                             Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue, property
                                     .getMetaData().getName());
+                    
                     this.setErrorMessage(message);
-                    return;
+                    return;*/
+                    configGuiHandler.setErrorMessageHandlerTwo(this, e, property);
                 }
                 property.setValue(widget.getValue());
             }
