@@ -40,6 +40,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 public final class SaveFilters
 {
 
+    private static SavefilterHandler savefilterHandler = new SavefilterHandler();
     //
     // constants
     //
@@ -84,7 +85,7 @@ public final class SaveFilters
             }
             catch (Exception e)
             {
-                CheckstyleLog.log(e);
+                savefilterHandler.savefilterStaticHandler(e);
             }
         }
 
