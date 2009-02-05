@@ -62,7 +62,7 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
  */
 public final class CheckConfigurationMigrator
 {
-
+    private static MigrationHandler migrationHandler = new MigrationHandler();
     /** hidden default constructor. */
     private CheckConfigurationMigrator()
     {}
@@ -87,16 +87,15 @@ public final class CheckConfigurationMigrator
         }
         catch (SAXException se)
         {
-            Exception ex = se.getException() != null ? se.getException() : se;
-            CheckstylePluginException.rethrow(ex);
+            migrationHandler.checkConfigurationMigratorMigrate (se);
         }
         catch (ParserConfigurationException pe)
         {
-            CheckstylePluginException.rethrow(pe);
+            migrationHandler.checkConfigurationMigratorCheckstylePluginException(pe);
         }
         catch (IOException ioe)
         {
-            CheckstylePluginException.rethrow(ioe);
+            migrationHandler.checkConfigurationMigratorCheckstylePluginException(ioe);
         }
     }
 
@@ -156,13 +155,8 @@ public final class CheckConfigurationMigrator
                     }
                     catch (CheckstylePluginException cpe)
                     {
-                        // we probably got a name collision so we try to use a
-                        // unique name
-                        String nameAddition = NLS.bind(
-                                Messages.CheckConfigurationMigrator_txtMigrationAddition,
-                                DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL)
-                                        .format(new Date()));
-                        mCurrentConfiguration.setName(name + nameAddition);
+                        migrationHandler.checkConfigurationMigratorStartElement(mCurrentConfiguration, name);
+  
                     }
 
                     // create the location of the new internal configuration
@@ -223,7 +217,7 @@ public final class CheckConfigurationMigrator
             }
             catch (CheckstylePluginException e)
             {
-                throw new SAXException(e);
+                migrationHandler.checkConfigurationMigratorSAXException(e);
             }
         }
 
@@ -258,11 +252,11 @@ public final class CheckConfigurationMigrator
                 }
                 catch (IOException ioe)
                 {
-                    CheckstylePluginException.rethrow(ioe);
+                    migrationHandler.checkConfigurationMigratorCheckstylePluginException(ioe);
                 }
                 finally
                 {
-                    IOUtils.closeQuietly(out);
+                    migrationHandler.checkConfigurationMigratorEnsureFileExists(out);
                 }
                 return true;
             }
@@ -300,7 +294,7 @@ public final class CheckConfigurationMigrator
             }
             catch (CheckstylePluginException e)
             {
-                throw new SAXException(e);
+                migrationHandler.checkConfigurationMigratorSAXException(e);
             }
         }
 
