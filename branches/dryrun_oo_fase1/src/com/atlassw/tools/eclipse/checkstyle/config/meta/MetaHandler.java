@@ -29,7 +29,8 @@ public class MetaHandler
         CheckstyleLog.log(e);
     }
 
-    public void metadataFactoryInternalDoInitializationHandler1(SAXParseException e, String metadataFile)
+    public void metadataFactoryInternalDoInitializationHandler1(SAXParseException e,
+            String metadataFile)
     {
         CheckstyleLog.log(e, NLS.bind("Could not parse metadata file {0} at {1}:{2}", //$NON-NLS-1$
                 new Object[] { metadataFile, new Integer(e.getLineNumber()),
@@ -41,32 +42,35 @@ public class MetaHandler
         CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
     }
 
-    public void metadataFactoryInternalDoInitializationHandler3(InputStream metadataStream){
+    public void metadataFactoryInternalDoInitializationHandler3(InputStream metadataStream)
+    {
         IOUtils.closeQuietly(metadataStream);
     }
-    
-    public void metadataFactoryDoInitializationHandler(ClassLoader contextClassLoader){
+
+    public void metadataFactoryDoInitializationHandler(ClassLoader contextClassLoader)
+    {
         Thread.currentThread().setContextClassLoader(contextClassLoader);
     }
 
-    public void metadataFactoryResolveEntityHandler(IOException e) throws SAXException{
+    public void metadataFactoryResolveEntityHandler(IOException e) throws SAXException
+    {
         throw new SAXException("" + e, e); //$NON-NLS-1$  
     }
-    
-    public void metadataInternalFactorystartElement(Exception e, int priority){
+
+    public void metadataInternalFactorystartElement(Exception e, int priority)
+    {
         CheckstyleLog.log(e);
         priority = Integer.MAX_VALUE;
     }
-    
-    public void metadataFactorystartElement(Exception e) throws SAXException{
+
+    public void metadataFactorystartElement(Exception e) throws SAXException
+    {
         throw new SAXException(e.getLocalizedMessage(), e);
     }
-    
-    public String metadataFactoryLocalize(String localizationCandidate){
+
+    public String metadataFactoryLocalize(String localizationCandidate)
+    {
         return localizationCandidate;
     }
-    
-    public ResourceBundle metadataFactoryGetMetadataI18NBundle(){
-        return null;   
-    }
+
 }

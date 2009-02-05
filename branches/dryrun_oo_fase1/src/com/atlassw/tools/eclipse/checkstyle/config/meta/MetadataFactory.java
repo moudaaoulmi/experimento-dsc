@@ -357,7 +357,9 @@ public final class MetadataFactory
         }
         catch (MissingResourceException e)
         {
-            metaHandler.metadataFactoryGetMetadataI18NBundle();
+            //TODO se torna inviável refatorar este caso pois teria que botar o 
+            //return null de qlq forma dentro do catch, e como só tem ele não precisa.
+            return null;
         }
     }
 
