@@ -63,6 +63,8 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
  */
 public final class MetadataFactory
 {
+    private static MetaHandler metaHandler = new MetaHandler();
+
     // =================================================
     // Public static final variables.
     // =================================================
@@ -200,8 +202,8 @@ public final class MetadataFactory
         }
         catch (Exception e)
         {
-            // Ok we tried... default to TreeWalker
-            parent = XMLTags.TREEWALKER_MODULE;
+            metaHandler.metadataFactoryCreateGenericMetadata(parent);
+
         }
 
         RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
@@ -247,7 +249,7 @@ public final class MetadataFactory
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.log(e);
+            metaHandler.refreshHandler(e);
         }
     }
 
@@ -286,32 +288,30 @@ public final class MetadataFactory
                 }
                 catch (SAXParseException e)
                 {
-                    CheckstyleLog.log(e, NLS.bind("Could not parse metadata file {0} at {1}:{2}", //$NON-NLS-1$
-                            new Object[] { metadataFile, new Integer(e.getLineNumber()),
-                                new Integer(e.getColumnNumber()) }));
+                    metaHandler.metadataFactoryInternalDoInitializationHandler1(e, metadataFile);
                 }
                 catch (SAXException e)
                 {
-                    CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
+                    metaHandler.metadataFactoryInternalDoInitializationHandler2(e, metadataFile);
                 }
                 catch (ParserConfigurationException e)
                 {
-                    CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
+                    metaHandler.metadataFactoryInternalDoInitializationHandler2(e, metadataFile);
                 }
                 catch (IOException e)
                 {
-                    CheckstyleLog.log(e, "Could not read metadata " + metadataFile); //$NON-NLS-1$
+                    metaHandler.metadataFactoryInternalDoInitializationHandler2(e, metadataFile);
                 }
                 finally
                 {
-                    IOUtils.closeQuietly(metadataStream);
+                    metaHandler.metadataFactoryInternalDoInitializationHandler3(metadataStream);
                 }
             }
         }
         finally
         {
             // restore the original classloader
-            Thread.currentThread().setContextClassLoader(contextClassLoader);
+            metaHandler.metadataFactoryDoInitializationHandler(contextClassLoader);
         }
     }
 
@@ -357,7 +357,7 @@ public final class MetadataFactory
         }
         catch (MissingResourceException e)
         {
-            return null;
+            metaHandler.metadataFactoryGetMetadataI18NBundle();
         }
     }
 
@@ -440,7 +440,9 @@ public final class MetadataFactory
             }
             catch (IOException e)
             {
-                throw new SAXException("" + e, e); //$NON-NLS-1$
+                //TODO - Necessita de um return, pq nao fica explicito que é um throw
+                metaHandler.metadataFactoryResolveEntityHandler(e);
+                return null;
             }
         }
 
@@ -474,8 +476,7 @@ public final class MetadataFactory
                         }
                         catch (Exception e)
                         {
-                            CheckstyleLog.log(e);
-                            priority = Integer.MAX_VALUE;
+                            metaHandler.metadataInternalFactorystartElement(e, priority);
                         }
 
                         // Create the groups
@@ -572,19 +573,19 @@ public final class MetadataFactory
             }
             catch (CheckstylePluginException e)
             {
-                throw new SAXException(e.getLocalizedMessage(), e);
+                metaHandler.metadataFactorystartElement(e);
             }
             catch (ClassNotFoundException e)
             {
-                throw new SAXException(e.getLocalizedMessage(), e);
+                metaHandler.metadataFactorystartElement(e);
             }
             catch (InstantiationException e)
             {
-                throw new SAXException(e.getLocalizedMessage(), e);
+                metaHandler.metadataFactorystartElement(e);
             }
             catch (IllegalAccessException e)
             {
-                throw new SAXException(e.getLocalizedMessage(), e);
+                metaHandler.metadataFactorystartElement(e);
             }
 
         }
@@ -651,7 +652,7 @@ public final class MetadataFactory
                 }
                 catch (MissingResourceException e)
                 {
-                    return localizationCandidate;
+                    metaHandler.metadataFactoryLocalize(localizationCandidate);
                 }
             }
             return localizationCandidate;
