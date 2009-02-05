@@ -62,6 +62,8 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 public abstract class AbstractASTResolution implements ICheckstyleMarkerResolution
 {
 
+    private QuickFixesHandler quickFixesHandler = new QuickFixesHandler();
+    
     private boolean mAutoCommit;
 
     /**
@@ -163,15 +165,19 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
         }
         catch (CoreException e)
         {
-            CheckstyleLog.log(e, ErrorMessages.AbstractASTResolution_msgErrorQuickfix);
+            quickFixesHandler.checkstyleLogHandler(e, ErrorMessages.AbstractASTResolution_msgErrorQuickfix);
+            //CheckstyleLog.log(e, ErrorMessages.AbstractASTResolution_msgErrorQuickfix);
         }
         catch (MalformedTreeException e)
         {
-            CheckstyleLog.log(e, "Error processing quickfix"); //$NON-NLS-1$
+            //MalformedTreeException é Runtime.
+            quickFixesHandler.checkstyleLogHandler2(e, "Error processing quickfix");
+            //CheckstyleLog.log(e, "Error processing quickfix"); //$NON-NLS-1$
         }
         catch (BadLocationException e)
         {
-            CheckstyleLog.log(e, "Error processing quickfix"); //$NON-NLS-1$
+            quickFixesHandler.checkstyleLogHandler(e, "Error processing quickfix");
+            //CheckstyleLog.log(e, "Error processing quickfix"); //$NON-NLS-1$
         }
         finally
         {

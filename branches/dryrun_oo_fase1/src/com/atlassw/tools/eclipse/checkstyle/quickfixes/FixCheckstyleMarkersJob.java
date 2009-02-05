@@ -41,6 +41,8 @@ import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
 public class FixCheckstyleMarkersJob extends UIJob
 {
 
+    private QuickFixesHandler quickFixesHandler = new QuickFixesHandler();
+    
     private IFile mFile;
 
     /**
@@ -85,8 +87,9 @@ public class FixCheckstyleMarkersJob extends UIJob
         }
         catch (CoreException e)
         {
-            return new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK,
-                    e.getMessage(), e);
+            quickFixesHandler.runInUIThreadHandler(e);
+            /*return new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK,
+                    e.getMessage(), e);*/
         }
 
         return Status.OK_STATUS;
