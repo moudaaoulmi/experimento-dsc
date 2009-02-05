@@ -55,6 +55,8 @@ import org.eclipse.swt.widgets.Text;
 public final class SWTUtil
 {
 
+    private static UtilHandler utilHandler = new UtilHandler();
+    
     /**
      * Hidden default constructor.
      */
@@ -200,7 +202,8 @@ public final class SWTUtil
                 }
                 catch (NumberFormatException ex)
                 {
-                    doit = false;
+                    utilHandler.verifyTextHandler(doit);
+                    //doit = false;
                 }
             }
 
