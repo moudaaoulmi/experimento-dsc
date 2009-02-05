@@ -44,6 +44,8 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 public class FixCheckstyleMarkersAction implements IObjectActionDelegate
 {
 
+    private QuickFixesHandler quickFixesHandler = new QuickFixesHandler();
+    
     /** the selection that occured in the workspace. */
     private ISelection mSelection;
 
@@ -98,7 +100,8 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate
             }
             catch (CoreException e)
             {
-                CheckstyleLog.errorDialog(mWorkBenchPart.getSite().getShell(), e, true);
+                quickFixesHandler.checkstyleErrorDialogHandler(e, mWorkBenchPart.getSite().getShell());
+                //CheckstyleLog.errorDialog(mWorkBenchPart.getSite().getShell(), e, true);
             }
 
             // call the fixing job
