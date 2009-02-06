@@ -48,6 +48,8 @@ public class BuildProjectJob extends Job
 
     /** the build kind. */
     private int mKind;
+    
+    private BuilderHandler builderHandler = new BuilderHandler();
 
     //
     // constructors
@@ -108,13 +110,14 @@ public class BuildProjectJob extends Job
         }
         catch (CoreException e)
         {
-            status = e.getStatus();
+            status = builderHandler.buildProjectJob_runHandler(e);
         }
         finally
         {
-            monitor.done();
+            builderHandler.buildProjectJob_runHandler2(monitor);
         }
 
         return status;
-    }
+    }    
+    
 }

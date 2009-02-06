@@ -52,6 +52,8 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob
 {
 
     private List mFilesToCheck;
+    
+    private BuilderHandler builderHandler = new BuilderHandler();
 
     /**
      * Creates the job for a list of <code>IFile</code> objects.
@@ -106,12 +108,10 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob
         }
         catch (CheckstylePluginException e)
         {
-            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e
-                    .getLocalizedMessage(), e);
-            throw new CoreException(status);
+            builderHandler.runCheckstyleOnFilesJob_runInWorkspace(e);
         }
         return Status.OK_STATUS;
-    }
+    }    
 
     private Map getFilesSortedToProject(List filesToCheck)
     {
