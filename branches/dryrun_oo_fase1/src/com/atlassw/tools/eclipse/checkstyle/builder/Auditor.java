@@ -105,6 +105,8 @@ public class Auditor
     /** Reference to the file buffer manager. */
     private final ITextFileBufferManager mFileBufferManager = FileBuffers
             .getTextFileBufferManager();
+    
+    private BuilderHandler builderHandler = new BuilderHandler();
 
     // =================================================
     // Constructors & finalizer.
@@ -200,15 +202,15 @@ public class Auditor
         }
         catch (IOException e)
         {
-            CheckstylePluginException.rethrow(e);
+            builderHandler.builderHandlerRethrowException(e);
         }
         catch (CoreException e)
         {
-            CheckstylePluginException.rethrow(e);
+            builderHandler.builderHandlerRethrowException(e);
         }
         catch (CheckstyleException e)
         {
-            CheckstylePluginException.rethrow(e);
+            builderHandler.builderHandlerRethrowException(e);
         }
         finally
         {
@@ -224,7 +226,7 @@ public class Auditor
             // restore the original classloader
             Thread.currentThread().setContextClassLoader(contextClassloader);
         }
-    }
+    }    
 
     /**
      * Add a file to the audit.
@@ -417,9 +419,9 @@ public class Auditor
             }
             catch (CoreException e)
             {
-                CheckstyleLog.log(e);
+                builderHandler.auditor_addErrorHandler(e);
             }
-        }
+        }        
 
         public void addException(AuditEvent event, Throwable throwable)
         {
@@ -486,9 +488,7 @@ public class Auditor
                 }
                 catch (BadLocationException e)
                 {
-                    // seems to happen quite often so its no use to log since we
-                    // can't do anything about it
-                    // CheckstyleLog.log(e);
+                    builderHandler.auditor_calculateMarkerOffset();
                 }
             }
         }

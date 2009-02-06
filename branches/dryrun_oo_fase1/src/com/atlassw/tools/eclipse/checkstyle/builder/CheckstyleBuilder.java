@@ -77,7 +77,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     // =================================================
     // Instance member variables.
     // =================================================
-
+    private static BuilderHandler builderHandler = new BuilderHandler();
     // =================================================
     // Constructors & finalizer.
     // =================================================
@@ -143,7 +143,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             }
             catch (CoreException e)
             {
-                CheckstylePluginException.rethrow(e);
+                builderHandler.builderHandlerRethrowException(e);
             }
         }
 
@@ -185,10 +185,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 }
                 catch (CheckstylePluginException e)
                 {
-                    Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                            IStatus.ERROR, e.getMessage() != null ? e.getMessage()
-                                    : ErrorMessages.CheckstyleBuilder_msgErrorUnknown, e);
-                    throw new CoreException(status);
+                    builderHandler.checkstyleBuilder_buildHandler(e);
                 }
 
                 Collection files = null;
@@ -238,6 +235,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
 
         return new IProject[] { project };
     }
+
+    
 
     /**
      * Builds the selected resources.
@@ -345,11 +344,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         }
         catch (CheckstylePluginException e)
         {
-            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e
-                    .getLocalizedMessage(), e);
-            throw new CoreException(status);
+            builderHandler.checkstyleBuilder_handleBuildSelection(e);
         }
-    }
+    }    
 
     /**
      * Get the files for the build by analyzing the resource delta.

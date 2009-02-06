@@ -64,6 +64,8 @@ public final class PackageNamesLoader extends AbstractLoader
     private Stack mPackageStack = new Stack();
 
     private static List sPackages;
+    
+    private static BuilderHandler builderHandler = new BuilderHandler();
 
     /**
      * Creates a new <code>PackageNamesLoader</code> instance.
@@ -157,16 +159,15 @@ public final class PackageNamesLoader extends AbstractLoader
             }
             catch (ParserConfigurationException e)
             {
-                CheckstylePluginException.rethrow(e, "unable to parse " + DEFAULT_PACKAGES); //$NON-NLS-1$
+                builderHandler.packageNamesLoader_getPackageNames(e, DEFAULT_PACKAGES);
             }
             catch (SAXException e)
             {
-                CheckstylePluginException.rethrow(e, "unable to parse " + DEFAULT_PACKAGES + " - " //$NON-NLS-1$ //$NON-NLS-2$
-                        + e.getMessage());
+                builderHandler.packageNamesLoader_getPackageNames2(e, DEFAULT_PACKAGES);
             }
             catch (IOException e)
             {
-                CheckstylePluginException.rethrow(e, "unable to read " + DEFAULT_PACKAGES); //$NON-NLS-1$
+                builderHandler.packageNamesLoader_getPackageNames3(e, DEFAULT_PACKAGES);                
             }
 
             // load custom package files
@@ -182,35 +183,33 @@ public final class PackageNamesLoader extends AbstractLoader
 
                     try
                     {
-
                         iStream = new BufferedInputStream(aPackageFile.openStream());
                         InputSource source = new InputSource(iStream);
                         nameLoader.parseInputSource(source);
                     }
                     catch (SAXException e)
                     {
-                        CheckstyleLog.log(e, "unable to parse " + aPackageFile.toExternalForm() //$NON-NLS-1$
-                                + " - " + e.getLocalizedMessage()); //$NON-NLS-1$
+                        builderHandler.packageNamesLoader_getPackageNames4(aPackageFile, e);
                     }
                     catch (IOException e)
                     {
-                        CheckstyleLog.log(e, "unable to read " + aPackageFile.toExternalForm()); //$NON-NLS-1$
+                        builderHandler.packageNamesLoader_getPackageNames5(aPackageFile, e);
                     }
                     finally
                     {
-                        IOUtils.closeQuietly(iStream);
+                        builderHandler.packageNamesLoader_getPackageNames6(iStream);
                     }
                 }
             }
             catch (IOException e1)
             {
-                CheckstylePluginException.rethrow(e1);
+                builderHandler.builderHandlerRethrowException(e1);
             }
         }
 
         return sPackages;
     }
-
+    
     /**
      * Refreshes the cached package names.
      */

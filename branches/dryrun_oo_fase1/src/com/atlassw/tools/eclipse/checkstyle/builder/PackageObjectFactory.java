@@ -35,6 +35,8 @@ class PackageObjectFactory implements ModuleFactory
 {
     /** a list of package names to prepend to class names. */
     private List mPackages;
+    
+    private BuilderHandler builderHandler = new BuilderHandler();  
 
     /**
      * Creates a new <code>PackageObjectFactory</code> instance.
@@ -83,7 +85,7 @@ class PackageObjectFactory implements ModuleFactory
         }
         catch (CheckstyleException ex)
         {
-            ; // keep looking
+            builderHandler.projectObjectFactory_doMakeObjectHandler();
         }
 
         // now try packages
@@ -97,7 +99,7 @@ class PackageObjectFactory implements ModuleFactory
             }
             catch (CheckstyleException ex)
             {
-                ; // keep looking
+                builderHandler.projectObjectFactory_doMakeObjectHandler();
             }
         }
 
@@ -121,21 +123,19 @@ class PackageObjectFactory implements ModuleFactory
         }
         catch (ClassNotFoundException e)
         {
-            throw new CheckstyleException("Unable to find class for " + aClassName, e); //$NON-NLS-1$
+            builderHandler.packageObjectFactory_createObjectHandler(aClassName, e);
         }
         catch (InstantiationException e)
         {
-            // /CLOVER:OFF
-            throw new CheckstyleException("Unable to instantiate " + aClassName, e); //$NON-NLS-1$
-            // /CLOVER:ON
+            builderHandler.packageObjectFactory_createObjectHandler2(aClassName, e);
         }
         catch (IllegalAccessException e)
         {
-            // /CLOVER:OFF
-            throw new CheckstyleException("Unable to instantiate " + aClassName, e); //$NON-NLS-1$
-            // /CLOVER:ON
+            builderHandler.packageObjectFactory_createObjectHandler2(aClassName, e);
         }
-    }
+        // Esta linha não existia no código original. Mas sem ela, o código não compila.
+        return null;
+    }    
 
     /**
      * Creates a new instance of a class from a given name, or that name
@@ -156,15 +156,23 @@ class PackageObjectFactory implements ModuleFactory
         }
         catch (CheckstyleException ex)
         {
-            // try again with suffix "Check"
-            try
-            {
-                return doMakeObject(aName + "Check"); //$NON-NLS-1$
-            }
-            catch (CheckstyleException ex2)
-            {
-                throw new CheckstyleException("Unable to instantiate " + aName, ex2); //$NON-NLS-1$
-            }
+            return packageObjectFactory_createModuleHandler(aName);
         }
     }
+
+    public Object packageObjectFactory_createModuleHandler(String aName) throws CheckstyleException
+    {
+        // try again with suffix "Check"
+        try
+        {
+            return doMakeObject(aName + "Check"); //$NON-NLS-1$
+        }
+        catch (CheckstyleException ex2)
+        {
+            builderHandler.packageObjectFactory_createModuleHandlerHandler(aName, ex2);            
+        }
+        // Esta linha não existia no código original. Mas sem ela, o código não compila.
+        return null;
+    }
+    
 }

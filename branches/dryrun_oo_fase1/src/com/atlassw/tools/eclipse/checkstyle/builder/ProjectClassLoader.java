@@ -71,6 +71,8 @@ public class ProjectClassLoader extends ClassLoader
 
     /** the parent classloader. */
     private ClassLoader mParentClassLoader;
+    
+    private static BuilderHandler builderHandler = new BuilderHandler();
 
     /**
      * the URLStreamHandlerFactory to provide support for non standard
@@ -276,9 +278,9 @@ public class ProjectClassLoader extends ClassLoader
         }
         catch (JavaModelException jme)
         {
-            CheckstyleLog.log(jme);
+            builderHandler.projectClassLoader_addToClasspathHandler(jme);
         }
-    }
+    }    
 
     /**
      * Helper method to handle a source path.
@@ -436,10 +438,11 @@ public class ProjectClassLoader extends ClassLoader
                 }
                 catch (MalformedURLException mfe)
                 {
-                    // log the exception although this should not happen
-                    CheckstyleLog.log(mfe, mfe.getLocalizedMessage());
+                    builderHandler.projectClassLoader_handlePathHandler(mfe);
                 }
             }
         }
     }
+
+    
 }
