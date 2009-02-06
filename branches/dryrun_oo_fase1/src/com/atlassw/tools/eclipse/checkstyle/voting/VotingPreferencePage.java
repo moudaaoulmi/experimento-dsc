@@ -74,6 +74,9 @@ public class VotingPreferencePage extends PreferencePage implements IWorkbenchPr
     private Button mBtnVote;
 
     private PageController mPageController = new PageController();
+    
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private VotingHandler votingHandler = new VotingHandler();
 
     // =================================================
     // Constructors & finalizer.
@@ -183,7 +186,8 @@ public class VotingPreferencePage extends PreferencePage implements IWorkbenchPr
                 }
                 catch (IOException e1)
                 {
-                    CheckstyleLog.errorDialog(getShell(), e1, false);
+                    //CheckstyleLog.errorDialog(getShell(), e1, false);
+                    votingHandler.errorDialogHandler(e1, getShell());
                 }
             }
         }
