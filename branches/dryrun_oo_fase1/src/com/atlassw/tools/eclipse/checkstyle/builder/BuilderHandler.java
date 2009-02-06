@@ -35,25 +35,12 @@ public class BuilderHandler
         monitor.done();
     }
     
-    public void checkstyleBuilder_buildHandler(CheckstylePluginException e) throws CoreException
-    {
-        Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                IStatus.ERROR, e.getMessage() != null ? e.getMessage()
-                        : ErrorMessages.CheckstyleBuilder_msgErrorUnknown, e);
-        throw new CoreException(status);
-    }
     
-    // Estes dois podem ser reusados, mas não sei que nomenclatura adotar...
-    public void auditor_addErrorHandler(CoreException e)
+    
+    public void builderHandlerCheckstyleLog(Exception e)
     {
         CheckstyleLog.log(e);
     }
-    
-    public void projectClassLoader_addToClasspathHandler(JavaModelException jme)
-    {
-        CheckstyleLog.log(jme);
-    }
-    // ----------------------------------------------------------------------
     
     public void auditor_calculateMarkerOffset()
     {
@@ -127,15 +114,16 @@ public class BuilderHandler
         CheckstylePluginException.rethrow(e);
     }
     
-    public void runCheckstyleOnFilesJob_runInWorkspace(CheckstylePluginException e) throws CoreException
+    public void builderHandlerRethrowCoreException(CheckstylePluginException e) throws CoreException
     {
         Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e.getLocalizedMessage(), e);
         throw new CoreException(status);
     }
     
-    public void checkstyleBuilder_handleBuildSelection(CheckstylePluginException e) throws CoreException
+    public void checkstyleBuilder_buildHandler(CheckstylePluginException e) throws CoreException
     {
-        Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, e.getLocalizedMessage(), e);
+        Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, 
+                e.getMessage() != null ? e.getMessage() : ErrorMessages.CheckstyleBuilder_msgErrorUnknown, e);
         throw new CoreException(status);
     }
 }

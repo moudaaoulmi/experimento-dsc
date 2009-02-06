@@ -419,7 +419,7 @@ public class Auditor
             }
             catch (CoreException e)
             {
-                builderHandler.auditor_addErrorHandler(e);
+                builderHandler.builderHandlerCheckstyleLog(e);
             }
         }        
 

@@ -278,7 +278,7 @@ public class ProjectClassLoader extends ClassLoader
         }
         catch (JavaModelException jme)
         {
-            builderHandler.projectClassLoader_addToClasspathHandler(jme);
+            builderHandler.builderHandlerCheckstyleLog(jme);
         }
     }    
 

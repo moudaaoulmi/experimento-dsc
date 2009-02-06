@@ -344,7 +344,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         }
         catch (CheckstylePluginException e)
         {
-            builderHandler.checkstyleBuilder_handleBuildSelection(e);
+            builderHandler.builderHandlerRethrowCoreException(e);
         }
     }    
 
