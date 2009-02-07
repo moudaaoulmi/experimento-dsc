@@ -44,6 +44,8 @@ public final class CustomLibrariesClassLoader
     // attributes
     //
 
+    private static UtilHandler  utilHandler = new UtilHandler();
+    
     /** the internal classloader. */
     private static ClassLoader sLibrariesClassLoader;
 
@@ -87,7 +89,8 @@ public final class CustomLibrariesClassLoader
             }
             catch (IOException e)
             {
-                CheckstylePluginException.rethrow(e);
+                utilHandler.getHandler(e);
+                //CheckstylePluginException.rethrow(e);
             }
         }
         return sLibrariesClassLoader;
