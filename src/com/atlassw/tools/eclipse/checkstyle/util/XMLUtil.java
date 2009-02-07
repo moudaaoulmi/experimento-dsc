@@ -75,6 +75,8 @@ public final class XMLUtil
     // Static class variables.
     // =================================================
 
+    private static UtilHandler utilHandler = new UtilHandler();
+    
     private static Stack sDocBuilderCache = new Stack();
 
     private static DocumentBuilderFactory sDocBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -427,7 +429,8 @@ public final class XMLUtil
         }
         catch (EmptyStackException e)
         {
-            builder = createDocumentBuilder();
+           builder = utilHandler.getDocumentBuilderHandler();
+            //builder = createDocumentBuilder();
         }
 
         return builder;
@@ -441,10 +444,10 @@ public final class XMLUtil
         }
     }
 
-    private static synchronized DocumentBuilder createDocumentBuilder()
+    /*private static synchronized DocumentBuilder createDocumentBuilder()
         throws ParserConfigurationException
     {
         return sDocBuilderFactory.newDocumentBuilder();
-    }
+    }*/
 
 }
