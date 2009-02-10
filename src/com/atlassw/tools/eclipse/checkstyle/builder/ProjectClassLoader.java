@@ -48,6 +48,7 @@ import org.eclipse.osgi.util.NLS;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
@@ -73,6 +74,9 @@ public class ProjectClassLoader extends ClassLoader
     private ClassLoader mParentClassLoader;
     
     private static BuilderHandler builderHandler = new BuilderHandler();
+    
+    /** To OO refactoring */
+    ConfigHandler configHandler = new ConfigHandler();
 
     /**
      * the URLStreamHandlerFactory to provide support for non standard
@@ -220,6 +224,8 @@ public class ProjectClassLoader extends ClassLoader
     private static void addToClassPath(IProject project, List cpURLs, boolean isReferenced,
             Collection processedProjects)
     {
+        /** To OO refactoring */
+        ConfigHandler configHandler = new ConfigHandler();
 
         try
         {
@@ -278,7 +284,8 @@ public class ProjectClassLoader extends ClassLoader
         }
         catch (JavaModelException jme)
         {
-            builderHandler.builderHandlerCheckstyleLog(jme);
+            //builderHandler.builderHandlerCheckstyleLog(jme);
+            configHandler.addToClassPathHandler(builderHandler, jme);
         }
     }    
 
@@ -417,6 +424,8 @@ public class ProjectClassLoader extends ClassLoader
      */
     private static void handlePath(IPath absolutePath, List cpURLs)
     {
+        /** To OO refactoring */
+        ConfigHandler configHandler = new ConfigHandler();
 
         if (absolutePath != null)
         {
@@ -438,7 +447,8 @@ public class ProjectClassLoader extends ClassLoader
                 }
                 catch (MalformedURLException mfe)
                 {
-                    builderHandler.projectClassLoader_handlePathHandler(mfe);
+                    //builderHandler.projectClassLoader_handlePathHandler(mfe);
+                    configHandler.handlePathHandler(mfe, builderHandler);
                 }
             }
         }

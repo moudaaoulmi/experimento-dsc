@@ -36,6 +36,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.api.AbstractLoader;
@@ -144,6 +145,10 @@ public final class PackageNamesLoader extends AbstractLoader
     public static List getPackageNames(ClassLoader aClassLoader) throws CheckstylePluginException
     {
 
+        /** To OO refactoring */
+        ConfigHandler configHandler = new ConfigHandler();
+        
+        
         if (sPackages == null)
         {
             sPackages = new ArrayList();
@@ -159,15 +164,18 @@ public final class PackageNamesLoader extends AbstractLoader
             }
             catch (ParserConfigurationException e)
             {
-                builderHandler.packageNamesLoader_getPackageNames(e, DEFAULT_PACKAGES);
+               //.packageNamesLoader_getPackageNames(e, DEFAULT_PACKAGES);
+                configHandler.getPackageNames1Handler(e, builderHandler, DEFAULT_PACKAGES);
             }
             catch (SAXException e)
             {
-                builderHandler.packageNamesLoader_getPackageNames2(e, DEFAULT_PACKAGES);
+                //builderHandler.packageNamesLoader_getPackageNames2(e, DEFAULT_PACKAGES);
+                configHandler.getPackageNames2Handler(e, builderHandler, DEFAULT_PACKAGES);
             }
             catch (IOException e)
             {
-                builderHandler.packageNamesLoader_getPackageNames3(e, DEFAULT_PACKAGES);                
+               // builderHandler.packageNamesLoader_getPackageNames3(e, DEFAULT_PACKAGES);     
+                configHandler.getPackageNames3Handler(e, builderHandler, DEFAULT_PACKAGES);
             }
 
             // load custom package files
@@ -189,21 +197,25 @@ public final class PackageNamesLoader extends AbstractLoader
                     }
                     catch (SAXException e)
                     {
-                        builderHandler.packageNamesLoader_getPackageNames4(aPackageFile, e);
+                       // builderHandler.packageNamesLoader_getPackageNames4(aPackageFile, e);
+                        configHandler.getPackageNames4Handler(e, aPackageFile, builderHandler);
                     }
                     catch (IOException e)
                     {
-                        builderHandler.packageNamesLoader_getPackageNames5(aPackageFile, e);
+                        //builderHandler.packageNamesLoader_getPackageNames5(aPackageFile, e);
+                        configHandler.getPackageNames5Handler(e, aPackageFile, builderHandler);
                     }
                     finally
                     {
-                        builderHandler.packageNamesLoader_getPackageNames6(iStream);
+                       // builderHandler.packageNamesLoader_getPackageNames6(iStream);
+                        configHandler.getPackageNames6Handler(iStream, builderHandler);
                     }
                 }
             }
             catch (IOException e1)
             {
-                builderHandler.builderHandlerRethrowException(e1);
+                //builderHandler.builderHandlerRethrowException(e1);
+                configHandler.getPackageNames7Handler(e1, builderHandler);
             }
         }
 

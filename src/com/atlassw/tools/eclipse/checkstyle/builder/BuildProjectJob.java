@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.osgi.util.NLS;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigHandler;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 
 /**
@@ -50,6 +51,9 @@ public class BuildProjectJob extends Job
     private int mKind;
     
     private BuilderHandler builderHandler = new BuilderHandler();
+    
+    /** To OO refactoring */
+    ConfigHandler configHandler = new ConfigHandler();
 
     //
     // constructors
@@ -91,7 +95,6 @@ public class BuildProjectJob extends Job
      */
     public IStatus run(IProgressMonitor monitor)
     {
-
         IStatus status = null;
 
         try
@@ -110,11 +113,13 @@ public class BuildProjectJob extends Job
         }
         catch (CoreException e)
         {
-            status = builderHandler.buildProjectJob_runHandler(e);
+           // status = builderHandler.buildProjectJob_runHandler(e);
+            configHandler.runHandler(e, builderHandler, status);
         }
         finally
         {
-            builderHandler.buildProjectJob_runHandler2(monitor);
+           // builderHandler.buildProjectJob_runHandler2(monitor);
+            configHandler.runFINALLYHandler(builderHandler, monitor);
         }
 
         return status;

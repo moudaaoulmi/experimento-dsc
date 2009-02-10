@@ -63,6 +63,9 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
 
     /** The workbench part. */
     private IWorkbenchPart mWorkbenchPart;
+    
+    /** To OO refactoring */
+    DuplicatesHandler duplicatesHandler = new DuplicatesHandler();
 
     /**
      * Constructor.
@@ -148,8 +151,10 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
             }
             catch (CheckstyleException e)
             {
-                CheckstyleLog.errorDialog(mWorkbenchPart.getSite().getShell(),
-                        "Unable to launch the duplicated code analyser.", e, true);
+                //CheckstyleLog.errorDialog(mWorkbenchPart.getSite().getShell(),
+                        //"Unable to launch the duplicated code analyser.", e, true);
+                duplicatesHandler.createCheckerHandler(e, mWorkbenchPart);
+                
             }
         }
 
@@ -172,9 +177,10 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
         }
         catch (PartInitException e)
         {
-            CheckstyleLog.errorDialog(mWorkbenchPart.getSite().getShell(),
-                    "Error opening the duplicated code view '" + DuplicatedCodeView.VIEW_ID + "'.",
-                    e, true);
+            //CheckstyleLog.errorDialog(mWorkbenchPart.getSite().getShell(),
+                 //   "Error opening the duplicated code view '" + DuplicatedCodeView.VIEW_ID + "'.",
+                    //  e, true);
+            duplicatesHandler.findDuplicatedCodeViewHandler(e, mWorkbenchPart);
         }
         return duplicatedCodeView;
     }
@@ -231,7 +237,8 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
         catch (CoreException e)
         {
             // we can't do anything : just log the pbm...
-            CheckstyleLog.log(e, "Error while scanning files for the duplication code analysis.");
+            //CheckstyleLog.log(e, "Error while scanning files for the duplication code analysis.");
+           duplicatesHandler.addJavaFilesToSetHandler(e);
         }
 
     }

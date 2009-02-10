@@ -47,6 +47,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigHandler;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
@@ -81,6 +82,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     // =================================================
     // Constructors & finalizer.
     // =================================================
+    
+    /** To OO refactoring */
+    ConfigHandler configHandler = new ConfigHandler();
 
     // =================================================
     // Methods.
@@ -124,6 +128,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     public static void buildProjects(Collection projects) throws CheckstylePluginException
     {
 
+        /** To OO refactoring */
+        ConfigHandler configHandler = new ConfigHandler();
+        
         // Build only open projects with Checkstyle enabled
         List checkstyleProjects = new ArrayList();
 
@@ -143,7 +150,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             }
             catch (CoreException e)
             {
-                builderHandler.builderHandlerRethrowException(e);
+                //builderHandler.builderHandlerRethrowException(e);
+                configHandler.buildProjectsHandler(e, builderHandler);
             }
         }
 
@@ -162,6 +170,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
     protected final IProject[] build(int kind, Map args, IProgressMonitor monitor)
         throws CoreException
     {
+        /** To OO refactoring */
+        ConfigHandler configHandler = new ConfigHandler();
 
         // get the associated project for this builder
         IProject project = getProject();
@@ -185,7 +195,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 }
                 catch (CheckstylePluginException e)
                 {
-                    builderHandler.checkstyleBuilder_buildHandler(e);
+                    //builderHandler.checkstyleBuilder_buildHandler(e);
+                    configHandler.buildHandler(e, builderHandler);
                 }
 
                 Collection files = null;
@@ -344,7 +355,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         }
         catch (CheckstylePluginException e)
         {
-            builderHandler.builderHandlerRethrowCoreException(e);
+           // builderHandler.builderHandlerRethrowCoreException(e);
+            configHandler.handleBuildSelectionHandler(e, builderHandler);
         }
     }    
 

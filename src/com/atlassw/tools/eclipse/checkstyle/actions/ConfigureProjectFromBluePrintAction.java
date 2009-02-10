@@ -62,6 +62,9 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
     private IWorkbenchPart mPart;
 
     private Collection mSelectedProjects;
+    
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private ActionHandler actionHandler = new ActionHandler();
 
     /**
      * {@inheritDoc}
@@ -202,10 +205,15 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
                     workingCopy.store();
                 }
             }
+            /**
+             * Fazer esse quando dentro do catch tem um retorno
+             * 
+             */
             catch (CheckstylePluginException e)
             {
-                return new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK, e
-                        .getMessage(), e);
+//                return new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK, e
+//                        .getMessage(), e);
+                actionHandler.runInWorkspaceHandler(e);
             }
 
             return Status.OK_STATUS;

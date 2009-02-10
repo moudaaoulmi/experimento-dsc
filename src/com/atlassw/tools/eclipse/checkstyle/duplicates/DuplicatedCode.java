@@ -27,7 +27,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
  * <p>
@@ -67,6 +66,10 @@ public class DuplicatedCode
      * Third mask for the checkstyle message.
      */
     private static String sMask3;
+    
+    /**The variable was introduced here because modularization of Exception Handling*/
+    private static DuplicatesHandler duplicatesHandler = new DuplicatesHandler();
+
 
     static
     {
@@ -82,8 +85,10 @@ public class DuplicatedCode
         }
         catch (MissingResourceException x)
         {
-            CheckstyleLog.log(x, "Unable to get the resource bundle " //$NON-NLS-1$
-                    + DUPLICATES_MESSAGE_BUNDLE + "."); //$NON-NLS-1$
+          //CheckstyleLog.log(x, "Unable to get the resource bundle " //$NON-NLS-1$
+            //    + DUPLICATES_MESSAGE_BUNDLE + "."); //$NON-NLS-1$
+            duplicatesHandler.logHandler(x, "Unable to get the resource bundle " //$NON-NLS-1$
+                    + DUPLICATES_MESSAGE_BUNDLE + ".");
         }
     }
 
@@ -127,14 +132,15 @@ public class DuplicatedCode
         int start = mMessage.indexOf(sMask1) + sMask1.length();
         int end = mMessage.indexOf(sMask2);
         String number = mMessage.substring(start, end);
-        int result;
+        int result = 0;
         try
         {
             result = Integer.parseInt(number);
         }
         catch (NumberFormatException e)
         {
-            result = 0;
+            //result = 0;
+            duplicatesHandler.getNumberOfDuplicatedLinesHandler(result);
         }
         return result;
     }
@@ -164,14 +170,15 @@ public class DuplicatedCode
     {
         int start = mMessage.indexOf(sMask3) + sMask3.length();
         String number = mMessage.substring(start);
-        int result;
+        int result = 0;
         try
         {
             result = Integer.parseInt(number);
         }
         catch (NumberFormatException e)
         {
-            result = 0;
+          //result = 0;
+            duplicatesHandler.getNumberOfDuplicatedLinesHandler(result);
         }
         return result;
     }

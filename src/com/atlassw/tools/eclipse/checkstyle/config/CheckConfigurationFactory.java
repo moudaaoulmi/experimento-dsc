@@ -78,6 +78,7 @@ public final class CheckConfigurationFactory
     /** constant for the extension point id. */
     private static final String CONFIGS_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID
             + ".configurations"; //$NON-NLS-1$
+    
 
     /**
      * List of known check configurations. Synchronized because of possible
@@ -87,6 +88,7 @@ public final class CheckConfigurationFactory
 
     private static ICheckConfiguration sDefaultCheckConfig;
 
+    
     static
     {
         refresh();
@@ -175,6 +177,9 @@ public final class CheckConfigurationFactory
      */
     public static void refresh()
     {
+        /** To OO refactoring */
+        ConfigHandler configHandler = new ConfigHandler();  
+        
         try
         {
             sConfigurations.clear();
@@ -184,7 +189,9 @@ public final class CheckConfigurationFactory
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.log(e);
+           // CheckstyleLog.log(e);
+            configHandler.refreshHandler(e);
+            
         }
     }
 
@@ -227,7 +234,10 @@ public final class CheckConfigurationFactory
 
         InputStream in = null;
         OutputStream out = null;
-
+ 
+        /** To OO refactoring */
+        ConfigHandler configHandler = new ConfigHandler();  
+        
         try
         {
 
@@ -239,12 +249,14 @@ public final class CheckConfigurationFactory
         }
         catch (Exception e)
         {
-            CheckstylePluginException.rethrow(e);
+            //CheckstylePluginException.rethrow(e);
+            configHandler.exportConfigurationHandler(e);
         }
         finally
         {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(out);
+//            IOUtils.closeQuietly(in);
+//            IOUtils.closeQuietly(out);
+            configHandler.exportConfigurationFINALLYHandler(in, out);
         }
     }
 
@@ -255,7 +267,9 @@ public final class CheckConfigurationFactory
     {
 
         InputStream inStream = null;
-
+        
+        /** To OO refactoring */
+        ConfigHandler configHandler = new ConfigHandler();
         try
         {
 
@@ -302,12 +316,14 @@ public final class CheckConfigurationFactory
         }
         catch (Exception e)
         {
-            CheckstylePluginException.rethrow(e, ErrorMessages.errorLoadingConfigFile);
+           //CheckstylePluginException.rethrow(e, ErrorMessages.errorLoadingConfigFile);
+            configHandler.loadFromPersistence(e);
         }
 
         finally
         {
-            IOUtils.closeQuietly(inStream);
+            //IOUtils.closeQuietly(inStream);
+            configHandler.loadFromPersistenceFINALLY(inStream);
         }
     }
 
@@ -339,6 +355,8 @@ public final class CheckConfigurationFactory
 
     private static void migrate() throws CheckstylePluginException
     {
+        /** To OO refactoring */
+        ConfigHandler configHandler = new ConfigHandler();
 
         InputStream inStream = null;
         InputStream defaultConfigStream = null;
@@ -362,13 +380,15 @@ public final class CheckConfigurationFactory
         }
         catch (Exception e)
         {
-            CheckstylePluginException.rethrow(e, ErrorMessages.errorMigratingConfig);
+           // CheckstylePluginException.rethrow(e, ErrorMessages.errorMigratingConfig);
+            configHandler.migrateHandler(e);
         }
 
         finally
         {
-            IOUtils.closeQuietly(inStream);
-            IOUtils.closeQuietly(defaultConfigStream);
+//            IOUtils.closeQuietly(inStream);
+//            IOUtils.closeQuietly(defaultConfigStream);
+            configHandler.migrateFINALLYHandler(inStream, defaultConfigStream);
         }
     }
 
@@ -489,6 +509,9 @@ public final class CheckConfigurationFactory
          */
         public void endElement(String uri, String localName, String qName) throws SAXException
         {
+            /**To OO refactoring */
+            ConfigHandler configHandler = new ConfigHandler();
+            
             if (!mOldFileFormat && XMLTags.CHECK_CONFIG_TAG.equals(qName))
             {
                 try
@@ -502,7 +525,8 @@ public final class CheckConfigurationFactory
                 }
                 catch (Exception e)
                 {
-                    throw new SAXException(e);
+                    //throw new SAXException(e);
+                    configHandler.endElementHandler(e);
                 }
             }
         }
