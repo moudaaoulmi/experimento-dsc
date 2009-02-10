@@ -34,7 +34,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 class ResourceBundlePropertyResolver implements PropertyResolver
 {
     
-    ConfigtyoesHandle configtyoesHandle = new ConfigtyoesHandle();
+    ConfigtypesHandler configtyoesHandle = new ConfigtypesHandler();
 
     //
     // attributes

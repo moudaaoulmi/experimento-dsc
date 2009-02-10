@@ -43,7 +43,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public class ProjectConfigurationType extends ConfigurationType
 {
     
-    private ConfigtyoesHandle configtyoesHandle = new ConfigtyoesHandle();
+    private ConfigtypesHandler configtyoesHandle = new ConfigtypesHandler();
 
     /** Key to access the information if the configuration is protected. */
     public static final String KEY_PROTECT_CONFIG = "protect-config-file"; //$NON-NLS-1$

@@ -58,7 +58,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public class InternalConfigurationEditor implements ICheckConfigurationEditor
 {
 
-    private ConfigtyoesHandle configtyoesHandle = new ConfigtyoesHandle();
+    private ConfigtypesHandler configtyoesHandle = new ConfigtypesHandler();
     
     //
     // attributes
@@ -221,7 +221,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
             }
             catch (CheckstylePluginException e)
             {
-                configtyoesHandle.getEditedWorkingCopyHandle(e, mWorkingCopy, location, ensureFileExists(location));
+                configtyoesHandle.workingCopyHandler(e, mWorkingCopy, location, ensureFileExists(location));
             }
         }
         mWorkingCopy.setDescription(mDescription.getText());
@@ -259,7 +259,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
             }
             catch (IOException ioe)
             {
-                configtyoesHandle.retrows(ioe);
+                configtyoesHandle.rethrowCheckstylePluginException(ioe);
             }
             finally
             {

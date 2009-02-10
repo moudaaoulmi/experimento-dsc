@@ -60,8 +60,8 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 public class RemoteConfigurationType extends ConfigurationType
 {
     
-    private ConfigtyoesHandle configtyoesHandle = new ConfigtyoesHandle();
-    private static ConfigtyoesHandle staticConfigtyoesHandle = new ConfigtyoesHandle();
+    private ConfigtypesHandler configtyoesHandle = new ConfigtypesHandler();
+    private static ConfigtypesHandler staticConfigtyoesHandle = new ConfigtypesHandler();
 
     /** Key to access the information if the configuration should be cached. */
     public static final String KEY_CACHE_CONFIG = "cache-file"; //$NON-NLS-1$
@@ -169,17 +169,17 @@ public class RemoteConfigurationType extends ConfigurationType
             }
             catch (UnknownHostException e)
             {
-                configtyoesHandle.retrows(e, NLS.bind(
+                configtyoesHandle.rethrowCheckstylePluginException_E_MSG(e, NLS.bind(
                         ErrorMessages.RemoteConfigurationType_errorUnknownHost, e.getMessage()));
             }
             catch (FileNotFoundException e)
             {
-                configtyoesHandle.retrows(e, NLS.bind(
+                configtyoesHandle.rethrowCheckstylePluginException_E_MSG(e, NLS.bind(
                         ErrorMessages.RemoteConfigurationType_errorFileNotFound, e.getMessage()));
             }
             catch (IOException e)
             {
-                configtyoesHandle.retrows(e);
+                configtyoesHandle.rethrowCheckstylePluginException(e);
             }
             finally
             {
@@ -290,7 +290,7 @@ public class RemoteConfigurationType extends ConfigurationType
         }
         catch (IOException e)
         {
-            configtyoesHandle.commentedCode3();
+            configtyoesHandle.commentedCode();
         }
         return null;
     }
@@ -311,7 +311,7 @@ public class RemoteConfigurationType extends ConfigurationType
         }
         catch (IOException e)
         {
-            configtyoesHandle.checkstyleLogHandle(e, NLS.bind(
+            configtyoesHandle.checkstyleLog_E_MSG(e, NLS.bind(
                     ErrorMessages.RemoteConfigurationType_msgRemoteCachingFailed, checkConfig
                     .getName(), checkConfig.getLocation()));
         }
@@ -362,7 +362,7 @@ public class RemoteConfigurationType extends ConfigurationType
                         }
                         catch (CheckstylePluginException e)
                         {
-                            configtyoesHandle.checkstyleLogHandle(e);
+                            configtyoesHandle.checkstyleLog(e);
                         }
 
                         // add to 401ed URLs
@@ -437,11 +437,11 @@ public class RemoteConfigurationType extends ConfigurationType
             }
             catch (IllegalArgumentException e)
             {
-                staticConfigtyoesHandle.checkstyleLogHandle(e);
+                staticConfigtyoesHandle.checkstyleLog(e);
             }
             catch (IllegalAccessException e)
             {
-                staticConfigtyoesHandle.checkstyleLogHandle(e);
+                staticConfigtyoesHandle.checkstyleLog(e);
             }
             return currentDefault;
         }
@@ -470,7 +470,7 @@ public class RemoteConfigurationType extends ConfigurationType
             }
             catch (CoreException e)
             {
-                staticConfigtyoesHandle.checkstyleLogHandle(e);
+                staticConfigtyoesHandle.checkstyleLog(e);
             }
         }
 
@@ -510,7 +510,7 @@ public class RemoteConfigurationType extends ConfigurationType
             }
             catch (CoreException e)
             {
-                staticConfigtyoesHandle.retrows(e);
+                staticConfigtyoesHandle.rethrowCheckstylePluginException(e);
             }
         }
 
