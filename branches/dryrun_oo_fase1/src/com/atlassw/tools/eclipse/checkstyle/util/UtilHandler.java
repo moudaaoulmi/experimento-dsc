@@ -1,8 +1,5 @@
 package com.atlassw.tools.eclipse.checkstyle.util;
 
-
-import java.io.IOException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -11,7 +8,9 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 
-public class UtilHandler{
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
+
+public class UtilHandler extends GeneralException{
     
     private static DocumentBuilderFactory sDocBuilderFactory = DocumentBuilderFactory.newInstance();
     
@@ -32,7 +31,4 @@ public class UtilHandler{
         return sDocBuilderFactory.newDocumentBuilder();
     }
     
-    public void getHandler(IOException e) throws CheckstylePluginException{
-        CheckstylePluginException.rethrow(e);
-    }
 }
