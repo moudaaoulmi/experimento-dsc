@@ -164,16 +164,16 @@ public final class PackageNamesLoader extends AbstractLoader
             }
             catch (ParserConfigurationException e)
             {
-               builderHandler.packageNamesLoader_getPackageNames(e, "unable to parse ", DEFAULT_PACKAGES);
+               builderHandler.rethrowCheckstylePluginException_E_MSG(e, "unable to parse " + DEFAULT_PACKAGES);
             }
             catch (SAXException e)
             {
-                builderHandler.rethrowCheckstylePluginException(e, "unable to parse " + DEFAULT_PACKAGES + 
+                builderHandler.rethrowCheckstylePluginException_E_MSG(e, "unable to parse " + DEFAULT_PACKAGES + 
                                 " - " + e.getMessage());
             }
             catch (IOException e)
             {
-                builderHandler.packageNamesLoader_getPackageNames(e, "unable to read ", DEFAULT_PACKAGES);     
+                builderHandler.rethrowCheckstylePluginException_E_MSG(e, "unable to read " + DEFAULT_PACKAGES);     
             }
 
             // load custom package files
@@ -204,13 +204,13 @@ public final class PackageNamesLoader extends AbstractLoader
                     }
                     finally
                     {
-                        builderHandler.packageNamesLoader_getPackageNames6(iStream);
+                        builderHandler.closeQuietlyInputStream(iStream);
                     }
                 }
             }
             catch (IOException e1)
             {
-                builderHandler.builderHandlerRethrowException(e1);
+                builderHandler.rethrowCheckstylePluginException(e1);
             }
         }
 

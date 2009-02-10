@@ -1,17 +1,12 @@
 
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
-import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.xml.sax.SAXException;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -37,38 +32,15 @@ public class BuilderHandler extends GeneralException
     // CheckstyleLog.log(e);
     }
 
-    public void packageNamesLoader_getPackageNames6(InputStream iStream)
-    {
-        IOUtils.closeQuietly(iStream);
-    }
-
     public void projectObjectFactory_doMakeObjectHandler()
     {
         ; // keep looking
     }
 
-    public void builderHandlerRethrowException(Exception e) throws CheckstylePluginException
-    {
-        CheckstylePluginException.rethrow(e);
-    }
-
-    public void packageNamesLoader_getPackageNames(Exception e, String msg, String defaultPackages)
-        throws CheckstylePluginException
-    {
-        CheckstylePluginException.rethrow(e, msg + defaultPackages);
-    }
-
-    public void rethrowCheckstylePluginException(Exception e, String msg)
-        throws CheckstylePluginException
-    {
-        CheckstylePluginException.rethrow(e, msg);
-    }
-
     public void builderHandlerRethrowCoreException(CheckstylePluginException e, String msg)
         throws CoreException
     {
-        Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, 
-                msg, e); 
+        Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, msg, e);
         throw new CoreException(status);
     }
 
