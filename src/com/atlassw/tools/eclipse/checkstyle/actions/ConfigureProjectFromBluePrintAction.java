@@ -45,6 +45,7 @@ import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWorkingCopy;
@@ -64,7 +65,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
     private Collection mSelectedProjects;
     
     /**The variable was introduced here because modularization of Exception Handling*/
-    private ActionHandler actionHandler = new ActionHandler();
+    private GeneralException generalException = new GeneralException();
 
     /**
      * {@inheritDoc}
@@ -211,9 +212,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
              */
             catch (CheckstylePluginException e)
             {
-//                return new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK, e
-//                        .getMessage(), e);
-                actionHandler.runInWorkspaceHandler(e);
+                generalException.newStatus(e, e.getMessage());
             }
 
             return Status.OK_STATUS;
