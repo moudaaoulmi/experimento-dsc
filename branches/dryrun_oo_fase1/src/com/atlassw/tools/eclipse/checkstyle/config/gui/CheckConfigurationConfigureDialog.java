@@ -83,6 +83,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleGroupMetadata;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
@@ -155,7 +156,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     private TreeFilter mTreeFilter = new TreeFilter();
     
     /**The variable was introduced here because modularization of Exception Handling*/
-    private ConfigGuiHandler configGuiHandler = new ConfigGuiHandler();
+    private GeneralException generalException = new GeneralException();
 
     //
     // constructors
@@ -260,7 +261,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         catch (CheckstylePluginException e)
         {
 
-            configGuiHandler.errorDialogCheckstyleLog( e, getShell(), true);
+            generalException.errorDialogCheckstyleLog( e, getShell(), true);
         }
 
         super.okPressed();
@@ -443,7 +444,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 catch (BackingStoreException e1)
                 {
                     //CheckstyleLog.log(e1);
-                    configGuiHandler.checkstyleLog(e1);
+                    generalException.checkstyleLog(e1);
                 }
             }
 
@@ -476,7 +477,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         catch (CheckstylePluginException e)
         {
             mModules = new ArrayList();
-            configGuiHandler.errorDialogCheckstyleLog(e, getShell(), true);
+            generalException.errorDialogCheckstyleLog(e, getShell(), true);
         }
         mTableViewer.setInput(mModules);
 
@@ -727,7 +728,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 }
                 catch (CheckstylePluginException e)
                 {
-                    configGuiHandler.errorDialogCheckstyleLog(e, getShell(), true);
+                    generalException.errorDialogCheckstyleLog(e, getShell(), true);
                 }
             }
         }
@@ -802,7 +803,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                         }
                         catch (CheckstylePluginException e)
                         {
-                            configGuiHandler.errorDialogCheckstyleLog(e, getShell(), true);
+                            generalException.errorDialogCheckstyleLog(e, getShell(), true);
                         }
                     }
                 }

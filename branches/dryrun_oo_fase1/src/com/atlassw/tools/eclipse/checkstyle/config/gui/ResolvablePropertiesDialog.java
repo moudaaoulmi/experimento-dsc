@@ -59,6 +59,7 @@ import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationTester;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
@@ -105,7 +106,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog
     private List mResolvableProperties;
     
     /**The variable was introduced here because modularization of Exception Handling*/
-    private ConfigGuiHandler configGuiHandler = new ConfigGuiHandler();
+    private GeneralException generalException = new GeneralException();
 
 
     //
@@ -498,7 +499,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog
             }
             catch (CheckstylePluginException e)
             {
-                configGuiHandler.errorDialogCheckstyleLog(e, getShell(), true);
+                generalException.errorDialogCheckstyleLog(e, getShell(), true);
             }
         }
 

@@ -60,6 +60,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.widgets.ConfigPropertyWidgetFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.widgets.IConfigPropertyWidget;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
@@ -106,9 +107,12 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
     private String mTitle;
 
-    /**The variable was introduced here because modularization of Exception Handling*/
-    private ConfigGuiHandler configGuiHandler = new ConfigGuiHandler();
-    
+    /**
+     * The variable was introduced here because modularization of Exception
+     * Handling
+     */
+    private GeneralException generalException = new GeneralException();
+
     // =================================================
     // Constructors & finalizer.
     // =================================================
@@ -243,8 +247,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 }
                 catch (BackingStoreException e1)
                 {
-                    //CheckstyleLog.log(e1);
-                    configGuiHandler.checkstyleLog(e1);
+                    // CheckstyleLog.log(e1);
+                    generalException.checkstyleLog(e1);
                 }
             }
 
@@ -280,8 +284,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 }
                 catch (BackingStoreException e1)
                 {
-                    //CheckstyleLog.log(e1);
-                    configGuiHandler.checkstyleLog(e1);
+                    // CheckstyleLog.log(e1);
+                    generalException.checkstyleLog(e1);
                 }
             }
 
@@ -411,7 +415,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         }
         catch (IllegalArgumentException e)
         {
-            configGuiHandler.checkstyleLog(e);
+            generalException.checkstyleLog(e);
         }
 
         // Get the comment.
@@ -442,13 +446,15 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 }
                 catch (CheckstylePluginException e)
                 {
-                    /*String message = NLS.bind(
+                    /*
+                     * String message = NLS.bind(
+                     * Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue
+                     * , property .getMetaData().getName());
+                     * this.setErrorMessage(message); return;
+                     */
+                    generalException.setErrorMessage(this, NLS.bind(
                             Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue, property
-                                    .getMetaData().getName());
-                    
-                    this.setErrorMessage(message);
-                    return;*/
-                    configGuiHandler.setErrorMessageHandlerTwo(this, e, property);
+                                    .getMetaData().getName()));
                 }
                 property.setValue(widget.getValue());
             }
