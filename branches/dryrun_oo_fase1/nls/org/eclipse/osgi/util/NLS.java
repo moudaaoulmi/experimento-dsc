@@ -40,7 +40,9 @@ import org.eclipse.osgi.framework.internal.core.MessageResourceBundle;
 public abstract class NLS {
 
 	private static final Object[] EMPTY_ARGS = new Object[0];
-
+	
+	private static UtilHandle utilHandle = new UtilHandle();
+	
 	/**
 	 * Bind the given message's substitution locations with the given string value.
 	 * 
@@ -123,7 +125,7 @@ public abstract class NLS {
 					try {
 						number = Integer.parseInt(message.substring(i, index));
 					} catch (NumberFormatException e) {
-						throw new IllegalArgumentException();
+					    utilHandle.throwIllegarArgumentException();
 					}
 					if (number == 0 && argZero != null)
 						buffer.append(argZero);
