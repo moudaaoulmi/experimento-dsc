@@ -35,6 +35,7 @@ import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.AbstractASTResolution;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
@@ -48,7 +49,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 public class StringLiteralEqualityQuickfix extends AbstractASTResolution
 {
 
-    private CodingHandle codingHandle = new CodingHandle();
+    private GeneralException generalException = new GeneralException();
     
     /**
      * {@inheritDoc}
@@ -138,16 +139,16 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution
                 }
                 catch (InvocationTargetException e)
                 {
-                    codingHandle.checkStyleLog(e);
+                    generalException.checkstyleLog(e);
                    
                 }
                 catch (IllegalAccessException e)
                 {
-                    codingHandle.checkStyleLog(e);
+                    generalException.checkstyleLog(e);
                 }
                 catch (NoSuchMethodException e)
                 {
-                    codingHandle.checkStyleLog(e);
+                    generalException.checkstyleLog(e);
                 }
             }
         };
