@@ -1,5 +1,8 @@
+
 package com.atlassw.tools.eclipse.checkstyle.config;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,61 +21,48 @@ import org.xml.sax.SAXException;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.builder.BuilderHandler;
 import com.atlassw.tools.eclipse.checkstyle.builder.PackageObjectFactory;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 /**
- * 
  * @author julianasaraiva
- *
  */
 
-public class ConfigHandler {
-    
-    //catch (CheckstylePluginException e)
-   public void refreshHandler( Exception e) {
-        CheckstyleLog.log(e);
+public class ConfigHandler extends GeneralException
+{
+    // -------------------------------
+    // Não da pra reusar pois mesmo com os metodos tendo o mesmo nome,
+    // eles não aceitam um Object, e sim apenas OutputStream e inputStream,
+    // respectivamente.
+    public void exportConfigurationHandler(InputStream in, OutputStream out)
+    {
+        IOUtils.closeQuietly(in);
+        IOUtils.closeQuietly(out);
     }
 
-   //catch (Exception e)
-   public void exportConfigurationHandler(Exception e) throws CheckstylePluginException{
-       CheckstylePluginException.rethrow(e);
-   }
-   //finally
-   public void exportConfigurationFINALLYHandler(InputStream in, OutputStream out){
-       IOUtils.closeQuietly(in);
-       IOUtils.closeQuietly(out);
-   }
-   
-   //catch (Exception e)
-   public void loadFromPersistence(Exception e) throws CheckstylePluginException{
-       CheckstylePluginException.rethrow(e, ErrorMessages.errorLoadingConfigFile);
-   }
-   //finally
-   public void  loadFromPersistenceFINALLY (InputStream inStream){
-       IOUtils.closeQuietly(inStream);
-   }
-   
-   //catch (Exception e)
-   public void migrateHandler(Exception e) throws CheckstylePluginException {
-       CheckstylePluginException.rethrow(e, ErrorMessages.errorMigratingConfig);
-   }
-   
-   //finally
-   public void migrateFINALLYHandler(InputStream inStream, InputStream defaultConfigStream){ 
-       IOUtils.closeQuietly(inStream);
-       IOUtils.closeQuietly(defaultConfigStream);
-   }
-   
-   //catch (Exception e)
-   public void endElementHandler(Exception e) throws SAXException {
-       throw new SAXException(e);
-   }
-   
-   //catch (CheckstyleException ex)
-   public Object createModuleHandler(String aName, PackageObjectFactory class_) throws CheckstyleException{
-       return class_.packageObjectFactory_createModuleHandler(aName);
-   }
-   
-}//ConfigHandler{}
+    public void migrateFINALLYHandler(InputStream inStream, InputStream defaultConfigStream)
+    {
+        IOUtils.closeQuietly(inStream);
+        IOUtils.closeQuietly(defaultConfigStream);
+    }
+    
+    public void storeToPersistenceHandler (ByteArrayOutputStream byteOut, BufferedOutputStream out){
+        IOUtils.closeQuietly(byteOut);
+        IOUtils.closeQuietly(out);
+    }
+    // -------------------------------
+
+    public void endElementHandler(Exception e) throws SAXException
+    {
+        throw new SAXException(e);
+    }
+
+    public Object createModuleHandler(String aName, PackageObjectFactory class_)
+        throws CheckstyleException
+    {
+        return class_.packageObjectFactory_createModuleHandler(aName);
+    }
+
+}

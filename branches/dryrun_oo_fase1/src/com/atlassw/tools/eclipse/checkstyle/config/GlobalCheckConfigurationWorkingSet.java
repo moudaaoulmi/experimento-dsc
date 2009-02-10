@@ -73,6 +73,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     /** The default check configuration to be used for unconfigured projects. */
     private CheckConfigurationWorkingCopy mDefaultCheckConfig;
 
+    private ConfigHandler configHandler = new ConfigHandler();
     //
     // constructors
     //
@@ -186,7 +187,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.log(e);
+            configHandler.checkstyleLog(e);
         }
         return !used;
     }
@@ -367,12 +368,11 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
         }
         catch (Exception e)
         {
-            CheckstylePluginException.rethrow(e, ErrorMessages.errorWritingConfigFile);
+            configHandler.rethrowCheckstylePluginException_E_MSG(e, ErrorMessages.errorWritingConfigFile);
         }
         finally
         {
-            IOUtils.closeQuietly(byteOut);
-            IOUtils.closeQuietly(out);
+            configHandler.storeToPersistenceHandler(byteOut, out);
         }
     }
 
