@@ -41,7 +41,7 @@ public abstract class NLS {
 
 	private static final Object[] EMPTY_ARGS = new Object[0];
 	
-	private static UtilHandle utilHandle = new UtilHandle();
+	private static UtilHandler utilHandle = new UtilHandler();
 	
 	/**
 	 * Bind the given message's substitution locations with the given string value.
