@@ -33,6 +33,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
@@ -44,7 +45,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 public class FixCheckstyleMarkersAction implements IObjectActionDelegate
 {
 
-    private QuickFixesHandler quickFixesHandler = new QuickFixesHandler();
+    private GeneralException generalException = new GeneralException();
     
     /** the selection that occured in the workspace. */
     private ISelection mSelection;
@@ -100,8 +101,7 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate
             }
             catch (CoreException e)
             {
-                quickFixesHandler.checkstyleErrorDialogHandler(e, mWorkBenchPart.getSite().getShell());
-                //CheckstyleLog.errorDialog(mWorkBenchPart.getSite().getShell(), e, true);
+                generalException.errorDialogCheckstyleLog(e, mWorkBenchPart.getSite().getShell(), true);
             }
 
             // call the fixing job

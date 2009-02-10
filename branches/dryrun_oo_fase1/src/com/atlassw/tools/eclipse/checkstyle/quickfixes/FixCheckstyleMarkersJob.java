@@ -32,6 +32,7 @@ import org.eclipse.ui.progress.UIJob;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 
 /**
  * Job implementation that tries to fix all Checkstyle markers in a file.
@@ -41,7 +42,7 @@ import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
 public class FixCheckstyleMarkersJob extends UIJob
 {
 
-    private QuickFixesHandler quickFixesHandler = new QuickFixesHandler();
+    private GeneralException generalException = new GeneralException();
     
     private IFile mFile;
 
@@ -87,9 +88,7 @@ public class FixCheckstyleMarkersJob extends UIJob
         }
         catch (CoreException e)
         {
-            quickFixesHandler.runInUIThreadHandler(e);
-            /*return new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK,
-                    e.getMessage(), e);*/
+            generalException.newStatus(e, e.getMessage());
         }
 
         return Status.OK_STATUS;
