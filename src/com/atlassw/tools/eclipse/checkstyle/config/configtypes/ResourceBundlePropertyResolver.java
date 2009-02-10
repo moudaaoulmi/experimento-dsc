@@ -33,6 +33,8 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  */
 class ResourceBundlePropertyResolver implements PropertyResolver
 {
+    
+    ConfigtyoesHandle configtyoesHandle = new ConfigtyoesHandle();
 
     //
     // attributes
@@ -75,7 +77,7 @@ class ResourceBundlePropertyResolver implements PropertyResolver
             }
             catch (MissingResourceException e)
             {
-                // ignore
+                configtyoesHandle.commentedCode2();
             }
         }
 

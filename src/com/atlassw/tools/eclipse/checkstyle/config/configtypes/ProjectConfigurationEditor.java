@@ -76,6 +76,8 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public class ProjectConfigurationEditor implements ICheckConfigurationEditor
 {
 
+    ConfigtyoesHandle configtyoesHandle = new ConfigtyoesHandle();
+    
     //
     // attributes
     //
@@ -268,38 +270,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         }
         catch (CheckstylePluginException e)
         {
-            String location = mLocation.getText();
-
-            if (StringUtils.trimToNull(location) == null)
-            {
-                throw e;
-            }
-
-            ICheckConfigurationWorkingSet ws = mCheckConfigDialog.getCheckConfigurationWorkingSet();
-            IPath tmp = new Path(location);
-            boolean isFirstPartProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
-                    tmp.segment(0)).exists();
-
-            if (ws instanceof LocalCheckConfigurationWorkingSet && !isFirstPartProject)
-            {
-                location = ((LocalCheckConfigurationWorkingSet) ws).getProject().getFullPath()
-                        .append(location).toString();
-                mLocation.setText(location);
-            }
-            else if (ws instanceof GlobalCheckConfigurationWorkingSet && !isFirstPartProject)
-            {
-                throw new CheckstylePluginException(NLS.bind(Messages.ProjectConfigurationEditor_msgNoProjectInWorkspace,
-                        tmp.segment(0)));
-            }
-
-            if (ensureFileExists(location))
-            {
-                mWorkingCopy.setLocation(mLocation.getText());
-            }
-            else
-            {
-                throw e;
-            }
+            configtyoesHandle.getEditedWorkingCopyHandle(e, mLocation, mCheckConfigDialog, mWorkingCopy,ensureFileExists( mLocation.getText()));
+            
         }
 
         return mWorkingCopy;
@@ -324,7 +296,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         }
         catch (IllegalArgumentException e)
         {
-            CheckstylePluginException.rethrow(e);
+            configtyoesHandle.retrows(e);
         }
 
         if (!file.exists() && file.getLocation() != null)
@@ -350,11 +322,11 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
                 }
                 catch (IOException ioe)
                 {
-                    CheckstylePluginException.rethrow(ioe);
+                    configtyoesHandle.retrows(ioe);
                 }
                 catch (CoreException e)
                 {
-                    CheckstylePluginException.rethrow(e);
+                    configtyoesHandle.retrows(e);
                 }
                 finally
                 {
