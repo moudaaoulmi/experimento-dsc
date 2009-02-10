@@ -63,6 +63,8 @@ import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfiguration
 {
 
+    ProjectconfigHandle projectconfigHandle = new ProjectconfigHandle();
+    
     //
     // attributes
     //
@@ -351,7 +353,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         }
         catch (CloneNotSupportedException e)
         {
-            throw new InternalError();
+            projectconfigHandle.cloneNotSupported();
         }
 
         return clone;
@@ -425,7 +427,8 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         }
         catch (Exception e)
         {
-            CheckstylePluginException.rethrow(e, NLS.bind(
+            
+            projectconfigHandle.rethrows(e, NLS.bind(
                     ErrorMessages.errorWritingCheckConfigurations, e.getLocalizedMessage()));
         }
         finally

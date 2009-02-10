@@ -59,6 +59,8 @@ public class PackageFilterEditor implements IFilterEditor
     // attributes
     //
 
+    FiltersHandle filtersHandle = new FiltersHandle();
+    
     /** the dialog for this editor. */
     private CheckedTreeSelectionDialog mDialog;
 
@@ -270,12 +272,11 @@ public class PackageFilterEditor implements IFilterEditor
                 }
                 catch (JavaModelException e)
                 {
-                    CheckstyleLog.log(e);
+                    filtersHandle.checkstyleLog(e);
                 }
                 catch (CoreException e)
                 {
-                    // this should never happen because we call
-                    // #isAccessible before invoking #members
+                    filtersHandle.commentedCode();
                 }
             }
             return children;
@@ -300,8 +301,7 @@ public class PackageFilterEditor implements IFilterEditor
                 }
                 catch (CoreException e)
                 {
-                    // this should never happen because we call
-                    // #isAccessible before invoking #members
+                    filtersHandle.commentedCode();
                 }
             }
             return children;

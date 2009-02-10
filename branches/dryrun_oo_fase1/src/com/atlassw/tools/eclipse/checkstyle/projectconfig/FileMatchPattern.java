@@ -38,6 +38,8 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
  */
 public class FileMatchPattern implements Cloneable
 {
+    ProjectconfigHandle projectconfigHandle = new ProjectconfigHandle();
+    
     // =================================================
     // Public static final variables.
     // =================================================
@@ -106,7 +108,7 @@ public class FileMatchPattern implements Cloneable
         }
         catch (PatternSyntaxException e)
         {
-            CheckstylePluginException.rethrow(e); // wrap the exception
+            projectconfigHandle.rethrows(e);
         }
     }
 
@@ -160,7 +162,9 @@ public class FileMatchPattern implements Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            throw new InternalError(); // should never happen
+            //XXX Verificar esse caso pois foi necessário colocar o return null
+            projectconfigHandle.cloneNotSupported();
+            return null;
         }
     }
 
