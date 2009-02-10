@@ -290,10 +290,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         }
         catch (CheckstylePluginException e)
         {
-            /*CheckstyleLog.errorDialog(mComposite.getShell(), NLS.bind(
-                    ErrorMessages.errorFailedAddFileset, e.getMessage()), e, true);*/
-            propertiesHandler.errorDialogHandlerThree(mComposite,  ErrorMessages.errorFailedAddFileset, e);
-           
+            propertiesHandler.errorDialogCheckstyleLog_Msg(e, mComposite.getShell(),  ErrorMessages.errorFailedAddFileset, true);
         }
     }
 
@@ -327,9 +324,8 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         }
         catch (CheckstylePluginException e)
         {
-           /* CheckstyleLog.errorDialog(mComposite.getShell(), NLS.bind(
-                    ErrorMessages.errorFailedEditFileset, e.getMessage()), e, true);*/
-            propertiesHandler.errorDialogHandlerThree(mComposite,  ErrorMessages.errorFailedEditFileset, e);
+            propertiesHandler.errorDialogCheckstyleLog_Msg(e, mComposite.getShell(),
+                    ErrorMessages.errorFailedEditFileset, true);
         }
     }
 

@@ -89,10 +89,12 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
     private Text mFileMatchPatternText;
 
     private FileMatchPattern mPattern;
-    
-    /**The variable was introduced here because modularization of Exception Handling*/
-    private PropertiesHandler propertiesHandler= new PropertiesHandler();
 
+    /**
+     * The variable was introduced here because modularization of Exception
+     * Handling
+     */
+    private PropertiesHandler propertiesHandler = new PropertiesHandler();
 
     // =================================================
     // Constructors & finalizer.
@@ -189,23 +191,16 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
             {
                 mPattern.setMatchPattern(pattern);
             }
-
             mPattern.setIsIncludePattern(mIncludeButton.getSelection());
         }
-        
         catch (PatternSyntaxException e)
         {
-            /*this.setErrorMessage(e.getLocalizedMessage());
-            return;*/
-            propertiesHandler.setErrorMessageNoCkeckedHandler(this, e);
+            propertiesHandler.setErrorMessageCkeckedHandler(this, e);
         }
         catch (CheckstylePluginException e)
         {
-            /*this.setErrorMessage(e.getLocalizedMessage());
-            return;*/
             propertiesHandler.setErrorMessageCkeckedHandler(this, e);
         }
-
         super.okPressed();
     }
 
@@ -239,8 +234,8 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
         contentAssistant.setInformationControlCreator(new IInformationControlCreator()
         {
             /*
-             * @see org.eclipse.jface.text.IInformationControlCreator#createInformationControl(
-             *      org.eclipse.swt.widgets.Shell)
+             * @seeorg.eclipse.jface.text.IInformationControlCreator#
+             * createInformationControl( org.eclipse.swt.widgets.Shell)
              */
             public IInformationControl createInformationControl(Shell parent)
             {
