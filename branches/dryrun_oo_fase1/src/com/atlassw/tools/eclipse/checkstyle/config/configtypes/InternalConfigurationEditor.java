@@ -178,7 +178,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
                 }
                 catch (CheckstylePluginException ex)
                 {
-                    configtyoesHandle.setErroMessageHandle(mDialog, ex);
+                    configtyoesHandle.setErrorMessage(mDialog, ex.getLocalizedMessage());
                 }
             }
 
