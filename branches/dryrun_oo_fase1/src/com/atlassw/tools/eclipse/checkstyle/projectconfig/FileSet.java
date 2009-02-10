@@ -31,6 +31,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.eclipse.core.resources.IFile;
 
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 
 /**
  * A File Set is a collection of files audited with a common set of audit rules.
@@ -38,7 +39,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 public class FileSet implements Cloneable
 {
     
-    ProjectconfigHandle projectconfigHandle = new ProjectconfigHandle();
+    GeneralException generalException = new GeneralException();
     
     // =================================================
     // Public static final variables.
@@ -227,7 +228,7 @@ public class FileSet implements Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            projectconfigHandle.cloneNotSupported();
+            generalException.throwInternalError();
             return null;
         }
     }

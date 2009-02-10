@@ -30,6 +30,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -38,7 +39,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
  */
 public class FileMatchPattern implements Cloneable
 {
-    ProjectconfigHandle projectconfigHandle = new ProjectconfigHandle();
+    GeneralException generalException = new GeneralException();
     
     // =================================================
     // Public static final variables.
@@ -108,7 +109,7 @@ public class FileMatchPattern implements Cloneable
         }
         catch (PatternSyntaxException e)
         {
-            projectconfigHandle.rethrows(e);
+            generalException.rethrowCheckstylePluginException(e);
         }
     }
 
@@ -162,8 +163,7 @@ public class FileMatchPattern implements Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            //XXX Verificar esse caso pois foi necessário colocar o return null
-            projectconfigHandle.cloneNotSupported();
+            generalException.throwInternalError();
             return null;
         }
     }

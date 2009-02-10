@@ -51,6 +51,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet
 import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.BuiltInConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationType;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
@@ -63,7 +64,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfiguration
 {
 
-    ProjectconfigHandle projectconfigHandle = new ProjectconfigHandle();
+    GeneralException generalException = new GeneralException();
     
     //
     // attributes
@@ -353,7 +354,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         }
         catch (CloneNotSupportedException e)
         {
-            projectconfigHandle.cloneNotSupported();
+            generalException.throwInternalError();
         }
 
         return clone;
@@ -428,13 +429,13 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         catch (Exception e)
         {
             
-            projectconfigHandle.rethrows(e, NLS.bind(
+            generalException.rethrowCheckstylePluginException_E_MSG(e, NLS.bind(
                     ErrorMessages.errorWritingCheckConfigurations, e.getLocalizedMessage()));
         }
         finally
         {
-            IOUtils.closeQuietly(pipeIn);
-            IOUtils.closeQuietly(pipeOut);
+            generalException.closeQuietlyInputStream(pipeIn);
+            generalException.closeQuietlyOutputStream(pipeOut);
         }
     }
 

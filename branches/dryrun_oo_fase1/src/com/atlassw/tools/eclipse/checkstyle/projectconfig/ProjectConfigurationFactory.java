@@ -52,6 +52,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationType;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
@@ -62,7 +63,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 public final class ProjectConfigurationFactory
 {
     
-    private static ProjectconfigHandle  projectconfigHandle = new ProjectconfigHandle();
+    private static GeneralException generalException = new GeneralException();
     
     // =================================================
     // Public static final variables.
@@ -182,19 +183,19 @@ public final class ProjectConfigurationFactory
         }
         catch (CoreException ce)
         {
-            projectconfigHandle.rethrows(ce);
+            generalException.rethrowCheckstylePluginException(ce);
         }
         catch (SAXException se)
         {
-            projectconfigHandle.rethrows2(se);
+            generalException.rethrowCheckstylePluginException(se.getException() != null ? se.getException() : se);
         }
         catch (ParserConfigurationException pe)
         {
-            projectconfigHandle.rethrows(pe);
+            generalException.rethrowCheckstylePluginException(pe);
         }
         catch (IOException ioe)
         {
-            projectconfigHandle.rethrows(ioe);
+            generalException.rethrowCheckstylePluginException(ioe);
         }
 
         finally
@@ -427,7 +428,7 @@ public final class ProjectConfigurationFactory
             }
             catch (CheckstylePluginException e)
             {
-               projectconfigHandle.rethrowSAXException(e);
+                generalException.rethrowSAXException(e);
             }
         }
 
@@ -449,7 +450,7 @@ public final class ProjectConfigurationFactory
                 }
                 catch (Exception e)
                 {
-                    projectconfigHandle.rethrowSAXException(e);
+                    generalException.rethrowSAXException(e);
                 }
             }
         }

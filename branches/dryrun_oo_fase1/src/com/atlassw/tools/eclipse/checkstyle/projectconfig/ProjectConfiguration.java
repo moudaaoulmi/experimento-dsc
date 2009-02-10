@@ -35,6 +35,7 @@ import org.eclipse.core.resources.IProject;
 
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 
 /**
@@ -46,7 +47,7 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 public class ProjectConfiguration implements Cloneable, IProjectConfiguration
 {
 
-    ProjectconfigHandle projectconfigHandle = new ProjectconfigHandle();
+    GeneralException generalException = new GeneralException();
     
     //
     // attributes
@@ -225,7 +226,7 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration
         }
         catch (CloneNotSupportedException e)
         {
-            projectconfigHandle.cloneNotSupported();
+            generalException.throwInternalError();
         }
 
         return clone;
