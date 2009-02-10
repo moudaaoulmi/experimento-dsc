@@ -2,11 +2,14 @@
 package com.atlassw.tools.eclipse.checkstyle.exception;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.xml.sax.SAXException;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -15,9 +18,10 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public class GeneralException
 {
 
-    public void checkstyleLog(Exception e)
+    public Object checkstyleLog(Exception e)
     {
         CheckstyleLog.log(e);
+        return null;
     }
 
     public void checkstyleLog_E_MSG(Exception e, String msg)
@@ -36,9 +40,14 @@ public class GeneralException
         CheckstylePluginException.rethrow(e);
     }
     
-    public void closeQuietlyInputStream(InputStream inStream)
+    public void closeQuietlyInputStream(InputStream in)
     {
-        IOUtils.closeQuietly(inStream);
+        IOUtils.closeQuietly(in);
+    }
+    
+    public void closeQuietlyOutputStream(OutputStream out)
+    {
+        IOUtils.closeQuietly(out);
     }
     
     public void errorDialogCheckstyleLog(Exception e, Shell shell, boolean b){
@@ -54,6 +63,31 @@ public class GeneralException
                 msg, e);
     }
     
-
+    public void rethrowSAXException(Exception e) throws SAXException
+    {
+        throw new SAXException(e);
+    }
     
+    public Object warningDialogHandler(Shell shell, String msg, Exception e)
+    {
+        CheckstyleLog.warningDialog(shell, msg, e);
+        return null;
+    }
+    
+    public void setErrorMessage(TitleAreaDialog titleAreaDialog,
+            String msg)
+    {
+        titleAreaDialog.setErrorMessage(msg);
+        return;
+    }
+    
+    public void throwInternalError() throws InternalError
+    {
+        throw new InternalError();
+    }
+    
+    public void returnInt(int result)
+    {
+        result = 0;
+    }
 }
