@@ -43,18 +43,6 @@ public class ConfigtypesHandler extends GeneralException
         throw new IOException(e.getMessage());
     }
 
-    public boolean checkstyleLogHandleAndReturnFalse(CheckstylePluginException e)
-    {
-        checkstyleLog(e);
-        return false;
-    }
-
-    public void setErroMessageHandle(CheckConfigurationPropertiesDialog dialog,
-            CheckstylePluginException exception)
-    {
-        dialog.setErrorMessage(exception.getLocalizedMessage());
-    }
-
     public void getEditedWorkingCopyHandle(CheckstylePluginException exception, Text mLocation,
             CheckConfigurationPropertiesDialog mCheckConfigDialog,
             CheckConfigurationWorkingCopy mWorkingCopy, boolean fileExists)

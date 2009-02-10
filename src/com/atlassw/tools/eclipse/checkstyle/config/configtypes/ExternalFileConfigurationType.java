@@ -39,7 +39,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 public class ExternalFileConfigurationType extends ConfigurationType
 {
 
-    private static ConfigtypesHandler configtyoesHandle = new ConfigtypesHandler();
+    private static ConfigtypesHandler configtypesHandle = new ConfigtypesHandler();
     
     /** Key to access the information if the configuration is protected. */
     public static final String KEY_PROTECT_CONFIG = "protect-config-file"; //$NON-NLS-1$
@@ -82,7 +82,7 @@ public class ExternalFileConfigurationType extends ConfigurationType
         }
         catch (CheckstyleException e)
         {
-            configtyoesHandle.rethrowCheckstylePluginException(e);
+            configtypesHandle.rethrowCheckstylePluginException(e);
         }
         return newLocation;
     }
@@ -102,7 +102,7 @@ public class ExternalFileConfigurationType extends ConfigurationType
         }
         catch (CheckstylePluginException e)
         {
-            configtyoesHandle.checkstyleLogHandleAndThrowsIOException(e);
+            configtypesHandle.checkstyleLogHandleAndThrowsIOException(e);
         }
 
         return new File(location).toURL();
@@ -136,7 +136,7 @@ public class ExternalFileConfigurationType extends ConfigurationType
             catch (CheckstylePluginException e)
             {
                 //XXX diferente extração
-                isConfigurable = configtyoesHandle.checkstyleLogHandleAndReturnFalse(e);
+                isConfigurable = (Boolean) configtypesHandle.checkstyleLog(e);
             }
 
             // The configuration can be changed when the external configuration
