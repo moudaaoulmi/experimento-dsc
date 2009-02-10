@@ -52,6 +52,7 @@ import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
@@ -62,7 +63,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 public abstract class AbstractASTResolution implements ICheckstyleMarkerResolution
 {
 
-    private QuickFixesHandler quickFixesHandler = new QuickFixesHandler();
+    private GeneralException generalException = new GeneralException();
     
     private boolean mAutoCommit;
 
@@ -165,19 +166,15 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
         }
         catch (CoreException e)
         {
-            quickFixesHandler.checkstyleLogHandler(e, ErrorMessages.AbstractASTResolution_msgErrorQuickfix);
-            //CheckstyleLog.log(e, ErrorMessages.AbstractASTResolution_msgErrorQuickfix);
+            generalException.checkstyleLog_E_MSG(e, ErrorMessages.AbstractASTResolution_msgErrorQuickfix);
         }
         catch (MalformedTreeException e)
         {
-            //MalformedTreeException é Runtime.
-            quickFixesHandler.checkstyleLogHandler2(e, "Error processing quickfix");
-            //CheckstyleLog.log(e, "Error processing quickfix"); //$NON-NLS-1$
+            generalException.checkstyleLog_E_MSG(e, "Error processing quickfix");
         }
         catch (BadLocationException e)
         {
-            quickFixesHandler.checkstyleLogHandler(e, "Error processing quickfix");
-            //CheckstyleLog.log(e, "Error processing quickfix"); //$NON-NLS-1$
+            generalException.checkstyleLog_E_MSG(e, "Error processing quickfix");
         }
         finally
         {
