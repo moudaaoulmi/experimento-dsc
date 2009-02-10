@@ -1,20 +1,11 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.meta;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ResourceBundle;
-
-import org.apache.commons.io.IOUtils;
-import org.eclipse.osgi.util.NLS;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 import com.atlassw.tools.eclipse.checkstyle.config.XMLTags;
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 public class MetaHandler extends GeneralException
 {
@@ -31,7 +22,7 @@ public class MetaHandler extends GeneralException
 
     public void throwSAXException_Msg(String msg, Exception e) throws SAXException
     {
-        throw new SAXException(msg, e); //$NON-NLS-1$  
+        throw new SAXException(msg, e);
     }
 
     public void metadataInternalFactorystartElement(Exception e, int priority)
