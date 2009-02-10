@@ -164,18 +164,15 @@ public final class PackageNamesLoader extends AbstractLoader
             }
             catch (ParserConfigurationException e)
             {
-               //.packageNamesLoader_getPackageNames(e, DEFAULT_PACKAGES);
-                configHandler.getPackageNames1Handler(e, builderHandler, DEFAULT_PACKAGES);
+               builderHandler.packageNamesLoader_getPackageNames(e, DEFAULT_PACKAGES);
             }
             catch (SAXException e)
             {
-                //builderHandler.packageNamesLoader_getPackageNames2(e, DEFAULT_PACKAGES);
-                configHandler.getPackageNames2Handler(e, builderHandler, DEFAULT_PACKAGES);
+                builderHandler.packageNamesLoader_getPackageNames2(e, DEFAULT_PACKAGES);
             }
             catch (IOException e)
             {
-               // builderHandler.packageNamesLoader_getPackageNames3(e, DEFAULT_PACKAGES);     
-                configHandler.getPackageNames3Handler(e, builderHandler, DEFAULT_PACKAGES);
+                builderHandler.packageNamesLoader_getPackageNames3(e, DEFAULT_PACKAGES);     
             }
 
             // load custom package files
@@ -197,25 +194,21 @@ public final class PackageNamesLoader extends AbstractLoader
                     }
                     catch (SAXException e)
                     {
-                       // builderHandler.packageNamesLoader_getPackageNames4(aPackageFile, e);
-                        configHandler.getPackageNames4Handler(e, aPackageFile, builderHandler);
+                        builderHandler.packageNamesLoader_getPackageNames4(aPackageFile, e);
                     }
                     catch (IOException e)
                     {
-                        //builderHandler.packageNamesLoader_getPackageNames5(aPackageFile, e);
-                        configHandler.getPackageNames5Handler(e, aPackageFile, builderHandler);
+                        builderHandler.packageNamesLoader_getPackageNames5(aPackageFile, e);
                     }
                     finally
                     {
-                       // builderHandler.packageNamesLoader_getPackageNames6(iStream);
-                        configHandler.getPackageNames6Handler(iStream, builderHandler);
+                        builderHandler.packageNamesLoader_getPackageNames6(iStream);
                     }
                 }
             }
             catch (IOException e1)
             {
-                //builderHandler.builderHandlerRethrowException(e1);
-                configHandler.getPackageNames7Handler(e1, builderHandler);
+                builderHandler.builderHandlerRethrowException(e1);
             }
         }
 

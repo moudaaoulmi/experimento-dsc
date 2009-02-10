@@ -284,8 +284,7 @@ public class ProjectClassLoader extends ClassLoader
         }
         catch (JavaModelException jme)
         {
-            //builderHandler.builderHandlerCheckstyleLog(jme);
-            configHandler.addToClassPathHandler(builderHandler, jme);
+            builderHandler.builderHandlerCheckstyleLog(jme);
         }
     }    
 
@@ -447,8 +446,7 @@ public class ProjectClassLoader extends ClassLoader
                 }
                 catch (MalformedURLException mfe)
                 {
-                    //builderHandler.projectClassLoader_handlePathHandler(mfe);
-                    configHandler.handlePathHandler(mfe, builderHandler);
+                    builderHandler.projectClassLoader_handlePathHandler(mfe);
                 }
             }
         }
