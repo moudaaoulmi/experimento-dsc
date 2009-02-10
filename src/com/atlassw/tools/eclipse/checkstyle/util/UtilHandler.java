@@ -14,10 +14,6 @@ public class UtilHandler extends GeneralException{
     
     private static DocumentBuilderFactory sDocBuilderFactory = DocumentBuilderFactory.newInstance();
     
-    public void verifyTextHandler(boolean doit){
-        doit = false;
-    }
-    
     //catch (Exception e1)
     public Point shellActivatedHandler(){
         return new Point(0, 0);
