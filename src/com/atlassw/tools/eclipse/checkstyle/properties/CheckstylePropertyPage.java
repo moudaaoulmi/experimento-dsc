@@ -69,6 +69,7 @@ import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.builder.BuildProjectJob;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationWorkingSetEditor;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.nature.ConfigureDeconfigureNatureJob;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
@@ -132,7 +133,7 @@ public class CheckstylePropertyPage extends PropertyPage
     private boolean mCheckstyleInitiallyActivated;
     
     /**The variable was introduced here because modularization of Exception Handling*/
-    private PropertiesHandler propertiesHandler= new PropertiesHandler();
+    private GeneralException generalException= new GeneralException();
 
 
     //
@@ -178,11 +179,11 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         catch (CoreException e)
         {
-            propertiesHandler.errorDialogCheckstyleLog_Msg(e, getShell(), ErrorMessages.errorOpeningPropertiesPage, true);
+            generalException.errorDialogCheckstyleLog_Msg(e, getShell(), ErrorMessages.errorOpeningPropertiesPage, true);
         }
         catch (CheckstylePluginException e)
         {
-            propertiesHandler.errorDialogCheckstyleLog_Msg(e, getShell(), ErrorMessages.errorOpeningPropertiesPage, true);
+            generalException.errorDialogCheckstyleLog_Msg(e, getShell(), ErrorMessages.errorOpeningPropertiesPage, true);
         }
     }
 
@@ -269,7 +270,7 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         catch (CheckstylePluginException e)
         {
-            propertiesHandler.errorDialogCheckstyleLog_Msg(e, getShell(), ErrorMessages.errorOpeningPropertiesPage, true);
+            generalException.errorDialogCheckstyleLog_Msg(e, getShell(), ErrorMessages.errorOpeningPropertiesPage, true);
         }
 
         return container;
@@ -461,7 +462,7 @@ public class CheckstylePropertyPage extends PropertyPage
                 }
                 catch (CheckstylePluginException e)
                 {
-                    propertiesHandler.warningDialogHandler(getShell(), NLS.bind(
+                    generalException.warningDialogHandler(getShell(), NLS.bind(
                             ErrorMessages.errorCannotResolveCheckLocation, checkConfig
                             .getLocation(), checkConfig.getName()), e);
                 }
@@ -543,7 +544,7 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         catch (CheckstylePluginException e)
         {
-            propertiesHandler.errorDialogCheckstyleLog(e, getShell(), true);
+            generalException.errorDialogCheckstyleLog(e, getShell(), true);
         }
         return true;
     }
@@ -625,7 +626,7 @@ public class CheckstylePropertyPage extends PropertyPage
                 }
                 catch (CheckstylePluginException ex)
                 {
-                    propertiesHandler.errorDialogCheckstyleLog_Msg(ex, getShell(), ErrorMessages.errorChangingFilesetEditor, true);
+                    generalException.errorDialogCheckstyleLog_Msg(ex, getShell(), ErrorMessages.errorChangingFilesetEditor, true);
                 }
             }
 
@@ -733,11 +734,11 @@ public class CheckstylePropertyPage extends PropertyPage
                     }
                     catch (IllegalAccessException ex)
                     {
-                        propertiesHandler.errorDialogCheckstyleLog(ex, getShell(), true);
+                        generalException.errorDialogCheckstyleLog(ex, getShell(), true);
                     }
                     catch (InstantiationException ex)
                     {
-                        propertiesHandler.errorDialogCheckstyleLog(ex, getShell(), true);
+                        generalException.errorDialogCheckstyleLog(ex, getShell(), true);
                     }
                 }
             }

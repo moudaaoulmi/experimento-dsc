@@ -59,6 +59,7 @@ import org.eclipse.ui.contentassist.ContentAssistHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
@@ -94,7 +95,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
      * The variable was introduced here because modularization of Exception
      * Handling
      */
-    private PropertiesHandler propertiesHandler = new PropertiesHandler();
+    private GeneralException generalException = new GeneralException();
 
     // =================================================
     // Constructors & finalizer.
@@ -195,11 +196,11 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
         }
         catch (PatternSyntaxException e)
         {
-            propertiesHandler.setErrorMessageCkeckedHandler(this, e);
+            generalException.setErrorMessage(this, e.getLocalizedMessage());
         }
         catch (CheckstylePluginException e)
         {
-            propertiesHandler.setErrorMessageCkeckedHandler(this, e);
+            generalException.setErrorMessage(this, e.getLocalizedMessage());
         }
         super.okPressed();
     }

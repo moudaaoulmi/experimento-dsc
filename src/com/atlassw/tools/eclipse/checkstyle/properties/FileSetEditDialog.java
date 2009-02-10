@@ -78,6 +78,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationConfigureDialog;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationLabelProvider;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationViewerSorter;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -139,7 +140,7 @@ public class FileSetEditDialog extends TitleAreaDialog
     private CheckstylePropertyPage mPropertyPage;
     
     /**The variable was introduced here because modularization of Exception Handling*/
-    private PropertiesHandler propertiesHandler= new PropertiesHandler();
+    private GeneralException generalException= new GeneralException();
 
 
     // =================================================
@@ -430,7 +431,7 @@ public class FileSetEditDialog extends TitleAreaDialog
                 catch (CoreException e)
                 {
                     //CheckstyleLog.log(e);
-                    propertiesHandler.checkstyleLog(e);
+                    generalException.checkstyleLog(e);
                 }
 
                 // init the test area
@@ -716,7 +717,7 @@ public class FileSetEditDialog extends TitleAreaDialog
                     }
                     catch (CheckstylePluginException ex)
                     {
-                        propertiesHandler.warningDialogHandler(mPropertyPage.getShell(), Messages.bind(
+                        generalException.warningDialogHandler(mPropertyPage.getShell(), Messages.bind(
                                 Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
                                 project, config.getLocation()), ex);
                         
