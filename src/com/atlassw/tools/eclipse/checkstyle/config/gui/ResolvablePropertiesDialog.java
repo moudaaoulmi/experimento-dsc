@@ -498,8 +498,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog
             }
             catch (CheckstylePluginException e)
             {
-                //CheckstyleLog.errorDialog(getShell(), e, true);
-                configGuiHandler.errorDialogHandler(e, getShell());
+                configGuiHandler.errorDialogCheckstyleLog(e, getShell(), true);
             }
         }
 

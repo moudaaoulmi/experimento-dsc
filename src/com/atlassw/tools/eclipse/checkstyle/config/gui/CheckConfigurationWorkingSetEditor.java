@@ -472,7 +472,7 @@ public class CheckConfigurationWorkingSetEditor
                         catch (CheckstylePluginException e)
                         {
                             //CheckstyleLog.log(e);
-                            configGuiHandler.logHandler(e);
+                            configGuiHandler.checkstyleLog(e);
                         }
                     }
                 }
@@ -508,8 +508,7 @@ public class CheckConfigurationWorkingSetEditor
             }
             catch (CheckstylePluginException ex)
             {
-                //CheckstyleLog.errorDialog(getShell(), ex, true);
-                configGuiHandler.errorDialogHandler(ex, getShell());
+                configGuiHandler.errorDialogCheckstyleLog(ex, getShell(), true);
             }
 
         }
@@ -603,8 +602,7 @@ public class CheckConfigurationWorkingSetEditor
         }
         catch (CheckstylePluginException e)
         {
-            //CheckstyleLog.errorDialog(getShell(), e, true);
-            configGuiHandler.errorDialogHandler(e, getShell());
+            configGuiHandler.errorDialogCheckstyleLog(e, getShell(), true);
         }
     }
 
@@ -704,7 +702,7 @@ public class CheckConfigurationWorkingSetEditor
         {
             /*CheckstyleLog
                     .errorDialog(getShell(), ErrorMessages.msgErrorFailedExportConfig, e, true);*/
-            configGuiHandler.errorDialogTwoHandler(e, getShell());
+            configGuiHandler.errorDialogCheckstyleLog_Msg(e, getShell(), ErrorMessages.msgErrorFailedExportConfig, true);
         }
     }
 

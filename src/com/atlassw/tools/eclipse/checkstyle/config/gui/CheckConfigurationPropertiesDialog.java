@@ -379,7 +379,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         catch (CheckstylePluginException e)
         {
             //CheckstyleLog.log(e);
-            configGuiHandler.logHandler(e);
+            configGuiHandler.checkstyleLog(e);
             //this.setErrorMessage(e.getLocalizedMessage());
             configGuiHandler.setErrorMessageHandler(this, e);
         }
@@ -420,8 +420,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         }
         catch (Exception ex)
         {
-            //CheckstyleLog.errorDialog(getShell(), ex, true);
-            configGuiHandler.errorDialogHandler(ex, getShell());
+            configGuiHandler.errorDialogCheckstyleLog(ex, getShell(), true);
         }
     }
 
