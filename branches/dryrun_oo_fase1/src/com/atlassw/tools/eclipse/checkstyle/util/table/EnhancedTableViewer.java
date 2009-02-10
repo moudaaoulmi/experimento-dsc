@@ -265,7 +265,7 @@ public class EnhancedTableViewer extends TableViewer
         catch (NumberFormatException e)
         {
             //mSortedColumnIndex = 0;
-            tableHandler.returnInt(mSortedColumnIndex);
+            tableHandler.returnDefault(mSortedColumnIndex);
         }
         try
         {
@@ -296,7 +296,7 @@ public class EnhancedTableViewer extends TableViewer
             {
                 // probably a new column
                // allColumnsHaveStoredData = false;
-                tableHandler.restoreState3Handler(allColumnsHaveStoredData);
+                tableHandler.returnDefault(allColumnsHaveStoredData);
             }
         }
 
