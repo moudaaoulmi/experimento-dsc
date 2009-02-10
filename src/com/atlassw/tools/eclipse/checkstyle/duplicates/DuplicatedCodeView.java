@@ -52,6 +52,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -71,6 +72,7 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
@@ -342,16 +344,10 @@ public class DuplicatedCodeView extends ViewPart
                             }
                             catch (CoreException e)
                             {
-                                
-//                                CheckstyleLog
-//                                        .log(e, NLS.bind(ErrorMessages.errorWhileBuildingProject,
-//                                                project.getName()));
-//                                return new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-//                                        IStatus.OK, NLS.bind(
-//                                                ErrorMessages.errorWhileBuildingProject, project
-//                                                        .getName()), e);
-                                
-                                duplicatesHandler.contributeToActionBarsHandler(e, project);
+                                duplicatesHandler.checkstyleLog_E_MSG(e, NLS.bind(ErrorMessages.errorWhileBuildingProject,
+                                                project.getName()));
+                                duplicatesHandler.newStatus(e, NLS.bind(ErrorMessages.errorWhileBuildingProject, 
+                                                project.getName()));
                             }
                         }
                         Display.getDefault().asyncExec(new Runnable()
@@ -425,17 +421,14 @@ public class DuplicatedCodeView extends ViewPart
                 }
                 catch (PartInitException e)
                 {
-                    
-//                    CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
-//                            ErrorMessages.errorWhileOpeningEditor, e, true);
-                   duplicatesHandler.runHandler(mViewer, e); 
+                   duplicatesHandler.errorDialogCheckstyleLog_Msg(e, mViewer.getControl().getShell(),
+                         ErrorMessages.errorWhileOpeningEditor, true); 
                     
                 }
                 catch (CoreException e)
                 {
-//                    CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
-//                            ErrorMessages.errorWhileOpeningEditor, e, true);
-                    duplicatesHandler.runHandler(mViewer, e); 
+                    duplicatesHandler.errorDialogCheckstyleLog_Msg(e,mViewer.getControl().getShell(),
+                          ErrorMessages.errorWhileOpeningEditor, true); 
                 }
             }
         };
@@ -486,15 +479,13 @@ public class DuplicatedCodeView extends ViewPart
                 }
                 catch (PartInitException e)
                 {
-//                    CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
-//                            ErrorMessages.errorWhileOpeningEditor, e, true);
-                    duplicatesHandler.runHandler(mViewer, e); 
+                    duplicatesHandler.errorDialogCheckstyleLog_Msg(e, mViewer.getControl().getShell(),
+                          ErrorMessages.errorWhileOpeningEditor, true); 
                 }
                 catch (CoreException e)
                 {
-//                    CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
-//                            ErrorMessages.errorWhileOpeningEditor, e, true);
-                    duplicatesHandler.runHandler(mViewer, e); 
+                    duplicatesHandler.errorDialogCheckstyleLog_Msg(e, mViewer.getControl().getShell(),
+                          ErrorMessages.errorWhileOpeningEditor, true ); 
                 }
             }
         };
@@ -531,10 +522,8 @@ public class DuplicatedCodeView extends ViewPart
         }
         catch (BadLocationException e)
         {
-
-//            CheckstyleLog.errorDialog(mViewer.getControl().getShell(),
-//                    ErrorMessages.errorWhileDisplayingDuplicates, e, true);
-            duplicatesHandler.runHandler(mViewer, e); 
+            duplicatesHandler.errorDialogCheckstyleLog_Msg(e, mViewer.getControl().getShell(),
+                    ErrorMessages.errorWhileOpeningEditor, true); 
         }
     }
 

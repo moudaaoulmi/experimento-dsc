@@ -79,15 +79,13 @@ public class DuplicatedCode
             String localProperty = resourceBundle.getString(DUPLICATE_LINE_MESSAGE);
             sMask1 = localProperty.substring(0, localProperty.indexOf("{0}")); //$NON-NLS-1$
             sMask2 = localProperty.substring(localProperty.indexOf("{0}") + 3, localProperty //$NON-NLS-1$
-                    .indexOf("{1}")); //$NON-NLS-1$
+                    .indexOf("{1}"));
             sMask3 = localProperty.substring(localProperty.indexOf("{1}") + 3, localProperty //$NON-NLS-1$
-                    .indexOf("{2}")); //$NON-NLS-1$
+                    .indexOf("{2}"));
         }
         catch (MissingResourceException x)
         {
-          //CheckstyleLog.log(x, "Unable to get the resource bundle " //$NON-NLS-1$
-            //    + DUPLICATES_MESSAGE_BUNDLE + "."); //$NON-NLS-1$
-            duplicatesHandler.logHandler(x, "Unable to get the resource bundle " //$NON-NLS-1$
+            duplicatesHandler.checkstyleLog_E_MSG(x, "Unable to get the resource bundle " //$NON-NLS-1$
                     + DUPLICATES_MESSAGE_BUNDLE + ".");
         }
     }
