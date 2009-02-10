@@ -138,7 +138,7 @@ public class DuplicatedCode
         catch (NumberFormatException e)
         {
             //result = 0;
-            duplicatesHandler.getNumberOfDuplicatedLinesHandler(result);
+            duplicatesHandler.returnInt(result);
         }
         return result;
     }
@@ -176,7 +176,7 @@ public class DuplicatedCode
         catch (NumberFormatException e)
         {
           //result = 0;
-            duplicatesHandler.getNumberOfDuplicatedLinesHandler(result);
+            duplicatesHandler.returnInt(result);
         }
         return result;
     }
