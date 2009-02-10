@@ -54,6 +54,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationLabelProvider;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -92,7 +93,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
     private CheckstylePropertyPage mPropertyPage;
     
     /**The variable was introduced here because modularization of Exception Handling*/
-    private PropertiesHandler propertiesHandler= new PropertiesHandler();
+    private GeneralException generalException= new GeneralException();
 
 
     // =================================================
@@ -290,7 +291,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         }
         catch (CheckstylePluginException e)
         {
-            propertiesHandler.errorDialogCheckstyleLog_Msg(e, mComposite.getShell(),  ErrorMessages.errorFailedAddFileset, true);
+            generalException.errorDialogCheckstyleLog_Msg(e, mComposite.getShell(),  ErrorMessages.errorFailedAddFileset, true);
         }
     }
 
@@ -324,7 +325,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor
         }
         catch (CheckstylePluginException e)
         {
-            propertiesHandler.errorDialogCheckstyleLog_Msg(e, mComposite.getShell(),
+            generalException.errorDialogCheckstyleLog_Msg(e, mComposite.getShell(),
                     ErrorMessages.errorFailedEditFileset, true);
         }
     }
