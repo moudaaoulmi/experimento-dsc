@@ -111,7 +111,7 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob
         }
         catch (CheckstylePluginException e)
         {
-            builderHandler.builderHandlerRethrowCoreException(e);
+            builderHandler.builderHandlerRethrowCoreException(e, e.getLocalizedMessage());
         }
         return Status.OK_STATUS;
     }    

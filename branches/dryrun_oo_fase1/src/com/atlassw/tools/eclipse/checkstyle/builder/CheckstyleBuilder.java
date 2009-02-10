@@ -194,7 +194,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 }
                 catch (CheckstylePluginException e)
                 {
-                    builderHandler.checkstyleBuilder_buildHandler(e);
+                    builderHandler.builderHandlerRethrowCoreException(e, e
+                            .getMessage() != null ? e.getMessage()
+                                    : ErrorMessages.CheckstyleBuilder_msgErrorUnknown);
                 }
 
                 Collection files = null;
@@ -353,7 +355,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         }
         catch (CheckstylePluginException e)
         {
-            builderHandler.builderHandlerRethrowCoreException(e);
+            builderHandler.builderHandlerRethrowCoreException(e, e.getLocalizedMessage());
         }
     }    
 
