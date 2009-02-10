@@ -49,6 +49,8 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public class CheckFileOnOpenPartListener implements IPartListener2
 {
 
+    FiltersHandle filtersHandle = new FiltersHandle();
+    
     /**
      * {@inheritDoc}
      */
@@ -82,7 +84,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2
             }
             catch (CoreException e)
             {
-                CheckstyleLog.log(e);
+                filtersHandle.checkstyleLog(e);
             }
         }
     }
@@ -214,11 +216,11 @@ public class CheckFileOnOpenPartListener implements IPartListener2
         {
             // should never happen, since editor cannot be open
             // when project isn't
-            CheckstyleLog.log(e);
+            filtersHandle.checkstyleLog(e);
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.log(e);
+            filtersHandle.checkstyleLog(e);
         }
 
         return affected;

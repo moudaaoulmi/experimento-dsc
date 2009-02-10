@@ -46,6 +46,8 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 public class ProjectConfiguration implements Cloneable, IProjectConfiguration
 {
 
+    ProjectconfigHandle projectconfigHandle = new ProjectconfigHandle();
+    
     //
     // attributes
     //
@@ -223,7 +225,7 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration
         }
         catch (CloneNotSupportedException e)
         {
-            throw new InternalError(); // should never happen
+            projectconfigHandle.cloneNotSupported();
         }
 
         return clone;

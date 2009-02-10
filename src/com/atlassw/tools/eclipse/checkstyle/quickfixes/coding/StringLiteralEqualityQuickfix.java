@@ -48,6 +48,8 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 public class StringLiteralEqualityQuickfix extends AbstractASTResolution
 {
 
+    private CodingHandle codingHandle = new CodingHandle();
+    
     /**
      * {@inheritDoc}
      */
@@ -136,15 +138,16 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution
                 }
                 catch (InvocationTargetException e)
                 {
-                    CheckstyleLog.log(e);
+                    codingHandle.checkStyleLog(e);
+                   
                 }
                 catch (IllegalAccessException e)
                 {
-                    CheckstyleLog.log(e);
+                    codingHandle.checkStyleLog(e);
                 }
                 catch (NoSuchMethodException e)
                 {
-                    CheckstyleLog.log(e);
+                    codingHandle.checkStyleLog(e);
                 }
             }
         };

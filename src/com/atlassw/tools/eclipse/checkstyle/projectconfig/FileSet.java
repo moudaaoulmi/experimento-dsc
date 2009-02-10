@@ -37,6 +37,9 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
  */
 public class FileSet implements Cloneable
 {
+    
+    ProjectconfigHandle projectconfigHandle = new ProjectconfigHandle();
+    
     // =================================================
     // Public static final variables.
     // =================================================
@@ -224,7 +227,8 @@ public class FileSet implements Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            throw new InternalError(); // should never happen
+            projectconfigHandle.cloneNotSupported();
+            return null;
         }
     }
 

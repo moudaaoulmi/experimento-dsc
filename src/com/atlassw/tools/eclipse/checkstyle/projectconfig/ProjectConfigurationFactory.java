@@ -61,6 +61,9 @@ import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
  */
 public final class ProjectConfigurationFactory
 {
+    
+    private static ProjectconfigHandle  projectconfigHandle = new ProjectconfigHandle();
+    
     // =================================================
     // Public static final variables.
     // =================================================
@@ -179,20 +182,19 @@ public final class ProjectConfigurationFactory
         }
         catch (CoreException ce)
         {
-            CheckstylePluginException.rethrow(ce);
+            projectconfigHandle.rethrows(ce);
         }
         catch (SAXException se)
         {
-            Exception ex = se.getException() != null ? se.getException() : se;
-            CheckstylePluginException.rethrow(ex);
+            projectconfigHandle.rethrows2(se);
         }
         catch (ParserConfigurationException pe)
         {
-            CheckstylePluginException.rethrow(pe);
+            projectconfigHandle.rethrows(pe);
         }
         catch (IOException ioe)
         {
-            CheckstylePluginException.rethrow(ioe);
+            projectconfigHandle.rethrows(ioe);
         }
 
         finally
@@ -425,7 +427,7 @@ public final class ProjectConfigurationFactory
             }
             catch (CheckstylePluginException e)
             {
-                throw new SAXException(e);
+               projectconfigHandle.rethrowSAXException(e);
             }
         }
 
@@ -447,7 +449,7 @@ public final class ProjectConfigurationFactory
                 }
                 catch (Exception e)
                 {
-                    throw new SAXException(e);
+                    projectconfigHandle.rethrowSAXException(e);
                 }
             }
         }

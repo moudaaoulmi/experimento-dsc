@@ -41,6 +41,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 public final class PluginFilters
 {
 
+    private static ProjectconfigHandle projectconfigHandle = new ProjectconfigHandle();
     //
     // constants
     //
@@ -133,7 +134,7 @@ public final class PluginFilters
             }
             catch (Exception e)
             {
-                CheckstyleLog.log(e);
+                projectconfigHandle.checkstyleLog(e);
             }
         }
 
