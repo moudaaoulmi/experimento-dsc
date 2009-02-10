@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
@@ -41,7 +42,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 public final class PluginFilters
 {
 
-    private static ProjectconfigHandle projectconfigHandle = new ProjectconfigHandle();
+    private static GeneralException generalException = new GeneralException();
     //
     // constants
     //
@@ -134,7 +135,7 @@ public final class PluginFilters
             }
             catch (Exception e)
             {
-                projectconfigHandle.checkstyleLog(e);
+                generalException.checkstyleLog(e);
             }
         }
 
