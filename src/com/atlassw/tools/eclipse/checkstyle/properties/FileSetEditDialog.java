@@ -430,7 +430,7 @@ public class FileSetEditDialog extends TitleAreaDialog
                 catch (CoreException e)
                 {
                     //CheckstyleLog.log(e);
-                    propertiesHandler.logHandler(e);
+                    propertiesHandler.checkstyleLog(e);
                 }
 
                 // init the test area
@@ -716,10 +716,9 @@ public class FileSetEditDialog extends TitleAreaDialog
                     }
                     catch (CheckstylePluginException ex)
                     {
-                        /*CheckstyleLog.warningDialog(mPropertyPage.getShell(), Messages.bind(
+                        propertiesHandler.warningDialogHandler(mPropertyPage.getShell(), Messages.bind(
                                 Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
-                                project, config.getLocation()), ex);*/
-                        propertiesHandler.warningDialogHandlerTwo(mPropertyPage, project, config, ex);
+                                project, config.getLocation()), ex);
                         
                     }
                 }

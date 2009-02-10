@@ -178,15 +178,11 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         catch (CoreException e)
         {
-            /*CheckstyleLog
-                    .errorDialog(getShell(), ErrorMessages.errorOpeningPropertiesPage, e, true);*/
-            propertiesHandler.errorDialogHandler(getShell(), ErrorMessages.errorOpeningPropertiesPage, e);
+            propertiesHandler.errorDialogCheckstyleLog_Msg(e, getShell(), ErrorMessages.errorOpeningPropertiesPage, true);
         }
         catch (CheckstylePluginException e)
         {
-            /*CheckstyleLog
-                    .errorDialog(getShell(), ErrorMessages.errorOpeningPropertiesPage, e, true);*/
-            propertiesHandler.errorDialogHandler(getShell(), ErrorMessages.errorOpeningPropertiesPage, e);
+            propertiesHandler.errorDialogCheckstyleLog_Msg(e, getShell(), ErrorMessages.errorOpeningPropertiesPage, true);
         }
     }
 
@@ -273,9 +269,7 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         catch (CheckstylePluginException e)
         {
-            /*CheckstyleLog
-                    .errorDialog(getShell(), ErrorMessages.errorOpeningPropertiesPage, e, true);*/
-            propertiesHandler.errorDialogHandler(getShell(), ErrorMessages.errorOpeningPropertiesPage, e);
+            propertiesHandler.errorDialogCheckstyleLog_Msg(e, getShell(), ErrorMessages.errorOpeningPropertiesPage, true);
         }
 
         return container;
@@ -467,12 +461,9 @@ public class CheckstylePropertyPage extends PropertyPage
                 }
                 catch (CheckstylePluginException e)
                 {
-
-                    /*CheckstyleLog.warningDialog(getShell(), NLS.bind(
+                    propertiesHandler.warningDialogHandler(getShell(), NLS.bind(
                             ErrorMessages.errorCannotResolveCheckLocation, checkConfig
-                                    .getLocation(), checkConfig.getName()), e);
-                    return false;*/
-                    propertiesHandler.warningDialogHandler(getShell(), checkConfig, e);
+                            .getLocation(), checkConfig.getName()), e);
                 }
             }
         }
@@ -552,8 +543,7 @@ public class CheckstylePropertyPage extends PropertyPage
         }
         catch (CheckstylePluginException e)
         {
-            //CheckstyleLog.errorDialog(getShell(), e, true);
-            propertiesHandler.errorDialogHandlerTwo(getShell(), e);
+            propertiesHandler.errorDialogCheckstyleLog(e, getShell(), true);
         }
         return true;
     }
@@ -635,9 +625,7 @@ public class CheckstylePropertyPage extends PropertyPage
                 }
                 catch (CheckstylePluginException ex)
                 {
-                    /*CheckstyleLog.errorDialog(getShell(), ErrorMessages.errorChangingFilesetEditor,
-                            ex, true);*/
-                    propertiesHandler.errorDialogHandler(getShell(), ErrorMessages.errorChangingFilesetEditor,ex);
+                    propertiesHandler.errorDialogCheckstyleLog_Msg(ex, getShell(), ErrorMessages.errorChangingFilesetEditor, true);
                 }
             }
 
@@ -745,13 +733,11 @@ public class CheckstylePropertyPage extends PropertyPage
                     }
                     catch (IllegalAccessException ex)
                     {
-                        //CheckstyleLog.errorDialog(getShell(), ex, true);
-                        propertiesHandler.errorDialogHandlerTwo(getShell(), ex);
+                        propertiesHandler.errorDialogCheckstyleLog(ex, getShell(), true);
                     }
                     catch (InstantiationException ex)
                     {
-                        //CheckstyleLog.errorDialog(getShell(), ex, true);
-                        propertiesHandler.errorDialogHandlerTwo(getShell(), ex);
+                        propertiesHandler.errorDialogCheckstyleLog(ex, getShell(), true);
                     }
                 }
             }

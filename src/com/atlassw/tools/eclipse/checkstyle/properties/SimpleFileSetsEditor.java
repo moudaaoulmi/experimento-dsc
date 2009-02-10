@@ -247,10 +247,9 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
                     }
                     catch (CheckstylePluginException ex)
                     {
-                       /* CheckstyleLog.warningDialog(mPropertyPage.getShell(), Messages.bind(
+                        propertiesHandler.warningDialogHandler(mPropertyPage.getShell(), Messages.bind(
                                 Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
-                                project, config.getLocation()), ex);*/
-                        propertiesHandler.warningDialogHandlerTwo(mPropertyPage, project, config, ex);
+                                project, config.getLocation()), ex);
                     }
                 }
             }
