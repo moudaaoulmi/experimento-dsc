@@ -265,7 +265,7 @@ public class EnhancedTableViewer extends TableViewer
         catch (NumberFormatException e)
         {
             //mSortedColumnIndex = 0;
-            tableHandler.restoreStateHandler (mSortedColumnIndex);
+            tableHandler.returnInt(mSortedColumnIndex);
         }
         try
         {
