@@ -34,6 +34,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import com.atlassw.tools.eclipse.checkstyle.config.gui.ConfigGuiHandler;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.CheckFileOnOpenPartListener;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.EclipseLogHandler;
@@ -145,7 +146,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
     
     
     /**The variable was introduced here because modularization of Exception Handling*/
-    private CheckStyleHandler checkStyleHandler = new CheckStyleHandler();
+    private GeneralException checkStyleHandler = new GeneralException();
 
     // =================================================
     // Constructors & finalizer.
@@ -183,7 +184,7 @@ public class CheckstylePlugin extends AbstractUIPlugin
         catch (Exception ioe)
         {
             //CheckstyleLog.log(ioe);
-            checkStyleHandler.startHandler(ioe);
+            checkStyleHandler.checkstyleLog(ioe);
         }
 
         // add listeners for the Check-On-Open support
