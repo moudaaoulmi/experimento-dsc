@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
@@ -40,7 +41,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 public final class SaveFilters
 {
 
-    private static SavefilterHandler savefilterHandler = new SavefilterHandler();
+    private static GeneralException generalException = new GeneralException();
     //
     // constants
     //
@@ -85,7 +86,7 @@ public final class SaveFilters
             }
             catch (Exception e)
             {
-                savefilterHandler.savefilterStaticHandler(e);
+                generalException.checkstyleLog(e);
             }
         }
 
