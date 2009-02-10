@@ -47,6 +47,8 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 public abstract class ConfigurationType implements IConfigurationType
 {
 
+    private ConfigtyoesHandle configtyoesHandle = new ConfigtyoesHandle();
+    
     //
     // attributes
     //
@@ -167,7 +169,7 @@ public abstract class ConfigurationType implements IConfigurationType
         }
         catch (IOException e)
         {
-            CheckstylePluginException.rethrow(e);
+            configtyoesHandle.retrows(e);
         }
         return url;
     }
@@ -209,7 +211,7 @@ public abstract class ConfigurationType implements IConfigurationType
         }
         catch (IOException e)
         {
-            CheckstylePluginException.rethrow(e);
+            configtyoesHandle.retrows(e);
         }
 
         return data;
@@ -255,9 +257,7 @@ public abstract class ConfigurationType implements IConfigurationType
         }
         catch (IOException e)
         {
-            // we won't load the bundle then
-            // disabled logging bug #1647602
-            // CheckstyleLog.log(ioe);
+            configtyoesHandle.commentedCode();
         }
         return null;
     }

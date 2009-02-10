@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -59,6 +58,8 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public class InternalConfigurationEditor implements ICheckConfigurationEditor
 {
 
+    private ConfigtyoesHandle configtyoesHandle = new ConfigtyoesHandle();
+    
     //
     // attributes
     //
@@ -177,7 +178,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
                 }
                 catch (CheckstylePluginException ex)
                 {
-                    mDialog.setErrorMessage(ex.getLocalizedMessage());
+                    configtyoesHandle.setErroMessageHandle(mDialog, ex);
                 }
             }
 
@@ -220,14 +221,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
             }
             catch (CheckstylePluginException e)
             {
-                if (StringUtils.trimToNull(location) != null && ensureFileExists(location))
-                {
-                    mWorkingCopy.setLocation(location);
-                }
-                else
-                {
-                    throw e;
-                }
+                configtyoesHandle.getEditedWorkingCopyHandle(e, mWorkingCopy, location, ensureFileExists(location));
             }
         }
         mWorkingCopy.setDescription(mDescription.getText());
@@ -265,7 +259,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
             }
             catch (IOException ioe)
             {
-                CheckstylePluginException.rethrow(ioe);
+                configtyoesHandle.retrows(ioe);
             }
             finally
             {
