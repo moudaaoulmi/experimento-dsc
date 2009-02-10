@@ -249,7 +249,7 @@ public final class MetadataFactory
         }
         catch (CheckstylePluginException e)
         {
-            metaHandler.refreshHandler(e);
+            metaHandler.checkstyleLog(e);
         }
     }
 
@@ -288,23 +288,25 @@ public final class MetadataFactory
                 }
                 catch (SAXParseException e)
                 {
-                    metaHandler.metadataFactoryInternalDoInitializationHandler1(e, metadataFile);
+                    metaHandler.checkstyleLog_E_MSG(e, NLS.bind("Could not parse metadata file {0} at {1}:{2}", //$NON-NLS-1$
+                            new Object[] { metadataFile, new Integer(e.getLineNumber()),
+                            new Integer(e.getColumnNumber()) }));
                 }
                 catch (SAXException e)
                 {
-                    metaHandler.metadataFactoryInternalDoInitializationHandler2(e, metadataFile);
+                    metaHandler.checkstyleLog_E_MSG(e, "Could not read metadata " + metadataFile);
                 }
                 catch (ParserConfigurationException e)
                 {
-                    metaHandler.metadataFactoryInternalDoInitializationHandler2(e, metadataFile);
+                    metaHandler.checkstyleLog_E_MSG(e, "Could not read metadata " + metadataFile);
                 }
                 catch (IOException e)
                 {
-                    metaHandler.metadataFactoryInternalDoInitializationHandler2(e, metadataFile);
+                    metaHandler.checkstyleLog_E_MSG(e, "Could not read metadata " + metadataFile);
                 }
                 finally
                 {
-                    metaHandler.metadataFactoryInternalDoInitializationHandler3(metadataStream);
+                    metaHandler.closeQuietlyInputStream(metadataStream);
                 }
             }
         }
@@ -443,7 +445,7 @@ public final class MetadataFactory
             catch (IOException e)
             {
                 //TODO - Necessita de um return, pq nao fica explicito que é um throw
-                metaHandler.metadataFactoryResolveEntityHandler(e);
+                metaHandler.throwSAXException_Msg("" + e, e);
                 return null;
             }
         }
@@ -575,19 +577,19 @@ public final class MetadataFactory
             }
             catch (CheckstylePluginException e)
             {
-                metaHandler.metadataFactorystartElement(e);
+                metaHandler.throwSAXException_Msg(e.getLocalizedMessage(), e);
             }
             catch (ClassNotFoundException e)
             {
-                metaHandler.metadataFactorystartElement(e);
+                metaHandler.throwSAXException_Msg(e.getLocalizedMessage(), e);
             }
             catch (InstantiationException e)
             {
-                metaHandler.metadataFactorystartElement(e);
+                metaHandler.throwSAXException_Msg(e.getLocalizedMessage(), e);
             }
             catch (IllegalAccessException e)
             {
-                metaHandler.metadataFactorystartElement(e);
+                metaHandler.throwSAXException_Msg(e.getLocalizedMessage(), e);
             }
 
         }
