@@ -113,13 +113,11 @@ public class BuildProjectJob extends Job
         }
         catch (CoreException e)
         {
-           // status = builderHandler.buildProjectJob_runHandler(e);
-            configHandler.runHandler(e, builderHandler, status);
+           status = builderHandler.buildProjectJob_runHandler(e);
         }
         finally
         {
-           // builderHandler.buildProjectJob_runHandler2(monitor);
-            configHandler.runFINALLYHandler(builderHandler, monitor);
+           builderHandler.buildProjectJob_runHandler2(monitor);
         }
 
         return status;

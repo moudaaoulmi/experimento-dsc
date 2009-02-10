@@ -150,8 +150,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             }
             catch (CoreException e)
             {
-                //builderHandler.builderHandlerRethrowException(e);
-                configHandler.buildProjectsHandler(e, builderHandler);
+                builderHandler.builderHandlerRethrowException(e);
             }
         }
 
@@ -195,8 +194,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                 }
                 catch (CheckstylePluginException e)
                 {
-                    //builderHandler.checkstyleBuilder_buildHandler(e);
-                    configHandler.buildHandler(e, builderHandler);
+                    builderHandler.checkstyleBuilder_buildHandler(e);
                 }
 
                 Collection files = null;
@@ -355,8 +353,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         }
         catch (CheckstylePluginException e)
         {
-           // builderHandler.builderHandlerRethrowCoreException(e);
-            configHandler.handleBuildSelectionHandler(e, builderHandler);
+            builderHandler.builderHandlerRethrowCoreException(e);
         }
     }    
 
