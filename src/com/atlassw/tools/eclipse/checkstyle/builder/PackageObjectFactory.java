@@ -127,15 +127,15 @@ public class PackageObjectFactory implements ModuleFactory
         }
         catch (ClassNotFoundException e)
         {
-            builderHandler.packageObjectFactory_createObjectHandler(aClassName, e);
+            builderHandler.throwCheckstyleException("Unable to find class for ", aClassName, e);
         }
         catch (InstantiationException e)
         {
-            builderHandler.packageObjectFactory_createObjectHandler2(aClassName, e);
+            builderHandler.throwCheckstyleException("Unable to instantiate ", aClassName, e);
         }
         catch (IllegalAccessException e)
         {
-            builderHandler.packageObjectFactory_createObjectHandler2(aClassName, e);
+            builderHandler.throwCheckstyleException("Unable to instantiate ", aClassName, e);
         }
         // Esta linha não existia no código original. Mas sem ela, o código não compila.
         return null;
@@ -173,7 +173,7 @@ public class PackageObjectFactory implements ModuleFactory
         }
         catch (CheckstyleException ex2)
         {
-            builderHandler.packageObjectFactory_createModuleHandlerHandler(aName, ex2);    
+            builderHandler.throwCheckstyleException("Unable to instantiate ", aName, ex2 );
         }
         // Esta linha não existia no código original. Mas sem ela, o código não compila.
         return null;
