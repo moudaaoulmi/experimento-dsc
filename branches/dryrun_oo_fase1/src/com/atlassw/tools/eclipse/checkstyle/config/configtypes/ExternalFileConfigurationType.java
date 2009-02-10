@@ -39,7 +39,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 public class ExternalFileConfigurationType extends ConfigurationType
 {
 
-    private static ConfigtyoesHandle configtyoesHandle = new ConfigtyoesHandle();
+    private static ConfigtypesHandler configtyoesHandle = new ConfigtypesHandler();
     
     /** Key to access the information if the configuration is protected. */
     public static final String KEY_PROTECT_CONFIG = "protect-config-file"; //$NON-NLS-1$
@@ -82,7 +82,7 @@ public class ExternalFileConfigurationType extends ConfigurationType
         }
         catch (CheckstyleException e)
         {
-            configtyoesHandle.retrows(e);
+            configtyoesHandle.rethrowCheckstylePluginException(e);
         }
         return newLocation;
     }

@@ -51,7 +51,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public class RemoteConfigurationEditor implements ICheckConfigurationEditor
 {
     
-    ConfigtyoesHandle configtyoesHandle = new ConfigtyoesHandle();
+    ConfigtypesHandler configtyoesHandle = new ConfigtypesHandler();
 
     //
     // attributes
@@ -210,7 +210,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
             }
             catch (CheckstylePluginException e)
             {
-                configtyoesHandle.erroDialog(shell, e, true);
+                configtyoesHandle.errorDialogCheckstyleLog(e, shell, true);
             }
         }
 
