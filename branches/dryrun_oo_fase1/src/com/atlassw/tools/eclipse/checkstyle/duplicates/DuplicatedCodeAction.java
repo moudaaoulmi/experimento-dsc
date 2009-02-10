@@ -153,7 +153,8 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
             {
                 //CheckstyleLog.errorDialog(mWorkbenchPart.getSite().getShell(),
                         //"Unable to launch the duplicated code analyser.", e, true);
-                duplicatesHandler.createCheckerHandler(e, mWorkbenchPart);
+                duplicatesHandler.errorDialogCheckstyleLog_Msg(e, mWorkbenchPart.getSite().getShell(), 
+                      "Unable to launch the duplicated code analyser.", true);
                 
             }
         }
@@ -180,7 +181,8 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
             //CheckstyleLog.errorDialog(mWorkbenchPart.getSite().getShell(),
                  //   "Error opening the duplicated code view '" + DuplicatedCodeView.VIEW_ID + "'.",
                     //  e, true);
-            duplicatesHandler.findDuplicatedCodeViewHandler(e, mWorkbenchPart);
+            duplicatesHandler.errorDialogCheckstyleLog_Msg(e, mWorkbenchPart.getSite().getShell(),
+                    "Error opening the duplicated code view '" + DuplicatedCodeView.VIEW_ID + "'.", true);
         }
         return duplicatedCodeView;
     }
@@ -237,10 +239,8 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
         catch (CoreException e)
         {
             // we can't do anything : just log the pbm...
-            //CheckstyleLog.log(e, "Error while scanning files for the duplication code analysis.");
-           duplicatesHandler.addJavaFilesToSetHandler(e);
+           duplicatesHandler.checkstyleLog_E_MSG(e, "Error while scanning files for the duplication code analysis.");
         }
-
     }
 
     /**
