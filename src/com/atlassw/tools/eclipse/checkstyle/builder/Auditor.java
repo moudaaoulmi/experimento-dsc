@@ -202,15 +202,15 @@ public class Auditor
         }
         catch (IOException e)
         {
-            builderHandler.builderHandlerRethrowException(e);
+            builderHandler.rethrowCheckstylePluginException(e);
         }
         catch (CoreException e)
         {
-            builderHandler.builderHandlerRethrowException(e);
+            builderHandler.rethrowCheckstylePluginException(e);
         }
         catch (CheckstyleException e)
         {
-            builderHandler.builderHandlerRethrowException(e);
+            builderHandler.rethrowCheckstylePluginException(e);
         }
         finally
         {
