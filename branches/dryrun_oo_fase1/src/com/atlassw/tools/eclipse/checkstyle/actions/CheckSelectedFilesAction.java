@@ -36,6 +36,7 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.atlassw.tools.eclipse.checkstyle.builder.RunCheckstyleOnFilesJob;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 
 /**
  * Action to diable Checkstyle on one ore more projects.
@@ -51,7 +52,7 @@ public class CheckSelectedFilesAction implements IObjectActionDelegate
     private IStructuredSelection mSelection;
 
     /**The variable was introduced here because modularization of Exception Handling*/
-    private ActionHandler actionHandler = new ActionHandler();
+    private GeneralException generalException = new GeneralException();
     
     /**
      * {@inheritDoc}
@@ -89,8 +90,7 @@ public class CheckSelectedFilesAction implements IObjectActionDelegate
         }
         catch (CoreException e)
         {
-            //CheckstyleLog.errorDialog(mPart.getSite().getShell(), e, true);
-            actionHandler.runHandler(e, mPart);
+            generalException.errorDialogCheckstyleLog(e, mPart.getSite().getShell(), true);
         }
     }
 
