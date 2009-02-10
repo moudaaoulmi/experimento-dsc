@@ -89,7 +89,7 @@ public final class CustomLibrariesClassLoader
             }
             catch (IOException e)
             {
-                utilHandler.getHandler(e);
+                utilHandler.rethrowCheckstylePluginException(e);
                 //CheckstylePluginException.rethrow(e);
             }
         }
