@@ -202,8 +202,7 @@ public final class SWTUtil
                 }
                 catch (NumberFormatException ex)
                 {
-                    utilHandler.verifyTextHandler(doit);
-                    //doit = false;
+                    utilHandler.returnDefault(doit);
                 }
             }
 
