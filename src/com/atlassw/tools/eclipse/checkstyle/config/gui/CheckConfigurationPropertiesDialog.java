@@ -54,6 +54,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ICheckConfigurationEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
@@ -93,7 +94,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
     private ICheckConfiguration mTemplate;
 
     /**The variable was introduced here because modularization of Exception Handling*/
-    private ConfigGuiHandler configGuiHandler = new ConfigGuiHandler();
+    private GeneralException generalException = new GeneralException();
     //
     // constructor
     //
@@ -378,10 +379,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         }
         catch (CheckstylePluginException e)
         {
-            //CheckstyleLog.log(e);
-            configGuiHandler.checkstyleLog(e);
-            //this.setErrorMessage(e.getLocalizedMessage());
-            configGuiHandler.setErrorMessageHandler(this, e);
+            generalException.checkstyleLog(e);
+            generalException.setErrorMessage(this, e.getLocalizedMessage());
         }
     }
 
@@ -420,7 +419,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         }
         catch (Exception ex)
         {
-            configGuiHandler.errorDialogCheckstyleLog(ex, getShell(), true);
+            generalException.errorDialogCheckstyleLog(ex, getShell(), true);
         }
     }
 

@@ -63,6 +63,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy
 import com.atlassw.tools.eclipse.checkstyle.config.GlobalCheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -82,7 +83,7 @@ public class CheckConfigurationWorkingSetEditor
     //
     // attributes
     //
-
+    private GeneralException generalException = new GeneralException();
     private EnhancedTableViewer mViewer;
 
     private Button mAddButton;
@@ -108,9 +109,6 @@ public class CheckConfigurationWorkingSetEditor
     private ICheckConfigurationWorkingSet mWorkingSet;
 
     private boolean mIsShowUsage;
-    
-    /**The variable was introduced here because modularization of Exception Handling*/
-    private ConfigGuiHandler configGuiHandler = new ConfigGuiHandler();
 
     //
     // constructors
@@ -447,8 +445,7 @@ public class CheckConfigurationWorkingSetEditor
         }
 
         /**
-         * @see ISelectionChangedListener#selectionChanged(
-         *      org.eclipse.jface.viewers.SelectionChangedEvent)
+         * @see ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
          */
         public void selectionChanged(SelectionChangedEvent event)
         {
@@ -471,14 +468,13 @@ public class CheckConfigurationWorkingSetEditor
                         }
                         catch (CheckstylePluginException e)
                         {
-                            //CheckstyleLog.log(e);
-                            configGuiHandler.checkstyleLog(e);
+                            generalException.checkstyleLog(e);
                         }
                     }
                 }
                 else
                 {
-                    mConfigurationDescription.setText(""); //$NON-NLS-1$
+                    mConfigurationDescription.setText(""); 
                     if (mIsShowUsage)
                     {
                         mUsageView.setInput(new ArrayList());
@@ -508,7 +504,7 @@ public class CheckConfigurationWorkingSetEditor
             }
             catch (CheckstylePluginException ex)
             {
-                configGuiHandler.errorDialogCheckstyleLog(ex, getShell(), true);
+                generalException.errorDialogCheckstyleLog(ex, getShell(), true);
             }
 
         }
@@ -554,10 +550,14 @@ public class CheckConfigurationWorkingSetEditor
             }
             catch (CheckstylePluginException e)
             {
-                /*CheckstyleLog.warningDialog(getShell(), NLS.bind(
+                /*
+                 * CheckstyleLog.warningDialog(getShell(), NLS.bind(
+                 * ErrorMessages.errorCannotResolveCheckLocation,
+                 * config.getLocation(), config .getName()), e);
+                 */
+                generalException.warningDialogHandler(getShell(), NLS.bind(
                         ErrorMessages.errorCannotResolveCheckLocation, config.getLocation(), config
-                                .getName()), e);*/
-                configGuiHandler.warningDialogHandler(e, config, getShell());
+                                .getName()), e);
             }
         }
     }
@@ -602,7 +602,7 @@ public class CheckConfigurationWorkingSetEditor
         }
         catch (CheckstylePluginException e)
         {
-            configGuiHandler.errorDialogCheckstyleLog(e, getShell(), true);
+            generalException.errorDialogCheckstyleLog(e, getShell(), true);
         }
     }
 
@@ -700,9 +700,12 @@ public class CheckConfigurationWorkingSetEditor
         }
         catch (CheckstylePluginException e)
         {
-            /*CheckstyleLog
-                    .errorDialog(getShell(), ErrorMessages.msgErrorFailedExportConfig, e, true);*/
-            configGuiHandler.errorDialogCheckstyleLog_Msg(e, getShell(), ErrorMessages.msgErrorFailedExportConfig, true);
+            /*
+             * CheckstyleLog .errorDialog(getShell(),
+             * ErrorMessages.msgErrorFailedExportConfig, e, true);
+             */
+            generalException.errorDialogCheckstyleLog_Msg(e, getShell(),
+                    ErrorMessages.msgErrorFailedExportConfig, true);
         }
     }
 
