@@ -34,7 +34,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public abstract class AbstractFilter implements IFilter
 {
-    FiltersHandle filtersHandle = new FiltersHandle();
+    FiltersHandler filtersHandle = new FiltersHandler();
     
     //
     // attributes
@@ -187,7 +187,7 @@ public abstract class AbstractFilter implements IFilter
         }
         catch (CloneNotSupportedException cnse)
         {
-            filtersHandle.cloneNotSupported();
+            filtersHandle.throwInternalError();
         }
         return o;
     }

@@ -59,7 +59,7 @@ public class PackageFilterEditor implements IFilterEditor
     // attributes
     //
 
-    FiltersHandle filtersHandle = new FiltersHandle();
+    FiltersHandler filtersHandle = new FiltersHandler();
     
     /** the dialog for this editor. */
     private CheckedTreeSelectionDialog mDialog;

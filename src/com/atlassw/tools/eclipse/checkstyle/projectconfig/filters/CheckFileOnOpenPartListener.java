@@ -49,7 +49,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public class CheckFileOnOpenPartListener implements IPartListener2
 {
 
-    FiltersHandle filtersHandle = new FiltersHandle();
+    FiltersHandler filtersHandle = new FiltersHandler();
     
     /**
      * {@inheritDoc}
