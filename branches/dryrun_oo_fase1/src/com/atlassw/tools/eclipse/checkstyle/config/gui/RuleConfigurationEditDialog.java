@@ -244,7 +244,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 catch (BackingStoreException e1)
                 {
                     //CheckstyleLog.log(e1);
-                    configGuiHandler.logHandler(e1);
+                    configGuiHandler.checkstyleLog(e1);
                 }
             }
 
@@ -281,7 +281,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 catch (BackingStoreException e1)
                 {
                     //CheckstyleLog.log(e1);
-                    configGuiHandler.logHandler(e1);
+                    configGuiHandler.checkstyleLog(e1);
                 }
             }
 
@@ -411,8 +411,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         }
         catch (IllegalArgumentException e)
         {
-            //CheckstyleLog.log(e);
-            configGuiHandler.logRunTimeHandler(e);
+            configGuiHandler.checkstyleLog(e);
         }
 
         // Get the comment.

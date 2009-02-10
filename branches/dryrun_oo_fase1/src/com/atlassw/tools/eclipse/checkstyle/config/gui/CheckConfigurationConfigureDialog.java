@@ -259,8 +259,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         }
         catch (CheckstylePluginException e)
         {
-            //CheckstyleLog.errorDialog(getShell(), e, true);
-            configGuiHandler.errorDialogHandler(e, getShell());
+
+            configGuiHandler.errorDialogCheckstyleLog( e, getShell(), true);
         }
 
         super.okPressed();
@@ -443,7 +443,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 catch (BackingStoreException e1)
                 {
                     //CheckstyleLog.log(e1);
-                    configGuiHandler.logHandler(e1);
+                    configGuiHandler.checkstyleLog(e1);
                 }
             }
 
@@ -476,9 +476,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         catch (CheckstylePluginException e)
         {
             mModules = new ArrayList();
-            //CheckstyleLog.errorDialog(getShell(), e, true);
-            configGuiHandler.errorDialogHandler(e, getShell());
-            
+            configGuiHandler.errorDialogCheckstyleLog(e, getShell(), true);
         }
         mTableViewer.setInput(mModules);
 
@@ -729,8 +727,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 }
                 catch (CheckstylePluginException e)
                 {
-                    //CheckstyleLog.errorDialog(getShell(), e, true);
-                    configGuiHandler.errorDialogHandler(e, getShell());
+                    configGuiHandler.errorDialogCheckstyleLog(e, getShell(), true);
                 }
             }
         }
@@ -805,8 +802,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                         }
                         catch (CheckstylePluginException e)
                         {
-                            //CheckstyleLog.errorDialog(getShell(), e, true);
-                            configGuiHandler.errorDialogHandler(e, getShell());
+                            configGuiHandler.errorDialogCheckstyleLog(e, getShell(), true);
                         }
                     }
                 }
