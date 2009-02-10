@@ -189,8 +189,7 @@ public final class CheckConfigurationFactory
         }
         catch (CheckstylePluginException e)
         {
-           // CheckstyleLog.log(e);
-            configHandler.refreshHandler(e);
+            configHandler.checkstyleLog(e);
             
         }
     }
@@ -249,14 +248,11 @@ public final class CheckConfigurationFactory
         }
         catch (Exception e)
         {
-            //CheckstylePluginException.rethrow(e);
-            configHandler.exportConfigurationHandler(e);
+            configHandler.rethrowCheckstylePluginException(e);
         }
         finally
         {
-//            IOUtils.closeQuietly(in);
-//            IOUtils.closeQuietly(out);
-            configHandler.exportConfigurationFINALLYHandler(in, out);
+            configHandler.exportConfigurationHandler(in, out);
         }
     }
 
@@ -316,14 +312,11 @@ public final class CheckConfigurationFactory
         }
         catch (Exception e)
         {
-           //CheckstylePluginException.rethrow(e, ErrorMessages.errorLoadingConfigFile);
-            configHandler.loadFromPersistence(e);
+            configHandler.rethrowCheckstylePluginException_E_MSG(e, ErrorMessages.errorLoadingConfigFile);
         }
-
         finally
         {
-            //IOUtils.closeQuietly(inStream);
-            configHandler.loadFromPersistenceFINALLY(inStream);
+            configHandler.closeQuietlyInputStream(inStream);
         }
     }
 
@@ -381,13 +374,11 @@ public final class CheckConfigurationFactory
         catch (Exception e)
         {
            // CheckstylePluginException.rethrow(e, ErrorMessages.errorMigratingConfig);
-            configHandler.migrateHandler(e);
+            configHandler.rethrowCheckstylePluginException_E_MSG(e, ErrorMessages.errorMigratingConfig);
         }
 
         finally
         {
-//            IOUtils.closeQuietly(inStream);
-//            IOUtils.closeQuietly(defaultConfigStream);
             configHandler.migrateFINALLYHandler(inStream, defaultConfigStream);
         }
     }
