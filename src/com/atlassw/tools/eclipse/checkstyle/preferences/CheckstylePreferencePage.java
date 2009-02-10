@@ -31,6 +31,7 @@ import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -51,6 +52,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.osgi.service.prefs.BackingStoreException;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckerFactory;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
@@ -59,6 +61,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationWorkingSetEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 import com.atlassw.tools.eclipse.checkstyle.util.CustomLibrariesClassLoader;
@@ -112,7 +115,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     private ICheckConfigurationWorkingSet mWorkingSet;
     
-    PreferencesHandler preferencesHandler = new PreferencesHandler();
+    private GeneralException generalException = new GeneralException();
 
     // =================================================
     // Constructors & finalizer.
@@ -488,23 +491,20 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                 }
                 catch (CheckstylePluginException e)
                 {
-                    //CheckstyleLog.errorDialog(getShell(), NLS.bind(
-                           // ErrorMessages.errorFailedRebuild, e.getMessage()), e, true);
-                    preferencesHandler.performOkHandler(e, getShell());
+                    generalException.errorDialogCheckstyleLog_Msg(e, getShell(), NLS.bind(
+                            ErrorMessages.errorFailedRebuild, e.getMessage()), true);
                 }
             }
         }
         catch (CheckstylePluginException e)
         {
-            //CheckstyleLog.errorDialog(getShell(), NLS.bind(
-                   // ErrorMessages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
-            preferencesHandler.performOk2Handler(e, getShell());
+            generalException.errorDialogCheckstyleLog_Msg(e, getShell(), NLS.bind(
+                     ErrorMessages.errorFailedSavePreferences, e.getLocalizedMessage()), true);
         }
         catch (BackingStoreException e)
         {
-            //CheckstyleLog.errorDialog(getShell(), NLS.bind(
-              //      ErrorMessages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
-            preferencesHandler.performOk2Handler(e, getShell());
+            generalException.errorDialogCheckstyleLog_Msg(e, getShell(), NLS.bind(
+                          ErrorMessages.errorFailedSavePreferences, e.getLocalizedMessage()), true);
         }
 
         return true;

@@ -27,6 +27,7 @@ import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.osgi.service.prefs.BackingStoreException;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 
 /**
  * Initialize the plugin preferences.
@@ -37,7 +38,7 @@ public class PrefsInitializer extends AbstractPreferenceInitializer
 {
 
     /** To OO refactoring */
-    PreferencesHandler preferencesHandler = new PreferencesHandler();
+    GeneralException generalException = new GeneralException();
     
     /**
      * {@inheritDoc}
@@ -64,8 +65,7 @@ public class PrefsInitializer extends AbstractPreferenceInitializer
         }
         catch (BackingStoreException e)
         {
-            //CheckstyleLog.log(e);
-            preferencesHandler.initializeDefaultPreferencesHandler(e);
+            generalException.checkstyleLog(e);
         }
     }
 
