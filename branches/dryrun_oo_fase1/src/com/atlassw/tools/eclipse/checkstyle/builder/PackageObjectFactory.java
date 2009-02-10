@@ -21,6 +21,7 @@ package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.util.List;
 
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigHandler;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
@@ -31,8 +32,11 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  * @author lkuehne
  * @version $Revision: 1.2 $
  */
-class PackageObjectFactory implements ModuleFactory
+public class PackageObjectFactory implements ModuleFactory
 {
+    /** To OO refactoring */
+    ConfigHandler configHandler = new ConfigHandler();
+    
     /** a list of package names to prepend to class names. */
     private List mPackages;
     
@@ -85,7 +89,8 @@ class PackageObjectFactory implements ModuleFactory
         }
         catch (CheckstyleException ex)
         {
-            builderHandler.projectObjectFactory_doMakeObjectHandler();
+          //  builderHandler.projectObjectFactory_doMakeObjectHandler();
+            configHandler.doMakeObjectHandler(ex, builderHandler);
         }
 
         // now try packages
@@ -99,7 +104,8 @@ class PackageObjectFactory implements ModuleFactory
             }
             catch (CheckstyleException ex)
             {
-                builderHandler.projectObjectFactory_doMakeObjectHandler();
+                //builderHandler.projectObjectFactory_doMakeObjectHandler();
+                configHandler.doMakeObjectHandler(ex, builderHandler);
             }
         }
 
@@ -123,15 +129,18 @@ class PackageObjectFactory implements ModuleFactory
         }
         catch (ClassNotFoundException e)
         {
-            builderHandler.packageObjectFactory_createObjectHandler(aClassName, e);
+            //builderHandler.packageObjectFactory_createObjectHandler(aClassName, e);
+            configHandler.createObject1Handler(e, builderHandler, aClassName);
         }
         catch (InstantiationException e)
         {
-            builderHandler.packageObjectFactory_createObjectHandler2(aClassName, e);
+           // builderHandler.packageObjectFactory_createObjectHandler2(aClassName, e);
+            configHandler.createObject2Handler(e, builderHandler, aClassName);
         }
         catch (IllegalAccessException e)
         {
-            builderHandler.packageObjectFactory_createObjectHandler2(aClassName, e);
+            //builderHandler.packageObjectFactory_createObjectHandler2(aClassName, e);
+            configHandler.createObject3Handler(e, builderHandler, aClassName);
         }
         // Esta linha não existia no código original. Mas sem ela, o código não compila.
         return null;
@@ -156,7 +165,8 @@ class PackageObjectFactory implements ModuleFactory
         }
         catch (CheckstyleException ex)
         {
-            return packageObjectFactory_createModuleHandler(aName);
+         // return packageObjectFactory_createModuleHandler(aName);
+            return configHandler.createModuleHandler(aName, this);
         }
     }
 
@@ -169,7 +179,8 @@ class PackageObjectFactory implements ModuleFactory
         }
         catch (CheckstyleException ex2)
         {
-            builderHandler.packageObjectFactory_createModuleHandlerHandler(aName, ex2);            
+            //builderHandler.packageObjectFactory_createModuleHandlerHandler(aName, ex2);    
+            configHandler.packageObjectFactory_createModuleHandler(aName, ex2, builderHandler);
         }
         // Esta linha não existia no código original. Mas sem ela, o código não compila.
         return null;

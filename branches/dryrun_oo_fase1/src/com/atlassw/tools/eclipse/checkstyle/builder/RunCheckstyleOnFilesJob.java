@@ -36,8 +36,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigHandler;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
@@ -50,6 +50,9 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
  */
 public class RunCheckstyleOnFilesJob extends WorkspaceJob
 {
+    
+    /** To OO refactoring */
+    ConfigHandler configHandler  = new ConfigHandler();
 
     private List mFilesToCheck;
     
@@ -108,7 +111,8 @@ public class RunCheckstyleOnFilesJob extends WorkspaceJob
         }
         catch (CheckstylePluginException e)
         {
-            builderHandler.builderHandlerRethrowCoreException(e);
+            //builderHandler.builderHandlerRethrowCoreException(e);
+            configHandler.runInWorkspaceHandler(e, builderHandler);
         }
         return Status.OK_STATUS;
     }    

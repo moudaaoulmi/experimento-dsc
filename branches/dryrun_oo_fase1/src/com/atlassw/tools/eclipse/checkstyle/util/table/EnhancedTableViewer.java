@@ -90,6 +90,9 @@ public class EnhancedTableViewer extends TableViewer
 
     /** The table listener. */
     private TableListener mTableListener = new TableListener();
+    
+    /** To OO refactoring */
+    TableHandler tableHandler = new TableHandler();
 
     //
     // constructors
@@ -261,7 +264,8 @@ public class EnhancedTableViewer extends TableViewer
         }
         catch (NumberFormatException e)
         {
-            mSortedColumnIndex = 0;
+            //mSortedColumnIndex = 0;
+            tableHandler.restoreStateHandler (mSortedColumnIndex);
         }
         try
         {
@@ -269,7 +273,9 @@ public class EnhancedTableViewer extends TableViewer
         }
         catch (NumberFormatException e)
         {
-            mSortDirection = DIRECTION_FORWARD;
+            //mSortDirection = DIRECTION_FORWARD; 
+            tableHandler.restoreState2Handler(mSortDirection, DIRECTION_FORWARD);
+            
         }
 
         TableLayout layout = new TableLayout();
@@ -289,7 +295,8 @@ public class EnhancedTableViewer extends TableViewer
             catch (NumberFormatException e)
             {
                 // probably a new column
-                allColumnsHaveStoredData = false;
+               // allColumnsHaveStoredData = false;
+                tableHandler.restoreState3Handler(allColumnsHaveStoredData);
             }
         }
 
