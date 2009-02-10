@@ -87,15 +87,15 @@ public final class CheckConfigurationMigrator
         }
         catch (SAXException se)
         {
-            migrationHandler.checkConfigurationMigratorMigrate (se);
+            migrationHandler.rethrowCheckstylePluginException(se.getException() != null ? se.getException() : se);
         }
         catch (ParserConfigurationException pe)
         {
-            migrationHandler.checkConfigurationMigratorCheckstylePluginException(pe);
+            migrationHandler.rethrowCheckstylePluginException(pe);
         }
         catch (IOException ioe)
         {
-            migrationHandler.checkConfigurationMigratorCheckstylePluginException(ioe);
+            migrationHandler.rethrowCheckstylePluginException(ioe);
         }
     }
 
@@ -217,7 +217,7 @@ public final class CheckConfigurationMigrator
             }
             catch (CheckstylePluginException e)
             {
-                migrationHandler.checkConfigurationMigratorSAXException(e);
+                migrationHandler.rethrowSAXException(e);
             }
         }
 
@@ -252,11 +252,11 @@ public final class CheckConfigurationMigrator
                 }
                 catch (IOException ioe)
                 {
-                    migrationHandler.checkConfigurationMigratorCheckstylePluginException(ioe);
+                    migrationHandler.rethrowCheckstylePluginException(ioe);
                 }
                 finally
                 {
-                    migrationHandler.checkConfigurationMigratorEnsureFileExists(out);
+                    migrationHandler.closeQuietlyOutputStream(out);
                 }
                 return true;
             }
@@ -294,7 +294,7 @@ public final class CheckConfigurationMigrator
             }
             catch (CheckstylePluginException e)
             {
-                migrationHandler.checkConfigurationMigratorSAXException(e);
+                migrationHandler.rethrowSAXException(e);
             }
         }
 
