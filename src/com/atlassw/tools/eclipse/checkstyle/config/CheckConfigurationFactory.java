@@ -252,7 +252,8 @@ public final class CheckConfigurationFactory
         }
         finally
         {
-            configHandler.exportConfigurationHandler(in, out);
+            configHandler.closeQuietlyInputStream(in);
+            configHandler.closeQuietlyOutputStream(out);
         }
     }
 
@@ -379,7 +380,8 @@ public final class CheckConfigurationFactory
 
         finally
         {
-            configHandler.migrateFINALLYHandler(inStream, defaultConfigStream);
+            configHandler.closeQuietlyInputStream(inStream);
+            configHandler.closeQuietlyInputStream(defaultConfigStream);
         }
     }
 
@@ -517,7 +519,7 @@ public final class CheckConfigurationFactory
                 catch (Exception e)
                 {
                     //throw new SAXException(e);
-                    configHandler.endElementHandler(e);
+                    configHandler.rethrowSAXException(e);
                 }
             }
         }

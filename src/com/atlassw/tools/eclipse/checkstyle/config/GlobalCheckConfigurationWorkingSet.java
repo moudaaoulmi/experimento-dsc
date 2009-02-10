@@ -372,7 +372,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
         }
         finally
         {
-            configHandler.storeToPersistenceHandler(byteOut, out);
+            configHandler.closeQuietlyOutputStream(byteOut);
+            configHandler.closeQuietlyOutputStream(out);
         }
     }
 
