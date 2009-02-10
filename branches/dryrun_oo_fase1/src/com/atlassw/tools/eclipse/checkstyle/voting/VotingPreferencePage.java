@@ -42,7 +42,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+import com.sun.tools.javac.jvm.Gen;
 
 /**
  * Page to cast votes for the plugin.
@@ -76,7 +78,7 @@ public class VotingPreferencePage extends PreferencePage implements IWorkbenchPr
     private PageController mPageController = new PageController();
     
     /**The variable was introduced here because modularization of Exception Handling*/
-    private VotingHandler votingHandler = new VotingHandler();
+    private GeneralException generalException = new GeneralException();
 
     // =================================================
     // Constructors & finalizer.
@@ -186,8 +188,7 @@ public class VotingPreferencePage extends PreferencePage implements IWorkbenchPr
                 }
                 catch (IOException e1)
                 {
-                    //CheckstyleLog.errorDialog(getShell(), e1, false);
-                    votingHandler.errorDialogHandler(e1, getShell());
+                    generalException.errorDialogCheckstyleLog(e1, getShell(), false);
                 }
             }
         }
