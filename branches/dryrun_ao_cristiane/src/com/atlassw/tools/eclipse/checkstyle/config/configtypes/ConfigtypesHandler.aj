@@ -38,17 +38,16 @@ import java.net.Authenticator;
 import java.net.UnknownHostException;
 
 import java.util.MissingResourceException;
-import com.atlassw.tools.eclipse.checkstyle.exception.GeneralExceptionHandler;
 
 
-public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
+public privileged aspect ConfigtypesHandler
 {
     // ---------------------------
     // Declare soft's
     // ---------------------------
     
-    declare soft: IOException : /*ConfigurationType_getResolvedConfigurationFileURLHandler() ||
-                                ConfigurationType_getCheckstyleConfigurationHandler() ||*/
+    declare soft: IOException : ConfigurationType_getResolvedConfigurationFileURLHandler() ||
+                                ConfigurationType_getCheckstyleConfigurationHandler() ||
                                 exceptionPoints() ||
                                 ConfigurationType_internalGetAdditionPropertiesBundleBytesHandler() ||
                                 ExternalFileConfiguration_internalEnsureFileExistsHandler() ||
@@ -59,8 +58,7 @@ public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
                                 RemoteConfigurationType_oneWriteToCacheFileHandler() ||
                                 RemoteConfigurationType_twoWriteToCacheFile();
 
-    declare soft: Exception : ConfigurationType_internalStaticHandler() ||
-                              RemoteConfigurationType_internalGetBytesFromURLConnectionHandler();
+    declare soft: Exception : RemoteConfigurationType_internalGetBytesFromURLConnectionHandler();
     
     declare soft: CheckstylePluginException: ExternalFileConfiguration_internalGetEditedWorkingCopyHandler() ||
                                              ExternalFileConfiguration_isConfigurableHandler() ||
@@ -72,11 +70,9 @@ public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
 
     declare soft: CheckstylePluginException: ProjectConfigurationEditor_internalGetEditedWorkingCopyHandler() ||
                                              ProjectConfigurationType_internalIsConfigurableHandler() ||
-                                             RemoteConfigurationEditor_internalCreateEditorControlHandler() ||
-                                             RemoteConfigurationType_secInternalGetBytesFromURLConnectionHandler();
+                                             RemoteConfigurationEditor_internalCreateEditorControlHandler();
 
     declare soft: CoreException: ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
-                                 RemoteConfigurationType_storeCredentialsHandler() ||
                                  RemoteConfigurationType_removeCachedAuthInfoHandler();
 
     declare soft: MalformedURLException: RemoteConfigurationEditor_internalGetEditedWorkingCopyHandler();
@@ -91,13 +87,13 @@ public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
     // Pointcut's
     // ---------------------------
     
-    /*pointcut ConfigurationType_getResolvedConfigurationFileURLHandler() : 
+    pointcut ConfigurationType_getResolvedConfigurationFileURLHandler() : 
             execution (* ConfigurationType.getResolvedConfigurationFileURL(..)) &&
-            within(ConfigurationType);*/
+            within(ConfigurationType);
 
-    /*pointcut ConfigurationType_getCheckstyleConfigurationHandler() : 
+    pointcut ConfigurationType_getCheckstyleConfigurationHandler() : 
             execution (* ConfigurationType.getCheckstyleConfiguration(..)) &&
-            within(ConfigurationType);*/
+            within(ConfigurationType);
 
     pointcut ConfigurationType_internalGetAdditionPropertiesBundleBytesHandler():
             execution (* ConfigurationType.internalGetAdditionPropertiesBundleBytes(..)) &&
@@ -105,9 +101,6 @@ public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
 
     pointcut ConfigurationType_internalGetBytesFromURLConnectionHandler():
         execution (* ConfigurationType.internalGetBytesFromURLConnection(..));
-
-    pointcut ConfigurationType_internalStaticHandler():
-        execution(* ConfigurationTypes.internalStatic(..));
     
     pointcut ExternalFileConfiguration_internalEnsureFileExistsHandler():
         execution(* ExternalFileConfigurationEditor.internalEnsureFileExists(..)) ||
@@ -164,9 +157,6 @@ public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
     pointcut RemoteConfigurationType_twoWriteToCacheFile():
         execution(* RemoteConfigurationType.twoWriteToCacheFile(..));
 
-    pointcut RemoteConfigurationType_storeCredentialsHandler():
-        execution(* RemoteConfigurationType.RemoteConfigAuthenticator.storeCredentials(..));
-
     pointcut RemoteConfigurationType_removeCachedAuthInfoHandler():
         execution(* RemoteConfigurationType.RemoteConfigAuthenticator.removeCachedAuthInfo(..));
 
@@ -176,8 +166,6 @@ public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
     pointcut RemoteConfigurationType_internalGetBytesFromURLConnectionHandler():
         execution(* RemoteConfigurationType.internalGetBytesFromURLConnection(..));
 
-    pointcut RemoteConfigurationType_secInternalGetBytesFromURLConnectionHandler(): 
-        execution(* RemoteConfigurationType.secInternalGetBytesFromURLConnection(..));
 
     pointcut ResourceBundlePropertyResolver_internalResolveHandle(): 
         execution(* ResourceBundlePropertyResolver.internalResolve(..));
@@ -193,8 +181,7 @@ public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
     // Advice's
     // ---------------------------
     
-    //HERANÇA
-    /*Object around () throws CheckstylePluginException:
+    Object around () throws CheckstylePluginException:
             ConfigurationType_getResolvedConfigurationFileURLHandler()||
             ConfigurationType_getCheckstyleConfigurationHandler(){
         
@@ -206,8 +193,7 @@ public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
             CheckstylePluginException.rethrow(e);
         }
         return result;
-    }*/
-    //HERANÇA
+    }
     
     Object around() throws CheckstylePluginException: 
         RemoteConfigurationEditor_internalGetEditedWorkingCopyHandler() ||
@@ -299,17 +285,6 @@ public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
         }
     }
 
-    void around(): ConfigurationType_internalStaticHandler(){
-        try
-        {
-            proceed();
-        }
-        catch (Exception e)
-        {
-            CheckstyleLog.log(e);
-        }
-    }
-    
     void around(IFile file, OutputStream out) throws CheckstylePluginException: 
         ProjectConfigurationEditor_internalEnsureFileExistsHandler() && args(file, out){
         try
@@ -536,18 +511,6 @@ public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
     }
 
 
-
-    void around(): RemoteConfigurationType_secInternalGetBytesFromURLConnectionHandler(){
-        try
-        {
-            proceed();
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.log(e);
-        }
-    }
-
     void around(URLConnection connection, byte[] configurationFileData, InputStream in)
         throws IOException: RemoteConfigurationType_internalGetBytesFromURLConnectionHandler() &&
         args(connection, configurationFileData, in){
@@ -561,7 +524,7 @@ public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
         }
     }
 
-    void around(): RemoteConfigurationType_storeCredentialsHandler(){
+   /*void around(): RemoteConfigurationType_storeCredentialsHandler(){
         try
         {
             proceed();
@@ -570,7 +533,7 @@ public privileged aspect ConfigtypesHandler extends GeneralExceptionHandler
         {
             CheckstyleLog.log(e);
         }
-    }
+    }*/
 
     void around() throws CheckstylePluginException : RemoteConfigurationType_removeCachedAuthInfoHandler(){
         try

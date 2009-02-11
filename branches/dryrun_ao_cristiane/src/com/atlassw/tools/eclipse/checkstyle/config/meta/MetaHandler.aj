@@ -19,7 +19,7 @@ import org.xml.sax.InputSource;
 public privileged aspect MetaHandler
 {
     declare soft: Exception : metadataFactory_internalRuleMetadataHandler() || metadataFactory_internalStartElementHandler();
-    declare soft: CheckstylePluginException : metadataFactory_refreshHandler() || metadataFactory_startElementHandler();
+    declare soft: CheckstylePluginException : metadataFactory_startElementHandler();
     declare soft: SAXParseException : metadataFactory_internalDoInitializationHandler();
     declare soft: SAXException : metadataFactory_internalDoInitializationHandler();
     declare soft: ParserConfigurationException : metadataFactory_internalDoInitializationHandler();
@@ -29,7 +29,6 @@ public privileged aspect MetaHandler
     declare soft: IllegalAccessException: metadataFactory_startElementHandler();
     
     pointcut metadataFactory_internalRuleMetadataHandler() : execution(* MetadataFactory.internalRuleMetadata(..));
-    pointcut metadataFactory_refreshHandler() : call (* MetadataFactory.doInitialization(..)) && withincode(* MetadataFactory.refresh(..));
     pointcut metadataFactory_internalDoInitializationHandler() : execution(* MetadataFactory.internalDoInitialization(..));
     pointcut metadataFactory_getMetadataI18NBundleHandler() : execution(* MetadataFactory.getMetadataI18NBundle(..));
     pointcut metadataFactory_resolveEntityHandler() : execution(* MetadataFactory.MetaDataHandler.internalResolveEntity(..));
@@ -48,14 +47,6 @@ public privileged aspect MetaHandler
         return parent;
     }
     
-    void around() : metadataFactory_refreshHandler(){
-        try{
-            proceed();
-        }
-        catch (CheckstylePluginException e){
-            CheckstyleLog.log(e);
-        }
-    }
     void around(ClassLoader customsLoader, String metadataFile,
             InputStream metadataStream): metadataFactory_internalDoInitializationHandler() && args(customsLoader,metadataFile,metadataStream){
         try {

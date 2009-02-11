@@ -17,14 +17,13 @@ public aspect PreferencesHandler
     // Declare soft's
     // ---------------------------
     declare soft: CheckstylePluginException : CheckstylePreferencePage_performOkHandler() || CheckstylePreferencePage_internarPerformOkInternalHandler();
-    declare soft: BackingStoreException : CheckstylePreferencePage_performOkHandler() || PrefsInitializer_internalinitializeDefaultPreferencesHandler();
+    declare soft: BackingStoreException : CheckstylePreferencePage_performOkHandler();
     
     // ---------------------------
     // Pointcut's
     // ---------------------------
     pointcut CheckstylePreferencePage_performOkHandler() : execution (* CheckstylePreferencePage.internalPerformOk(..));
     pointcut CheckstylePreferencePage_internarPerformOkInternalHandler() : execution (* CheckstylePreferencePage.internarPerformOkInternal(..));
-    pointcut PrefsInitializer_internalinitializeDefaultPreferencesHandler() : execution(* PrefsInitializer.internalinitializeDefaultPreferences(..));
     
     // ---------------------------
     // Advice's
@@ -53,11 +52,4 @@ public aspect PreferencesHandler
         }
     }
     
-    void around(IEclipsePreferences prefs): PrefsInitializer_internalinitializeDefaultPreferencesHandler() && args(prefs){
-        try {
-            proceed(prefs);
-        }catch (BackingStoreException e) {
-            CheckstyleLog.log(e);
-        }
-    }
 }

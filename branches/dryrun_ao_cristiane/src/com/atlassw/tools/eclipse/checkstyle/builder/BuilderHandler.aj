@@ -25,7 +25,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 public privileged aspect BuilderHandler
 {
 
-    declare soft: CoreException: buildProjectJob_runHandler()||auditor_addErrorHandle()||auditor_runAuditHandle()||checkstyleBuilder_buildProjectsHandleHandle();
+    declare soft: CoreException: buildProjectJob_runHandler() ||auditor_runAuditHandle()||checkstyleBuilder_buildProjectsHandleHandle();
 
     declare soft: CheckstylePluginException: checkstyleBuilder_buildHandler()|| checkstyleBuilder_handleBuildSelectionHandler();
 
@@ -59,8 +59,6 @@ public privileged aspect BuilderHandler
     pointcut checkstyleBuilder_buildHandler(): execution(* CheckstyleBuilder.build(..)) ;
 
     pointcut checkstyleBuilder_handleBuildSelectionHandler(): execution(* CheckstyleBuilder.handleBuildSelection(..));
-
-    pointcut auditor_addErrorHandle(): execution (* Auditor.CheckstyleAuditListener.addError(..)) ;
 
     pointcut auditor_calculateMarkerOffsetHandle(): 
         execution (* Auditor.CheckstyleAuditListener.calculateMarkerOffset(..)) ;
@@ -132,16 +130,6 @@ public privileged aspect BuilderHandler
         return result;
     }
 
-    void around(): auditor_addErrorHandle() {
-        try
-        {
-            proceed();
-        }
-        catch (CoreException e)
-        {
-            checkstyleLogMessage(e);
-        }
-    }
 
     void around(): auditor_calculateMarkerOffsetHandle() {
         try

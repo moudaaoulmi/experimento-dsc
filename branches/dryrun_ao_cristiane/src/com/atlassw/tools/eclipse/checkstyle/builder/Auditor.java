@@ -252,7 +252,7 @@ public class Auditor
      * @author David Schneider
      * @author Lars Ködderitzsch
      */
-    private class CheckstyleAuditListener implements AuditListener
+    public class CheckstyleAuditListener implements AuditListener
     {
 
         /** Additional data about the Checkstyle configuration. */
