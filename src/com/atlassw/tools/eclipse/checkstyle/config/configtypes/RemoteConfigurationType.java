@@ -350,7 +350,7 @@ public class RemoteConfigurationType extends ConfigurationType
      * 
      * @author Lars Ködderitzsch
      */
-    protected static class RemoteConfigAuthenticator extends Authenticator
+    public static class RemoteConfigAuthenticator extends Authenticator
     {
 
         /** The check configuration URL. */

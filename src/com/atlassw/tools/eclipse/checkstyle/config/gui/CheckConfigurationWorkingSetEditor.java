@@ -378,7 +378,7 @@ public class CheckConfigurationWorkingSetEditor
      * 
      * @author Lars Ködderitzsch
      */
-    private class PageController implements SelectionListener, IDoubleClickListener,
+    public class PageController implements SelectionListener, IDoubleClickListener,
             ISelectionChangedListener
     {
 

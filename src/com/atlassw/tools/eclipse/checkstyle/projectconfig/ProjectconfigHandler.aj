@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralExceptionHandler;
 
-public privileged aspect ProjectconfigHandler extends GeneralExceptionHandler
+public privileged aspect ProjectconfigHandler
 {
     
     // ---------------------------
@@ -28,7 +28,7 @@ public privileged aspect ProjectconfigHandler extends GeneralExceptionHandler
     declare soft : CloneNotSupportedException : FileMatchPattern_cloneHandler() || FileMatchPattern_cloneFileSetHandler() || 
                                                 FileMatchPattern_cloneProjectHandler() || FileMatchPattern_cloneWorkingCopyHandler();
 
-    declare soft: Exception : PluginFilters_internalHandler() || ProjectConfigurationFactory_internalEndElementHandler() ||
+    declare soft: Exception : ProjectConfigurationFactory_internalEndElementHandler() ||
                               ProjectConfigurationWorkingCopy_internalStoreToPersistenceHandler();
 
     declare soft: CheckstylePluginException : ProjectConfigurationFactory_startElementHandler();
@@ -44,7 +44,7 @@ public privileged aspect ProjectconfigHandler extends GeneralExceptionHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    /*pointcut FileMatchPattern_internalSetMatchPatternHandler() : execution (* FileMatchPattern.internalSetMatchPattern(..));*/
+    pointcut FileMatchPattern_internalSetMatchPatternHandler() : execution (* FileMatchPattern.internalSetMatchPattern(..));
 
     pointcut FileMatchPattern_cloneHandler(): execution(* FileMatchPattern.clone(..));
 
@@ -53,8 +53,6 @@ public privileged aspect ProjectconfigHandler extends GeneralExceptionHandler
     pointcut FileMatchPattern_cloneProjectHandler(): execution(* ProjectConfiguration.clone(..));
 
     pointcut FileMatchPattern_cloneWorkingCopyHandler(): execution(* ProjectConfigurationWorkingCopy.clone(..));
-    
-    pointcut PluginFilters_internalHandler() : execution(* PluginFilters.internal(..));
     
     pointcut ProjectConfigurationFactory_startElementHandler(): execution(* ProjectConfigurationFactory.ProjectConfigFileHandler.startElement(..));
 
@@ -70,16 +68,14 @@ public privileged aspect ProjectconfigHandler extends GeneralExceptionHandler
     // Advice's
     // ---------------------------
     
-    //HERANÇA
-    /*void around() throws CheckstylePluginException : 
+    void around() throws CheckstylePluginException : 
         FileMatchPattern_internalSetMatchPatternHandler(){    
         try{
             proceed();
         }catch(Exception e){
             CheckstylePluginException.rethrow(e); // wrap the exception
         }
-    }*/
-    //HERANÇA
+    }
     
     Object around() : FileMatchPattern_cloneHandler() || FileMatchPattern_cloneFileSetHandler() || 
                       FileMatchPattern_cloneProjectHandler() || FileMatchPattern_cloneWorkingCopyHandler(){
@@ -90,14 +86,6 @@ public privileged aspect ProjectconfigHandler extends GeneralExceptionHandler
         }
     }
     
-    void around() : PluginFilters_internalHandler(){
-        try{
-            proceed();
-        }
-        catch (Exception e){
-            CheckstyleLog.log(e);
-        }
-    }
     void around() throws SAXException : 
         ProjectConfigurationFactory_startElementHandler() || ProjectConfigurationFactory_internalEndElementHandler(){
         try

@@ -27,12 +27,11 @@ public aspect GuiHandler {
     // Declare soft's
     // ---------------------------
 
-    declare soft: BackingStoreException: internalCreateButtonBarHandler();
 
     declare soft: CheckstylePluginException: internalInitializeHandler() ||
                     ModuleHandler();
 
-    declare soft: CheckstylePluginException: internalSelectionChanged_2Handler() ||
+    declare soft: CheckstylePluginException:
                     widgetSelectedHandler()|| 
                     okPressedHandler() || 
                     setUniqueNameHandler() ||
@@ -45,14 +44,11 @@ public aspect GuiHandler {
 
     declare soft: Exception: createConfigurationEditorHandler();
     
-    declare soft: BackingStoreException: internalWidgetSelectedHandler();
 
     // ---------------------------
     // Pointcut's
     // ---------------------------
     
-    pointcut internalCreateButtonBarHandler():
-        execution(* CheckConfigurationConfigureDialog.internalCreateButtonBar(..));
 
     pointcut internalInitializeHandler(): 
         execution(* CheckConfigurationConfigureDialog.internalInitialize(..));
@@ -76,9 +72,6 @@ public aspect GuiHandler {
     pointcut setUniqueNameHandler():
         execution(* CheckConfigurationPropertiesDialog.internalSetUniqueName(..));
     
-    pointcut internalSelectionChanged_2Handler():
-        execution(private void CheckConfigurationWorkingSetEditor.PageController.internalSelectionChanged(..));
-
     pointcut internalCheckConfigHandler():
         execution(* CheckConfigurationWorkingSetEditor.internalAddCheckConfig(..)) ||
         execution(* CheckConfigurationWorkingSetEditor.internalCopyCheckConfig(..));
@@ -93,8 +86,6 @@ public aspect GuiHandler {
     pointcut findPropertyItemsHandler():
         execution(* ResolvablePropertiesDialog.Controller.findPropertyItems(..));
 
-    pointcut internalWidgetSelectedHandler():
-        execution(* RuleConfigurationEditDialog.internalWidgetSelected(..));
 
     pointcut internalOkPressedHandler():
         execution(* RuleConfigurationEditDialog.internalOkPressed(..));
@@ -133,13 +124,6 @@ public aspect GuiHandler {
         }
     }
 
-    void around(): internalCreateButtonBarHandler() || internalWidgetSelectedHandler() {
-        try {
-            proceed();
-        } catch (BackingStoreException e1) {
-            CheckstyleLog.log(e1);
-        }
-    }
     
     void around():internalOkPressedHandler(){
         try {
@@ -149,14 +133,6 @@ public aspect GuiHandler {
         }
     }
     
-    void around(): internalSelectionChanged_2Handler(){
-        try {
-            proceed();
-        } catch (CheckstylePluginException e) {
-            CheckstyleLog.log(e);
-        }
-    }
- 
     void around(): internalSelectionChangedHandler(){
         try {
             proceed();
