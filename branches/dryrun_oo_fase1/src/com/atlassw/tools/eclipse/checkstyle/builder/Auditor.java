@@ -214,19 +214,10 @@ public class Auditor
         }
         finally
         {
-            monitor.done();
-
-            // Cleanup listener and filter
-            if (checker != null)
-            {
-                checker.removeListener(listener);
-                checker.removeFilter(runtimeExceptionFilter);
-            }
-
-            // restore the original classloader
-            Thread.currentThread().setContextClassLoader(contextClassloader);
+            builderHandler.auditor_runAudit(monitor, checker, listener, runtimeExceptionFilter, contextClassloader);
         }
-    }    
+    }
+
 
     /**
      * Add a file to the audit.
