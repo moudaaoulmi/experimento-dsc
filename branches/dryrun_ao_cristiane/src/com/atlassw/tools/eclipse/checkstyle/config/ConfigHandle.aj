@@ -1,3 +1,4 @@
+
 package com.atlassw.tools.eclipse.checkstyle.config;
 
 import org.eclipse.osgi.util.NLS;
@@ -12,11 +13,9 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
-
 
 public privileged aspect ConfigHandle
 {
@@ -29,190 +28,226 @@ public privileged aspect ConfigHandle
                             || RetrowException_loadFromPersistenceHandle()
                             || RetrowException_migrateHandle()
                             || RetrowException_storeToPersistenceHandle();
-    
+
     declare soft: CoreException: CheckConfigurationWorkingCopy_setModulesIterationHandle();
-    
+
     declare soft: CheckstylePluginException: CheckstyleLogMessage_refreshHandle()
-                            || CheckstyleLogMessage_removeCheckConfigurationHandle();   
-    
+                            || CheckstyleLogMessage_removeCheckConfigurationHandle();
+
     declare soft: IOException: ConfigurationReaderHandle_startElementHandleHandle()
                             || RetrowException_resolveEntityHandleHandle()
-                            || RetrowException_setModulesHandle();
-                            //|| RetrowException_runHandle();
-    
-    declare soft: SAXException: //RetrowException_runHandle()
-                            //|| 
+                            || RetrowException_setModulesHandle() 
+                            || RetrowException_runHandle();
+
+    declare soft: SAXException: //RetrowException_runHandle() ||
                             RetrowException_writeHandle();
-    
+
     declare soft: CloneNotSupportedException: cloneHandle();
- //   declare soft: CheckstyleException: RetrowException_getUnresolvedPropertiesIterationHandle();
-//    declare soft: ParserConfigurationException: RetrowException_runHandle();
+
     declare soft: TransformerConfigurationException: RetrowException_writeHandle();
-    
+
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    pointcut CheckConfigurationWorkingCopy_setLocationHandle(): execution (* CheckConfigurationWorkingCopy.setLocationHandle(..)) ;
-    pointcut CheckConfigurationWorkingCopy_setModulesIterationHandle(): execution (* CheckConfigurationWorkingCopy.setModulesIteration(..)) ;
+    pointcut CheckConfigurationWorkingCopy_setLocationHandle():
+        execution (* CheckConfigurationWorkingCopy.setLocationHandle(..)) ;
 
-    pointcut CheckstyleLogMessage_refreshHandle(): execution (* CheckConfigurationFactory.refresh(..)) ;
+    pointcut CheckConfigurationWorkingCopy_setModulesIterationHandle(): 
+        execution (* CheckConfigurationWorkingCopy.setModulesIteration(..)) ;
+
+    pointcut CheckstyleLogMessage_refreshHandle(): 
+        execution (* CheckConfigurationFactory.refresh(..)) ;
+
     pointcut CheckstyleLogMessage_removeCheckConfigurationHandle(): 
         execution (* GlobalCheckConfigurationWorkingSet.removeCheckConfiguration(..)) ;
-    //ConfigurationReaderHandle
+
     pointcut ConfigurationReaderHandle_getAdditionalConfigDataHandleHandle(): 
         execution (* ConfigurationReader.getAdditionalConfigDataHandle(..)) ;
+
     pointcut ConfigurationReaderHandle_startElementHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.startElementHandle(..)) ;
-    
+
     pointcut cloneHandle(): execution (* CheckConfigurationWorkingCopy.clone(..)) || 
         execution (* Module.clone(..)) || execution (* ConfigProperty.clone(..)) ||
         execution (* ResolvableProperty.clone(..)) ;
-    
+
     pointcut RetrowException_endElementHandle(): execution (* CheckConfigurationFactory.CheckConfigurationsFileHandler.endElement(..)) ;
-    
+
     pointcut RetrowException_resolveEntityHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.resolveEntityHandle(..)) ;
-    
+
     pointcut RetrowException_exportConfigurationHandle(): execution (* CheckConfigurationFactory.exportConfiguration(..)) ;
-    
-    pointcut RetrowException_loadFromPersistenceHandle(): execution (* CheckConfigurationFactory.loadFromPersistence(..)) ;
-    
-    pointcut RetrowException_migrateHandle(): execution (* CheckConfigurationFactory.migrate(..)) ;
-    
+
+    pointcut RetrowException_loadFromPersistenceHandle(): 
+        execution (* CheckConfigurationFactory.loadFromPersistence(..)) ;
+
+    pointcut RetrowException_migrateHandle(): 
+        execution (* CheckConfigurationFactory.migrate(..)) ;
+
     pointcut RetrowException_getUnresolvedPropertiesIterationHandle(): 
         execution (* CheckConfigurationTester.getUnresolvedPropertiesIteration(..)) ;
-    
-    pointcut RetrowException_setModulesHandle(): execution (* CheckConfigurationWorkingCopy.setModules(..)) ;
-    
-//    pointcut RetrowException_runHandle(): execution (* ConfigurationReader.read(..)) ;
-    
-    pointcut RetrowException_writeHandle(): execution (* ConfigurationWriter.write(..)) ;
-    
-    pointcut RetrowException_storeToPersistenceHandle(): execution (* GlobalCheckConfigurationWorkingSet.storeToPersistence(..)) ;
-    
+
+    pointcut RetrowException_setModulesHandle(): 
+        execution (* CheckConfigurationWorkingCopy.setModules(..)) ;
+
+    pointcut RetrowException_runHandle(): 
+        execution (* ConfigurationReader.read(..)) ;
+
+    pointcut RetrowException_writeHandle(): 
+        execution (* ConfigurationWriter.write(..)) ;
+
+    pointcut RetrowException_storeToPersistenceHandle(): 
+        execution (* GlobalCheckConfigurationWorkingSet.storeToPersistence(..)) ;
+
     // ---------------------------
     // Advice's
     // ---------------------------
     void around(String location, String oldLocation) throws CheckstylePluginException: CheckConfigurationWorkingCopy_setLocationHandle() 
             && args(location, oldLocation) {
-        try{
-           proceed(location, oldLocation);
-        } catch (CheckstylePluginException e) {
-            CheckConfigurationWorkingCopy c = (CheckConfigurationWorkingCopy) thisJoinPoint.getThis();
+        try
+        {
+            proceed(location, oldLocation);
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckConfigurationWorkingCopy c = (CheckConfigurationWorkingCopy) thisJoinPoint
+                    .getThis();
             c.mEditedLocation = oldLocation;
-            CheckstylePluginException.rethrow(e, NLS
-                    .bind(ErrorMessages.errorResolveConfigLocation, location, e
-                            .getLocalizedMessage()));
+            CheckstylePluginException.rethrow(e, NLS.bind(ErrorMessages.errorResolveConfigLocation,
+                    location, e.getLocalizedMessage()));
         }
     }
-    
+
     void around(): CheckConfigurationWorkingCopy_setModulesIterationHandle()  {
-        try{
-           proceed();
-        } catch (CoreException e) {
+        try
+        {
+            proceed();
+        }
+        catch (CoreException e)
+        {
             // NOOP - just ignore
         }
     }
-    
+
     Object around(): CheckstyleLogMessage_removeCheckConfigurationHandle() || CheckstyleLogMessage_refreshHandle() {
         Object result = null;
-        try{
+        try
+        {
             result = proceed();
-        } catch (CheckstyleException e) {
+        }
+        catch (CheckstyleException e)
+        {
             CheckstyleLog.log(e);
         }
         return result;
     }
-    
-    
-    int around(int tabWidth,String tabWidthProp): ConfigurationReaderHandle_getAdditionalConfigDataHandleHandle() && args(tabWidth, tabWidthProp)  {
+
+    int around(int tabWidth, String tabWidthProp): ConfigurationReaderHandle_getAdditionalConfigDataHandleHandle() && args(tabWidth, tabWidthProp)  {
         int result = tabWidth;
-        try{
-           result = proceed(tabWidth, tabWidthProp);
-        } catch (NumberFormatException se)
+        try
+        {
+            result = proceed(tabWidth, tabWidthProp);
+        }
+        catch (NumberFormatException se)
         {
             // ignore
         }
         return result;
     }
-    
+
     void around(String value, Module module): ConfigurationReaderHandle_startElementHandleHandle() && args(value, module) {
-        try{
-           proceed(value, module);
-        } catch (IllegalArgumentException e)
+        try
         {
-           module.setSeverity(SeverityLevel.WARNING);
+            proceed(value, module);
+        }
+        catch (IllegalArgumentException e)
+        {
+            module.setSeverity(SeverityLevel.WARNING);
         }
     }
-    
+
     Object around() throws InternalError: cloneHandle()  {
         Object result = null;
-        try{
+        try
+        {
             result = proceed();
-        } catch (CheckstylePluginException e) {
+        }
+        catch (CheckstylePluginException e)
+        {
             throw new InternalError(); // this should never happen
         }
         return result;
     }
-       
+
     Object around() throws SAXException: RetrowException_resolveEntityHandleHandle() 
                                          || RetrowException_endElementHandle() {
         Object result = null;
-        try {
-           result = proceed();
-        } catch (IOException e) {
+        try
+        {
+            result = proceed();
+        }
+        catch (IOException e)
+        {
             throw new SAXException("" + e, e);
-        } catch (CheckstylePluginException e) {
+        }
+        catch (CheckstylePluginException e)
+        {
             throw new SAXException(e);
         }
         return result;
     }
-    
+
     void around() throws CheckstylePluginException: RetrowException_exportConfigurationHandle()
                                                     || RetrowException_setModulesHandle() {
-        try{
-           proceed();
-        } catch (CheckstylePluginException e) {
+        try
+        {
+            proceed();
+        }
+        catch (CheckstylePluginException e)
+        {
             CheckstylePluginException.rethrow(e);
         }
     }
-    
-//    void around() throws CheckstylePluginException: RetrowException_getUnresolvedPropertiesIterationHandle() {
-//        try{
-//           proceed();
-//        } catch (CheckstyleException e) {
-//            CheckstylePluginException.rethrow(e);
-//        }
-//    }
-    
+
     void around() throws CheckstylePluginException: RetrowException_loadFromPersistenceHandle() {
-        try{
-           proceed();
-        } catch (CheckstylePluginException e) {
+        try
+        {
+            proceed();
+        }
+        catch (CheckstylePluginException e)
+        {
             CheckstylePluginException.rethrow(e, ErrorMessages.errorLoadingConfigFile);
         }
     }
-    
+
     void around() throws CheckstylePluginException: RetrowException_migrateHandle() {
-        try{
-           proceed();
-        } catch (CheckstylePluginException e) {
+        try
+        {
+            proceed();
+        }
+        catch (CheckstylePluginException e)
+        {
             CheckstylePluginException.rethrow(e, ErrorMessages.errorMigratingConfig);
-        } 
-    }  
-    
+        }
+    }
+
     void around() throws CheckstylePluginException: RetrowException_storeToPersistenceHandle() {
-        try{
-           proceed();
-        } catch (CheckstyleException e) {
+        try
+        {
+            proceed();
+        }
+        catch (CheckstyleException e)
+        {
             CheckstylePluginException.rethrow(e, ErrorMessages.errorWritingConfigFile);
         }
     }
-    
+
     void around() throws CheckstylePluginException: RetrowException_writeHandle() {
-        try{
-           proceed();
-        } catch (TransformerConfigurationException e)
+        try
+        {
+            proceed();
+        }
+        catch (TransformerConfigurationException e)
         {
             CheckstylePluginException.rethrow(e);
         }
@@ -222,25 +257,5 @@ public privileged aspect ConfigHandle
             CheckstylePluginException.rethrow(ex);
         }
     }
-    
-//    Object around() throws CheckstylePluginException: RetrowException_runHandle() {
-//        Object result = null;
-//        try{
-//           result = proceed();
-//        } catch (SAXException se)
-//        {
-//            Exception ex = se.getException() != null ? se.getException() : se;
-//            CheckstylePluginException.rethrow(ex);
-//        }
-//        catch (ParserConfigurationException pe)
-//        {
-//            CheckstylePluginException.rethrow(pe);
-//        }
-//        catch (IOException ioe)
-//        {
-//            CheckstylePluginException.rethrow(ioe);
-//        }
-//        return result;
-//    }
-    
+
 }
