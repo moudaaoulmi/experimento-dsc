@@ -31,19 +31,9 @@ public privileged aspect ProjectconfigHandler
 
     declare soft: CheckstylePluginException : ProjectConfigurationFactory_startElementHandler();
 
-    declare soft: CoreException : ProjectConfigurationFactory_internalLoadFromPersistenceHandler();
-
-    declare soft: SAXException : ProjectConfigurationFactory_internalLoadFromPersistenceHandler();
-
-    declare soft: ParserConfigurationException : ProjectConfigurationFactory_internalLoadFromPersistenceHandler();
-
-    declare soft: IOException : ProjectConfigurationFactory_internalLoadFromPersistenceHandler();
-
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    // pointcut FileMatchPattern_internalSetMatchPatternHandler() : execution (* FileMatchPattern.internalSetMatchPattern(..));
-
     pointcut FileMatchPattern_cloneHandler(): execution(* FileMatchPattern.clone(..));
 
     pointcut FileMatchPattern_cloneFileSetHandler(): execution(* FileSet.clone(..));
@@ -56,25 +46,12 @@ public privileged aspect ProjectconfigHandler
 
     pointcut ProjectConfigurationFactory_internalEndElementHandler(): execution(* ProjectConfigurationFactory.ProjectConfigFileHandler.internalEndElement(..));
 
-    pointcut ProjectConfigurationFactory_internalLoadFromPersistenceHandler(): execution(* ProjectConfigurationFactory.internalLoadFromPersistence(..));
 
     pointcut ProjectConfigurationWorkingCopy_internalStoreToPersistenceHandler(): execution(* ProjectConfigurationWorkingCopy.internalStoreToPersistence(..));
-
-//    public pointcut exceptionPoints(): execution (* FileMatchPattern.internalSetMatchPattern(..));
     
     // ---------------------------
     // Advice's
     // ---------------------------
-    
-//    void around() throws CheckstylePluginException : 
-//        FileMatchPattern_internalSetMatchPatternHandler(){    
-//        try{
-//            proceed();
-//        }catch(Exception e){
-//            CheckstylePluginException.rethrow(e); // wrap the exception
-//        }
-//    }
-    
     Object around() : FileMatchPattern_cloneHandler() || FileMatchPattern_cloneFileSetHandler() || 
                       FileMatchPattern_cloneProjectHandler() || FileMatchPattern_cloneWorkingCopyHandler(){
         try{
@@ -96,37 +73,6 @@ public privileged aspect ProjectconfigHandler
         }
     }
 
-    IProjectConfiguration around(IProject project, IProjectConfiguration configuration, IFile file,
-            InputStream inStream) throws CheckstylePluginException : ProjectConfigurationFactory_internalLoadFromPersistenceHandler() && args(project,
-                    configuration, file, inStream){
-        try
-        {
-            return proceed(project, configuration, file, inStream);
-        }
-        catch (CoreException ce)
-        {
-            CheckstylePluginException.rethrow(ce);
-        }
-        catch (SAXException se)
-        {
-            Exception ex = se.getException() != null ? se.getException() : se;
-            CheckstylePluginException.rethrow(ex);
-        }
-        catch (ParserConfigurationException pe)
-        {
-            CheckstylePluginException.rethrow(pe);
-        }
-        catch (IOException ioe)
-        {
-            CheckstylePluginException.rethrow(ioe);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(inStream);
-        }
-        return configuration;
-    }
-    
     void around() throws CheckstylePluginException : 
         ProjectConfigurationWorkingCopy_internalStoreToPersistenceHandler(){  
         try{
@@ -136,5 +82,4 @@ public privileged aspect ProjectconfigHandler
                 ErrorMessages.errorWritingCheckConfigurations, e.getLocalizedMessage()));
         }
     }
-
 }
