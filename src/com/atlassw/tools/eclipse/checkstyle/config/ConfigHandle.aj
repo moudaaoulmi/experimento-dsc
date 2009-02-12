@@ -37,15 +37,16 @@ public privileged aspect ConfigHandle
     
     declare soft: IOException: ConfigurationReaderHandle_startElementHandleHandle()
                             || RetrowException_resolveEntityHandleHandle()
-                            || RetrowException_setModulesHandle()
-                            || RetrowException_runHandle();
+                            || RetrowException_setModulesHandle();
+                            //|| RetrowException_runHandle();
     
-    declare soft: SAXException: RetrowException_runHandle()
-                            || RetrowException_writeHandle();
+    declare soft: SAXException: //RetrowException_runHandle()
+                            //|| 
+                            RetrowException_writeHandle();
     
     declare soft: CloneNotSupportedException: cloneHandle();
  //   declare soft: CheckstyleException: RetrowException_getUnresolvedPropertiesIterationHandle();
-    declare soft: ParserConfigurationException: RetrowException_runHandle();
+//    declare soft: ParserConfigurationException: RetrowException_runHandle();
     declare soft: TransformerConfigurationException: RetrowException_writeHandle();
     
     // ---------------------------
@@ -83,7 +84,7 @@ public privileged aspect ConfigHandle
     
     pointcut RetrowException_setModulesHandle(): execution (* CheckConfigurationWorkingCopy.setModules(..)) ;
     
-    pointcut RetrowException_runHandle(): execution (* ConfigurationReader.read(..)) ;
+//    pointcut RetrowException_runHandle(): execution (* ConfigurationReader.read(..)) ;
     
     pointcut RetrowException_writeHandle(): execution (* ConfigurationWriter.write(..)) ;
     
@@ -222,24 +223,24 @@ public privileged aspect ConfigHandle
         }
     }
     
-    Object around() throws CheckstylePluginException: RetrowException_runHandle() {
-        Object result = null;
-        try{
-           result = proceed();
-        } catch (SAXException se)
-        {
-            Exception ex = se.getException() != null ? se.getException() : se;
-            CheckstylePluginException.rethrow(ex);
-        }
-        catch (ParserConfigurationException pe)
-        {
-            CheckstylePluginException.rethrow(pe);
-        }
-        catch (IOException ioe)
-        {
-            CheckstylePluginException.rethrow(ioe);
-        }
-        return result;
-    }
+//    Object around() throws CheckstylePluginException: RetrowException_runHandle() {
+//        Object result = null;
+//        try{
+//           result = proceed();
+//        } catch (SAXException se)
+//        {
+//            Exception ex = se.getException() != null ? se.getException() : se;
+//            CheckstylePluginException.rethrow(ex);
+//        }
+//        catch (ParserConfigurationException pe)
+//        {
+//            CheckstylePluginException.rethrow(pe);
+//        }
+//        catch (IOException ioe)
+//        {
+//            CheckstylePluginException.rethrow(ioe);
+//        }
+//        return result;
+//    }
     
 }
