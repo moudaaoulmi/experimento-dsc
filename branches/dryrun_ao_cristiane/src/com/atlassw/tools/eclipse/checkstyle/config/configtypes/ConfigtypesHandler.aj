@@ -296,6 +296,18 @@ public privileged aspect ConfigtypesHandler
             CheckstylePluginException.rethrow(e);
         }
     }
+    
+    void around() throws CheckstylePluginException : RemoteConfigurationType_removeCachedAuthInfoHandler(){
+        try
+        {
+            proceed();
+
+        }
+        catch (CoreException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+    }
 
     void around(Object file, OutputStream out) throws CheckstylePluginException: 
         (ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
@@ -535,17 +547,7 @@ public privileged aspect ConfigtypesHandler
         }
     }*/
 
-    void around() throws CheckstylePluginException : RemoteConfigurationType_removeCachedAuthInfoHandler(){
-        try
-        {
-            proceed();
 
-        }
-        catch (CoreException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-    }
 
     void around(): RemoteConfigurationType_internalGetDefaultHandler(){
 

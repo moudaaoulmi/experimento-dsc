@@ -44,7 +44,7 @@ public privileged aspect ConfigHandle
                             || RetrowException_writeHandle();
     
     declare soft: CloneNotSupportedException: cloneHandle();
-    declare soft: CheckstyleException: RetrowException_getUnresolvedPropertiesIterationHandle();
+ //   declare soft: CheckstyleException: RetrowException_getUnresolvedPropertiesIterationHandle();
     declare soft: ParserConfigurationException: RetrowException_runHandle();
     declare soft: TransformerConfigurationException: RetrowException_writeHandle();
     
@@ -118,7 +118,7 @@ public privileged aspect ConfigHandle
         try{
             result = proceed();
         } catch (CheckstyleException e) {
-            checkstyleLogMessage(e);
+            CheckstyleLog.log(e);
         }
         return result;
     }
@@ -172,23 +172,23 @@ public privileged aspect ConfigHandle
         try{
            proceed();
         } catch (CheckstylePluginException e) {
-            retrowException(e);
+            CheckstylePluginException.rethrow(e);
         }
     }
     
-    void around() throws CheckstylePluginException: RetrowException_getUnresolvedPropertiesIterationHandle() {
-        try{
-           proceed();
-        } catch (CheckstyleException e) {
-            this.retrowException(e);
-        }
-    }
+//    void around() throws CheckstylePluginException: RetrowException_getUnresolvedPropertiesIterationHandle() {
+//        try{
+//           proceed();
+//        } catch (CheckstyleException e) {
+//            CheckstylePluginException.rethrow(e);
+//        }
+//    }
     
     void around() throws CheckstylePluginException: RetrowException_loadFromPersistenceHandle() {
         try{
            proceed();
         } catch (CheckstylePluginException e) {
-            retrowException(e, ErrorMessages.errorLoadingConfigFile);
+            CheckstylePluginException.rethrow(e, ErrorMessages.errorLoadingConfigFile);
         }
     }
     
@@ -196,7 +196,7 @@ public privileged aspect ConfigHandle
         try{
            proceed();
         } catch (CheckstylePluginException e) {
-            this.retrowException(e, ErrorMessages.errorMigratingConfig);
+            CheckstylePluginException.rethrow(e, ErrorMessages.errorMigratingConfig);
         } 
     }  
     
@@ -204,7 +204,7 @@ public privileged aspect ConfigHandle
         try{
            proceed();
         } catch (CheckstyleException e) {
-            this.retrowException(e, ErrorMessages.errorWritingConfigFile);
+            CheckstylePluginException.rethrow(e, ErrorMessages.errorWritingConfigFile);
         }
     }
     
@@ -213,12 +213,12 @@ public privileged aspect ConfigHandle
            proceed();
         } catch (TransformerConfigurationException e)
         {
-            this.retrowException(e);
+            CheckstylePluginException.rethrow(e);
         }
         catch (SAXException e)
         {
             Exception ex = e.getException() != null ? e.getException() : e;
-            this.retrowException(ex);
+            CheckstylePluginException.rethrow(ex);
         }
     }
     
@@ -229,29 +229,17 @@ public privileged aspect ConfigHandle
         } catch (SAXException se)
         {
             Exception ex = se.getException() != null ? se.getException() : se;
-            this.retrowException(ex);
+            CheckstylePluginException.rethrow(ex);
         }
         catch (ParserConfigurationException pe)
         {
-            this.retrowException(pe);
+            CheckstylePluginException.rethrow(pe);
         }
         catch (IOException ioe)
         {
-            this.retrowException(ioe);
+            CheckstylePluginException.rethrow(ioe);
         }
         return result;
     }
     
-    
-    private void retrowException(Exception e) throws CheckstylePluginException {
-        CheckstylePluginException.rethrow(e);        
-    }
-    
-    private void retrowException(Exception e, String message) throws CheckstylePluginException {
-        CheckstylePluginException.rethrow(e,message);
-    }
-    
-    private void checkstyleLogMessage(Exception e) {
-        CheckstyleLog.log(e);
-    }
 }
