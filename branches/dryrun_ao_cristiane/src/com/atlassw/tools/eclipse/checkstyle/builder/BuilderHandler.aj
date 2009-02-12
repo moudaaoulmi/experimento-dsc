@@ -36,8 +36,6 @@ public privileged aspect BuilderHandler
     declare soft: IOException: packageNamesLoader_getPackageNameInteration3Handle()||
                                packageNamesLoader_getPackageNamesHandle();
 
-    declare soft: JavaModelException: projectClassLoader_addToClassPathHandle();
-
     declare soft: ClassNotFoundException: packageObjectFactory_createObjectHandle();
 
     declare soft: InstantiationException: packageObjectFactory_createObjectHandle();
@@ -65,9 +63,6 @@ public privileged aspect BuilderHandler
 
     pointcut packageNamesLoader_getPackageNameInteration3Handle(): 
         execution (* PackageNamesLoader.getPackageNameInteration3(..)) ;
-
-    pointcut projectClassLoader_addToClassPathHandle(): 
-        execution (* ProjectClassLoader.addToClassPath(..)) ;
 
     pointcut packageObjectFactory_createObjectHandle(): 
         execution (* PackageObjectFactory.createObject(..)) ;
@@ -152,17 +147,6 @@ public privileged aspect BuilderHandler
         catch (IOException e)
         {
             CheckstyleLog.log(e, "unable to read " + aPackageFile.toExternalForm()); //$NON-NLS-1$
-        }
-    }
-
-    void around(): projectClassLoader_addToClassPathHandle() {
-        try
-        {
-            proceed();
-        }
-        catch (JavaModelException jme)
-        {
-            CheckstyleLog.log(jme);
         }
     }
 
