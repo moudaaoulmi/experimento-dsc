@@ -51,7 +51,6 @@ public privileged aspect BuilderHandler
 
     declare soft: CheckstylePluginException: runCheckstyleOnFilesJob_runInWorkspaceHandle();
 
-    
     // pointcuts
 
     pointcut buildProjectJob_runHandler(): execution (* BuildProjectJob.run(..)) ;
@@ -100,7 +99,7 @@ public privileged aspect BuilderHandler
 
     pointcut runCheckstyleOnFilesJob_runInWorkspaceHandle(): 
         execution (* RunCheckstyleOnFilesJob.runInWorkspace(..)) ;
-    
+
     IStatus around(): buildProjectJob_runHandler() {
         IStatus result = null;
         try
@@ -129,7 +128,6 @@ public privileged aspect BuilderHandler
         }
         return result;
     }
-
 
     void around(): auditor_calculateMarkerOffsetHandle() {
         try
@@ -233,7 +231,9 @@ public privileged aspect BuilderHandler
     }
 
     // reusado
-    Object around(String aName) throws CheckstyleException: (packageObjectFactory_doMakeObjectHandle()||packageObjectFactory_createModuleHandle()) && args(aName) {
+    Object around(String aName) throws CheckstyleException: ( packageObjectFactory_doMakeObjectHandle()||
+                                                              packageObjectFactory_createModuleHandle()   ) 
+                                                              && args(aName) {
         Object result = null;
         try
         {
@@ -273,7 +273,8 @@ public privileged aspect BuilderHandler
         }
     }
 
-    void around() throws CheckstylePluginException: checkstyleBuilder_buildProjectsHandleHandle()||auditor_runAuditHandle() {
+    void around() throws CheckstylePluginException: checkstyleBuilder_buildProjectsHandleHandle()||auditor_runAuditHandle() 
+        {
         try
         {
             proceed();
