@@ -25,7 +25,7 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.PluginFilters;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationTester; 
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationTester;
 import com.atlassw.tools.eclipse.checkstyle.builder.PackageNamesLoader;
 import com.atlassw.tools.eclipse.checkstyle.util.CustomLibrariesClassLoader;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ExternalFileConfigurationEditor;
@@ -69,7 +69,7 @@ public aspect GeneralExceptionHandler
                                          PrefsInitializer_internalinitializeDefaultPreferencesHandler();
 
     declare soft: CheckstyleException: auditor_runAuditHandle() ||
-                                       RetrowException_getUnresolvedPropertiesIterationHandle();
+                                       RetrowException_getUnresolvedPropertiesIterationHandle();;
 
     declare soft: IOException: auditor_runAuditHandle()||
                                packageNamesLoader_getPackageNameInteration1Handle() ||
@@ -89,10 +89,10 @@ public aspect GeneralExceptionHandler
                                                  RetrowException_runHandle() ||
                                                  ProjectConfigurationFactory_internalLoadFromPersistenceHandler();
 
-
     // ---------------------------
     // Pointcut's
     // ---------------------------
+
     pointcut RetrowException_runHandle(): 
         execution (* ConfigurationReader.read(..)) ;
 
@@ -177,9 +177,9 @@ public aspect GeneralExceptionHandler
     // Advice's
     // ---------------------------
 
-    Object around() throws CheckstylePluginException: RetrowException_runHandle() ||
-                                                      ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
-                                                      checkConfigurationMigrator_migrateHandler(){
+     Object around() throws CheckstylePluginException: RetrowException_runHandle() ||
+                                                       ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
+                                                       checkConfigurationMigrator_migrateHandler(){
         Object result = null;
         try
         {
@@ -221,6 +221,7 @@ public aspect GeneralExceptionHandler
             InputStream inStream) throws CheckstylePluginException : 
                     ProjectConfigurationFactory_internalLoadFromPersistenceHandler() && 
                     args(project,configuration, file, inStream){
+
         IProjectConfiguration result = configuration;
         try
         {
@@ -234,10 +235,11 @@ public aspect GeneralExceptionHandler
     }
 
     void around(Object file, OutputStream out) throws CheckstylePluginException: 
-        (ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
-         ExternalFileConfiguration_internalEnsureFileExistsHandler() ||
-         checkConfigurationMigrator_ensureFileExistsHandler() ) && 
+        (   ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
+            ExternalFileConfiguration_internalEnsureFileExistsHandler() ||
+            checkConfigurationMigrator_ensureFileExistsHandler() ) && 
         args(file, out){
+
         try
         {
             proceed(file, out);
@@ -249,20 +251,6 @@ public aspect GeneralExceptionHandler
         finally
         {
             IOUtils.closeQuietly(out);
-        }
-    }
-
-    void around(): ConfigurationType_internalStaticHandler() || 
-                   CheckstylePlugin_startHandle() || 
-                   saveFilters_internalHandler() ||
-                   PluginFilters_internalHandler(){
-        try
-        {
-            proceed();
-        }
-        catch (Exception e)
-        {
-            CheckstyleLog.log(e);
         }
     }
 
@@ -304,9 +292,38 @@ public aspect GeneralExceptionHandler
         }
     }
 
-    Object around() throws CheckstylePluginException:
-        ConfigurationType_getResolvedConfigurationFileURLHandler()||
-        ConfigurationType_getCheckstyleConfigurationHandler(){
+    void around() throws CheckstylePluginException: auditor_runAuditHandle() ||
+                                                    RetrowException_getUnresolvedPropertiesIterationHandle() {
+        try
+        {
+            proceed();
+        }
+        catch (CheckstyleException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+    }
+
+    // Esses com catch (Exception) só estão aqui sendo reusados pq os pointcuts
+    // deles
+    // passaram a não mais existir em outros aspectos.
+    // se existissem, teria que acontecer uma precedencia entre os aspectos.
+    void around(): ConfigurationType_internalStaticHandler() || 
+                   CheckstylePlugin_startHandle() || 
+                   saveFilters_internalHandler() ||
+                   PluginFilters_internalHandler(){
+        try
+        {
+            proceed();
+        }
+        catch (Exception e)
+        {
+            CheckstyleLog.log(e);
+        }
+    }
+
+    Object around() throws CheckstylePluginException: ConfigurationType_getResolvedConfigurationFileURLHandler()||
+                                                      ConfigurationType_getCheckstyleConfigurationHandler(){
 
         Object result = null;
         try
@@ -320,17 +337,5 @@ public aspect GeneralExceptionHandler
         }
         return result;
 
-    }
-
-    void around() throws CheckstylePluginException: auditor_runAuditHandle() ||
-                                                    RetrowException_getUnresolvedPropertiesIterationHandle() {
-        try
-        {
-            proceed();
-        }
-        catch (CheckstyleException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
     }
 }

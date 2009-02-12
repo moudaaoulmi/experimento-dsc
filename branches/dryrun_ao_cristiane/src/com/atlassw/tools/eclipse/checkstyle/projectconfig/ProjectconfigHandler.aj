@@ -47,7 +47,8 @@ public privileged aspect ProjectconfigHandler
     pointcut ProjectConfigurationFactory_internalEndElementHandler(): execution(* ProjectConfigurationFactory.ProjectConfigFileHandler.internalEndElement(..));
 
 
-    pointcut ProjectConfigurationWorkingCopy_internalStoreToPersistenceHandler(): execution(* ProjectConfigurationWorkingCopy.internalStoreToPersistence(..));
+    pointcut ProjectConfigurationWorkingCopy_internalStoreToPersistenceHandler(): 
+        execution(* ProjectConfigurationWorkingCopy.internalStoreToPersistence(..));
     
     // ---------------------------
     // Advice's
