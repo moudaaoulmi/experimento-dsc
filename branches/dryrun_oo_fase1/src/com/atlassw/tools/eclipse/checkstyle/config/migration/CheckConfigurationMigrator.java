@@ -37,6 +37,7 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.osgi.util.NLS;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
