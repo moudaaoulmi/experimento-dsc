@@ -86,6 +86,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
     /** flags if the configuration is dirty. */
     private boolean mHasConfigChanged;
 
+    private ConfigHandler configHandler = new ConfigHandler();
     //
     // constructors
     //
@@ -209,8 +210,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
             }
             catch (Exception e)
             {
-                mEditedLocation = oldLocation;
-                CheckstylePluginException.rethrow(e, NLS
+                configHandler.checkstyleLog_E_MSG(e, NLS
                         .bind(ErrorMessages.errorResolveConfigLocation, location, e
                                 .getLocalizedMessage()));
             }
@@ -282,7 +282,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
         }
         finally
         {
-            IOUtils.closeQuietly(in);
+            configHandler.closeQuietlyInputStream(in);
         }
 
         return result;
@@ -340,12 +340,12 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
         }
         catch (IOException e)
         {
-            CheckstylePluginException.rethrow(e);
+            configHandler.rethrowCheckstylePluginException(e);
         }
         finally
         {
-            IOUtils.closeQuietly(byteOut);
-            IOUtils.closeQuietly(out);
+            configHandler.closeQuietlyOutputStream(byteOut);
+            configHandler.closeQuietlyOutputStream(out);
         }
     }
 
@@ -499,7 +499,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
         }
         catch (CloneNotSupportedException e)
         {
-            throw new InternalError(); // this should never happen
+            configHandler.throwInternalError();
         }
         return clone;
     }

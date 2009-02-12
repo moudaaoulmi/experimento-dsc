@@ -50,6 +50,7 @@ public final class ConfigurationWriter
     // constants
     //
 
+    
     //
     // constructors
     //
@@ -93,6 +94,7 @@ public final class ConfigurationWriter
     public static void write(OutputStream out, List modules, ICheckConfiguration checkConfig)
         throws CheckstylePluginException
     {
+        final ConfigHandler configHandler = new ConfigHandler();
 
         try
         {
@@ -141,12 +143,11 @@ public final class ConfigurationWriter
         }
         catch (TransformerConfigurationException e)
         {
-            CheckstylePluginException.rethrow(e);
+            configHandler.rethrowCheckstylePluginException(e);
         }
         catch (SAXException e)
         {
-            Exception ex = e.getException() != null ? e.getException() : e;
-            CheckstylePluginException.rethrow(ex);
+            configHandler.rethrowCheckstylePluginException(e.getException() != null ? e.getException() : e);
         }
     }
 

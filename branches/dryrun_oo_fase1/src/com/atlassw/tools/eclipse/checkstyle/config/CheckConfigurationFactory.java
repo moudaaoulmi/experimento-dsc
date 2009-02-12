@@ -49,7 +49,6 @@ import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.config.migration.CheckConfigurationMigrator;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
 
@@ -374,7 +373,6 @@ public final class CheckConfigurationFactory
         }
         catch (Exception e)
         {
-           // CheckstylePluginException.rethrow(e, ErrorMessages.errorMigratingConfig);
             configHandler.rethrowCheckstylePluginException_E_MSG(e, ErrorMessages.errorMigratingConfig);
         }
 
@@ -517,8 +515,7 @@ public final class CheckConfigurationFactory
 
                 }
                 catch (Exception e)
-                {
-                    //throw new SAXException(e);
+                {                  
                     configHandler.rethrowSAXException(e);
                 }
             }

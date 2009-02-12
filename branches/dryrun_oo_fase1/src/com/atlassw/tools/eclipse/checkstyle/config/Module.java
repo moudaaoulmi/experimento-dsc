@@ -29,6 +29,7 @@ import java.util.Map;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.RuleMetadata;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -70,6 +71,8 @@ public class Module implements Cloneable
 
     /** map containing unknown custom metadata of the module. */
     private Map mCustomMetaData = new HashMap();
+    
+    private ConfigHandler configHandler = new ConfigHandler();
 
     //
     // constructors
@@ -356,7 +359,7 @@ public class Module implements Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            throw new InternalError(); // should not happen
+            return configHandler.throwInternalError();
         }
     }
 }

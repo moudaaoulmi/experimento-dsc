@@ -24,6 +24,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
+
 /**
  * Represents a configuration property who's value must be resolved.
  * 
@@ -49,6 +51,8 @@ public class ResolvableProperty implements Cloneable
 
     /** The property value. */
     private String mValue;
+    
+    private ConfigHandler configHandler = new ConfigHandler();
 
     // =================================================
     // Constructors & finalizer.
@@ -141,7 +145,7 @@ public class ResolvableProperty implements Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            throw new InternalError(); // should never happen
+            return configHandler.throwInternalError();
         }
     }
 

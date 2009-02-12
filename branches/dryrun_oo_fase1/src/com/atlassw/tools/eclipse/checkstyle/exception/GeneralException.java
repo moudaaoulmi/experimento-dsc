@@ -81,9 +81,9 @@ public class GeneralException
         return;
     }
     
-    public void throwInternalError() throws InternalError
+    public Object throwInternalError() throws InternalError
     {
-        throw new InternalError();
+       throw new InternalError();
     }
     
     public void returnDefault(Object result)
