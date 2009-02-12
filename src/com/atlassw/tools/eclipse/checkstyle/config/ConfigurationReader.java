@@ -98,6 +98,7 @@ public final class ConfigurationReader
     public static List read(InputStream in) throws CheckstylePluginException
     {
 
+        final ConfigHandler configHandler = new ConfigHandler();
         List rules = null;
         try
         {
@@ -107,16 +108,16 @@ public final class ConfigurationReader
         }
         catch (SAXException se)
         {
-            Exception ex = se.getException() != null ? se.getException() : se;
-            CheckstylePluginException.rethrow(ex);
+            configHandler.rethrowCheckstylePluginException(se.getException() != null ? se.getException() : se);
         }
         catch (ParserConfigurationException pe)
         {
-            CheckstylePluginException.rethrow(pe);
+           
+            configHandler.rethrowCheckstylePluginException(pe);
         }
         catch (IOException ioe)
         {
-            CheckstylePluginException.rethrow(ioe);
+            configHandler.rethrowCheckstylePluginException(ioe);
         }
 
         return rules != null ? rules : new ArrayList();
@@ -192,6 +193,7 @@ public final class ConfigurationReader
     private static class ConfigurationHandler extends DefaultHandler
     {
 
+        final ConfigHandler configHandler = new ConfigHandler();
         /** The list of modules. */
         private List mRules = new ArrayList();
 
@@ -234,7 +236,7 @@ public final class ConfigurationReader
             }
             catch (IOException e)
             {
-                throw new SAXException("" + e, e); //$NON-NLS-1$
+                return (InputSource)configHandler.rethrowSAXException_MSG("" + e, e);
             }
         }
 
@@ -278,7 +280,7 @@ public final class ConfigurationReader
                     }
                     catch (IllegalArgumentException e)
                     {
-                        module.setSeverity(SeverityLevel.WARNING);
+                        configHandler.severityModule(module);
                     }
                 }
                 else if (name.equals(XMLTags.ID_TAG))

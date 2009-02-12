@@ -264,7 +264,6 @@ public class EnhancedTableViewer extends TableViewer
         }
         catch (NumberFormatException e)
         {
-            //mSortedColumnIndex = 0;
             tableHandler.returnDefault(mSortedColumnIndex);
         }
         try
@@ -273,7 +272,6 @@ public class EnhancedTableViewer extends TableViewer
         }
         catch (NumberFormatException e)
         {
-            //mSortDirection = DIRECTION_FORWARD; 
             tableHandler.restoreState2Handler(mSortDirection, DIRECTION_FORWARD);
             
         }
@@ -294,8 +292,6 @@ public class EnhancedTableViewer extends TableViewer
             }
             catch (NumberFormatException e)
             {
-                // probably a new column
-               // allColumnsHaveStoredData = false;
                 tableHandler.returnDefault(allColumnsHaveStoredData);
             }
         }

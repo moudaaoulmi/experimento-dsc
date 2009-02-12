@@ -21,6 +21,7 @@
 package com.atlassw.tools.eclipse.checkstyle.config;
 
 import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 
 /**
  * A simple configuration consisting of a name/value pair.
@@ -48,6 +49,7 @@ public class ConfigProperty implements Comparable, Cloneable
     /** The meta data of the property. */
     private ConfigPropertyMetadata mMetaData;
 
+    private GeneralException generalException = new GeneralException();
     // =================================================
     // Constructors & finalizer.
     // =================================================
@@ -161,7 +163,7 @@ public class ConfigProperty implements Comparable, Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            throw new InternalError(); // Should not happen
+            return generalException.throwInternalError();
         }
     }
 }

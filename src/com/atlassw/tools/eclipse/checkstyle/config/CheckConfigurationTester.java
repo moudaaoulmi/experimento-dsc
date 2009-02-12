@@ -52,6 +52,8 @@ public class CheckConfigurationTester
     private ICheckConfiguration mCheckConfiguration;
 
     private IProject mContextProject;
+    
+    private ConfigHandler configHandler = new ConfigHandler();
 
     /**
      * Creates a tester for the given check configuration.
@@ -115,14 +117,13 @@ public class CheckConfigurationTester
         }
         catch (CheckstyleException e)
         {
-            CheckstylePluginException.rethrow(e);
+            configHandler.rethrowCheckstylePluginException(e);
         }
         finally
         {
-            IOUtils.closeQuietly(in);
-
+            configHandler.closeQuietlyInputStream(in);
             // restore the original classloader
-            Thread.currentThread().setContextClassLoader(contextClassloader);
+            configHandler.restoreClassLoader(contextClassloader);
         }
 
         return collector.getUnresolvedProperties();
