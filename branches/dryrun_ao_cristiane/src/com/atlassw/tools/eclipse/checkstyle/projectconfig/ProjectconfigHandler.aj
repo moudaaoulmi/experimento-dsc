@@ -3,7 +3,6 @@ package com.atlassw.tools.eclipse.checkstyle.projectconfig;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,7 +16,6 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import com.atlassw.tools.eclipse.checkstyle.exception.GeneralExceptionHandler;
 
 public privileged aspect ProjectconfigHandler
 {
@@ -44,7 +42,7 @@ public privileged aspect ProjectconfigHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    pointcut FileMatchPattern_internalSetMatchPatternHandler() : execution (* FileMatchPattern.internalSetMatchPattern(..));
+    // pointcut FileMatchPattern_internalSetMatchPatternHandler() : execution (* FileMatchPattern.internalSetMatchPattern(..));
 
     pointcut FileMatchPattern_cloneHandler(): execution(* FileMatchPattern.clone(..));
 
@@ -62,20 +60,20 @@ public privileged aspect ProjectconfigHandler
 
     pointcut ProjectConfigurationWorkingCopy_internalStoreToPersistenceHandler(): execution(* ProjectConfigurationWorkingCopy.internalStoreToPersistence(..));
 
-    public pointcut exceptionPoints(): execution (* FileMatchPattern.internalSetMatchPattern(..));
+//    public pointcut exceptionPoints(): execution (* FileMatchPattern.internalSetMatchPattern(..));
     
     // ---------------------------
     // Advice's
     // ---------------------------
     
-    void around() throws CheckstylePluginException : 
-        FileMatchPattern_internalSetMatchPatternHandler(){    
-        try{
-            proceed();
-        }catch(Exception e){
-            CheckstylePluginException.rethrow(e); // wrap the exception
-        }
-    }
+//    void around() throws CheckstylePluginException : 
+//        FileMatchPattern_internalSetMatchPatternHandler(){    
+//        try{
+//            proceed();
+//        }catch(Exception e){
+//            CheckstylePluginException.rethrow(e); // wrap the exception
+//        }
+//    }
     
     Object around() : FileMatchPattern_cloneHandler() || FileMatchPattern_cloneFileSetHandler() || 
                       FileMatchPattern_cloneProjectHandler() || FileMatchPattern_cloneWorkingCopyHandler(){
