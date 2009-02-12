@@ -5,6 +5,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.osgi.service.prefs.BackingStoreException;
 
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
@@ -18,7 +19,11 @@ import com.atlassw.tools.eclipse.checkstyle.config.gui.RuleConfigurationEditDial
 import com.atlassw.tools.eclipse.checkstyle.preferences.PrefsInitializer;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.PluginFilters;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationType;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationTester;
+import com.atlassw.tools.eclipse.checkstyle.config.GlobalCheckConfigurationWorkingSet;;
+
+
 
 public aspect GeneralExceptionHandler
 {
@@ -32,6 +37,7 @@ public aspect GeneralExceptionHandler
                               ConfigurationType_getResolvedConfigurationFileURLHandler() ||
                               ConfigurationType_getCheckstyleConfigurationHandler() ||
                               FileMatchPattern_internalSetMatchPatternHandler();
+                              
 
     declare soft: CoreException: auditor_addErrorHandle() || 
                                  RemoteConfigurationType_storeCredentialsHandler();
@@ -44,9 +50,18 @@ public aspect GeneralExceptionHandler
                                          internalWidgetSelectedHandler() || 
                                          PrefsInitializer_internalinitializeDefaultPreferencesHandler();
 
+    declare soft: CheckstyleException: auditor_runAuditHandle() ||
+                                       RetrowException_getUnresolvedPropertiesIterationHandle();
+
     // ---------------------------
     // Pointcut's
     // ---------------------------
+    pointcut RetrowException_getUnresolvedPropertiesIterationHandle(): 
+        execution (* CheckConfigurationTester.getUnresolvedPropertiesIteration(..)) ;
+  
+    pointcut auditor_runAuditHandle(): 
+        execution (* Auditor.runAudit(..)) ;
+    
     pointcut ConfigurationType_internalStaticHandler():
         execution(* ConfigurationTypes.internalStatic(..));
 
@@ -157,5 +172,17 @@ public aspect GeneralExceptionHandler
         }
         return result;
 
+    }
+
+    void around() throws CheckstylePluginException: auditor_runAuditHandle() ||
+                                                    RetrowException_getUnresolvedPropertiesIterationHandle() {
+        try
+        {
+            proceed();
+        }
+        catch (CheckstyleException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
     }
 }
