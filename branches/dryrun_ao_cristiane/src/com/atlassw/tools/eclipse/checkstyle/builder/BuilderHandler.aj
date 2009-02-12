@@ -150,12 +150,12 @@ public privileged aspect BuilderHandler
         }
         catch (SAXException e)
         {
-            checkstyleLogMessage(e, "unable to parse " + aPackageFile.toExternalForm() //$NON-NLS-1$
+            CheckstyleLog.log(e, "unable to parse " + aPackageFile.toExternalForm() //$NON-NLS-1$
                     + " - " + e.getLocalizedMessage()); //$NON-NLS-1$
         }
         catch (IOException e)
         {
-            checkstyleLogMessage(e, "unable to read " + aPackageFile.toExternalForm()); //$NON-NLS-1$
+            CheckstyleLog.log(e, "unable to read " + aPackageFile.toExternalForm()); //$NON-NLS-1$
         }
     }
 
@@ -180,16 +180,6 @@ public privileged aspect BuilderHandler
             // log the exception although this should not happen
             CheckstyleLog.log(mfe, mfe.getLocalizedMessage());
         }
-    }
-
-    private void checkstyleLogMessage(Exception e, String message)
-    {
-        CheckstyleLog.log(e, message);
-    }
-
-    private void checkstyleLogMessage(Exception e)
-    {
-        CheckstyleLog.log(e);
     }
 
     Object around(String aClassName) throws CheckstyleException: packageObjectFactory_createObjectHandle() && args(aClassName) {
@@ -269,7 +259,7 @@ public privileged aspect BuilderHandler
         }
         catch (IOException e)
         {
-            retrowException(e); //$NON-NLS-1$
+            CheckstylePluginException.rethrow(e); //$NON-NLS-1$
         }
     }
 
@@ -281,20 +271,20 @@ public privileged aspect BuilderHandler
         }
         catch (CoreException e)
         {
-            this.retrowException(e);
+            CheckstylePluginException.rethrow(e);
         }
     }
 
-    void around() throws CheckstylePluginException: auditor_runAuditHandle() {
-        try
-        {
-            proceed();
-        }
-        catch (CheckstyleException e)
-        {
-            this.retrowException(e);
-        }
-    }
+//    void around() throws CheckstylePluginException: auditor_runAuditHandle() {
+//        try
+//        {
+//            proceed();
+//        }
+//        catch (CheckstyleException e)
+//        {
+//            CheckstylePluginException.rethrow(e);
+//        }
+//    }
 
     // fim reuso
 
@@ -306,31 +296,20 @@ public privileged aspect BuilderHandler
         }
         catch (ParserConfigurationException e)
         {
-            retrowException(e, "unable to parse " + PackageNamesLoader.DEFAULT_PACKAGES); //$NON-NLS-1$
+            CheckstylePluginException.rethrow(e, "unable to parse " + PackageNamesLoader.DEFAULT_PACKAGES); //$NON-NLS-1$
         }
         catch (SAXException e)
         {
-            retrowException(e,
+            CheckstylePluginException.rethrow(e,
                     "unable to parse " + PackageNamesLoader.DEFAULT_PACKAGES + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch (IOException e)
         {
-            retrowException(e, "unable to parse " + PackageNamesLoader.DEFAULT_PACKAGES); //$NON-NLS-1$
+            CheckstylePluginException.rethrow(e, "unable to parse " + PackageNamesLoader.DEFAULT_PACKAGES); //$NON-NLS-1$
         }
         return result;
     }
 
-    private void retrowException(Exception e) throws CheckstylePluginException
-    {
-        CheckstylePluginException.rethrow(e);
-    }
-
-    private void retrowException(Exception e, String message) throws CheckstylePluginException
-    {
-        CheckstylePluginException.rethrow(e, message);
-    }
-
-    // reusado
 
     Object around() throws CoreException : runCheckstyleOnFilesJob_runInWorkspaceHandle() ||checkstyleBuilder_handleBuildSelectionHandler() {
         try
