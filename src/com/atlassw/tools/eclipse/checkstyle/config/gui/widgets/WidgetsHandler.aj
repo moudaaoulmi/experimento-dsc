@@ -18,6 +18,8 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public aspect WidgetsHandler
 {
 
+    declare soft: Exception: validateIntegerHandler() || validateRegexHandler();
+    
     pointcut validateIntegerHandler() : execution(* ConfigPropertyWidgetInteger.validate(..));
     pointcut validateRegexHandler() : execution(* ConfigPropertyWidgetRegex.validate(..));
     pointcut internalGetTextHandler() : execution(* ConfigPropertyWidgetMultiCheck.TokenLabelProvider.internalGetText(..));
@@ -29,7 +31,7 @@ public aspect WidgetsHandler
             proceed();
         }catch (Exception e){
             CheckstylePluginException.rethrow(e, e.getLocalizedMessage());
-        }
+        }        
     }
     
     
@@ -52,4 +54,4 @@ public aspect WidgetsHandler
         }
     }
     
-}//WidgetsHandler
+}
