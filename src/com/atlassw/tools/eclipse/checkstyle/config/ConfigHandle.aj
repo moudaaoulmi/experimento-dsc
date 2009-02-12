@@ -160,7 +160,7 @@ public privileged aspect ConfigHandle
         try {
            result = proceed();
         } catch (IOException e) {
-            throw new SAXException("" + e, e); //$NON-NLS-1$
+            throw new SAXException("" + e, e);
         } catch (CheckstylePluginException e) {
             throw new SAXException(e);
         }
