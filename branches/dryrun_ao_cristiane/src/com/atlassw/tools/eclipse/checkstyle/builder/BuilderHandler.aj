@@ -25,15 +25,16 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 public privileged aspect BuilderHandler
 {
 
-    declare soft: CoreException: buildProjectJob_runHandler() ||auditor_runAuditHandle()||checkstyleBuilder_buildProjectsHandleHandle();
-
+    declare soft: CoreException: buildProjectJob_runHandler();
+    
     declare soft: CheckstylePluginException: checkstyleBuilder_buildHandler()|| checkstyleBuilder_handleBuildSelectionHandler();
 
     declare soft: BadLocationException: auditor_calculateMarkerOffsetHandle();
 
     declare soft: SAXException: packageNamesLoader_getPackageNameInteration3Handle()||packageNamesLoader_getPackageNamesHandle();
 
-    declare soft: IOException: packageNamesLoader_getPackageNameInteration3Handle()||auditor_runAuditHandle()||packageNamesLoader_getPackageNameInteration1Handle()||packageNamesLoader_getPackageNamesHandle();
+    declare soft: IOException: packageNamesLoader_getPackageNameInteration3Handle()||
+                               packageNamesLoader_getPackageNamesHandle();
 
     declare soft: JavaModelException: projectClassLoader_addToClassPathHandle();
 
@@ -88,11 +89,6 @@ public privileged aspect BuilderHandler
 
     pointcut auditor_runAuditHandle(): 
         execution (* Auditor.runAudit(..)) ;
-
-    pointcut checkstyleBuilder_buildProjectsHandleHandle(): execution(* CheckstyleBuilder.buildProjectsHandle(..));
-
-    pointcut packageNamesLoader_getPackageNameInteration1Handle(): 
-        execution (* PackageNamesLoader.getPackageNameInteration1(..)) ;
 
     pointcut packageNamesLoader_getPackageNamesHandle(): 
         execution (* PackageNamesLoader.getPackageNames(..)) ;
@@ -220,7 +216,6 @@ public privileged aspect BuilderHandler
         return result;
     }
 
-    // reusado
     Object around(String aName) throws CheckstyleException: ( packageObjectFactory_doMakeObjectHandle()||
                                                               packageObjectFactory_createModuleHandle()   ) 
                                                               && args(aName) {
@@ -250,44 +245,6 @@ public privileged aspect BuilderHandler
         return result;
     }
 
-    // inicio reuso
-
-    void around() throws CheckstylePluginException: packageNamesLoader_getPackageNameInteration1Handle()||auditor_runAuditHandle() {
-        try
-        {
-            proceed();
-        }
-        catch (IOException e)
-        {
-            CheckstylePluginException.rethrow(e); //$NON-NLS-1$
-        }
-    }
-
-    void around() throws CheckstylePluginException: checkstyleBuilder_buildProjectsHandleHandle()||auditor_runAuditHandle() 
-        {
-        try
-        {
-            proceed();
-        }
-        catch (CoreException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-    }
-
-//    void around() throws CheckstylePluginException: auditor_runAuditHandle() {
-//        try
-//        {
-//            proceed();
-//        }
-//        catch (CheckstyleException e)
-//        {
-//            CheckstylePluginException.rethrow(e);
-//        }
-//    }
-
-    // fim reuso
-
     List<Object> around() throws CheckstylePluginException: packageNamesLoader_getPackageNamesHandle() {
         List<Object> result = null;
         try
@@ -309,7 +266,6 @@ public privileged aspect BuilderHandler
         }
         return result;
     }
-
 
     Object around() throws CoreException : runCheckstyleOnFilesJob_runInWorkspaceHandle() ||checkstyleBuilder_handleBuildSelectionHandler() {
         try
