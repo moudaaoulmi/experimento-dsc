@@ -7,13 +7,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.osgi.service.prefs.BackingStoreException;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
-
+import org.eclipse.jdt.core.JavaModelException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
-import com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.builder.Auditor;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationWorkingSetEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
@@ -39,6 +38,12 @@ import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationReader;
 import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
+import com.atlassw.tools.eclipse.checkstyle.builder.ProjectClassLoader;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.PackageFilterEditor;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.NonSrcDirsFilter;
+import com.atlassw.tools.eclipse.checkstyle.properties.FileSetEditDialog;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.CheckFileOnOpenPartListener;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteConfigurationType;
 
 public aspect GeneralExceptionHandler
 {
@@ -53,16 +58,21 @@ public aspect GeneralExceptionHandler
                               ConfigurationType_getCheckstyleConfigurationHandler() ||
                               FileMatchPattern_internalSetMatchPatternHandler();
 
-    declare soft: CoreException: auditor_addErrorHandle() || 
-                                 RemoteConfigurationType_storeCredentialsHandler() ||
-                                 auditor_runAuditHandle() ||
+    declare soft: CoreException: auditor_runAuditHandle() ||
                                  ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
                                  checkstyleBuilder_buildProjectsHandleHandle() ||
-                                 ProjectConfigurationFactory_internalLoadFromPersistenceHandler();
+                                 ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
+                                 CheckFileOnOpenPartListener_internalPartClosedHandler() ||
+                                 CheckFileOnOpenPartListener_isFileAffectedHandler() ||
+                                 NonSrcDirsFilter_getSourceDirPathsHandler() ||
+                                 internalRunHandler() ||
+                                 auditor_addErrorHandle() ||
+                                 RemoteConfigurationType_storeCredentialsHandler();
 
     declare soft: CheckstylePluginException: internalSelectionChanged_2Handler() || 
                                              RemoteConfigurationType_secInternalGetBytesFromURLConnectionHandler() || 
-                                             metadataFactory_refreshHandler();
+                                             metadataFactory_refreshHandler() ||
+                                             CheckFileOnOpenPartListener_isFileAffectedHandler();
 
     declare soft: BackingStoreException: internalCreateButtonBarHandler() || 
                                          internalWidgetSelectedHandler() || 
@@ -89,9 +99,35 @@ public aspect GeneralExceptionHandler
                                                  RetrowException_runHandle() ||
                                                  ProjectConfigurationFactory_internalLoadFromPersistenceHandler();
 
+    declare soft: JavaModelException: NonSrcDirsFilter_getSourceDirPathsHandler() ||
+                                      SourceFolderContentProvider_handleProjectHandler() || 
+                                      SourceFolderContentProvider_handleContainerHandler() ||
+                                      projectClassLoader_addToClassPathHandle();
+
     // ---------------------------
     // Pointcut's
     // ---------------------------
+    pointcut internalRunHandler(): 
+        call(* FileSetEditDialog.getFiles(..)) &&
+        withincode(* FileSetEditDialog.internalRun(..));
+
+    pointcut CheckFileOnOpenPartListener_internalPartClosedHandler(): 
+        execution(* CheckFileOnOpenPartListener.internalPartClosed(..));
+
+    pointcut CheckFileOnOpenPartListener_isFileAffectedHandler(): 
+        execution(* CheckFileOnOpenPartListener.isFileAffected(..));
+
+    pointcut projectClassLoader_addToClassPathHandle(): 
+        execution (* ProjectClassLoader.addToClassPath(..)) ;
+
+    pointcut SourceFolderContentProvider_handleContainerHandler(): 
+        execution(* PackageFilterEditor.SourceFolderContentProvider.handleContainer(..));
+
+    pointcut NonSrcDirsFilter_getSourceDirPathsHandler(): 
+        execution(* NonSrcDirsFilter.getSourceDirPaths(..));
+
+    pointcut SourceFolderContentProvider_handleProjectHandler(): 
+        execution(* PackageFilterEditor.SourceFolderContentProvider.handleProject(..));
 
     pointcut RetrowException_runHandle(): 
         execution (* ConfigurationReader.read(..)) ;
@@ -176,8 +212,41 @@ public aspect GeneralExceptionHandler
     // ---------------------------
     // Advice's
     // ---------------------------
+    Object around(): CheckFileOnOpenPartListener_internalPartClosedHandler() ||
+                     CheckFileOnOpenPartListener_isFileAffectedHandler() ||
+                     NonSrcDirsFilter_getSourceDirPathsHandler() ||
+                     internalRunHandler() ||
+                     auditor_addErrorHandle() ||
+                     RemoteConfigurationType_storeCredentialsHandler(){
+        Object result = null;
+        try
+        {
+            result = proceed();
+        }
+        catch (CoreException e)
+        {
+            CheckstyleLog.log(e);
+        }
+        return result;
+    }
 
-     Object around() throws CheckstylePluginException: RetrowException_runHandle() ||
+    Object around() : NonSrcDirsFilter_getSourceDirPathsHandler() ||
+                      SourceFolderContentProvider_handleProjectHandler() || 
+                      SourceFolderContentProvider_handleContainerHandler() ||
+                      projectClassLoader_addToClassPathHandle(){
+        Object result = null;
+        try
+        {
+            result = proceed();
+        }
+        catch (JavaModelException e)
+        {
+            CheckstyleLog.log(e);
+        }
+        return result;
+    }
+
+    Object around() throws CheckstylePluginException: RetrowException_runHandle() ||
                                                        ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
                                                        checkConfigurationMigrator_migrateHandler(){
         Object result = null;
@@ -254,29 +323,20 @@ public aspect GeneralExceptionHandler
         }
     }
 
-    void around(): auditor_addErrorHandle() || 
-                   RemoteConfigurationType_storeCredentialsHandler() {
-        try
-        {
-            proceed();
-        }
-        catch (CoreException e)
-        {
-            CheckstyleLog.log(e);
-        }
-    }
-
-    void around(): RemoteConfigurationType_secInternalGetBytesFromURLConnectionHandler() || 
+    Object around(): RemoteConfigurationType_secInternalGetBytesFromURLConnectionHandler() || 
                    internalSelectionChanged_2Handler() || 
-                   metadataFactory_refreshHandler(){
+                   metadataFactory_refreshHandler() ||
+                   CheckFileOnOpenPartListener_isFileAffectedHandler(){
+        Object result = null;
         try
         {
-            proceed();
+            result = proceed();
         }
         catch (CheckstylePluginException e)
         {
             CheckstyleLog.log(e);
         }
+        return result;
     }
 
     void around(): internalCreateButtonBarHandler() || 
