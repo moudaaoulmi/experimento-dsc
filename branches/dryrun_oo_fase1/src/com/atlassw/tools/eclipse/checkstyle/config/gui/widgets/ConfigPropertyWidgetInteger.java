@@ -135,16 +135,9 @@ public class ConfigPropertyWidgetInteger extends ConfigPropertyWidgetAbstractBas
      */
     public void validate() throws CheckstylePluginException
     {
-        try
-        {
             //
             // Parse the value to see if an exception gets thrown.
             //
             Integer.parseInt(mTextWidget.getText());
-        }
-        catch (NumberFormatException e)
-        {
-            CheckstylePluginException.rethrow(e, e.getLocalizedMessage());
-        }
     }
 }
