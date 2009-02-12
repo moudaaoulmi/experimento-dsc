@@ -44,7 +44,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
-import com.sun.tools.javac.jvm.Gen;
 
 /**
  * Page to cast votes for the plugin.
