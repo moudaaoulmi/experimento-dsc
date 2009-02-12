@@ -43,7 +43,6 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
  */
 public final class ConfigurationTypes
 {
-
     //
     // constants
     //
