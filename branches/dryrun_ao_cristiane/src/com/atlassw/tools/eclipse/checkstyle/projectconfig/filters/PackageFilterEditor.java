@@ -194,7 +194,7 @@ public class PackageFilterEditor implements IFilterEditor
      * 
      * @author Lars Ködderitzsch
      */
-    private class SourceFolderContentProvider implements ITreeContentProvider
+    public class SourceFolderContentProvider implements ITreeContentProvider
     {
 
         /**
