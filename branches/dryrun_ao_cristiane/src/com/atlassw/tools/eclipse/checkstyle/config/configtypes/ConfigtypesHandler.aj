@@ -46,9 +46,9 @@ public privileged aspect ConfigtypesHandler
     // Declare soft's
     // ---------------------------
     
-    declare soft: IOException : ConfigurationType_getResolvedConfigurationFileURLHandler() ||
-                                ConfigurationType_getCheckstyleConfigurationHandler() ||
-                                exceptionPoints() ||
+    declare soft: IOException :// ConfigurationType_getResolvedConfigurationFileURLHandler() ||
+                                //ConfigurationType_getCheckstyleConfigurationHandler() ||
+                                //exceptionPoints() ||
                                 ConfigurationType_internalGetAdditionPropertiesBundleBytesHandler() ||
                                 ExternalFileConfiguration_internalEnsureFileExistsHandler() ||
                                 ProjectConfigurationEditor_internalEnsureFileExistsHandler() || 
@@ -87,13 +87,13 @@ public privileged aspect ConfigtypesHandler
     // Pointcut's
     // ---------------------------
     
-    pointcut ConfigurationType_getResolvedConfigurationFileURLHandler() : 
-            execution (* ConfigurationType.getResolvedConfigurationFileURL(..)) &&
-            within(ConfigurationType);
-
-    pointcut ConfigurationType_getCheckstyleConfigurationHandler() : 
-            execution (* ConfigurationType.getCheckstyleConfiguration(..)) &&
-            within(ConfigurationType);
+//    pointcut ConfigurationType_getResolvedConfigurationFileURLHandler() : 
+//            execution (* ConfigurationType.getResolvedConfigurationFileURL(..)) &&
+//            within(ConfigurationType);
+//
+//    pointcut ConfigurationType_getCheckstyleConfigurationHandler() : 
+//            execution (* ConfigurationType.getCheckstyleConfiguration(..)) &&
+//            within(ConfigurationType);
 
     pointcut ConfigurationType_internalGetAdditionPropertiesBundleBytesHandler():
             execution (* ConfigurationType.internalGetAdditionPropertiesBundleBytes(..)) &&
@@ -170,30 +170,30 @@ public privileged aspect ConfigtypesHandler
     pointcut ResourceBundlePropertyResolver_internalResolveHandle(): 
         execution(* ResourceBundlePropertyResolver.internalResolve(..));
     
-    public pointcut exceptionPoints():
-        execution (* ConfigurationType.getResolvedConfigurationFileURL(..)) &&
-        within(ConfigurationType) || 
-        execution (* ConfigurationType.getCheckstyleConfiguration(..)) &&
-        within(ConfigurationType);
-        
+//    public pointcut exceptionPoints():
+//        execution (* ConfigurationType.getResolvedConfigurationFileURL(..)) &&
+//        within(ConfigurationType) || 
+//        execution (* ConfigurationType.getCheckstyleConfiguration(..)) &&
+//        within(ConfigurationType);
+//        
 
     // ---------------------------
     // Advice's
     // ---------------------------
     
-    Object around () throws CheckstylePluginException:
-            ConfigurationType_getResolvedConfigurationFileURLHandler()||
-            ConfigurationType_getCheckstyleConfigurationHandler(){
-        
-        Object result = null;
-        try{
-            result = proceed();
-            
-        }catch (Exception e){
-            CheckstylePluginException.rethrow(e);
-        }
-        return result;
-    }
+//    Object around () throws CheckstylePluginException:
+//            ConfigurationType_getResolvedConfigurationFileURLHandler()||
+//            ConfigurationType_getCheckstyleConfigurationHandler(){
+//        
+//        Object result = null;
+//        try{
+//            result = proceed();
+//            
+//        }catch (Exception e){
+//            CheckstylePluginException.rethrow(e);
+//        }
+//        return result;
+//    }
     
     Object around() throws CheckstylePluginException: 
         RemoteConfigurationEditor_internalGetEditedWorkingCopyHandler() ||
