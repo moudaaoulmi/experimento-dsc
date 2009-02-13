@@ -45,7 +45,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 public final class ConfigurationTypes
 {
     
-    private static ConfigtypesHandler configtyoesHandle = new ConfigtypesHandler();
+    private static ConfigtypesHandler configtypesHandle = new ConfigtypesHandler();
 
     //
     // constants
@@ -125,7 +125,7 @@ public final class ConfigurationTypes
             }
             catch (Exception e)
             {
-                configtyoesHandle.checkstyleLog(e);
+                configtypesHandle.checkstyleLog(e);
                
             }
         }

@@ -255,7 +255,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         }
         catch (MalformedURLException e)
         {
-            CheckstylePluginException.rethrow(e);
+            configtyoesHandle.rethrowCheckstylePluginException(e);
         }
 
         mWorkingCopy.setName(mConfigName.getText());

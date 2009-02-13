@@ -58,7 +58,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public class InternalConfigurationEditor implements ICheckConfigurationEditor
 {
 
-    private ConfigtypesHandler configtyoesHandle = new ConfigtypesHandler();
+    private ConfigtypesHandler configtypesHandle = new ConfigtypesHandler();
     
     //
     // attributes
@@ -178,7 +178,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
                 }
                 catch (CheckstylePluginException ex)
                 {
-                    configtyoesHandle.setErrorMessage(mDialog, ex.getLocalizedMessage());
+                    configtypesHandle.setErrorMessage(mDialog, ex.getLocalizedMessage());
                 }
             }
 
@@ -221,7 +221,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
             }
             catch (CheckstylePluginException e)
             {
-                configtyoesHandle.workingCopyHandler(e, mWorkingCopy, location, ensureFileExists(location));
+                configtypesHandle.workingCopyHandler(e, mWorkingCopy, location, ensureFileExists(location));
             }
         }
         mWorkingCopy.setDescription(mDescription.getText());
@@ -259,11 +259,11 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
             }
             catch (IOException ioe)
             {
-                configtyoesHandle.rethrowCheckstylePluginException(ioe);
+                configtypesHandle.rethrowCheckstylePluginException(ioe);
             }
             finally
             {
-                IOUtils.closeQuietly(out);
+                configtypesHandle.closeQuietlyOutputStream(out);
             }
             return true;
         }

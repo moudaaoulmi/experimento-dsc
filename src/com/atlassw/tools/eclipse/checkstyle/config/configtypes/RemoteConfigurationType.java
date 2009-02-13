@@ -58,10 +58,8 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  * @author Lars Ködderitzsch
  */
 public class RemoteConfigurationType extends ConfigurationType
-{
-    
-    private ConfigtypesHandler configtyoesHandle = new ConfigtypesHandler();
-    private static ConfigtypesHandler staticConfigtyoesHandle = new ConfigtypesHandler();
+{   
+    private static ConfigtypesHandler staticConfigtypesHandle = new ConfigtypesHandler();
 
     /** Key to access the information if the configuration should be cached. */
     public static final String KEY_CACHE_CONFIG = "cache-file"; //$NON-NLS-1$
@@ -128,15 +126,8 @@ public class RemoteConfigurationType extends ConfigurationType
                 }
                 catch (IOException e)
                 {
-                    //XXX Não dá por conta do código dentor do método que ele usa.
-                    if (useCacheFile)
-                    {
-                        configurationFileData = getBytesFromCacheFile(checkConfiguration);
-                    }
-                    else
-                    {
-                        throw e;
-                    }
+                    configurationFileData = staticConfigtypesHandle.remoteConfigurationType_getCheckstyleConfiguration2(
+                            checkConfiguration, useCacheFile, configurationFileData, e, getBytesFromCacheFile(checkConfiguration));
                 }
 
                 data.setCheckConfigFileBytes(configurationFileData);
@@ -169,36 +160,26 @@ public class RemoteConfigurationType extends ConfigurationType
             }
             catch (UnknownHostException e)
             {
-                configtyoesHandle.rethrowCheckstylePluginException_E_MSG(e, NLS.bind(
+                staticConfigtypesHandle.rethrowCheckstylePluginException_E_MSG(e, NLS.bind(
                         ErrorMessages.RemoteConfigurationType_errorUnknownHost, e.getMessage()));
             }
             catch (FileNotFoundException e)
             {
-                configtyoesHandle.rethrowCheckstylePluginException_E_MSG(e, NLS.bind(
+                staticConfigtypesHandle.rethrowCheckstylePluginException_E_MSG(e, NLS.bind(
                         ErrorMessages.RemoteConfigurationType_errorFileNotFound, e.getMessage()));
             }
             catch (IOException e)
             {
-                configtyoesHandle.rethrowCheckstylePluginException(e);
+                staticConfigtypesHandle.rethrowCheckstylePluginException(e);
             }
             finally
             {
-                //TODO o código do finally tb vai?
-                Authenticator.setDefault(oldAuthenticator);
-
-                if (currentRedirects != null)
-                {
-                    System.setProperty("http.maxRedirects", currentRedirects); //$NON-NLS-1$
-                }
-                else
-                {
-                    System.getProperties().remove("http.maxRedirects"); //$NON-NLS-1$
-                }
+                staticConfigtypesHandle.remoteConfigurationType_getCheckstyleConfiguration(currentRedirects, oldAuthenticator);
             }
 
         }
         return data;
-    }
+    }        
 
     /**
      * {@inheritDoc}
@@ -290,7 +271,7 @@ public class RemoteConfigurationType extends ConfigurationType
         }
         catch (IOException e)
         {
-            configtyoesHandle.commentedCode();
+            staticConfigtypesHandle.commentedCode();
         }
         return null;
     }
@@ -311,7 +292,7 @@ public class RemoteConfigurationType extends ConfigurationType
         }
         catch (IOException e)
         {
-            configtyoesHandle.checkstyleLog_E_MSG(e, NLS.bind(
+            staticConfigtypesHandle.checkstyleLog_E_MSG(e, NLS.bind(
                     ErrorMessages.RemoteConfigurationType_msgRemoteCachingFailed, checkConfig
                     .getName(), checkConfig.getLocation()));
         }
@@ -332,7 +313,7 @@ public class RemoteConfigurationType extends ConfigurationType
             }
             catch (IOException e)
             {
-               configtyoesHandle.commentedCode4();
+               staticConfigtypesHandle.commentedCode4();
             }
         }
     }
@@ -362,7 +343,7 @@ public class RemoteConfigurationType extends ConfigurationType
                         }
                         catch (CheckstylePluginException e)
                         {
-                            configtyoesHandle.checkstyleLog(e);
+                            staticConfigtypesHandle.checkstyleLog(e);
                         }
 
                         // add to 401ed URLs
@@ -382,11 +363,11 @@ public class RemoteConfigurationType extends ConfigurationType
         }
         finally
         {
-            IOUtils.closeQuietly(in);
+            staticConfigtypesHandle.closeQuietlyInputStream(in);
 
         }
         return configurationFileData;
-    }
+    }    
 
     /**
      * Support for http authentication.
@@ -437,11 +418,11 @@ public class RemoteConfigurationType extends ConfigurationType
             }
             catch (IllegalArgumentException e)
             {
-                staticConfigtyoesHandle.checkstyleLog(e);
+                staticConfigtypesHandle.checkstyleLog(e);
             }
             catch (IllegalAccessException e)
             {
-                staticConfigtyoesHandle.checkstyleLog(e);
+                staticConfigtypesHandle.checkstyleLog(e);
             }
             return currentDefault;
         }
@@ -470,7 +451,7 @@ public class RemoteConfigurationType extends ConfigurationType
             }
             catch (CoreException e)
             {
-                staticConfigtyoesHandle.checkstyleLog(e);
+                staticConfigtypesHandle.checkstyleLog(e);
             }
         }
 
@@ -510,7 +491,7 @@ public class RemoteConfigurationType extends ConfigurationType
             }
             catch (CoreException e)
             {
-                staticConfigtyoesHandle.rethrowCheckstylePluginException(e);
+                staticConfigtypesHandle.rethrowCheckstylePluginException(e);
             }
         }
 

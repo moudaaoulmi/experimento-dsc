@@ -76,7 +76,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public class ProjectConfigurationEditor implements ICheckConfigurationEditor
 {
 
-    ConfigtypesHandler configtyoesHandle = new ConfigtypesHandler();
+    ConfigtypesHandler configtypesHandle = new ConfigtypesHandler();
     
     //
     // attributes
@@ -270,7 +270,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         }
         catch (CheckstylePluginException e)
         {
-            configtyoesHandle.getEditedWorkingCopyHandle(e, mLocation, mCheckConfigDialog, mWorkingCopy,ensureFileExists( mLocation.getText()));
+            configtypesHandle.getEditedWorkingCopyHandle(e, mLocation, mCheckConfigDialog, mWorkingCopy,ensureFileExists( mLocation.getText()));
             
         }
 
@@ -296,7 +296,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         }
         catch (IllegalArgumentException e)
         {
-            configtyoesHandle.rethrowCheckstylePluginException(e);
+            configtypesHandle.rethrowCheckstylePluginException(e);
         }
 
         if (!file.exists() && file.getLocation() != null)
@@ -322,15 +322,15 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
                 }
                 catch (IOException ioe)
                 {
-                    configtyoesHandle.rethrowCheckstylePluginException(ioe);
+                    configtypesHandle.rethrowCheckstylePluginException(ioe);
                 }
                 catch (CoreException e)
                 {
-                    configtyoesHandle.rethrowCheckstylePluginException(e);
+                    configtypesHandle.rethrowCheckstylePluginException(e);
                 }
                 finally
                 {
-                    IOUtils.closeQuietly(out);
+                    configtypesHandle.closeQuietlyOutputStream(out);
                 }
                 return true;
             }

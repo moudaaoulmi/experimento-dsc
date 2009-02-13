@@ -200,7 +200,7 @@ public final class ProjectConfigurationFactory
 
         finally
         {
-            IOUtils.closeQuietly(inStream);
+            generalException.closeQuietlyInputStream(inStream);
         }
 
         return configuration;

@@ -2,7 +2,11 @@
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Authenticator;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -13,6 +17,7 @@ import org.eclipse.swt.widgets.Text;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.GlobalCheckConfigurationWorkingSet;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropertiesDialog;
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
@@ -97,6 +102,36 @@ public class ConfigtypesHandler extends GeneralException
     public void commentedCode4()
     {
     // ignore this since there simply might be no properties file
+    }
+    
+    public void remoteConfigurationType_getCheckstyleConfiguration(String currentRedirects, Authenticator oldAuthenticator)
+    {
+        Authenticator.setDefault(oldAuthenticator);
+
+        if (currentRedirects != null)
+        {
+            System.setProperty("http.maxRedirects", currentRedirects); //$NON-NLS-1$
+        }
+        else
+        {
+            System.getProperties().remove("http.maxRedirects"); //$NON-NLS-1$
+        }
+    }
+    
+    public byte[] remoteConfigurationType_getCheckstyleConfiguration2(
+            ICheckConfiguration checkConfiguration, boolean useCacheFile,
+            byte[] configurationFileData, IOException e, byte[] configuration) throws IOException
+    {
+        //XXX Não dá por conta do código dentor do método que ele usa.
+        if (useCacheFile)
+        {
+            configurationFileData = configuration;
+        }
+        else
+        {
+            throw e;
+        }
+        return configurationFileData;
     }
 
 }
