@@ -11,10 +11,10 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 public class ConfigHandler extends GeneralException
 {
      
-    public Object createModuleHandler(String aName, PackageObjectFactory class_)
+    public Object createModuleHandler(String aName, PackageObjectFactory instance)
         throws CheckstyleException
     {
-        return class_.packageObjectFactory_createModuleHandler(aName);
+        return instance.packageObjectFactory_createModuleHandler(aName);
     }
 
     public Object rethrowSAXException_MSG(String msg, Exception e) throws SAXException

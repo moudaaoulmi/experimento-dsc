@@ -62,7 +62,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     // attributes
     //
     
-    private ConfigtypesHandler configtyoesHandle = new ConfigtypesHandler();
+    private ConfigtypesHandler configtypesHandler = new ConfigtypesHandler();
 
     /** the working copy this editor edits. */
     private CheckConfigurationWorkingCopy mWorkingCopy;
@@ -229,7 +229,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         catch (CheckstylePluginException e)
         {
             //XXX Modificado mais do que só refatorado
-            configtyoesHandle.workingCopyHandler(e, mWorkingCopy, mLocation.getText(),  ensureFileExists(mLocation.getText()));
+            configtypesHandler.workingCopyHandler(e, mWorkingCopy, mLocation.getText(),  ensureFileExists(mLocation.getText()));
         }
 
         return mWorkingCopy;
@@ -270,11 +270,11 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
                 }
                 catch (IOException ioe)
                 {
-                    configtyoesHandle.rethrowCheckstylePluginException(ioe);
+                    configtypesHandler.rethrowCheckstylePluginException(ioe);
                 }
                 finally
                 {
-                    IOUtils.closeQuietly(out);
+                    configtypesHandler.closeQuietlyOutputStream(out);
                 }
                 return true;
             }
