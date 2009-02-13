@@ -187,7 +187,9 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
                 }
                 catch (CoreException e)
                 {
-                    CheckstyleLog.log(e, "Error processing quickfix"); //$NON-NLS-1$
+                    
+                    generalException.checkstyleLog_E_MSG(e, "Error processing quickfix");
+                    //CheckstyleLog.log(e, "Error processing quickfix"); //$NON-NLS-1$
                 }
             }
         }

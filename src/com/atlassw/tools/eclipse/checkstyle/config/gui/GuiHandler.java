@@ -11,4 +11,11 @@ public class GuiHandler
     public static void moduleHandler(CheckstylePluginException e, Shell shell){
         CheckstyleLog.errorDialog(shell, e, true);
     }
+   
+//    //catch (CheckstylePluginException ex)
+//    public void widgetSelectedHandler(CheckstylePluginException ex, CheckConfigurationPropertiesDialog class_){
+//        
+//        class_.setErrorMessage(ex.getLocalizedMessage());
+//        
+//    }
 }
