@@ -44,6 +44,11 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.NonSrcDirsFilt
 import com.atlassw.tools.eclipse.checkstyle.properties.FileSetEditDialog;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.CheckFileOnOpenPartListener;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteConfigurationType;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.AbstractFilter;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWorkingCopy;
 
 public aspect GeneralExceptionHandler
 {
@@ -104,6 +109,10 @@ public aspect GeneralExceptionHandler
                                       SourceFolderContentProvider_handleContainerHandler() ||
                                       projectClassLoader_addToClassPathHandle();
 
+    declare soft : CloneNotSupportedException : FileMatchPattern_cloneHandler() || FileMatchPattern_cloneFileSetHandler() || 
+                   FileMatchPattern_cloneProjectHandler() || FileMatchPattern_cloneWorkingCopyHandler() ||
+                   AbstractFilter_cloneHandler();
+    
     // ---------------------------
     // Pointcut's
     // ---------------------------
@@ -209,6 +218,16 @@ public aspect GeneralExceptionHandler
     pointcut checkstyleBuilder_buildProjectsHandleHandle(): 
         execution(* CheckstyleBuilder.buildProjectsHandle(..));
 
+    pointcut FileMatchPattern_cloneHandler(): execution(* FileMatchPattern.clone(..));
+    
+    pointcut FileMatchPattern_cloneFileSetHandler(): execution(* FileSet.clone(..));
+
+    pointcut FileMatchPattern_cloneProjectHandler(): execution(* ProjectConfiguration.clone(..));
+
+    pointcut FileMatchPattern_cloneWorkingCopyHandler(): execution(* ProjectConfigurationWorkingCopy.clone(..));
+    
+    pointcut AbstractFilter_cloneHandler(): execution(* AbstractFilter.clone(..));
+    
     // ---------------------------
     // Advice's
     // ---------------------------
@@ -397,5 +416,18 @@ public aspect GeneralExceptionHandler
         }
         return result;
 
+    }
+
+    Object around() : FileMatchPattern_cloneHandler() || FileMatchPattern_cloneFileSetHandler() || 
+                      FileMatchPattern_cloneProjectHandler() || FileMatchPattern_cloneWorkingCopyHandler() ||
+                      AbstractFilter_cloneHandler(){
+        try
+        {
+            return proceed();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            throw new InternalError(); // should never happen
+        }
     }
 }

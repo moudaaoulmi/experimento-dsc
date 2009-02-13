@@ -17,7 +17,6 @@ public privileged aspect FiltersHandler
     // ---------------------------
     // Declare soft's
     // ---------------------------
-    declare soft : CloneNotSupportedException : AbstractFilter_cloneHandler();
 
     declare soft : CoreException : SourceFolderContentProvider_handleProjectHandler() || 
                                    SourceFolderContentProvider_handleContainerHandler();
@@ -29,7 +28,6 @@ public privileged aspect FiltersHandler
     // ---------------------------
     // PointCut's
     // ---------------------------
-    pointcut AbstractFilter_cloneHandler(): execution(* AbstractFilter.clone(..));
 
     pointcut FilesInSyncFilter2_getSyncInfoHandler(): execution(*  FilesInSyncFilter2.accept(..));
 
@@ -42,16 +40,6 @@ public privileged aspect FiltersHandler
     // ---------------------------
     // Advices's
     // ---------------------------
-    Object around() : AbstractFilter_cloneHandler() {
-        try
-        {
-            return proceed();
-        }
-        catch (CloneNotSupportedException e)
-        {
-            throw new InternalError(); // should never happen
-        }
-    }
 
     List around() : SourceFolderContentProvider_handleProjectHandler() || SourceFolderContentProvider_handleContainerHandler() {
         List c = null;

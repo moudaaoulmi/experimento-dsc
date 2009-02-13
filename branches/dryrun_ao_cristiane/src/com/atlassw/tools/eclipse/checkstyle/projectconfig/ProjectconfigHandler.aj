@@ -23,8 +23,6 @@ public privileged aspect ProjectconfigHandler
     // ---------------------------
     // Declare soft's
     // ---------------------------
-    declare soft : CloneNotSupportedException : FileMatchPattern_cloneHandler() || FileMatchPattern_cloneFileSetHandler() || 
-                                                FileMatchPattern_cloneProjectHandler() || FileMatchPattern_cloneWorkingCopyHandler();
 
     declare soft: Exception : ProjectConfigurationFactory_internalEndElementHandler() ||
                               ProjectConfigurationWorkingCopy_internalStoreToPersistenceHandler();
@@ -34,14 +32,6 @@ public privileged aspect ProjectconfigHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    pointcut FileMatchPattern_cloneHandler(): execution(* FileMatchPattern.clone(..));
-
-    pointcut FileMatchPattern_cloneFileSetHandler(): execution(* FileSet.clone(..));
-
-    pointcut FileMatchPattern_cloneProjectHandler(): execution(* ProjectConfiguration.clone(..));
-
-    pointcut FileMatchPattern_cloneWorkingCopyHandler(): execution(* ProjectConfigurationWorkingCopy.clone(..));
-    
     pointcut ProjectConfigurationFactory_startElementHandler(): execution(* ProjectConfigurationFactory.ProjectConfigFileHandler.startElement(..));
 
     pointcut ProjectConfigurationFactory_internalEndElementHandler(): execution(* ProjectConfigurationFactory.ProjectConfigFileHandler.internalEndElement(..));
@@ -53,14 +43,6 @@ public privileged aspect ProjectconfigHandler
     // ---------------------------
     // Advice's
     // ---------------------------
-    Object around() : FileMatchPattern_cloneHandler() || FileMatchPattern_cloneFileSetHandler() || 
-                      FileMatchPattern_cloneProjectHandler() || FileMatchPattern_cloneWorkingCopyHandler(){
-        try{
-            return proceed();
-        }catch (CloneNotSupportedException e){
-            throw new InternalError(); // should never happen
-        }
-    }
     
     void around() throws SAXException : 
         ProjectConfigurationFactory_startElementHandler() || ProjectConfigurationFactory_internalEndElementHandler(){
