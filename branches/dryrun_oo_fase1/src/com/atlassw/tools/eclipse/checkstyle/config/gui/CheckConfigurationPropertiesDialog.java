@@ -95,6 +95,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
 
     /**The variable was introduced here because modularization of Exception Handling*/
     private GeneralException generalException = new GeneralException();
+    private GuiHandler guiHandler = new GuiHandler();
     //
     // constructor
     //
@@ -303,6 +304,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
                 {
                     
                     setErrorMessage(ex.getLocalizedMessage());
+                    //guiHandler.widgetSelectedHandler(ex, this);
                     
                 }
             }
