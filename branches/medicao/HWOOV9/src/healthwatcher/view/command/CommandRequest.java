@@ -1,0 +1,56 @@
+package healthwatcher.view.command;
+
+
+
+/**
+ * A generic request to a command
+ */
+public interface CommandRequest {
+	
+	/**
+	 * Returns a parameter for the request with this key
+	 * 
+	 * @param key the parameter key
+	 * @return the value for this key as a string
+	 */
+	public String getInput(String key);
+	
+	/**
+	 * Stores this value using this key in some sort of storage that
+	 * persists between commands. Just works if it is authorized.
+	 * 
+	 * @param key the key used to store the value
+	 * @param value the value to be stored
+	 */
+	public void put(String key, Object value);
+	
+	/**
+	 * Retrieves a pre-stored value using this key. Returns the stored
+	 * value or null if no value was stored with this key
+	 * 
+	 * @param key the key to the value
+	 * @return the value or null if not found
+	 */
+	public Object get(String key);
+	
+	/**
+	 * Resets the persistent storage of values and the authorized flag
+	 */
+	public void reset();
+	
+	/**
+	 * Sets the value of the authorized flag. If the value is false, 
+	 * a reset will occur.
+	 * 
+	 * @param authorized the new authorized flag
+	 */
+	public void setAuthorized(boolean authorized);
+	
+	/**
+	 * Retrieves the value of the authorized flag
+	 * 
+	 * @return the authorized flag
+	 */
+	public boolean isAuthorized();
+	
+}
