@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ Copyright 2004-2005 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+
+<!DOCTYPE sun-ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Application Server 8.1 EJB 2.1//EN" "http://www.sun.com/software/appserver/dtds/sun-ejb-jar_2_1-1.dtd">
+<sun-ejb-jar>
+  <enterprise-beans>
+    <unique-id>0</unique-id>
+    <ejb>
+      <ejb-name>MailerMDB</ejb-name>
+      <jndi-name>jms/opc/MailQueue</jndi-name>
+      <resource-ref>
+        <res-ref-name>mail/MailSession</res-ref-name>
+        <jndi-name>mail/opc/MailSession</jndi-name>
+      </resource-ref>
+      <pass-by-reference>false</pass-by-reference>
+      <jms-max-messages-load>1</jms-max-messages-load>
+      <ior-security-config>
+        <transport-config>
+          <integrity>SUPPORTED</integrity>
+          <confidentiality>SUPPORTED</confidentiality>
+          <establish-trust-in-target>SUPPORTED</establish-trust-in-target>
+          <establish-trust-in-client>SUPPORTED</establish-trust-in-client>
+        </transport-config>
+        <as-context>
+          <auth-method>USERNAME_PASSWORD</auth-method>
+          <realm>default</realm>
+          <required>true</required>
+        </as-context>
+        <sas-context>
+          <caller-propagation>SUPPORTED</caller-propagation>
+        </sas-context>
+      </ior-security-config>
+      <is-read-only-bean>false</is-read-only-bean>
+      <gen-classes/>
+    </ejb>
+  </enterprise-beans>
+</sun-ejb-jar>
