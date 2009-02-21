@@ -77,23 +77,17 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob
 
         mMonitor = monitor;
 
-        try
+        if (mProject.hasNature(mNatureId))
         {
-            if (mProject.hasNature(mNatureId))
-            {
-                disableNature();
-            }
-            else
-            {
-                enableNature();
-            }
+            disableNature();
+        }
+        else
+        {
+            enableNature();
+        }
 
-            status = Status.OK_STATUS;
-        }
-        finally
-        {
-            monitor.done();
-        }
+        status = Status.OK_STATUS;
+        
         return status;
     }
 
