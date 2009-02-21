@@ -390,15 +390,8 @@ public final class XMLUtil
         Templates templates = null;
 
         InputStream in = null;
-        try
-        {
-            in = new BufferedInputStream(XMLUtil.class.getResourceAsStream("identity.xsl")); //$NON-NLS-1$
-            templates = saxFactory.newTemplates(new StreamSource(in));
-        }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-        }
+        
+        writeWithSaxInternal(in, templates, saxFactory);        
 
         StreamResult result = new StreamResult(out);
 
@@ -416,6 +409,11 @@ public final class XMLUtil
         handler.setResult(result);
 
         return handler;
+    }
+    
+    private static void writeWithSaxInternal(InputStream in, Templates templates, SAXTransformerFactory saxFactory){
+        in = new BufferedInputStream(XMLUtil.class.getResourceAsStream("identity.xsl")); //$NON-NLS-1$
+        templates = saxFactory.newTemplates(new StreamSource(in));
     }
 
     private static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException

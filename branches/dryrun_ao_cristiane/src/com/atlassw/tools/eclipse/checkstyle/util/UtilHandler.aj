@@ -6,10 +6,15 @@ package com.atlassw.tools.eclipse.checkstyle.util;
 
 import java.io.IOException;
 import java.util.EmptyStackException;
+import javax.xml.transform.TransformerConfigurationException;
+import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.Templates;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.graphics.Point;
@@ -21,6 +26,8 @@ public privileged aspect UtilHandler
     // Declare soft's
     // ---------------------------
     declare soft: Exception : internalShellActivatedHandler();
+    
+    declare soft : TransformerConfigurationException : writeWithSaxInternalHandler();
 
     // ---------------------------
     // Pointcut's
@@ -32,6 +39,8 @@ public privileged aspect UtilHandler
     pointcut internalShellActivate2dHandler(): execution (* SWTUtil.ShellResizeSupportListener.internalShellActivated2(..));
 
     pointcut getDocumentBuilderHandler(): execution(* XMLUtil.getDocumentBuilder(..)) ;
+    
+    pointcut writeWithSaxInternalHandler() : execution (* XMLUtil.writeWithSaxInternal(..));
 
     // ---------------------------
     // Advice's
@@ -90,6 +99,15 @@ public privileged aspect UtilHandler
             c = obj.createDocumentBuilder();
         }
         return c;
+    }
+    
+    void around(InputStream in, Templates templates, SAXTransformerFactory saxFactory) : writeWithSaxInternalHandler() 
+            && args(in, templates, saxFactory){
+        try{
+            proceed(in, templates, saxFactory);
+        } finally {
+            IOUtils.closeQuietly(in);
+        }
     }
 
 }
