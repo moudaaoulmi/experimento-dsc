@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ Copyright 2004-2005 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+
+<!DOCTYPE sun-web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Application Server 8.1 Servlet 2.4//EN" "http://www.sun.com/software/appserver/dtds/sun-web-app_2_4-1.dtd">
+<sun-web-app>  
+  <ejb-ref>
+    <ejb-ref-name>ejb/ShoppingController</ejb-ref-name>
+    <jndi-name>ejb/petstore/petstore/ShoppingController</jndi-name>
+  </ejb-ref>
+  <ejb-ref>
+    <ejb-ref-name>ejb/ShoppingClientFacade</ejb-ref-name>
+    <jndi-name>ejb/petstore/petstore/ShoppingClientFacade</jndi-name>
+  </ejb-ref>
+  <ejb-ref>
+    <ejb-ref-name>ejb/ShoppingCart</ejb-ref-name>
+    <jndi-name>ejb/petstore/petstore/ShoppingCart</jndi-name>
+  </ejb-ref>
+  <ejb-ref>
+    <ejb-ref-name>ejb/SignOn</ejb-ref-name>
+    <jndi-name>ejb/petstore/petstore/SignOn</jndi-name>
+  </ejb-ref>
+  <ejb-ref>
+    <ejb-ref-name>ejb/Customer</ejb-ref-name>
+    <jndi-name>ejb/petstore/petstore/Customer</jndi-name>
+  </ejb-ref>
+  <ejb-ref>
+    <ejb-ref-name>ejb/Account</ejb-ref-name>
+    <jndi-name>ejb/petstore/petstore/Account</jndi-name>
+  </ejb-ref>
+  <ejb-ref>
+    <ejb-ref-name>ejb/Profile</ejb-ref-name>
+    <jndi-name>ejb/petstore/petstore/Profile</jndi-name>
+  </ejb-ref>
+  <ejb-ref>
+    <ejb-ref-name>ejb/ContactInfo</ejb-ref-name>
+    <jndi-name>ejb/petstore/petstore/ContactInfo</jndi-name>
+  </ejb-ref>
+  <ejb-ref>
+    <ejb-ref-name>ejb/CreditCard</ejb-ref-name>
+    <jndi-name>ejb/petstore/petstore/CreditCard</jndi-name>
+  </ejb-ref>
+  <ejb-ref>
+    <ejb-ref-name>ejb/Address</ejb-ref-name>
+    <jndi-name>ejb/petstore/petstore/Address</jndi-name>
+  </ejb-ref>
+  <ejb-ref>
+    <ejb-ref-name>ejb/User</ejb-ref-name>
+    <jndi-name>ejb/petstore/petstore/User</jndi-name>
+  </ejb-ref>
+  <resource-ref>
+    <res-ref-name>jdbc/CatalogDB</res-ref-name>
+    <jndi-name>jdbc/petstore/PetStoreDB</jndi-name>
+    <default-resource-principal>
+      <name>petstore</name>
+      <password>petstore</password>
+    </default-resource-principal>
+  </resource-ref>
+  <resource-ref>
+    <res-ref-name>url/CatalogDAOSQLURL</res-ref-name>
+    <jndi-name>http://localhost:8080/petstore/CatalogDAOSQL.xml</jndi-name>
+  </resource-ref>
+</sun-web-app>
