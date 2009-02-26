@@ -2,7 +2,6 @@ package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -24,7 +23,6 @@ import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.CoreException;
