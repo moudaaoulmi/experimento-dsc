@@ -1,8 +1,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.projectconfig.filters;
 
-import java.lang.CloneNotSupportedException;
-import java.lang.InternalError;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
