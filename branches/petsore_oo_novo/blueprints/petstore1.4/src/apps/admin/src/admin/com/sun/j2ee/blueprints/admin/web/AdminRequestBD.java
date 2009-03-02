@@ -75,70 +75,89 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
 public class AdminRequestBD {
 
-    private String OPC_ADMIN_NAME = "java:comp/env/ejb/OPCAdminFacadeRemote";
-    private OPCAdminFacade opcAdminEJB = null;
+	private String OPC_ADMIN_NAME = "java:comp/env/ejb/OPCAdminFacadeRemote";
+	private OPCAdminFacade opcAdminEJB = null;
 
-    public AdminRequestBD() throws AdminBDException {      
-        OPCAdminFacadeHome home = (OPCAdminFacadeHome) ServiceLocator.getInstance().getRemoteHome(OPC_ADMIN_NAME, OPCAdminFacadeHome.class);
-        opcAdminEJB = home.create();      
-    }
+	public AdminRequestBD() throws AdminBDException {
+		try {
+			OPCAdminFacadeHome home = (OPCAdminFacadeHome) ServiceLocator
+					.getInstance().getRemoteHome(OPC_ADMIN_NAME,
+							OPCAdminFacadeHome.class);
+			opcAdminEJB = home.create();
+		} catch (ServiceLocatorException sle) {
+			sle.printStackTrace();
+			throw new AdminBDException(sle.getMessage());
+		} catch (CreateException ce) {
+			ce.printStackTrace();
+			throw new AdminBDException(ce.getMessage());
+		} catch (RemoteException re) {
+			re.printStackTrace();
+			throw new AdminBDException(re.getMessage());
+		}
+	}
 
-    /**
-     * This method returns the orders of given status
-     * @param status  The requested status
-     */
-    public OrdersTO getOrdersByStatus(String status)
-        throws AdminBDException {
+	/**
+	 * This method returns the orders of given status
+	 * 
+	 * @param status
+	 *            The requested status
+	 */
+	public OrdersTO getOrdersByStatus(String status) throws AdminBDException {
 
-        try {
-            return opcAdminEJB.getOrdersByStatus(status);
-        } catch (RemoteException re) {
-            re.printStackTrace();
-            throw new AdminBDException(re.getMessage());
-        } catch (OPCAdminFacadeException oafee) {
-            oafee.printStackTrace();
-            throw new AdminBDException(oafee.getMessage());
-        }
-    }
+		try {
+			return opcAdminEJB.getOrdersByStatus(status);
+		} catch (RemoteException re) {
+			re.printStackTrace();
+			throw new AdminBDException(re.getMessage());
+		} catch (OPCAdminFacadeException oafee) {
+			oafee.printStackTrace();
+			throw new AdminBDException(oafee.getMessage());
+		}
+	}
 
-    public void updateOrders(OrderApproval oa) throws AdminBDException {
-        try {
-            AsyncSenderLocalHome home = (AsyncSenderLocalHome)
-                ServiceLocator.getInstance().getLocalHome(JNDINames.ASYNCSENDER_LOCAL_EJB_HOME);
-            AsyncSender sender= home.create();
-            sender.sendAMessage(oa.toXML());
-        } catch (ServiceLocatorException sle) {
-            sle.printStackTrace();
-            throw new AdminBDException(sle.getMessage());
-        } catch (XMLDocumentException xde) {
-            xde.printStackTrace();
-            throw new AdminBDException(xde.getMessage());
-        }  catch (CreateException ce) {
-            throw new AdminBDException(ce.getMessage());
-        }
-    }
+	public void updateOrders(OrderApproval oa) throws AdminBDException {
+		try {
+			AsyncSenderLocalHome home = (AsyncSenderLocalHome) ServiceLocator
+					.getInstance().getLocalHome(
+							JNDINames.ASYNCSENDER_LOCAL_EJB_HOME);
+			AsyncSender sender = home.create();
+			sender.sendAMessage(oa.toXML());
+		} catch (ServiceLocatorException sle) {
+			sle.printStackTrace();
+			throw new AdminBDException(sle.getMessage());
+		} catch (XMLDocumentException xde) {
+			xde.printStackTrace();
+			throw new AdminBDException(xde.getMessage());
+		} catch (CreateException ce) {
+			throw new AdminBDException(ce.getMessage());
+		}
+	}
 
-    /**
-     * This method gets chart details for the rich client
-     * @param request  REVENUE or ORDER
-     * @param start    start date in mm/dd/yyyy format
-     * @param end      end date in mm/dd/yyyy format
-     * @param category the requested category
-     * @returns String  An xml doc that has the chart details for given dates
-     *                  an xml document indicating error in case of failures
-     */
-    public Map getChartInfo(String request, Date start, Date end,
-                            String category)
-        throws AdminBDException {
+	/**
+	 * This method gets chart details for the rich client
+	 * 
+	 * @param request
+	 *            REVENUE or ORDER
+	 * @param start
+	 *            start date in mm/dd/yyyy format
+	 * @param end
+	 *            end date in mm/dd/yyyy format
+	 * @param category
+	 *            the requested category
+	 * @returns String An xml doc that has the chart details for given dates an
+	 *          xml document indicating error in case of failures
+	 */
+	public Map getChartInfo(String request, Date start, Date end,
+			String category) throws AdminBDException {
 
-        try {
-            return opcAdminEJB.getChartInfo(request, start, end, category);
-        } catch (RemoteException re) {
-            re.printStackTrace();
-            throw new AdminBDException(re.getMessage());
-        } catch (OPCAdminFacadeException oafee) {
-            oafee.printStackTrace();
-            throw new AdminBDException(oafee.getMessage());
-        }
-    }
+		try {
+			return opcAdminEJB.getChartInfo(request, start, end, category);
+		} catch (RemoteException re) {
+			re.printStackTrace();
+			throw new AdminBDException(re.getMessage());
+		} catch (OPCAdminFacadeException oafee) {
+			oafee.printStackTrace();
+			throw new AdminBDException(oafee.getMessage());
+		}
+	}
 }
