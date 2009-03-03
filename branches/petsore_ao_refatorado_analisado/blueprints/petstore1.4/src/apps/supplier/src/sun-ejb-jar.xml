@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ Copyright 2004-2005 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+
+<!DOCTYPE sun-ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Application Server 8.1 EJB 2.1//EN" "http://www.sun.com/software/appserver/dtds/sun-ejb-jar_2_1-1.dtd">
+<sun-ejb-jar>  
+  <enterprise-beans>
+    <unique-id>0</unique-id>
+    <ejb>
+      <ejb-name>OrderFulfillmentFacadeEJB</ejb-name>
+      <jndi-name>ejb/OrderFulfillmentFacade</jndi-name>
+      <resource-ref>
+        <res-ref-name>url/EntityCatalogURL</res-ref-name>
+        <jndi-name>http://localhost:8080/opc/EntityCatalog.jsp</jndi-name>
+      </resource-ref>
+      <pass-by-reference>false</pass-by-reference>
+      <is-read-only-bean>false</is-read-only-bean>      
+      <gen-classes/>
+    </ejb>
+    <ejb>
+      <ejb-name>InventoryEJB</ejb-name>
+      <jndi-name>ejb/Inventory</jndi-name>
+      <pass-by-reference>false</pass-by-reference>
+      <is-read-only-bean>false</is-read-only-bean>      
+      <gen-classes/>
+    </ejb>
+    <ejb>
+      <ejb-name>SupplierOrderMDB</ejb-name>
+      <jndi-name>jms/supplier/PurchaseOrderQueue</jndi-name>
+      <ejb-ref>
+        <ejb-ref-name>ejb/OrderFulfillmentFacade</ejb-ref-name>
+	<jndi-name>ejb/supplier/OrderFulfillment/OrderFulfillmentFacade</jndi-name>
+      </ejb-ref>
+      <resource-ref>
+        <res-ref-name>jms/QueueConnectionFactory</res-ref-name>
+        <jndi-name>jms/supplier/QueueConnectionFactory</jndi-name>
+        <default-resource-principal>
+          <name>j2ee</name>
+          <password>j2ee</password>
+        </default-resource-principal>
+      </resource-ref>
+      <resource-ref>
+        <res-ref-name>jms/TopicConnectionFactory</res-ref-name>
+        <jndi-name>jms/supplier/TopicConnectionFactory</jndi-name>
+        <default-resource-principal>
+          <name>j2ee</name>
+          <password>j2ee</password>
+        </default-resource-principal>
+      </resource-ref>
+      <resource-env-ref>
+        <resource-env-ref-name>jms/opc/InvoiceTopic</resource-env-ref-name>
+        <jndi-name>jms/opc/InvoiceTopic</jndi-name>
+      </resource-env-ref>
+      <gen-classes />
+    </ejb>
+    <cmp-resource>
+      <jndi-name>jdo/supplier</jndi-name>
+      <default-resource-principal>
+        <name>supplier</name>
+        <password>supplier</password>
+      </default-resource-principal>
+      <create-tables-at-deploy>true</create-tables-at-deploy>
+      <drop-tables-at-undeploy>true</drop-tables-at-undeploy>
+      <database-vendor-name>pointbase</database-vendor-name>
+    </cmp-resource>
+  </enterprise-beans>
+</sun-ejb-jar>
