@@ -1,0 +1,16 @@
+void around() : 
+		sendMessageHandler() {
+		try {
+			proceed();
+		} finally {
+          //Uses aspect local topicConnect variable, fed above
+		  TopicConnection topicConnectAux = (TopicConnection)topicConnect.get(Thread.currentThread().getName());	            		    
+	      if(topicConnectAux != null ) {
+	      	try {
+	      	  topicConnectAux.close();
+	      	} catch (JMSException ex) {
+	      		throw new SoftException(ex);
+	      	}      		
+	      }
+		}
+	}
