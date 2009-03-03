@@ -20,6 +20,7 @@ import java.util.ListIterator;
 import javax.swing.*;
 
 import org.jhotdraw.contrib.*;
+import org.jhotdraw.contrib.Desktop;
 import org.jhotdraw.figures.*;
 import org.jhotdraw.framework.*;
 import org.jhotdraw.standard.*;
