@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/eclipse-AspectJ/Workspace/MPAOV6/lib/microemulator-app-swing-2.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/WTK2.5.2_01/lib/midpapi20.jar"/>
+	<classpathentry kind="lib" path="C:/WTK2.5.2_01/lib/mmapi.jar"/>
+	<classpathentry kind="lib" path="C:/WTK2.5.2_01/lib/wma11.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
