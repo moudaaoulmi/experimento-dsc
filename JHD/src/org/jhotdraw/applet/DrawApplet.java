@@ -36,6 +36,7 @@ public class DrawApplet
 		extends JApplet
 		implements DrawingEditor, PaletteListener, VersionRequester {
 
+	private AppletHandler appletHandler = new AppletHandler();
 	private transient Drawing         fDrawing;
 	private transient Tool            fTool;
 
@@ -388,7 +389,7 @@ public class DrawApplet
 	public void viewSelectionChanged(DrawingView oldView, DrawingView newView) {
 	}
 
-	private void initDrawing() {
+	void initDrawing() {
 		fDrawing = createDrawing();
 		view().setDrawing(fDrawing);
 		toolDone();
@@ -453,8 +454,9 @@ public class DrawApplet
 			view().setDrawing(fDrawing);
 		}
 		catch (IOException e) {
-			initDrawing();
-			showStatus("Error:" + e);
+			appletHandler.drawAppleTreadFromStorableInput(this, e, "Error:");
+//			initDrawing();
+//			showStatus("Error:" + e);
 		}
 	}
 
@@ -468,12 +470,14 @@ public class DrawApplet
 			view().setDrawing(fDrawing);
 		}
 		catch (IOException e) {
-			initDrawing();
-			showStatus("Error: " + e);
+			appletHandler.drawAppleTreadFromStorableInput(this, e, "Error:");
+//			initDrawing();
+//			showStatus("Error: " + e);
 		}
 		catch (ClassNotFoundException e) {
-			initDrawing();
-			showStatus("Class not found: " + e);
+			appletHandler.drawAppleTreadFromStorableInput(this, e, "Class not found: " );
+//			initDrawing();
+//			showStatus("Class not found: " + e);
 		}
 	}
 
@@ -538,7 +542,8 @@ public class DrawApplet
 			getAppletContext().showDocument(url, "Help");
 		}
 		catch (IOException e) {
-			showStatus("Help file not found");
+			appletHandler.drawAppletShowHelp(this);
+//			showStatus("Help file not found");
 		}
 
 	}
