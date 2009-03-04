@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2004-2005 Sun Microsystems, Inc. All rights reserved.
+ 
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 
+ - Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+ 
+ - Redistribution in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in
+   the documentation and/or other materials provided with the
+   distribution.
+ 
+ Neither the name of Sun Microsystems, Inc. or the names of
+ contributors may be used to endorse or promote products derived
+ from this software without specific prior written permission.
+ 
+ This software is provided "AS IS," without a warranty of any
+ kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+ WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
+ EXCLUDED. SUN AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES
+ SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR
+ DISTRIBUTING THE SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN
+ OR ITS LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR
+ FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR
+ PUNITIVE DAMAGES, HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF
+ LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE SOFTWARE,
+ EVEN IF SUN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+ 
+ You acknowledge that Software is not designed, licensed or intended
+ for use in the design, construction, operation or maintenance of
+ any nuclear facility.
+-->
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+  <description>Web Tier DD for the PetStore application</description>
+  <display-name>PetStoreWAR</display-name>
+  <!-- Encoding Filter Declaration Start -->
+  <filter>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>com.sun.j2ee.blueprints.encodingfilter.web.EncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <!-- Signon Filter Declaration Start -->
+  <filter>
+    <filter-name>SignOnFilter</filter-name>
+    <filter-class>com.sun.j2ee.blueprints.signon.web.SignOnFilter</filter-class>
+  </filter>
+  <!-- Encoding Filter Mapping Start-->
+  <filter-mapping>
+    <filter-name>EncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- Signon Filter Mapping Start-->
+  <filter-mapping>
+    <filter-name>SignOnFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- ComponentManager Listener -->
+  <listener>
+    <listener-class>com.sun.j2ee.blueprints.petstore.controller.web.PetstoreComponentManager</listener-class>
+  </listener>
+  <!-- SignOn Attribute Listener -->
+  <listener>
+    <listener-class>com.sun.j2ee.blueprints.petstore.controller.web.SignOnNotifier</listener-class>
+  </listener>
+  <!-- Template Servlet Configuration -->
+  <servlet>
+    <display-name>TemplateServlet</display-name>
+    <servlet-name>TemplateServlet</servlet-name>
+    <servlet-class>com.sun.j2ee.blueprints.waf.view.template.TemplateServlet</servlet-class>
+    <init-param>
+      <param-name>locales</param-name>
+      <param-value>en_US,ja_JP,zh_CN</param-value>
+    </init-param>
+    <init-param>
+      <param-name>default_locale</param-name>
+      <param-value>en_US</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet>
+    <description>The Front Controller for the Pet Store</description>
+    <display-name>MainServlet</display-name>
+    <servlet-name>MainServlet</servlet-name>
+    <servlet-class>com.sun.j2ee.blueprints.waf.controller.web.MainServlet</servlet-class>
+    <init-param>
+      <param-name>default_locale</param-name>
+      <param-value>en_US</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+  <!-- PopulateServlet Declaration Start -->
+  <servlet>
+    <description>no description</description>
+    <display-name>PopulateServlet</display-name>
+    <servlet-name>PopulateServlet</servlet-name>
+    <servlet-class>com.sun.j2ee.blueprints.petstore.tools.populate.PopulateServlet</servlet-class>
+    <init-param>
+      <param-name>PopulateSQL</param-name>
+      <param-value>/populate/PopulateSQL.xml</param-value>
+    </init-param>
+    <init-param>
+      <param-name>PopulateData</param-name>
+      <param-value>/populate/Populate-UTF8.xml</param-value>
+    </init-param>
+    <init-param>
+      <param-name>Database</param-name>
+      <param-value>pointbase</param-value>
+      <!--param-value>oracle</param-value-->
+    </init-param>
+  </servlet>
+  <!-- Template Servlet Mapping -->
+  <servlet-mapping>
+    <servlet-name>TemplateServlet</servlet-name>
+    <url-pattern>*.screen</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MainServlet</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  <!-- PopulateServlet Mapping Start-->
+  <servlet-mapping>
+    <servlet-name>PopulateServlet</servlet-name>
+    <url-pattern>/Populate</url-pattern>
+  </servlet-mapping>
+  <session-config>
+    <session-timeout>15</session-timeout>
+  </session-config>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <env-entry>
+    <env-entry-name>param/CatalogDAODatabase</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>pointbase</env-entry-value>
+    <!--env-entry-value>oracle</env-entry-value-->
+  </env-entry>
+  <env-entry>
+    <description>This Entry Provides the name for the CatalogDAO Implementation Class so the Fast Lane Pattern may be used</description>
+    <env-entry-name>param/CatalogDAOClass</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>com.sun.j2ee.blueprints.catalog.dao.GenericCatalogDAO</env-entry-value>
+  </env-entry>
+  <!-- Component Manager Class  -->
+  <env-entry>
+    <description>Define the implementation class of the Component Manager</description>
+    <env-entry-name>param/ComponentManager</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>com.sun.j2ee.blueprints.petstore.controller.web.PetstoreComponentManager</env-entry-value>
+  </env-entry>
+  <!-- Web Controller  Class  -->
+  <env-entry>
+    <description>Define the implementation class of the Web Client Crontroller</description>
+    <env-entry-name>param/WebController</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>com.sun.j2ee.blueprints.petstore.controller.web.ShoppingWebController</env-entry-value>
+  </env-entry>
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/ShoppingClientFacade</ejb-ref-name>
+    <ejb-ref-type>Session</ejb-ref-type>
+    <local-home>com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingClientFacadeLocalHome</local-home>
+    <local>com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingClientFacadeLocal</local>
+    <ejb-link>ShoppingClientFacadeEJB</ejb-link>
+  </ejb-local-ref>
+  <!-- Sigon EJB Local Ref Start  -->
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/SignOn</ejb-ref-name>
+    <ejb-ref-type>Session</ejb-ref-type>
+    <local-home>com.sun.j2ee.blueprints.signon.ejb.SignOnLocalHome</local-home>
+    <local>com.sun.j2ee.blueprints.signon.ejb.SignOnLocal</local>
+    <ejb-link>SignOnEJB</ejb-link>
+  </ejb-local-ref>
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/User</ejb-ref-name>
+    <ejb-ref-type>Entity</ejb-ref-type>
+    <local-home>com.sun.j2ee.blueprints.signon.user.ejb.UserLocalHome</local-home>
+    <local>com.sun.j2ee.blueprints.signon.user.ejb.UserLocal</local>
+    <ejb-link>UserEJB</ejb-link>
+  </ejb-local-ref>
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/ContactInfo</ejb-ref-name>
+    <ejb-ref-type>Entity</ejb-ref-type>
+    <local-home>com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfoLocalHome</local-home>
+    <local>com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfoLocal</local>
+    <ejb-link>ContactInfoEJB</ejb-link>
+  </ejb-local-ref>
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/CreditCard</ejb-ref-name>
+    <ejb-ref-type>Entity</ejb-ref-type>
+    <local-home>com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocalHome</local-home>
+    <local>com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocal</local>
+    <ejb-link>CreditCardEJB</ejb-link>
+  </ejb-local-ref>
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/Account</ejb-ref-name>
+    <ejb-ref-type>Entity</ejb-ref-type>
+    <local-home>com.sun.j2ee.blueprints.customer.account.ejb.AccountLocalHome</local-home>
+    <local>com.sun.j2ee.blueprints.customer.account.ejb.AccountLocal</local>
+    <ejb-link>AccountEJB</ejb-link>
+  </ejb-local-ref>
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/ShoppingCart</ejb-ref-name>
+    <ejb-ref-type>Session</ejb-ref-type>
+    <local-home>com.sun.j2ee.blueprints.cart.ejb.ShoppingCartLocalHome</local-home>
+    <local>com.sun.j2ee.blueprints.cart.ejb.ShoppingCartLocal</local>
+    <ejb-link>ShoppingCartEJB</ejb-link>
+  </ejb-local-ref>
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/Profile</ejb-ref-name>
+    <ejb-ref-type>Entity</ejb-ref-type>
+    <local-home>com.sun.j2ee.blueprints.customer.profile.ejb.ProfileLocalHome</local-home>
+    <local>com.sun.j2ee.blueprints.customer.profile.ejb.ProfileLocal</local>
+    <ejb-link>ProfileEJB</ejb-link>
+  </ejb-local-ref>
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/ShoppingController</ejb-ref-name>
+    <ejb-ref-type>Session</ejb-ref-type>
+    <local-home>com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingControllerLocalHome</local-home>
+    <local>com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingControllerLocal</local>
+    <ejb-link>ShoppingControllerEJB</ejb-link>
+  </ejb-local-ref>
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/Address</ejb-ref-name>
+    <ejb-ref-type>Entity</ejb-ref-type>
+    <local-home>com.sun.j2ee.blueprints.address.ejb.AddressLocalHome</local-home>
+    <local>com.sun.j2ee.blueprints.address.ejb.AddressLocal</local>
+    <ejb-link>AddressEJB</ejb-link>
+  </ejb-local-ref>
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/Customer</ejb-ref-name>
+    <ejb-ref-type>Entity</ejb-ref-type>
+    <local-home>com.sun.j2ee.blueprints.customer.ejb.CustomerLocalHome</local-home>
+    <local>com.sun.j2ee.blueprints.customer.ejb.CustomerLocal</local>
+    <ejb-link>CustomerEJB</ejb-link>
+  </ejb-local-ref>
+  <!-- Enable Fast Lane Pattern  -->
+  <resource-ref>
+    <description>Allow the Fast Lane Reader Pattern to Read Catalog Data Directly via JDBC in the Web Tier</description>
+    <res-ref-name>jdbc/CatalogDB</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+    <res-sharing-scope>Shareable</res-sharing-scope>
+  </resource-ref>
+  <resource-ref>
+    <res-ref-name>url/CatalogDAOSQLURL</res-ref-name>
+    <res-type>java.net.URL</res-type>
+    <res-auth>Container</res-auth>
+    <res-sharing-scope>Shareable</res-sharing-scope>
+  </resource-ref>
+</web-app>
