@@ -29,8 +29,8 @@ import java.util.List;
  * @version <$CURRENT_VERSION$>
  */
 public abstract class DNDHelper {
-	
-	DndHandler dndHandler = new DndHandler();
+
+	static DndHandler dndHandler = new DndHandler();
 	public static DataFlavor ASCIIFlavor = new DataFlavor(
 			"text/plain; charset=ascii", "ASCII text");
 	private DragGestureRecognizer dgr;
@@ -130,11 +130,14 @@ public abstract class DNDHelper {
 		// TODO Caso de reuso + fácil em OO do que em AO
 		catch (java.io.IOException ioe) {
 			// System.err.println(ioe);
+			dndHandler.dNDHelperProcessReceivedData(ioe);
 
 		} catch (UnsupportedFlavorException ufe) {
-			System.err.println(ufe);
+			// System.err.println(ufe);
+			dndHandler.dNDHelperProcessReceivedData(ufe);
 		} catch (ClassCastException cce) {
-			System.err.println(cce);
+			dndHandler.dNDHelperProcessReceivedData(cce);
+			// System.err.println(cce);
 		}
 
 		return receivedData;
@@ -193,11 +196,14 @@ public abstract class DNDHelper {
 				// System.out.println(view().toString() +
 				// " Initialized to DND.");
 			} catch (NullPointerException npe) {
-				System.err.println("View Failed to initialize to DND.");
-				System.err
-						.println("Container likely did not have peer before the DropTarget was added");
-				System.err.println(npe);
-				npe.printStackTrace();
+				// System.err.println("View Failed to initialize to DND.");
+				// System.err
+				// .println(
+				// "Container likely did not have peer before the DropTarget was added"
+				// );
+				// System.err.println(npe);
+				// npe.printStackTrace();
+				dndHandler.dNDCHelperCreateDropTarget(npe);
 			}
 		}
 		return dt;

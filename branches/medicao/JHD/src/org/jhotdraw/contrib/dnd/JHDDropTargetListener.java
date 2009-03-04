@@ -14,34 +14,40 @@ import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.*;
 
-
 /**
- *
- * @author  Administrator
+ * 
+ * @author Administrator
  */
 public class JHDDropTargetListener implements java.awt.dnd.DropTargetListener {
-	private int     fLastX=0, fLastY=0;      // previous mouse position
+	
+	private DndHandler dndHandler = new DndHandler();
+	private int fLastX = 0, fLastY = 0; // previous mouse position
 	private Undoable targetUndoable;
 	private DrawingView dv;
 	private DrawingEditor editor;
+
 	/** Creates a new instance of JHDDropTargetListener */
-	public JHDDropTargetListener(DrawingEditor drawingEditor, DrawingView drawingView) {
+	public JHDDropTargetListener(DrawingEditor drawingEditor,
+			DrawingView drawingView) {
 		dv = drawingView;
 		editor = drawingEditor;
 	}
-	protected DrawingView view(){
+
+	protected DrawingView view() {
 		return dv;
 	}
-	protected DrawingEditor editor(){
+
+	protected DrawingEditor editor() {
 		return editor;
 	}
-	
-	
-	
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-	
+
+	////////////////////////////////////////////////////////////////////////////
+	// ////
+	////////////////////////////////////////////////////////////////////////////
+	// ////
+	////////////////////////////////////////////////////////////////////////////
+	// ////
+
 	/**
 	 * Called when a drag operation has encountered the DropTarget.
 	 */
@@ -66,29 +72,29 @@ public class JHDDropTargetListener implements java.awt.dnd.DropTargetListener {
 	/**
 	 * Called when a drag operation is ongoing on the DropTarget.
 	 */
-	 public void dragOver(DropTargetDragEvent dtde) {
-		//log("DropTargetDragEvent-dragOver");
-		if (supportDropTargetDragEvent(dtde)==true) {
-			int x=dtde.getLocation().x;
-			int y=dtde.getLocation().y;
-			if ((Math.abs(x - fLastX) > 0) || (Math.abs(y - fLastY) > 0) ) {
-				//FigureEnumeration fe = view().selectionElements();
-				//while (fe.hasNextFigure()) {
-				//	fe.nextFigure().moveBy(x - fLastX, y - fLastY);
-				//	System.out.println("moving Figures " + view());
-				//}
-				//view().drawing().update();
+	public void dragOver(DropTargetDragEvent dtde) {
+		// log("DropTargetDragEvent-dragOver");
+		if (supportDropTargetDragEvent(dtde) == true) {
+			int x = dtde.getLocation().x;
+			int y = dtde.getLocation().y;
+			if ((Math.abs(x - fLastX) > 0) || (Math.abs(y - fLastY) > 0)) {
+				// FigureEnumeration fe = view().selectionElements();
+				// while (fe.hasNextFigure()) {
+				// fe.nextFigure().moveBy(x - fLastX, y - fLastY);
+				// System.out.println("moving Figures " + view());
+				// }
+				// view().drawing().update();
 				fLastX = x;
 				fLastY = y;
 			}
 		}
-	 }
+	}
 
 	/**
-	 * The drag operation has terminated with a drop on this DropTarget.
-	 * Be nice to somehow incorporate FigureTransferCommand here.
+	 * The drag operation has terminated with a drop on this DropTarget. Be nice
+	 * to somehow incorporate FigureTransferCommand here.
 	 */
-	 public void drop(java.awt.dnd.DropTargetDropEvent dtde) {
+	public void drop(java.awt.dnd.DropTargetDropEvent dtde) {
 		System.out.println("DropTargetDropEvent-drop");
 
 		if (dtde.isDataFlavorSupported(DNDFiguresTransferable.DNDFiguresFlavor) == true) {
@@ -130,8 +136,9 @@ public class JHDDropTargetListener implements java.awt.dnd.DropTargetListener {
 					dtde.dropComplete(true);
 				}
 				catch (NullPointerException npe) {
-					npe.printStackTrace();
-					dtde.dropComplete(false);
+					// npe.printStackTrace();
+					// dtde.dropComplete(false);
+					dndHandler.dNDHelperDrop(npe, dtde);
 				}
 			}
 			else {
@@ -190,67 +197,75 @@ public class JHDDropTargetListener implements java.awt.dnd.DropTargetListener {
 		supportDropTargetDragEvent(dtde);
 	}
 
-	
-	
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-	
+	////////////////////////////////////////////////////////////////////////////
+	// ////
+	////////////////////////////////////////////////////////////////////////////
+	// ////
+	////////////////////////////////////////////////////////////////////////////
+	// ////
+
 	/**
-	 * Tests wether the Drag event is of a type that we support handling
-	 * Check the DND interface and support the events it says it supports
-	 * if not a dnd interface comp, then dont support! because we dont even
-	 * really know what kind of view it is.
+	 * Tests wether the Drag event is of a type that we support handling Check
+	 * the DND interface and support the events it says it supports if not a dnd
+	 * interface comp, then dont support! because we dont even really know what
+	 * kind of view it is.
 	 */
 	protected boolean supportDropTargetDragEvent(DropTargetDragEvent dtde) {
 		if (dtde.isDataFlavorSupported(DNDFiguresTransferable.DNDFiguresFlavor) == true) {
 			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0) {
 				dtde.acceptDrag(dtde.getDropAction());
 				return true;
-			}
-			else {
+			} else {
 				dtde.rejectDrag();
 				return false;
 			}
-		}
-		else if (dtde.isDataFlavorSupported(DNDHelper.ASCIIFlavor) == true) {
-			dtde.acceptDrag(dtde.getDropAction());//accept everything because i am too lazy to fix yet
+		} else if (dtde.isDataFlavorSupported(DNDHelper.ASCIIFlavor) == true) {
+			dtde.acceptDrag(dtde.getDropAction());// accept everything because i
+													// am too lazy to fix yet
 			return true;
-		}
-		else if (dtde.isDataFlavorSupported(DataFlavor.stringFlavor) == true) {
-			dtde.acceptDrag(dtde.getDropAction());//accept everything because i am too lazy to fix yet
+		} else if (dtde.isDataFlavorSupported(DataFlavor.stringFlavor) == true) {
+			dtde.acceptDrag(dtde.getDropAction());// accept everything because i
+													// am too lazy to fix yet
 			return true;
-		}
-		else if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor) == true) {
-			dtde.acceptDrag(dtde.getDropAction());//accept everything because i am too lazy to fix yet
+		} else if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor) == true) {
+			dtde.acceptDrag(dtde.getDropAction());// accept everything because i
+													// am too lazy to fix yet
 			return true;
-		}
-		else {
+		} else {
 			dtde.rejectDrag();
 			return false;
 		}
 	}
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-	
+
+	////////////////////////////////////////////////////////////////////////////
+	// ////
+	////////////////////////////////////////////////////////////////////////////
+	// ////
+	////////////////////////////////////////////////////////////////////////////
+	// ////
+
 	/**
 	 * Factory method for undo activity
 	 */
 	protected Undoable createTargetUndoActivity(DrawingView view) {
-		return new AddUndoActivity( view );
+		return new AddUndoActivity(view);
 	}
-	protected void setTargetUndoActivity(Undoable undoable){
+
+	protected void setTargetUndoActivity(Undoable undoable) {
 		targetUndoable = undoable;
 	}
-	protected Undoable getTargetUndoActivity(){
+
+	protected Undoable getTargetUndoActivity() {
 		return targetUndoable;
 	}
-	public static class AddUndoActivity extends org.jhotdraw.util.UndoableAdapter {
-		private boolean undone=false;
+
+	public static class AddUndoActivity extends
+			org.jhotdraw.util.UndoableAdapter {
+		private boolean undone = false;
+
 		public AddUndoActivity(DrawingView newDrawingView) {
 			super(newDrawingView);
-			log("AddUndoActivity created " + newDrawingView);			
+			log("AddUndoActivity created " + newDrawingView);
 			setUndoable(true);
 			setRedoable(true);
 		}
@@ -259,15 +274,16 @@ public class JHDDropTargetListener implements java.awt.dnd.DropTargetListener {
 			if (!super.undo()) {
 				return false;
 			}
-			//undo of add really shouldnt need visitor !?!dnoyeb!?!
+			// undo of add really shouldnt need visitor !?!dnoyeb!?!
 			log("AddUndoActivity AddUndoActivity undo");
-			DeleteFromDrawingVisitor deleteVisitor = new DeleteFromDrawingVisitor(getDrawingView().drawing());
+			DeleteFromDrawingVisitor deleteVisitor = new DeleteFromDrawingVisitor(
+					getDrawingView().drawing());
 			FigureEnumeration fe = getAffectedFigures();
 			while (fe.hasNextFigure()) {
-	    		org.jhotdraw.framework.Figure f = fe.nextFigure();
+				org.jhotdraw.framework.Figure f = fe.nextFigure();
 				f.visit(deleteVisitor);
 			}
-			setAffectedFigures( deleteVisitor.getDeletedFigures() );
+			setAffectedFigures(deleteVisitor.getDeletedFigures());
 			getDrawingView().clearSelection();
 			undone = true;
 			return true;
@@ -281,16 +297,17 @@ public class JHDDropTargetListener implements java.awt.dnd.DropTargetListener {
 			log("AddUndoActivity redo");
 			getDrawingView().clearSelection();
 			setAffectedFigures(getDrawingView().insertFigures(
-				getAffectedFigures(), 0, 0, false));
+					getAffectedFigures(), 0, 0, false));
 			undone = false;
 			return true;
 		}
+
 		/**
-		 *	Since this is an add operation, figures can only be released if it
-		 *  has been undone.
+		 * Since this is an add operation, figures can only be released if it
+		 * has been undone.
 		 */
 		public void release() {
-			if(undone == true){
+			if (undone == true) {
 				FigureEnumeration fe = getAffectedFigures();
 				while (fe.hasNextFigure()) {
 					Figure f = fe.nextFigure();
@@ -298,10 +315,12 @@ public class JHDDropTargetListener implements java.awt.dnd.DropTargetListener {
 					f.release();
 				}
 			}
-			setAffectedFigures(org.jhotdraw.standard.FigureEnumerator.getEmptyEnumeration());
+			setAffectedFigures(org.jhotdraw.standard.FigureEnumerator
+					.getEmptyEnumeration());
 		}
 	}
-	private static void log(String message){
-		//System.out.println("JHDDropTargetListener: " + message);
+
+	private static void log(String message) {
+		// System.out.println("JHDDropTargetListener: " + message);
 	}
 }
