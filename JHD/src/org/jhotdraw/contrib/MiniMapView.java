@@ -37,6 +37,7 @@ public class MiniMapView extends JComponent {
 	private SubjectListener m_subjectListener;
 	private DrawingChangeListener myDrawingChangeListener;
 	private Color m_viewBoxColor = Color.red;
+	private ContribHandler contribHandler = new ContribHandler();
 
 // Constructors
 	public MiniMapView(DrawingView newMappedDrawingView, JScrollPane subject) {
@@ -161,7 +162,9 @@ public class MiniMapView extends JComponent {
 			at = getViewToMiniMapTransform(getMappedComponent()).createInverse();
 		}
 		catch (NoninvertibleTransformException nite) {
-			nite.printStackTrace();
+//			nite.printStackTrace();
+			//TODO o retuen nao pode ser refatorado -- cenario
+			contribHandler.cTXWindowMenuBuildChildMenus(nite);
 			return;
 		}
 

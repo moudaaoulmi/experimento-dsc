@@ -31,6 +31,7 @@ import java.awt.event.*;
  */
 public class CustomSelectionTool extends SelectionTool {
 
+	private ContribHandler contribHandler = new ContribHandler();
 	/**
 	 * Create an instance of this SelectionTool for the given view
 	 *
@@ -172,7 +173,9 @@ public class CustomSelectionTool extends SelectionTool {
 				// apparently isn't showing on the
 				// screen (huh?). Never mind - don't
 				// show the popup..
-				return;
+				//TODO CASO QUE TEM RETURN E NAO PODE SER REFATORADO -- CENARIO
+				contribHandler.customSelectionToolShowPopupMenu();
+				return; 
 			}
 			// If this is a ZoomDrawingView, we'll need to
 			// compensate here too:
