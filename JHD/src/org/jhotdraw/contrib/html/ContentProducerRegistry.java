@@ -40,7 +40,8 @@ import org.jhotdraw.util.StorableOutput;
  * @version <$CURRENT_VERSION$>
  */
 public class ContentProducerRegistry implements Serializable, Storable {
-
+	
+	private HtmlHandler htmlHandler = new HtmlHandler();
 	/** producers registered with this registry */
 	private Hashtable fContentProducers = new Hashtable();
 
@@ -300,6 +301,7 @@ public class ContentProducerRegistry implements Serializable, Storable {
 				// the class does not exist in this application
 				// cannot do much about it so ignore it, the entities of
 				// this class will get their toString() value instead
+				htmlHandler.contentProducerRegistryRead();
 			}
 		}
 

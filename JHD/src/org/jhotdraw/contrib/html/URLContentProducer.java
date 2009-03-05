@@ -36,6 +36,7 @@ import org.jhotdraw.util.StorableOutput;
 public class URLContentProducer extends FigureDataContentProducer
 		 implements Serializable {
 
+	private HtmlHandler htmlHandler = new HtmlHandler();
 	/** the specific URL */
 	private URL fURL;
 
@@ -75,8 +76,9 @@ public class URLContentProducer extends FigureDataContentProducer
 			return new String(contents);
 		}
 		catch (Exception ex) {
-			ex.printStackTrace();
-			return ex.toString();
+//			ex.printStackTrace();
+//			return ex.toString();
+			return htmlHandler.resourceContentProducerGetContent(ex);
 		}
 	}
 
