@@ -32,6 +32,7 @@ import org.jhotdraw.util.StorableOutput;
 public class ResourceContentProducer extends AbstractContentProducer
 		 implements Serializable {
 
+	private HtmlHandler htmlHandler = new HtmlHandler();
 	/** Description of the Field */
 	private String fResourceName;
 
@@ -71,8 +72,9 @@ public class ResourceContentProducer extends AbstractContentProducer
 			return new String(contents);
 		}
 		catch (Exception ex) {
-			ex.printStackTrace();
-			return ex.toString();
+//			ex.printStackTrace();
+//			return ex.toString();
+			return htmlHandler.resourceContentProducerGetContent(ex);
 		}
 	}
 

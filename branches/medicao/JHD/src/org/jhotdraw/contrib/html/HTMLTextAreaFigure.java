@@ -137,6 +137,7 @@ import org.jhotdraw.util.StorableOutput;
 public class HTMLTextAreaFigure extends TextAreaFigure
 		 implements HTMLContentProducerContext, FigureChangeListener {
 
+	private HtmlHandler htmlHandler = new HtmlHandler();
 	/** Start marker for embedded attribute values */
 	public final static char START_ENTITY_CHAR = '&';
 
@@ -696,6 +697,7 @@ public class HTMLTextAreaFigure extends TextAreaFigure
 		}
 		catch (InvalidAttributeMarker ex) {
 			// invalid marker, ignore
+			htmlHandler.hTMLTextAreaFigureSubstituteEntityKeywords();
 		}
 
 		// append whatever is left

@@ -26,6 +26,7 @@ import java.util.Iterator;
  */
 public class ETSLADisposalStrategy implements ResourceDisposabilityStrategy {
 
+	private HtmlHandler htmlHandler = new HtmlHandler();
 	/** The associated resource manager */
 	private DisposableResourceManager manager;
 
@@ -127,9 +128,11 @@ public class ETSLADisposalStrategy implements ResourceDisposabilityStrategy {
 		}
 		catch (InterruptedException ex) {
 			// ignore
+			htmlHandler.eTSLADisposalStrategyStopDisposing1();
 		}
 		finally {
-			disposingActive = false;
+//			disposingActive = false;
+			htmlHandler.eTSLADisposalStrategyStopDisposing2(disposingActive);
 		}
 	}
 
@@ -195,6 +198,7 @@ public class ETSLADisposalStrategy implements ResourceDisposabilityStrategy {
  */
 class DisposalThread extends Thread {
 
+	private HtmlHandler htmlHandler = new HtmlHandler();
 	private ETSLADisposalStrategy strategy;
 
 	/** The periodicity at wich disposal is checked */
@@ -225,6 +229,7 @@ class DisposalThread extends Thread {
 			}
 			catch (Exception ex) {
 				// just exit
+				htmlHandler.eTSLADisposalStrategyDisposalThreadRun();
 				break;
 			}
 			strategy.dispose();

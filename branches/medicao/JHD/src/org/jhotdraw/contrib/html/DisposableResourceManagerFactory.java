@@ -21,6 +21,7 @@ package org.jhotdraw.contrib.html;
  */
 public abstract class DisposableResourceManagerFactory {
 
+	private static HtmlHandler htmlHandler = new HtmlHandler();
 	/** The default periodicity for resource disposal */
 	public static long DEFAULT_DISPOSAL_PERIODICITY = 60000;
 
@@ -92,6 +93,7 @@ public abstract class DisposableResourceManagerFactory {
 			}
 			catch (ResourceManagerNotSetException ex) {
 				// we set it so we shouldn't get here
+				htmlHandler.disposableResourceManagerFactoryInitManager();
 			}
 		}
 	}
