@@ -17,7 +17,7 @@ import org.jhotdraw.framework.*;
 import java.awt.*;
 import java.util.List;
 import java.io.*;
-
+ 
 /**
  * AbstractFigure provides default implementations for
  * the Figure interface.
@@ -58,6 +58,8 @@ public abstract class AbstractFigure implements Figure {
 	private int abstractFigureSerializedDataVersion = 1;
 	private int _nZ;
 
+	private StandardHandler standardHandler = new StandardHandler();
+	
 	protected AbstractFigure() {
 		 myDependendFigures = CollectionsFactory.current().createList();
 	}
@@ -387,7 +389,8 @@ public abstract class AbstractFigure implements Figure {
 			writer.close();
 		}
 		catch (IOException e) {
-			System.err.println("Class not found: " + e);
+			standardHandler.abstractFigureClone(e);
+			//System.err.println("Class not found: " + e);
 		}
 
 		InputStream input = new ByteArrayInputStream(output.toByteArray());
@@ -396,10 +399,12 @@ public abstract class AbstractFigure implements Figure {
 			clone = reader.readObject();
 		}
 		catch (IOException e) {
-			System.err.println(e.toString());
+			standardHandler.abstractFigureClone_2(e);
+			//System.err.println(e.toString());
 		}
 		catch (ClassNotFoundException e) {
-			System.err.println("Class not found: " + e);
+			standardHandler.abstractFigureClone(e);
+			//System.err.println("Class not found: " + e);
 		}
 		return clone;
 	}
