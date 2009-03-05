@@ -12,6 +12,7 @@
 package org.jhotdraw.figures;
 
 import org.jhotdraw.framework.Figure;
+import org.jhotdraw.standard.StandardHandler;
 
 /**
  * A TextFigure specialized to edit numbers.
@@ -26,6 +27,7 @@ public  class NumberTextFigure extends TextFigure {
 	private static final long serialVersionUID = -4056859232918336475L;
 	private int numberTextFigureSerializedDataVersion = 1;
 
+	private FiguresHandler figuresHandler = new FiguresHandler();
 	/**
 	 * Gets the number of columns to be used by the text overlay.
 	 * @see org.jhotdraw.util.FloatingTextField
@@ -44,7 +46,8 @@ public  class NumberTextFigure extends TextFigure {
 			value = Integer.parseInt(getText());
 		}
 		catch (NumberFormatException e) {
-			value = 0;
+			figuresHandler.numberTextFigureGetValue(value);
+			//value = 0;
 		}
 		return value;
 	}

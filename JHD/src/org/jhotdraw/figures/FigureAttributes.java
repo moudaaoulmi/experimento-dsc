@@ -11,6 +11,7 @@
 
 package org.jhotdraw.figures;
 
+import org.jhotdraw.standard.StandardHandler;
 import org.jhotdraw.util.*;
 import org.jhotdraw.framework.*;
 
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Iterator;
+import org.jhotdraw.exception.*;
 
 /**
  * A container for a figure's attributes. The attributes are stored
@@ -40,6 +42,7 @@ public  class   FigureAttributes
 	private static final long serialVersionUID = -6886355144423666716L;
 	private int figureAttributesSerializedDataVersion = 1;
 
+	private GeneralExeption generalExeption = new GeneralExeption();
 	/**
 	 * Constructs the FigureAttributes.
 	 */
@@ -85,7 +88,8 @@ public  class   FigureAttributes
 			return a;
 		}
 		catch (CloneNotSupportedException e) {
-			throw new InternalError();
+			return generalExeption.abstractLocatorClone();
+			//throw new InternalError();
 		}
 	}
 

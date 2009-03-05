@@ -12,6 +12,7 @@
 package org.jhotdraw.standard;
 
 import org.jhotdraw.util.*;
+import org.jhotdraw.exception.GeneralExeption;
 import org.jhotdraw.framework.*;
 
 import java.io.IOException;
@@ -32,6 +33,9 @@ public abstract class AbstractLocator implements Locator, Storable, Cloneable {
 	 * Serialization support.
 	 */
 	private static final long serialVersionUID = -7742023180844048409L;
+	
+	
+	private GeneralExeption generalExeption = new GeneralExeption();
 
 	protected AbstractLocator() {
 	}
@@ -41,7 +45,8 @@ public abstract class AbstractLocator implements Locator, Storable, Cloneable {
 			return super.clone();
 		}
 		catch (CloneNotSupportedException e) {
-			throw new InternalError();
+			return generalExeption.abstractLocatorClone();
+			//throw new InternalError();
 		}
 	}
 

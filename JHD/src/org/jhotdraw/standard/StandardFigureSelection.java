@@ -31,6 +31,7 @@ public class StandardFigureSelection implements FigureSelection, Serializable {
 
 	private byte[] fData; // flattend figures, ready to be resurrected
 
+	private StandardHandler standardHandler = new StandardHandler();
 	/**
 	 * The type identifier of the selection.
 	 */
@@ -80,7 +81,8 @@ public class StandardFigureSelection implements FigureSelection, Serializable {
 				}
 			}
 			catch (IOException e) {
-				System.err.println(e.toString());
+				standardHandler.abstractFigureClone_2(e);
+				//System.err.println(e.toString());
 			}
 			return new FigureEnumerator(result);
 		}

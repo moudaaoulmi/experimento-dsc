@@ -155,6 +155,7 @@ public class StandardDrawingView
 	private static final long serialVersionUID = -3878153366174603336L;
 	private int drawingViewSerializedDataVersion = 1;
 
+	private StandardHandler standardHandler = new StandardHandler();
 	/**
 	 * Constructs the view.
 	 */
@@ -941,12 +942,13 @@ public class StandardDrawingView
      * to provide other action.
      */
     protected void handleMouseEventException(Throwable t) {
-		JOptionPane.showMessageDialog(
+    	standardHandler.handleMouseEventException(t,this);
+    	/*JOptionPane.showMessageDialog(
 			this,
             t.getClass().getName() + " - " + t.getMessage(),
 			"Error",
 			JOptionPane.ERROR_MESSAGE);
-		t.printStackTrace();
+		t.printStackTrace();*/
     }
 
 	public class DrawingViewMouseListener extends MouseAdapter {
