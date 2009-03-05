@@ -36,6 +36,7 @@ public class WindowMenu extends CommandMenu {
 	private MDIDesktopPane desktop;
 	private Command cascadeCommand;
 	private Command tileCommand;
+	private ContribHandler contribHandler = new ContribHandler();
 
 	public WindowMenu(String newText, MDIDesktopPane newDesktop, DrawingEditor newEditor) {
 		super(newText);
@@ -93,7 +94,8 @@ public class WindowMenu extends CommandMenu {
 						frame.setSelected(true);
 					}
 					catch (PropertyVetoException e) {
-						e.printStackTrace();
+//						e.printStackTrace();
+						contribHandler.cTXWindowMenuBuildChildMenus(e);
 					}
 				}
 			});

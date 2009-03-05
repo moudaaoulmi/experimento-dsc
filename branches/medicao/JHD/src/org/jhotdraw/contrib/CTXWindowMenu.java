@@ -36,6 +36,7 @@ public class CTXWindowMenu extends CTXCommandMenu {
 	private CommandMenuItem arrangeHCommand;
 	private CommandMenuItem arrangeVCommand;
 	private int staticItems;
+	private ContribHandler contribHandler = new ContribHandler();
 
 	/**
 	 *Constructor for the CTXWindowsMenu object
@@ -164,7 +165,8 @@ public class CTXWindowMenu extends CTXCommandMenu {
 							frame.setSelected(true);
 						}
 						catch (PropertyVetoException e) {
-							e.printStackTrace();
+//							e.printStackTrace();
+							contribHandler.cTXWindowMenuBuildChildMenus(e);
 						}
 					}
 				});
