@@ -11,6 +11,10 @@ public class UtilHandler extends GeneralExeption {
 			throw new JHotDrawRuntimeException(e);
 	}
 	
+	public Object loadImageResourceHandler (Exception ex) {
+		return null;
+	}
+	
 	public void printStackTraceHandler (IOException e) {
 		e.printStackTrace();
 	}
