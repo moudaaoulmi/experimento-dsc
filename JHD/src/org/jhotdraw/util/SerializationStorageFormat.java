@@ -30,6 +30,9 @@ public class SerializationStorageFormat extends StandardStorageFormat {
 	public SerializationStorageFormat() {
 		super();
 	}
+	
+	//ExceptionHandler refactored
+	UtilHandler utilHandler = new UtilHandler();
 
 	/**
 	 * Factory method to create the file extension recognized by the FileFilter for this
@@ -81,7 +84,9 @@ public class SerializationStorageFormat extends StandardStorageFormat {
 			return (Drawing)input.readObject();
 		}
 		catch (ClassNotFoundException exception) {
-			throw new IOException("Could not restore drawing '" + fileName +"': class not found!");
+			//throw new IOException("Could not restore drawing '" + fileName +"': class not found!");
+			utilHandler.restoreHandler(exception, fileName);
 		}
+		return null;
 	}
 }

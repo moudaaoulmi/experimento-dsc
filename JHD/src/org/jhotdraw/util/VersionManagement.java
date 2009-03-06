@@ -95,6 +95,8 @@ public class VersionManagement {
 	 * @param versionFileName name of the jar file containing version information
 	 */
 	public static String readVersionFromFile(String applicationName, String versionFileName) {
+		UtilHandler utilHandler = new UtilHandler();
+		
 		try {
 			FileInputStream fileInput = new FileInputStream(versionFileName);
 			Manifest manifest = new Manifest();
@@ -114,7 +116,8 @@ public class VersionManagement {
 			}
 		}
 		catch (IOException exception) {
-			exception.printStackTrace();
+			//exception.printStackTrace();
+			utilHandler.printStackTraceHandler(exception);
 		}
 		
 		// no version found

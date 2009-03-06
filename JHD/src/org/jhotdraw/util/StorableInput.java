@@ -28,6 +28,10 @@ public class StorableInput {
 
 	private StreamTokenizer fTokenizer;
 	private List            fMap;
+	
+	
+	//ExceptionHandler refactored
+	UtilHandler utilHandler = new UtilHandler();
 
 	/**
 	 * Initializes a Storable input with the given input stream.
@@ -143,18 +147,23 @@ public class StorableInput {
 			return cl.newInstance();
 		}
 		catch (NoSuchMethodError e) {
-			throw new IOException("Class " + className
-				+ " does not seem to have a no-arg constructor");
+//			throw new IOException("Class " + className
+//				+ " does not seem to have a no-arg constructor");
+			utilHandler.makeInstanceHandler(e, className);
 		}
 		catch (ClassNotFoundException e) {
-			throw new IOException("No class: " + className);
+			//throw new IOException("No class: " + className);
+			utilHandler.makeInstanceHandler1(e, className);
 		}
 		catch (InstantiationException e) {
-			throw new IOException("Cannot instantiate: " + className);
+//			throw new IOException("Cannot instantiate: " + className);
+			utilHandler.makeInstanceHandler2(e, className);
 		}
 		catch (IllegalAccessException e) {
-			throw new IOException("Class (" + className + ") not accessible");
+//			throw new IOException("Class (" + className + ") not accessible");
+			utilHandler.makeInstanceHandler3(e, className);
 		}
+		return null;
 	}
 
 	private void map(Storable storable) {

@@ -312,6 +312,9 @@ public class JDOStorageFormat extends StandardStorageFormat {
 
 	public static void main(String[] args) {
 		DrawingSelector frame = new DrawingSelector();
+		
+		//ExceptionHandler refactored
+		UtilHandler utilHandler = new UtilHandler();
 		try {
 			Drawing newDrawing = new StandardDrawing();
 			newDrawing.setTitle("TestDrawingName" + new Random(System.currentTimeMillis()).nextLong());
@@ -319,7 +322,8 @@ public class JDOStorageFormat extends StandardStorageFormat {
 			System.exit(0);
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			utilHandler.printStackTraceHandler(e);
 		}
 //		frame.setVisible(true);
 	}
