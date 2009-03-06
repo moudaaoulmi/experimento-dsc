@@ -43,6 +43,9 @@ public class Iconkit {
 	private final static int    ID = 123;
 	private static Iconkit      fgIconkit = null;
 	private static boolean      fgDebug = false;
+	
+	//ExceptionHandler Refactored
+	UtilHandler utilHandler = new UtilHandler();
 
 	/**
 	 * Constructs an Iconkit that uses the given editor to
@@ -142,8 +145,10 @@ public class Iconkit {
 			return toolkit.createImage((ImageProducer) url.getContent());
 		}
 		catch (Exception ex) {
-			return null;
+			//return null;
+			utilHandler.loadImageResourceHandler(ex);
 		}
+		return null;
 	}
 
 	/**
