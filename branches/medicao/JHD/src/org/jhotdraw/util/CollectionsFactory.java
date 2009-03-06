@@ -66,18 +66,25 @@ public abstract class CollectionsFactory {
 	}
 
 	protected static CollectionsFactory createCollectionsFactory(String jdkVersion) {
+		UtilHandler utilHandler = new UtilHandler();
+		
 		try {
 			Class factoryClass = Class.forName(COLLECTIONS_FACTORY_PACKAGE + jdkVersion + ".CollectionsFactoryJDK" + jdkVersion);
 			return (CollectionsFactory)factoryClass.newInstance();
 		}
 		catch (ClassNotFoundException e) {
-			throw new JHotDrawRuntimeException(e);
+			//throw new JHotDrawRuntimeException(e);
+			 utilHandler.createCollectionsFactoryHandler(e);
 		}
 		catch (InstantiationException e) {
-			throw new JHotDrawRuntimeException(e);
+			//throw new JHotDrawRuntimeException(e);
+			utilHandler.createCollectionsFactoryHandler(e);
 		}
 		catch (IllegalAccessException e) {
-			throw new JHotDrawRuntimeException(e);
+			//throw new JHotDrawRuntimeException(e);
+			utilHandler.createCollectionsFactoryHandler(e);
 		}
+		return null;
 	}
+	
 }
