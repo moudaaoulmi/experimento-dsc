@@ -22,10 +22,13 @@ import org.jhotdraw.standard.AbstractTool;
  */
 class FollowURLTool extends AbstractTool {
 	 private JApplet         fApplet;
+	 
+	 private JavadrawHandler javadrawHandler;
 
 	 FollowURLTool(DrawingEditor newDrawingEditor, JApplet applet) {
 		super(newDrawingEditor);
 		fApplet = applet;
+		this.javadrawHandler = new JavadrawHandler();
 	 }
 
 	/**
@@ -64,7 +67,7 @@ class FollowURLTool extends AbstractTool {
 			fApplet.getAppletContext().showDocument(url);
 		}
 		catch (MalformedURLException exception) {
-			fApplet.showStatus(exception.toString());
+			this.javadrawHandler.mouseUpHandler(exception, this.fApplet);
 		}
 	}
 }
