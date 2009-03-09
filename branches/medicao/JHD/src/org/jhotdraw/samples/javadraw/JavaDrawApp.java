@@ -40,6 +40,7 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 
 	JavaDrawApp() {
 		super("JHotDraw");
+
 	}
 
 	/**
@@ -301,7 +302,7 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 				cmd.execute();
 				System.out.println("Comando: "+cmd.name());
 			}catch(Exception e){
-				e.printStackTrace();
+				JavadrawHandler.executeCommandMenuHandler(e);
 			}
 		}
 
