@@ -42,7 +42,7 @@ public  class   FigureAttributes
 	private static final long serialVersionUID = -6886355144423666716L;
 	private int figureAttributesSerializedDataVersion = 1;
 
-	private GeneralExeption generalExeption = new GeneralExeption();
+	private GeneralException generalExeption = new GeneralException();
 	/**
 	 * Constructs the FigureAttributes.
 	 */
