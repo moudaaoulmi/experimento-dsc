@@ -19,27 +19,36 @@ import java.awt.geom.NoninvertibleTransformException;
 import javax.swing.JScrollPane;
 
 /**
- * Specialized sub-class of MiniMapView to handle the zooming ability of the ZoomDrawingView in JHotDraw.  This subclass has been enhanced
- * to take into consideration that the scrollpane's content may itself be altered by a transform (namely a scaling transform).
- *
- * @author	S. Ruman (sruman@rogers.com)
+ * Specialized sub-class of MiniMapView to handle the zooming ability of the
+ * ZoomDrawingView in JHotDraw. This subclass has been enhanced to take into
+ * consideration that the scrollpane's content may itself be altered by a
+ * transform (namely a scaling transform).
+ * 
+ * @author S. Ruman (sruman@rogers.com)
  * @version <$CURRENT_VERSION$>
  */
 public class MiniMapZoomableView extends MiniMapView {
-	public MiniMapZoomableView(DrawingView newMappedDrawingView, JScrollPane subject) {
+
+	private ZoomHandler zoomHandler = new ZoomHandler();
+
+	public MiniMapZoomableView(DrawingView newMappedDrawingView,
+			JScrollPane subject) {
 		super(newMappedDrawingView, subject);
 	}
 
-// Overridden
+	// Overridden
 	public AffineTransform getInverseSubjectTransform() {
-		double subjectsScale = ((ZoomDrawingView)getMappedComponent()).getScale();
+		double subjectsScale = ((ZoomDrawingView) getMappedComponent())
+				.getScale();
 
 		AffineTransform at = null;
 		try {
-			at = AffineTransform.getScaleInstance(subjectsScale, subjectsScale).createInverse();   // undo the zoom of the zoomable drawing view
-		}
-		catch (NoninvertibleTransformException nte) {
+			at = AffineTransform.getScaleInstance(subjectsScale, subjectsScale)
+					.createInverse(); // undo the zoom of the zoomable drawing
+										// view
+		} catch (NoninvertibleTransformException nte) {
 			// all scale-only transforms should be invertable
+			zoomHandler.miniMapZoomableViewGetInverseSubjectTransform();
 		}
 
 		return at;
