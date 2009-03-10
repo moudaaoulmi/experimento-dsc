@@ -1,19 +1,20 @@
 package org.jhotdraw.samples.javadraw;
 
 import java.io.IOException;
-
-import javax.swing.JApplet;
-
+import org.jhotdraw.exception.GeneralException;
 import org.jhotdraw.framework.Drawing;
 
-public class JavadrawHandler {
-	
-	public void mouseUpHandler(Exception exception,JApplet fApplet){
-		fApplet.showStatus(exception.toString());
+public class JavadrawHandler extends GeneralException {
+
+	public void javaDrawAppCreateImagesMenu() {
+		// do nothing
 	}
-	
-	public static void executeCommandMenuHandler(Exception e){
-		e.printStackTrace();
+
+	public void javaDrawViewerLoadDrawing(Drawing fDrawing, JavaDrawViewer jDV,
+			IOException e) {
+		fDrawing = jDV.createDrawing();
+		System.err.println("Error when Loading: " + e);
+		jDV.showStatus("Error when Loading: " + e);
 	}
 
 }
