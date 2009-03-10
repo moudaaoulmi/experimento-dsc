@@ -149,19 +149,20 @@ public class StorableInput {
 		catch (NoSuchMethodError e) {
 //			throw new IOException("Class " + className
 //				+ " does not seem to have a no-arg constructor");
-			utilHandler.makeInstanceHandler(e, className);
+			utilHandler.trowIOException("Class " + className
+					+ " does not seem to have a no-arg constructor");
 		}
 		catch (ClassNotFoundException e) {
 			//throw new IOException("No class: " + className);
-			utilHandler.makeInstanceHandler1(e, className);
+			utilHandler.trowIOException("No class: " + className);
 		}
 		catch (InstantiationException e) {
 //			throw new IOException("Cannot instantiate: " + className);
-			utilHandler.makeInstanceHandler2(e, className);
+			utilHandler.trowIOException("Cannot instantiate: " + className);
 		}
 		catch (IllegalAccessException e) {
 //			throw new IOException("Class (" + className + ") not accessible");
-			utilHandler.makeInstanceHandler3(e, className);
+			utilHandler.trowIOException("Class (" + className + ") not accessible");
 		}
 		return null;
 	}

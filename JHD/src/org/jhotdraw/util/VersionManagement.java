@@ -115,9 +115,9 @@ public class VersionManagement {
 				return packageSpecVersion;
 			}
 		}
-		catch (IOException exception) {
-			//exception.printStackTrace();
-			utilHandler.printStackTraceHandler(exception);
+		catch (IOException e) {
+			//e.printStackTrace();
+			utilHandler.printStackTraceException(e);
 		}
 		
 		// no version found
