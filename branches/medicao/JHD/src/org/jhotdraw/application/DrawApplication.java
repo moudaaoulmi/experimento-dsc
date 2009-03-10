@@ -26,6 +26,8 @@ import org.jhotdraw.framework.*;
 import org.jhotdraw.standard.*;
 import org.jhotdraw.util.*;
 
+import com.sun.mirror.apt.AnnotationProcessorListener;
+
 /**
  * DrawApplication defines a standard presentation for standalone drawing
  * editors. The presentation is customized in subclasses. The application is
@@ -239,11 +241,11 @@ public class DrawApplication extends JFrame implements DrawingEditor,
 			} catch (java.lang.InterruptedException ie) {
 				// System.err.println(ie.getMessage());
 				// exit();
-				applicationHandler.DrawApplicationOpen(ie, this);
+				applicationHandler.errPrintln(ie.getMessage());
+				applicationHandler.DrawApplicationOpen(this);
 			} catch (java.lang.reflect.InvocationTargetException ite) {
-				// System.err.println(ite.getMessage());
-				// exit();
-				applicationHandler.DrawApplicationOpen(ite, this);
+				applicationHandler.errPrintln(ite.getMessage());
+				applicationHandler.DrawApplicationOpen(this);
 			}
 		} else {
 			r.run();
@@ -1078,7 +1080,7 @@ public class DrawApplication extends JFrame implements DrawingEditor,
 			setDrawingTitle(name);
 		} catch (IOException e) {
 			// showStatus(e.toString());
-			applicationHandler.drawApplicationSaveDrawing(e, this);
+			applicationHandler.drawApplicationSaveDrawing(this, e.toString());
 		}
 	}
 
@@ -1097,7 +1099,7 @@ public class DrawApplication extends JFrame implements DrawingEditor,
 			}
 		} catch (IOException e) {
 			// showStatus("Error: " + e);
-			applicationHandler.drawApplicationLoadDrawing(this, e);
+			applicationHandler.drawApplicationSaveDrawing(this, "Error: " + e);
 		}
 	}
 
@@ -1109,8 +1111,8 @@ public class DrawApplication extends JFrame implements DrawingEditor,
 			UIManager.setLookAndFeel(landf);
 			SwingUtilities.updateComponentTreeUI(this);
 		} catch (Exception e) {
-//			System.err.println(e);
-			applicationHandler.drawApplicationNewLookAndFeel(e);
+			// System.err.println(e);
+			applicationHandler.errPrintln(e);
 		}
 	}
 

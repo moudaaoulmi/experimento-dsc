@@ -1,23 +1,14 @@
 package org.jhotdraw.application;
 
-import java.io.IOException;
+import org.jhotdraw.exception.GeneralException;
 
-public class ApplicationHandler {
+public class ApplicationHandler extends GeneralException {
 
-	public void DrawApplicationOpen(Exception e, DrawApplication dA) {
-		System.err.println(e.getMessage());
+	public void DrawApplicationOpen(DrawApplication dA) {
 		dA.exit();
 	}
 
-	public void drawApplicationSaveDrawing(IOException e, DrawApplication dA) {
-		dA.showStatus(e.toString());
-	}
-
-	public void drawApplicationLoadDrawing(DrawApplication dA, IOException e) {
-		dA.showStatus("Error: " + e);
-	}
-
-	public void drawApplicationNewLookAndFeel(Exception e) {
-		System.err.println(e);
+	public void drawApplicationSaveDrawing(DrawApplication dA, String msg) {
+		dA.showStatus(msg);
 	}
 }
