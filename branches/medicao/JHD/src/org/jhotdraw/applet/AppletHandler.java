@@ -1,5 +1,6 @@
 package org.jhotdraw.applet;
 
+import java.applet.Applet;
 
 public class AppletHandler {
 
@@ -9,7 +10,7 @@ public class AppletHandler {
 		dA.showStatus(msg + e);
 	}
 
-	public void drawAppletShowHelp(DrawApplet dA){
-		dA.showStatus("Help file not found");
+	public void drawAppletShowHelp(Applet dA, String msg){
+		dA.showStatus(msg);
 	}
 }

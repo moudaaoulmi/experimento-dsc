@@ -542,7 +542,7 @@ public class DrawApplet
 			getAppletContext().showDocument(url, "Help");
 		}
 		catch (IOException e) {
-			appletHandler.drawAppletShowHelp(this);
+			appletHandler.drawAppletShowHelp(this, "Help file not found" );
 //			showStatus("Help file not found");
 		}
 
