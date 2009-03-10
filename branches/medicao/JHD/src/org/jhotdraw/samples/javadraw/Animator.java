@@ -54,7 +54,8 @@ public  class Animator extends Thread {
 				Thread.sleep(Math.max(0, tm - System.currentTimeMillis()));
 			}
 			catch (InterruptedException e) {
-				break;// nao achei uma forma de melhorar esse cenario
+				//TODO não pode ser refatorado
+				break;
 			}
 		}
 	}
