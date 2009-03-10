@@ -2,16 +2,11 @@ package org.jhotdraw.util;
 
 import org.jhotdraw.framework.Drawing;
 import org.jhotdraw.framework.JHotDrawRuntimeException;
-import java.awt.MediaTracker;
 import java.awt.Image;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-
 import javax.jdo.PersistenceManager;
 
-public privileged aspect  UtilHandler {
+public privileged aspect  UtilHandler{
 
 	// ---------------------------
 	// Declare soft's
@@ -27,14 +22,14 @@ public privileged aspect  UtilHandler {
 	declare soft: IllegalAccessException: CollectionsFactory_createCollectionsFactory() ||
 										  StorableInput_makeInstance();
 
-	declare soft: Exception: Iconkit_loadRegisteredImages() ||
-			      Iconkit_loadImageResource();
+	declare soft: Exception: Iconkit_loadImageResource();
 
-	declare soft: IOException: JDOStorageFormat_main();
+
 
 	declare soft: NoSuchMethodError: StorableInput_makeInstance();
 	
-	declare soft: IOException: VersionManagement_readVersionFromFile();
+	declare soft: IOException: VersionManagement_readVersionFromFile() ||
+				  JDOStorageFormat_main();
 
 	// ---------------------------
 	// Pointcut's
@@ -45,10 +40,6 @@ public privileged aspect  UtilHandler {
 	pointcut CollectionsFactory_createCollectionsFactory(): 
 		execution(* CollectionsFactory.createCollectionsFactory(..));
 
-	pointcut Iconkit_loadRegisteredImages(): 
-		call(* MediaTracker.waitForAll(..)) &&
-		withincode(* Iconkit.loadRegisteredImages(..));
-
 	pointcut Iconkit_loadImageResource():
 		execution(* Iconkit.loadImageResource(..));
 
@@ -57,9 +48,6 @@ public privileged aspect  UtilHandler {
 
 	pointcut JDOStorageFormat_restoreInternal():
 		execution(* JDOStorageFormat.restoreInternal(..));
-
-	pointcut JDOStorageFormat_main():
-		execution(* JDOStorageFormat.main(..));
 
 	pointcut SerializationStorageFormat_restore():
 		execution(* SerializationStorageFormat.restore(..));
@@ -70,19 +58,12 @@ public privileged aspect  UtilHandler {
 	pointcut VersionManagement_readVersionFromFile():
 		execution(* VersionManagement.readVersionFromFile(..));
 
+	pointcut JDOStorageFormat_main():
+		execution(* JDOStorageFormat.main(..));
+
 	// ---------------------------
 	// Advice's
 	// ---------------------------
-
-	String around(): VersionManagement_readVersionFromFile(){
-		String result = null;
-		try {
-			result = proceed();
-		} catch (IOException exception) {
-			exception.printStackTrace();
-		}
-		return result;
-	}
 
 	boolean around(): CollectionsFactory_isJDK12(){
 
@@ -109,13 +90,6 @@ public privileged aspect  UtilHandler {
 		return result;
 	}
 
-	void around(): Iconkit_loadRegisteredImages(){
-		try {
-			proceed();
-		} catch (Exception e) {
-			// ignore: do nothing
-		}
-	}
 
 	Image around(): Iconkit_loadImageResource(){
 		Image result = null;
@@ -157,13 +131,7 @@ public privileged aspect  UtilHandler {
 		return result;
 	}
 
-	void around(): JDOStorageFormat_main(){
-		try {
-			proceed();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	Drawing around(String fileName) throws IOException:
 		SerializationStorageFormat_restore() &&
@@ -195,6 +163,17 @@ public privileged aspect  UtilHandler {
 			throw new IOException("Cannot instantiate: " + className);
 		} catch (IllegalAccessException e) {
 			throw new IOException("Class (" + className + ") not accessible");
+		}
+		return result;
+	}
+	
+	Object around(): VersionManagement_readVersionFromFile() ||
+	JDOStorageFormat_main(){
+		Object result = null;
+		try {
+			result = proceed();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return result;
 	}
