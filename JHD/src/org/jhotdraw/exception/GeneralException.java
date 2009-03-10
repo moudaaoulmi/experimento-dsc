@@ -1,5 +1,7 @@
 package org.jhotdraw.exception;
 
+import javax.swing.JApplet;
+
 public class GeneralException {
 
 	public Object abstractLocatorClone(){
@@ -16,6 +18,10 @@ public class GeneralException {
 	
 	public void defaultValue(Object object){
 		object = null;
+	}
+	
+	public void showStatusApplet(JApplet a, String msg){
+		a.showStatus(msg);
 	}
 
 }
