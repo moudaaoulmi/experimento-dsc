@@ -13,6 +13,7 @@ package org.jhotdraw.util;
 
 import javax.swing.*;
 import java.awt.*;
+
 import java.awt.image.ImageProducer;
 import java.net.URL;
 import java.util.Iterator;
@@ -21,32 +22,32 @@ import java.util.Map;
 import java.util.Hashtable;
 
 /**
- * The Iconkit class supports the sharing of images. It maintains
- * a map of image names and their corresponding images.
- *
- * Iconkit also supports to load a collection of images in
- * synchronized way.
- * The resolution of a path name to an image is delegated to the DrawingEditor.
+ * The Iconkit class supports the sharing of images. It maintains a map of image
+ * names and their corresponding images.
+ * 
+ * Iconkit also supports to load a collection of images in synchronized way. The
+ * resolution of a path name to an image is delegated to the DrawingEditor.
  * <hr>
- * <b>Design Patterns</b><P>
- * <img src="images/red-ball-small.gif" width=6 height=6 alt=" o ">
- * <b><a href=../pattlets/sld031.htm>Singleton</a></b><br>
+ * <b>Design Patterns</b>
+ * <P>
+ * <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a
+ * href=../pattlets/sld031.htm>Singleton</a></b><br>
  * The Iconkit is a singleton.
  * <hr>
- *
+ * 
  * @version <$CURRENT_VERSION$>
  */
 public class Iconkit {
-	private Map                 fMap;
-	private List                fRegisteredImages;
-	private Component           fComponent;
-	private final static int    ID = 123;
-	private static Iconkit      fgIconkit = null;
-	private static boolean      fgDebug = false;
+	private Map fMap;
+	private List fRegisteredImages;
+	private Component fComponent;
+	private final static int ID = 123;
+	private static Iconkit fgIconkit = null;
+	private static boolean fgDebug = false;
 
 	/**
-	 * Constructs an Iconkit that uses the given editor to
-	 * resolve image path names.
+	 * Constructs an Iconkit that uses the given editor to resolve image path
+	 * names.
 	 */
 	public Iconkit(Component component) {
 		fMap = new Hashtable(53);
@@ -64,6 +65,7 @@ public class Iconkit {
 
 	/**
 	 * Loads all registered images.
+	 * 
 	 * @see #registerImage
 	 */
 	public void loadRegisteredImages(Component component) {
@@ -75,7 +77,7 @@ public class Iconkit {
 		// register images with MediaTracker
 		Iterator iter = fRegisteredImages.iterator();
 		while (iter.hasNext()) {
-			String fileName = (String)iter.next();
+			String fileName = (String) iter.next();
 			if (basicGetImage(fileName) == null) {
 				tracker.addImage(loadImage(fileName), ID);
 			}
@@ -83,17 +85,13 @@ public class Iconkit {
 		fRegisteredImages.clear();
 
 		// block until all images are loaded
-		try {
-			tracker.waitForAll();
-		}
-		catch (Exception e) {
-			// ignore: do nothing
-		}
+		tracker.waitForAll();
 	}
 
 	/**
-	 * Registers an image that is then loaded together with
-	 * the other registered images by loadRegisteredImages.
+	 * Registers an image that is then loaded together with the other registered
+	 * images by loadRegisteredImages.
+	 * 
 	 * @see #loadRegisteredImages
 	 */
 	public void registerImage(String fileName) {
@@ -125,31 +123,26 @@ public class Iconkit {
 
 	public Image loadImage(String filename, boolean waitForLoad) {
 		Image image = loadImage(filename);
-		if (image!=null && waitForLoad) {
+		if (image != null && waitForLoad) {
 			ImageIcon icon = new ImageIcon(image);
-			image = icon.getImage(); //this forces the wait to happen
+			image = icon.getImage(); // this forces the wait to happen
 		}
 		return image;
 	}
 
 	public Image loadImageResource(String resourcename) {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		try {
-			URL url = getClass().getResource(resourcename);
-			if (fgDebug) {
-				System.out.println(resourcename);
-			}
-			return toolkit.createImage((ImageProducer) url.getContent());
+
+		URL url = getClass().getResource(resourcename);
+		if (fgDebug) {
+			System.out.println(resourcename);
 		}
-		catch (Exception ex) {
-			return null;
-		}
+		return toolkit.createImage((ImageProducer) url.getContent());
 	}
 
 	/**
-	 * Gets the image with the given name. If the image
-	 * can't be found it tries it again after loading
-	 * all the registered images.
+	 * Gets the image with the given name. If the image can't be found it tries
+	 * it again after loading all the registered images.
 	 */
 	public Image getImage(String filename) {
 		Image image = basicGetImage(filename);

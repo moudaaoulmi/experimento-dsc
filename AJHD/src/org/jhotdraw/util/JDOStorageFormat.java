@@ -24,7 +24,6 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
-
 /**
  * @author Wolfram Kaiser <mrfloppy@users.sourceforge.net>
  * @version <$CURRENT_VERSION$>
@@ -43,18 +42,18 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				Iterator iter = pms.values().iterator();
-//				while (iter.hasNext()) {
-//					((PersistenceManager)iter.next()).close();
-//				}
+				// while (iter.hasNext()) {
+				// ((PersistenceManager)iter.next()).close();
+				// }
 			}
 		});
 	}
 
 	/**
-	 * Factory method to create the file extension recognized by the FileFilter for this
-	 * SerializationStorageFormat. The SerializationStorageFormat has the file extension "ser"
-	 * (e.g. my_picasso.ser).
-	 *
+	 * Factory method to create the file extension recognized by the FileFilter
+	 * for this SerializationStorageFormat. The SerializationStorageFormat has
+	 * the file extension "ser" (e.g. my_picasso.ser).
+	 * 
 	 * @return new file extension
 	 */
 	protected String createFileExtension() {
@@ -62,9 +61,9 @@ public class JDOStorageFormat extends StandardStorageFormat {
 	}
 
 	/**
-	 * Factory method to create a file description for the file type when displaying the
-	 * associated FileFilter.
-	 *
+	 * Factory method to create a file description for the file type when
+	 * displaying the associated FileFilter.
+	 * 
 	 * @return new file description
 	 */
 	public String createFileDescription() {
@@ -86,13 +85,17 @@ public class JDOStorageFormat extends StandardStorageFormat {
 	}
 
 	/**
-	 * Store a Drawing under a given name. The name should be valid with regard to the FileFilter
-	 * that means, it should already contain the appropriate file extension.
-	 *
-	 * @param fileName file name of the Drawing under which it should be stored
-	 * @param storeDrawing drawing to be saved
+	 * Store a Drawing under a given name. The name should be valid with regard
+	 * to the FileFilter that means, it should already contain the appropriate
+	 * file extension.
+	 * 
+	 * @param fileName
+	 *            file name of the Drawing under which it should be stored
+	 * @param storeDrawing
+	 *            drawing to be saved
 	 */
-	public String store(String fileName, Drawing storeDrawing) throws IOException {
+	public String store(String fileName, Drawing storeDrawing)
+			throws IOException {
 		PersistenceManager pm = getPersistenceManager(fileName);
 		String drawingName = null;
 
@@ -100,30 +103,33 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		endTransaction(pm, false);
 
 		startTransaction(pm);
-		try {
-			Extent extent = pm.getExtent(StandardDrawing.class, true);
-			DrawingListModel listModel = new DrawingListModel(extent.iterator());
-			drawingName = showStoreDialog(listModel, storeDrawing);
-			if (drawingName != null) {
-				storeDrawing.setTitle(drawingName);
-				txnDrawing.setTitle(drawingName);
-				pm.makePersistent(txnDrawing);
-			}
-		}
-		finally {
-			endTransaction(pm, (drawingName != null));
-		}
+		drawingName = storeInternal(storeDrawing, pm, txnDrawing, drawingName);
 
 		// there must be always a transaction running
 		startTransaction(pm);
 		return drawingName;
 	}
 
+	private String storeInternal(Drawing storeDrawing, PersistenceManager pm,
+			Drawing txnDrawing, String drawingName) {
+		Extent extent = pm.getExtent(StandardDrawing.class, true);
+		DrawingListModel listModel = new DrawingListModel(extent.iterator());
+		drawingName = showStoreDialog(listModel, storeDrawing);
+		if (drawingName != null) {
+			storeDrawing.setTitle(drawingName);
+			txnDrawing.setTitle(drawingName);
+			pm.makePersistent(txnDrawing);
+		}
+		return drawingName;
+	}
+
 	/**
-	 * Restore a Drawing from a file with a given name. The name must be should with regard to the
-	 * FileFilter that means, it should have the appropriate file extension.
-	 *
-	 * @param fileName of the file in which the Drawing has been saved
+	 * Restore a Drawing from a file with a given name. The name must be should
+	 * with regard to the FileFilter that means, it should have the appropriate
+	 * file extension.
+	 * 
+	 * @param fileName
+	 *            of the file in which the Drawing has been saved
 	 * @return restored Drawing
 	 */
 	public synchronized Drawing restore(String fileName) throws IOException {
@@ -131,25 +137,26 @@ public class JDOStorageFormat extends StandardStorageFormat {
 
 		endTransaction(pm, false);
 		startTransaction(pm);
-		Drawing restoredDrawing  = null;
+		Drawing restoredDrawing = null;
 
-		try {
-			Extent extent = pm.getExtent(StandardDrawing.class, true);
-			DrawingListModel listModel = new DrawingListModel(extent.iterator());
-			Drawing txnDrawing = showRestoreDialog(listModel);
-			if (txnDrawing != null) {
-//				pm.retrieve(txnDrawing);
-//				retrieveAll(pm, (StandardDrawing)txnDrawing);
-//				restoredDrawing = crossTxnBoundaries(txnDrawing);
-				restoredDrawing = txnDrawing;
-			}
-		}
-		finally {
-			endTransaction(pm, false);
-		}
+		restoredDrawing = restoreInternal(pm, restoredDrawing);
 
 		// there must be always a transaction running
 		startTransaction(pm);
+		return restoredDrawing;
+	}
+
+	private Drawing restoreInternal(PersistenceManager pm,
+			Drawing restoredDrawing) {
+		Extent extent = pm.getExtent(StandardDrawing.class, true);
+		DrawingListModel listModel = new DrawingListModel(extent.iterator());
+		Drawing txnDrawing = showRestoreDialog(listModel);
+		if (txnDrawing != null) {
+			// pm.retrieve(txnDrawing);
+			// retrieveAll(pm, (StandardDrawing)txnDrawing);
+			// restoredDrawing = crossTxnBoundaries(txnDrawing);
+			restoredDrawing = txnDrawing;
+		}
 		return restoredDrawing;
 	}
 
@@ -162,30 +169,31 @@ public class JDOStorageFormat extends StandardStorageFormat {
 	}
 
 	private Drawing crossTxnBoundaries(Drawing originalDrawing) {
-		return (Drawing)((StandardDrawing)originalDrawing).clone();
-//		return originalDrawing;
+		return (Drawing) ((StandardDrawing) originalDrawing).clone();
+		// return originalDrawing;
 	}
 
-	private synchronized PersistenceManager getPersistenceManager(String fileName) {
-		PersistenceManager pm = (PersistenceManager)pms.get(fileName);
+	private synchronized PersistenceManager getPersistenceManager(
+			String fileName) {
+		PersistenceManager pm = (PersistenceManager) pms.get(fileName);
 		if (pm == null) {
-			pm = createPersistenceManagerFactory(fileName).getPersistenceManager();
+			pm = createPersistenceManagerFactory(fileName)
+					.getPersistenceManager();
 			pms.put(fileName, pm);
 		}
 		return pm;
 	}
 
-	private PersistenceManagerFactory createPersistenceManagerFactory(String dbFileName) {
+	private PersistenceManagerFactory createPersistenceManagerFactory(
+			String dbFileName) {
 		Properties pmfProps = new Properties();
 
-        pmfProps.put(
-            "javax.jdo.PersistenceManagerFactoryClass",
-            "com.poet.jdo.PersistenceManagerFactories" );
-        pmfProps.put(
-            "javax.jdo.option.ConnectionURL",
-            "fastobjects://LOCAL/MyBase.j1" );
-        final PersistenceManagerFactory pmf =
-            JDOHelper.getPersistenceManagerFactory( pmfProps );
+		pmfProps.put("javax.jdo.PersistenceManagerFactoryClass",
+				"com.poet.jdo.PersistenceManagerFactories");
+		pmfProps.put("javax.jdo.option.ConnectionURL",
+				"fastobjects://LOCAL/MyBase.j1");
+		final PersistenceManagerFactory pmf = JDOHelper
+				.getPersistenceManagerFactory(pmfProps);
 
 		return pmf;
 	}
@@ -200,8 +208,7 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		if (pm.currentTransaction().isActive()) {
 			if (doCommit) {
 				pm.currentTransaction().commit();
-			}
-			else {
+			} else {
 				pm.currentTransaction().rollback();
 			}
 		}
@@ -213,33 +220,34 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		final JTextField nameTextField = new JTextField(storeDrawing.getTitle());
 		final JList dataList = new JList(listModel);
 		final JScrollPane dbContentScrollPane = new JScrollPane(dataList);
-		Object[] guiComponents = {msgString, dbContentScrollPane, nameTextField};
+		Object[] guiComponents = { msgString, dbContentScrollPane,
+				nameTextField };
 
 		dataList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		dataList.setValueIsAdjusting(true);
 		dataList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
+			public void valueChanged(ListSelectionEvent e) {
 				nameTextField.setText(dataList.getSelectedValue().toString());
 			}
 		});
 
-		final JOptionPane optionPane = new JOptionPane(
-			guiComponents,
-			JOptionPane.PLAIN_MESSAGE,
-			JOptionPane.OK_CANCEL_OPTION);
+		final JOptionPane optionPane = new JOptionPane(guiComponents,
+				JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 
-		final JDialog dialog = optionPane.createDialog(null, "Restore a drawing from the database");
-//		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-//		dialog.addWindowListener(new WindowAdapter() {
-//			public void windowClosing(WindowEvent we) {
-//				System.exit(0);
-//			}
-//		});
+		final JDialog dialog = optionPane.createDialog(null,
+				"Restore a drawing from the database");
+		// dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		// dialog.addWindowListener(new WindowAdapter() {
+		// public void windowClosing(WindowEvent we) {
+		// System.exit(0);
+		// }
+		// });
 		dialog.setVisible(true);
-		if ((optionPane.getValue() != null) && (optionPane.getValue().equals(new Integer(JOptionPane.OK_OPTION)))) {
+		if ((optionPane.getValue() != null)
+				&& (optionPane.getValue().equals(new Integer(
+						JOptionPane.OK_OPTION)))) {
 			return nameTextField.getText();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -249,25 +257,24 @@ public class JDOStorageFormat extends StandardStorageFormat {
 
 		final JList dataList = new JList(listModel);
 		final JScrollPane dbContentScrollPane = new JScrollPane(dataList);
-		Object[] guiComponents = {msgString, dbContentScrollPane};
+		Object[] guiComponents = { msgString, dbContentScrollPane };
 
 		dataList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		dataList.setValueIsAdjusting(true);
 
-		final JOptionPane optionPane = new JOptionPane(
-			guiComponents,
-			JOptionPane.PLAIN_MESSAGE,
-			JOptionPane.OK_CANCEL_OPTION);
+		final JOptionPane optionPane = new JOptionPane(guiComponents,
+				JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 
-		final JDialog dialog = optionPane.createDialog(null, "Restore a drawing from the database");
+		final JDialog dialog = optionPane.createDialog(null,
+				"Restore a drawing from the database");
 		dialog.setVisible(true);
 		if ((optionPane.getValue() != null)
-				&& (optionPane.getValue().equals(new Integer(JOptionPane.OK_OPTION)))
+				&& (optionPane.getValue().equals(new Integer(
+						JOptionPane.OK_OPTION)))
 				&& (dataList.getSelectedIndex() >= 0)
 				&& (dataList.getSelectedIndex() < dataList.getModel().getSize())) {
 			return listModel.getDrawingAt(dataList.getSelectedIndex());
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -279,7 +286,8 @@ public class JDOStorageFormat extends StandardStorageFormat {
 			myList = CollectionsFactory.current().createList();
 			while (iter.hasNext()) {
 				Object o = iter.next();
-				System.out.println("extent: " + o + " .. " + ((Drawing)o).getTitle());
+				System.out.println("extent: " + o + " .. "
+						+ ((Drawing) o).getTitle());
 				myList.add(o);
 			}
 		}
@@ -289,7 +297,7 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		}
 
 		protected Drawing getDrawingAt(int index) {
-			return ((Drawing)myList.get(index));
+			return ((Drawing) myList.get(index));
 		}
 
 		public int getSize() {
@@ -305,22 +313,19 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		private void init() {
 			setTitle("Select Drawing");
 			getContentPane().setLayout(new BorderLayout());
-			getContentPane().add(new JLabel("Database content"), BorderLayout.NORTH);
+			getContentPane().add(new JLabel("Database content"),
+					BorderLayout.NORTH);
 			setSize(200, 200);
 		}
 	}
 
 	public static void main(String[] args) {
 		DrawingSelector frame = new DrawingSelector();
-		try {
-			Drawing newDrawing = new StandardDrawing();
-			newDrawing.setTitle("TestDrawingName" + new Random(System.currentTimeMillis()).nextLong());
-			new JDOStorageFormat().store("base.j2", newDrawing);
-			System.exit(0);
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-//		frame.setVisible(true);
+		Drawing newDrawing = new StandardDrawing();
+		newDrawing.setTitle("TestDrawingName"
+				+ new Random(System.currentTimeMillis()).nextLong());
+		new JDOStorageFormat().store("base.j2", newDrawing);
+		System.exit(0);
+		// frame.setVisible(true);
 	}
 }
