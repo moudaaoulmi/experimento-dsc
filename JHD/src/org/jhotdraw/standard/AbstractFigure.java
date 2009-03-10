@@ -389,7 +389,7 @@ public abstract class AbstractFigure implements Figure {
 			writer.close();
 		}
 		catch (IOException e) {
-			standardHandler.abstractFigureClone(e);
+			standardHandler.errPrintln("Class not found: " + e);
 			//System.err.println("Class not found: " + e);
 		}
 
@@ -399,11 +399,11 @@ public abstract class AbstractFigure implements Figure {
 			clone = reader.readObject();
 		}
 		catch (IOException e) {
-			standardHandler.abstractFigureClone_2(e);
+			standardHandler.errPrintln(e.toString());
 			//System.err.println(e.toString());
 		}
 		catch (ClassNotFoundException e) {
-			standardHandler.abstractFigureClone(e);
+			standardHandler.errPrintln("Class not found: " + e);
 			//System.err.println("Class not found: " + e);
 		}
 		return clone;
