@@ -1,3 +1,4 @@
+package org.jhotdraw.util;
 /*
  * @(#)DragTracker.java
  *
