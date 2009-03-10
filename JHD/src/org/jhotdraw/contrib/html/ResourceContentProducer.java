@@ -74,7 +74,9 @@ public class ResourceContentProducer extends AbstractContentProducer
 		catch (Exception ex) {
 //			ex.printStackTrace();
 //			return ex.toString();
+			htmlHandler.printStackTraceException(ex);
 			return htmlHandler.resourceContentProducerGetContent(ex);
+
 		}
 	}
 

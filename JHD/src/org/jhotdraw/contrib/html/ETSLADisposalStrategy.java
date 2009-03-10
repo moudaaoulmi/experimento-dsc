@@ -132,7 +132,7 @@ public class ETSLADisposalStrategy implements ResourceDisposabilityStrategy {
 		}
 		finally {
 //			disposingActive = false;
-			htmlHandler.eTSLADisposalStrategyStopDisposing2(disposingActive);
+			htmlHandler.defaultValue(disposingActive);
 		}
 	}
 
