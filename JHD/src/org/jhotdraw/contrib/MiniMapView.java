@@ -163,8 +163,8 @@ public class MiniMapView extends JComponent {
 		}
 		catch (NoninvertibleTransformException nite) {
 //			nite.printStackTrace();
-			//TODO o retuen nao pode ser refatorado -- cenario
-			contribHandler.cTXWindowMenuBuildChildMenus(nite);
+			//TODO o return nao pode ser refatorado -- cenario
+			contribHandler.printStackTraceException(nite);
 			return;
 		}
 
