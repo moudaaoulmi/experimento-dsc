@@ -23,12 +23,12 @@ import java.net.*;
 /**
  * @version <$CURRENT_VERSION$>
  */
-public  class JavaDrawViewer extends JApplet implements DrawingEditor {
+public class JavaDrawViewer extends JApplet implements DrawingEditor {
 
-	private Drawing         fDrawing;
-	private Tool            fTool;
+	private Drawing fDrawing;
+	private Tool fTool;
 	private StandardDrawingView fView;
-	private transient 		UndoManager myUndoManager;
+	private transient UndoManager myUndoManager;
 
 	public void init() {
 		setUndoManager(new UndoManager());
@@ -41,38 +41,22 @@ public  class JavaDrawViewer extends JApplet implements DrawingEditor {
 		if (filename != null) {
 			loadDrawing(filename);
 			fView.setDrawing(fDrawing);
-		}
-		else {
+		} else {
 			showStatus("Unable to load drawing");
 		}
 	}
 
-	public void addViewChangeListener(ViewChangeListener vsl)  {
+	public void addViewChangeListener(ViewChangeListener vsl) {
 	}
 
 	public void removeViewChangeListener(ViewChangeListener vsl) {
 	}
 
 	private void loadDrawing(String filename) {
-		try {
-			URL url = new URL(getCodeBase(), filename);
-			InputStream stream = url.openStream();
-			StorableInput reader = new StorableInput(stream);
-			fDrawing = (Drawing)reader.readStorable();
-		}
-		catch (IOException e) {
-			fDrawing = createDrawing();
-			System.err.println("Error when Loading: " + e);
-			showStatus("Error when Loading: " + e);
-		}
-		//@AJHD added
-		//catch the soft exception instead of the IO one, and get the wrapped one for report
-		catch (org.aspectj.lang.SoftException e) {
-			fDrawing = createDrawing();
-			System.err.println("Error when Loading: " + e.getWrappedThrowable());
-			showStatus("Error when Loading: " + e.getWrappedThrowable());
-		}
-		//@AJHD end added
+		URL url = new URL(getCodeBase(), filename);
+		InputStream stream = url.openStream();
+		StorableInput reader = new StorableInput(stream);
+		fDrawing = (Drawing) reader.readStorable();
 
 	}
 
@@ -106,23 +90,24 @@ public  class JavaDrawViewer extends JApplet implements DrawingEditor {
 	}
 
 	/**
-     * Sets the current the tool
-     */
+	 * Sets the current the tool
+	 */
 	public void setTool(Tool newTool) {
 		fTool = newTool;
 	}
 
-    /**
+	/**
 	 * Sets the editor's default tool. Do nothing since we only have one tool.
 	 */
-	public void toolDone() {}
+	public void toolDone() {
+	}
 
-//	AJHD: introduced through inter-type declaration
-//	org.jhotdraw.observselection.FigureSelectionObserverRole aspect
-//	/**
-//	 * Ignore selection changes, we don't show any selection
-//	 */
-//	public void figureSelectionChanged(DrawingView view) {}
+	// AJHD: introduced through inter-type declaration
+	// org.jhotdraw.observselection.FigureSelectionObserverRole aspect
+	// /**
+	// * Ignore selection changes, we don't show any selection
+	// */
+	// public void figureSelectionChanged(DrawingView view) {}
 
 	protected void setUndoManager(UndoManager newUndoManager) {
 		myUndoManager = newUndoManager;

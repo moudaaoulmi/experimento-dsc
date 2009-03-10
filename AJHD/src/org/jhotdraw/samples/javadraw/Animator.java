@@ -17,13 +17,13 @@ import org.jhotdraw.util.Animatable;
 /**
  * @version <$CURRENT_VERSION$>
  */
-public  class Animator extends Thread {
+public class Animator extends Thread {
 
-	private DrawingView     fView;
-	private Animatable      fAnimatable;
+	private DrawingView fView;
+	private Animatable fAnimatable;
 
-	private volatile boolean             fIsRunning;
-	private static final int    DELAY = 1000 / 16;
+	private volatile boolean fIsRunning;
+	private static final int DELAY = 1000 / 16;
 
 	public Animator(Animatable animatable, DrawingView view) {
 		super("Animator");
@@ -49,14 +49,16 @@ public  class Animator extends Thread {
 			fView.unfreezeView();
 
 			// Delay for a while
+
+			// TODO CASO NÃO ACONSELHÁVEL.
+			// uma das solucoes pensadas foi passar um flag pro aspecto e qnd
+			// voltasse verificaria o valor do flag pra dar um break ou nao.
 			try {
 				tm += DELAY;
 				Thread.sleep(Math.max(0, tm - System.currentTimeMillis()));
-			}
-			catch (InterruptedException e) {
+			} catch (InterruptedException e) {
 				break;
 			}
 		}
 	}
 }
-
