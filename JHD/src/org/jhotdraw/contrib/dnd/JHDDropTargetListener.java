@@ -138,7 +138,9 @@ public class JHDDropTargetListener implements java.awt.dnd.DropTargetListener {
 				catch (NullPointerException npe) {
 					// npe.printStackTrace();
 					// dtde.dropComplete(false);
-					dndHandler.dNDHelperDrop(npe, dtde);
+					
+					dndHandler.printStackTraceException(npe);
+					dndHandler.dNDHelperDrop(dtde);
 				}
 			}
 			else {

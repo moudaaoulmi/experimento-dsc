@@ -130,13 +130,13 @@ public abstract class DNDHelper {
 		// TODO Caso de reuso + fácil em OO do que em AO
 		catch (java.io.IOException ioe) {
 			// System.err.println(ioe);
-			dndHandler.dNDHelperProcessReceivedData(ioe);
+			dndHandler.errPrintln(ioe);
 
 		} catch (UnsupportedFlavorException ufe) {
 			// System.err.println(ufe);
-			dndHandler.dNDHelperProcessReceivedData(ufe);
+			dndHandler.errPrintln(ufe);
 		} catch (ClassCastException cce) {
-			dndHandler.dNDHelperProcessReceivedData(cce);
+			dndHandler.errPrintln(cce);
 			// System.err.println(cce);
 		}
 
@@ -203,7 +203,11 @@ public abstract class DNDHelper {
 				// );
 				// System.err.println(npe);
 				// npe.printStackTrace();
-				dndHandler.dNDCHelperCreateDropTarget(npe);
+				dndHandler.errPrintln("View Failed to initialize to DND.");
+				dndHandler
+						.errPrintln("Container likely did not have peer before the DropTarget was added");
+				dndHandler.errPrintln(npe);
+				dndHandler.printStackTraceException(npe);
 			}
 		}
 		return dt;
