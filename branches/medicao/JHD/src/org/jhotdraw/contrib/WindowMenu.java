@@ -95,7 +95,7 @@ public class WindowMenu extends CommandMenu {
 					}
 					catch (PropertyVetoException e) {
 //						e.printStackTrace();
-						contribHandler.cTXWindowMenuBuildChildMenus(e);
+						contribHandler.printStackTraceException(e);
 					}
 				}
 			});

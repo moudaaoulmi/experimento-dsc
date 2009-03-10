@@ -166,7 +166,7 @@ public class CTXWindowMenu extends CTXCommandMenu {
 						}
 						catch (PropertyVetoException e) {
 //							e.printStackTrace();
-							contribHandler.cTXWindowMenuBuildChildMenus(e);
+							contribHandler.printStackTraceException(e);
 						}
 					}
 				});

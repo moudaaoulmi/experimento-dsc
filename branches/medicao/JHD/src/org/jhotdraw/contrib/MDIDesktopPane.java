@@ -318,7 +318,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 			}
 			catch (PropertyVetoException e) {
 //				e.printStackTrace();
-				contribHandler.cTXWindowMenuBuildChildMenus(e);
+				contribHandler.printStackTraceException(e);
 			}
 
 			allFrames[i].setBounds(x, y, frameWidth, frameHeight);
@@ -357,7 +357,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 			}
 			catch (PropertyVetoException e) {
 //				e.printStackTrace();
-				contribHandler.cTXWindowMenuBuildChildMenus(e);
+				contribHandler.printStackTraceException(e);
 			}
 
 			allFrames[i].setBounds(0, y, getBounds().width,frameHeight);
@@ -384,7 +384,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 			}
 			catch (PropertyVetoException e) {
 //				e.printStackTrace();
-				contribHandler.cTXWindowMenuBuildChildMenus(e);
+				contribHandler.printStackTraceException(e);
 			}
 
 			allFrames[i].setBounds(x, 0, frameWidth, getBounds().height);
@@ -425,7 +425,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 				}
 				catch (PropertyVetoException e) {
 //					e.printStackTrace();
-					contribHandler.cTXWindowMenuBuildChildMenus(e);
+					contribHandler.printStackTraceException(e);
 				}
 
 				allFrames[frameIdx].setBounds(x, y, frameWidth, frameHeight);
@@ -446,7 +446,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 			}
 			catch (PropertyVetoException e) {
 //				e.printStackTrace();
-				contribHandler.cTXWindowMenuBuildChildMenus(e);
+				contribHandler.printStackTraceException(e);
 			}
 
 			allFrames[frameIdx].setBounds(x, y, frameWidth, frameHeight);
@@ -487,7 +487,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 				}
 				catch (PropertyVetoException e) {
 //					e.printStackTrace();
-					contribHandler.cTXWindowMenuBuildChildMenus(e);
+					contribHandler.printStackTraceException(e);
 				}
 
 				allFrames[frameIdx].setBounds(x, y, frameWidth, frameHeight);
@@ -507,7 +507,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 			}
 			catch (PropertyVetoException e) {
 //				e.printStackTrace();
-				contribHandler.cTXWindowMenuBuildChildMenus(e);
+				contribHandler.printStackTraceException(e);
 			}
 
 			allFrames[frameIdx].setBounds(x, y, frameWidth, frameHeight);
