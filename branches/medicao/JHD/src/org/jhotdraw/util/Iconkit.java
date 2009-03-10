@@ -37,6 +37,7 @@ import java.util.Hashtable;
  * @version <$CURRENT_VERSION$>
  */
 public class Iconkit {
+	
 	private Map                 fMap;
 	private List                fRegisteredImages;
 	private Component           fComponent;
@@ -91,6 +92,7 @@ public class Iconkit {
 		}
 		catch (Exception e) {
 			// ignore: do nothing
+			utilHandler.iconkitLoadRegisteredImages();
 		}
 	}
 
@@ -146,7 +148,7 @@ public class Iconkit {
 		}
 		catch (Exception ex) {
 			//return null;
-			utilHandler.loadImageResourceHandler(ex);
+			utilHandler.loadImageResourceHandler();
 		}
 		return null;
 	}

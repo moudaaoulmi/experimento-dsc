@@ -85,7 +85,7 @@ public class SerializationStorageFormat extends StandardStorageFormat {
 		}
 		catch (ClassNotFoundException exception) {
 			//throw new IOException("Could not restore drawing '" + fileName +"': class not found!");
-			utilHandler.restoreHandler(exception, fileName);
+			utilHandler.trowIOException("Could not restore drawing '" + fileName +"': class not found!");
 		}
 		return null;
 	}
