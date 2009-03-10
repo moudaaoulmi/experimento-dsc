@@ -2,7 +2,9 @@ package org.jhotdraw.applet;
 
 import java.applet.Applet;
 
-public class AppletHandler {
+import org.jhotdraw.exception.GeneralException;
+
+public class AppletHandler extends GeneralException{
 
 	public void drawAppleTreadFromStorableInput(DrawApplet dA, Exception e,
 			String msg) {
