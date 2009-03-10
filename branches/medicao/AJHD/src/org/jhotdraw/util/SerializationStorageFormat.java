@@ -75,13 +75,8 @@ public class SerializationStorageFormat extends StandardStorageFormat {
 	 * @return restored Drawing
 	 */
 	public Drawing restore(String fileName) throws IOException {
-		try {
 			FileInputStream stream = new FileInputStream(fileName);
 			ObjectInput input = new ObjectInputStream(stream);
 			return (Drawing)input.readObject();
-		}
-		catch (ClassNotFoundException exception) {
-			throw new IOException("Could not restore drawing '" + fileName +"': class not found!");
-		}
 	}
 }
