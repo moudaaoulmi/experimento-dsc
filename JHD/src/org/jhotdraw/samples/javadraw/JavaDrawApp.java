@@ -32,31 +32,31 @@ import java.util.Iterator;
 /**
  * @version <$CURRENT_VERSION$>
  */
-public  class JavaDrawApp extends MDI_DrawApplication {
+public class JavaDrawApp extends MDI_DrawApplication {
 
-	private Animator            fAnimator;
-	private static String       fgSampleImagesPath = "/org/jhotdraw/samples/javadraw/sampleimages";
-	private static String       fgSampleImagesResourcePath = fgSampleImagesPath + "/";
+	private static JavadrawHandler javadrawHandler = new JavadrawHandler();
+	private Animator fAnimator;
+	private static String fgSampleImagesPath = "/org/jhotdraw/samples/javadraw/sampleimages";
+	private static String fgSampleImagesResourcePath = fgSampleImagesPath + "/";
 
 	JavaDrawApp() {
 		super("JHotDraw");
-
 	}
 
 	/**
 	 * Expose constructor for benefit of subclasses.
-	 *
-	 * @param title The window title for this application's frame.
+	 * 
+	 * @param title
+	 *            The window title for this application's frame.
 	 */
 	public JavaDrawApp(String title) {
 		super(title);
 	}
 
 	/**
-	 * Factory method which create a new instance of this
-	 * application.
-	 *
-	 * @return	newly created application
+	 * Factory method which create a new instance of this application.
+	 * 
+	 * @return newly created application
 	 */
 	protected DrawApplication createApplication() {
 		return new JavaDrawApp();
@@ -64,21 +64,23 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 
 	protected DrawingView createDrawingView(Drawing newDrawing) {
 		Dimension d = getDrawingViewSize();
-		DrawingView newDrawingView = new ZoomDrawingView(this, d.width, d.height);
+		DrawingView newDrawingView = new ZoomDrawingView(this, d.width,
+				d.height);
 		newDrawingView.setDrawing(newDrawing);
-		// notify listeners about created view when the view is added to the desktop
-		//fireViewCreatedEvent(newDrawingView);
+		// notify listeners about created view when the view is added to the
+		// desktop
+		// fireViewCreatedEvent(newDrawingView);
 		return newDrawingView;
 	}
 
-	//-- application life cycle --------------------------------------------
+	// -- application life cycle --------------------------------------------
 
 	public void destroy() {
 		super.destroy();
 		endAnimation();
 	}
 
-	//-- DrawApplication overrides -----------------------------------------
+	// -- DrawApplication overrides -----------------------------------------
 
 	protected void createTools(JToolBar palette) {
 		super.createTools(palette);
@@ -90,7 +92,8 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 		palette.add(createToolButton(IMAGES + "TEXT", "Text Tool", tool));
 
 		tool = new UndoableTool(new ConnectedTextTool(this, new TextFigure()));
-		palette.add(createToolButton(IMAGES + "ATEXT", "Connected Text Tool", tool));
+		palette.add(createToolButton(IMAGES + "ATEXT", "Connected Text Tool",
+				tool));
 
 		tool = new URLTool(this);
 		palette.add(createToolButton(IMAGES + "URL", "URL Tool", tool));
@@ -98,8 +101,10 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 		tool = new UndoableTool(new CreationTool(this, new RectangleFigure()));
 		palette.add(createToolButton(IMAGES + "RECT", "Rectangle Tool", tool));
 
-		tool = new UndoableTool(new CreationTool(this, new RoundRectangleFigure()));
-		palette.add(createToolButton(IMAGES + "RRECT", "Round Rectangle Tool", tool));
+		tool = new UndoableTool(new CreationTool(this,
+				new RoundRectangleFigure()));
+		palette.add(createToolButton(IMAGES + "RRECT", "Round Rectangle Tool",
+				tool));
 
 		tool = new UndoableTool(new CreationTool(this, new EllipseFigure()));
 		palette.add(createToolButton(IMAGES + "ELLIPSE", "Ellipse Tool", tool));
@@ -108,7 +113,9 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 		palette.add(createToolButton(IMAGES + "POLYGON", "Polygon Tool", tool));
 
 		tool = new UndoableTool(new CreationTool(this, new TriangleFigure()));
-		palette.add(createToolButton(IMAGES + "TRIANGLE", "Triangle Tool", tool));
+		palette
+				.add(createToolButton(IMAGES + "TRIANGLE", "Triangle Tool",
+						tool));
 
 		tool = new UndoableTool(new CreationTool(this, new DiamondFigure()));
 		palette.add(createToolButton(IMAGES + "DIAMOND", "Diamond Tool", tool));
@@ -120,10 +127,12 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 		palette.add(createToolButton(IMAGES + "CONN", "Connection Tool", tool));
 
 		tool = new UndoableTool(new ConnectionTool(this, new ElbowConnection()));
-		palette.add(createToolButton(IMAGES + "OCONN", "Elbow Connection Tool", tool));
+		palette.add(createToolButton(IMAGES + "OCONN", "Elbow Connection Tool",
+				tool));
 
 		tool = new UndoableTool(new ScribbleTool(this));
-		palette.add(createToolButton(IMAGES + "SCRIBBL", "Scribble Tool", tool));
+		palette
+				.add(createToolButton(IMAGES + "SCRIBBL", "Scribble Tool", tool));
 
 		tool = new UndoableTool(new BorderTool(this));
 		palette.add(createToolButton(IMAGES + "BORDDEC", "Border Tool", tool));
@@ -133,23 +142,29 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 		palette.add(createToolButton(IMAGES + "RECT", "Component Tool", tool));
 
 		tool = new TextAreaTool(this, new TextAreaFigure());
-		palette.add(createToolButton(IMAGES + "TEXTAREA", "TextArea Tool", tool));
+		palette
+				.add(createToolButton(IMAGES + "TEXTAREA", "TextArea Tool",
+						tool));
 
 		GraphicalCompositeFigure fig = new GraphicalCompositeFigure();
 		fig.setLayouter(new SimpleLayouter(fig));
 		tool = new CreationTool(this, fig);
-		palette.add(createToolButton(IMAGES + "RECT", "Container Figure Tool", tool));
+		palette.add(createToolButton(IMAGES + "RECT", "Container Figure Tool",
+				tool));
 
 		tool = new CompositeFigureCreationTool(this, new RectangleFigure());
-		palette.add(createToolButton(IMAGES + "RECT", "Nested Figure Tool", tool));
+		palette.add(createToolButton(IMAGES + "RECT", "Nested Figure Tool",
+				tool));
 
 		tool = new HTMLTextAreaTool(this, new HTMLTextAreaFigure());
-		palette.add(createToolButton(IMAGES + "TEXTAREA", "HTML TextArea Tool", tool));
+		palette.add(createToolButton(IMAGES + "TEXTAREA", "HTML TextArea Tool",
+				tool));
 
 		LineConnection lineConnection = new LineConnection();
 		lineConnection.setStartDecoration(null);
 		tool = new UndoableTool(new SplitConnectionTool(this, lineConnection));
-		palette.add(createToolButton(IMAGES + "OCONN", "Split Connection Tool", tool));
+		palette.add(createToolButton(IMAGES + "OCONN", "Split Connection Tool",
+				tool));
 	}
 
 	protected Tool createSelectionTool() {
@@ -198,7 +213,8 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 		menu.add(cmd);
 
 		menu.addSeparator();
-		menu.add(new WindowMenu("Window List", (MDIDesktopPane)getDesktop(), this));
+		menu.add(new WindowMenu("Window List", (MDIDesktopPane) getDesktop(),
+				this));
 		return menu;
 	}
 
@@ -206,7 +222,8 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 		CommandMenu menu = new CommandMenu("Images");
 		URL url = getClass().getResource(fgSampleImagesPath);
 		if (url == null) {
-			throw new JHotDrawRuntimeException("Could not locate images: " + fgSampleImagesPath);
+			throw new JHotDrawRuntimeException("Could not locate images: "
+					+ fgSampleImagesPath);
 		}
 		File imagesDirectory = new File(url.getFile());
 
@@ -214,29 +231,29 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 			String[] list = imagesDirectory.list();
 			for (int i = 0; i < list.length; i++) {
 				String name = list[i];
-				String path = fgSampleImagesResourcePath+name;
-				menu.add(new UndoableCommand(
-					new InsertImageCommand(name, path, this)));
+				String path = fgSampleImagesResourcePath + name;
+				menu.add(new UndoableCommand(new InsertImageCommand(name, path,
+						this)));
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// do nothing
+			javadrawHandler.javaDrawAppCreateImagesMenu();
 		}
 		return menu;
 	}
 
 	protected Drawing createDrawing() {
 		Drawing dwg = new BouncingDrawing();
-        dwg.setTitle(getDefaultDrawingTitle());
+		dwg.setTitle(getDefaultDrawingTitle());
 		return dwg;
-		//return new StandardDrawing();
+		// return new StandardDrawing();
 	}
 
-	//---- animation support --------------------------------------------
+	// ---- animation support --------------------------------------------
 
 	public void startAnimation() {
 		if (view().drawing() instanceof Animatable && fAnimator == null) {
-			fAnimator = new Animator((Animatable)view().drawing(), view());
+			fAnimator = new Animator((Animatable) view().drawing(), view());
 			fAnimator.start();
 		}
 	}
@@ -249,7 +266,7 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 	}
 
 	protected JMenu createDebugMenu() {
-		CommandMenu menu = (CommandMenu)super.createDebugMenu();
+		CommandMenu menu = (CommandMenu) super.createDebugMenu();
 
 		Command cmd = new AbstractCommand("Clipping Update", this) {
 			public void execute() {
@@ -261,25 +278,25 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 		return menu;
 	}
 
-	//-- main -----------------------------------------------------------
+	// -- main -----------------------------------------------------------
 
-//	public static void main(String[] args) {
-//		JavaDrawApp window = new JavaDrawApp();
-//		window.open();
-//	}
-//	
-	
-	//-- main -----------------------------------------------------------
+	// public static void main(String[] args) {
+	// JavaDrawApp window = new JavaDrawApp();
+	// window.open();
+	// }
+	//	
+
+	// -- main -----------------------------------------------------------
 
 	public static void main(String[] args) {
 		JavaDrawApp window = new JavaDrawApp();
 		window.open();
-		
-//		draw.newWindow();
+
+		// draw.newWindow();
 		executeCommandMenu(window.fileMenu);
 		executeCommandMenu(window.editMenu);
 		executeCommandMenu(window.aligMenu);
-		//executeMenu(draw.attributesMenu);
+		// executeMenu(draw.attributesMenu);
 		executeCommandMenu(window.debMenu);
 		executeCommandMenu(window.colorMenu1);
 		executeCommandMenu(window.colorMenu2);
@@ -288,26 +305,24 @@ public  class JavaDrawApp extends MDI_DrawApplication {
 		executeCommandMenu(window.fontMenu);
 		executeCommandMenu(window.fontSizeMenu);
 		executeCommandMenu(window.fontStylrMenu);
-		
+
 	}
-	
-	
-	public static void executeCommandMenu(CommandMenu menu){
+
+	public static void executeCommandMenu(CommandMenu menu) {
 
 		HashMap comandos = menu.hm;
 		Iterator itComandos = comandos.values().iterator();
-		while(itComandos.hasNext()){
-			try{
+		while (itComandos.hasNext()) {
+			try {
 				Command cmd = (Command) itComandos.next();
 				cmd.execute();
-				System.out.println("Comando: "+cmd.name());
-			}catch(Exception e){
-				JavadrawHandler.executeCommandMenuHandler(e);
+				System.out.println("Comando: " + cmd.name());
+			} catch (Exception e) {
+				// e.printStackTrace();
+				javadrawHandler.printStackTraceException(e);
 			}
 		}
 
 	}
-	
-	
-	
+
 }
