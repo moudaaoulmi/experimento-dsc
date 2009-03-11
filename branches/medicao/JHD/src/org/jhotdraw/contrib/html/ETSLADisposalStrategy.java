@@ -131,8 +131,8 @@ public class ETSLADisposalStrategy implements ResourceDisposabilityStrategy {
 			htmlHandler.eTSLADisposalStrategyStopDisposing1();
 		}
 		finally {
-//			disposingActive = false;
-			htmlHandler.defaultValue(disposingActive);
+			//TODO NÃO PODE SER REFATORADO PQ É PASSAGEM POR VALOR
+			disposingActive = false;
 		}
 	}
 

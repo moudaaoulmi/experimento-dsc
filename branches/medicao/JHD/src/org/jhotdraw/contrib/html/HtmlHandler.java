@@ -29,4 +29,5 @@ public class HtmlHandler extends GeneralException {
 	public String resourceContentProducerGetContent(Exception ex) {
 		return ex.toString();
 	}
+	
 }
