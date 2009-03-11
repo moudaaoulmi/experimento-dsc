@@ -101,38 +101,36 @@ public class JHDDropTargetListener implements java.awt.dnd.DropTargetListener {
 					return;
 				}
 				dtde.acceptDrop(dtde.getDropAction());
-				try { /* protection from a malicious dropped object */
-					setTargetUndoActivity( createTargetUndoActivity( view() ) );
-					DNDFigures ff = (DNDFigures)DNDHelper.processReceivedData(DNDFiguresTransferable.DNDFiguresFlavor, dtde.getTransferable());
-					getTargetUndoActivity().setAffectedFigures( ff.getFigures() );
-					Point theO = ff.getOrigin();
-					view().clearSelection();
-					Point newP = dtde.getLocation();
-					/** origin is where the figure thinks it is now
-					  * newP is where the mouse is now.
-					  * we move the figure to where the mouse is with this equation
-					  */
-					int dx = newP.x - theO.x;  /* distance the mouse has moved */
-					int dy = newP.y - theO.y;  /* distance the mouse has moved */
-					log("mouse at " + newP);
-					FigureEnumeration fe = view().insertFigures( getTargetUndoActivity().getAffectedFigures() ,  dx, dy, false );
-					getTargetUndoActivity().setAffectedFigures( fe );
 
-					if (dtde.getDropAction() == DnDConstants.ACTION_MOVE) {
-						view().addToSelectionAll( getTargetUndoActivity().getAffectedFigures() );
-					}
+				
+				setTargetUndoActivity( createTargetUndoActivity( view() ) );
+				DNDFigures ff = (DNDFigures)DNDHelper.processReceivedData(DNDFiguresTransferable.DNDFiguresFlavor, dtde.getTransferable());
+				getTargetUndoActivity().setAffectedFigures( ff.getFigures() );
+				Point theO = ff.getOrigin();
+				view().clearSelection();
+				Point newP = dtde.getLocation();
+				/** origin is where the figure thinks it is now
+				  * newP is where the mouse is now.
+				  * we move the figure to where the mouse is with this equation
+				  */
+				int dx = newP.x - theO.x;  /* distance the mouse has moved */
+				int dy = newP.y - theO.y;  /* distance the mouse has moved */
+				log("mouse at " + newP);
+				FigureEnumeration fe = view().insertFigures( getTargetUndoActivity().getAffectedFigures() ,  dx, dy, false );
+				getTargetUndoActivity().setAffectedFigures( fe );
 
-					view().checkDamage();
-					editor().getUndoManager().pushUndo( getTargetUndoActivity() );
-					editor().getUndoManager().clearRedos();
-					// update menus
-					editor().figureSelectionChanged( view() );
-					dtde.dropComplete(true);
+				if (dtde.getDropAction() == DnDConstants.ACTION_MOVE) {
+					view().addToSelectionAll( getTargetUndoActivity().getAffectedFigures() );
 				}
-				catch (NullPointerException npe) {
-					npe.printStackTrace();
-					dtde.dropComplete(false);
-				}
+
+				view().checkDamage();
+				editor().getUndoManager().pushUndo( getTargetUndoActivity() );
+				editor().getUndoManager().clearRedos();
+				// update menus
+				editor().figureSelectionChanged( view() );
+				dtde.dropComplete(true);
+
+					
 			}
 			else {
 				dtde.rejectDrop();

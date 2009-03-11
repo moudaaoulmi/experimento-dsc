@@ -448,45 +448,22 @@ public class DrawApplet
 	}
 
 	private void readFromStorableInput(String filename) {
-		try {
-			URL url = new URL(getCodeBase(), filename);
-			InputStream stream = url.openStream();
-			StorableInput input = new StorableInput(stream);
-			fDrawing.release();
+		URL url = new URL(getCodeBase(), filename);
+		InputStream stream = url.openStream();
+		StorableInput input = new StorableInput(stream);
+		fDrawing.release();
 
-			fDrawing = (Drawing)input.readStorable();
-			view().setDrawing(fDrawing);
-		}
-		catch (IOException e) {
-			initDrawing();
-			showStatus("Error:" + e);
-		}
-		//@AJHD added
-		//catch the soft exception instead of the IO one, and get the wrapped one for report
-		catch (org.aspectj.lang.SoftException e) {
-			showStatus("Error: " + e.getWrappedThrowable());
-		}
-		//@AJHD end added
-
+		fDrawing = (Drawing)input.readStorable();
+		view().setDrawing(fDrawing);
 	}
 
 	private void readFromObjectInput(String filename) {
-		try {
-			URL url = new URL(getCodeBase(), filename);
-			InputStream stream = url.openStream();
-			ObjectInput input = new ObjectInputStream(stream);
-			fDrawing.release();
-			fDrawing = (Drawing)input.readObject();
-			view().setDrawing(fDrawing);
-		}
-		catch (IOException e) {
-			initDrawing();
-			showStatus("Error: " + e);
-		}
-		catch (ClassNotFoundException e) {
-			initDrawing();
-			showStatus("Class not found: " + e);
-		}
+		URL url = new URL(getCodeBase(), filename);
+		InputStream stream = url.openStream();
+		ObjectInput input = new ObjectInputStream(stream);
+		fDrawing.release();
+		fDrawing = (Drawing)input.readObject();
+		view().setDrawing(fDrawing);
 	}
 
 	private String guessType(String file) {
@@ -544,14 +521,11 @@ public class DrawApplet
 	 * page is derived as follows: codeBase+appletClassname+Help.html"
 	 */
 	protected void showHelp() {
-		try {
-			String appletPath = getClass().getName().replace('.', '/');
-			URL url = new URL(getCodeBase(), appletPath + "Help.html");
-			getAppletContext().showDocument(url, "Help");
-		}
-		catch (IOException e) {
-			showStatus("Help file not found");
-		}
+		
+		String appletPath = getClass().getName().replace('.', '/');
+		URL url = new URL(getCodeBase(), appletPath + "Help.html");
+		getAppletContext().showDocument(url, "Help");
+
 
 	}
 

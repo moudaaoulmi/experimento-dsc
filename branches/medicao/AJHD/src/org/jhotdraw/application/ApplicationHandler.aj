@@ -1,0 +1,106 @@
+package org.jhotdraw.application;
+
+import java.io.IOException;
+
+import org.jhotdraw.applet.DrawApplet;
+import org.jhotdraw.framework.Drawing;
+import org.jhotdraw.framework.DrawingView;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.InterruptedException;
+
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+import org.jhotdraw.framework.*;
+
+public aspect ApplicationHandler {
+	
+	declare soft: InterruptedException :DrawApplication_open();
+		
+	declare soft: InvocationTargetException :DrawApplication_open() ;
+	
+	declare soft: IOException :DrawApplication_saveDrawing() || DrawApplication_loadDrawing();
+	
+	declare soft: Exception :DrawApplication_newLookAndFeel() || DrawApplication_executeCommandMenu();
+	
+	pointcut DrawApplication_open(): execution (void DrawApplication.open(DrawingView)) ;
+	
+	pointcut DrawApplication_saveDrawing(): execution (* DrawApplication.saveDrawing(..) );
+	
+	pointcut DrawApplication_loadDrawing(): execution (* DrawApplication.loadDrawing(..) );
+	
+	pointcut DrawApplication_newLookAndFeel(): execution (* DrawApplication.newLookAndFeel(..) );
+	
+	pointcut DrawApplication_executeCommandMenu(): execution (* DrawApplication.executeCommandMenu(..) );
+	
+	void around(final DrawingView newDrawingView): DrawApplication_open() && args(newDrawingView){
+		DrawApplication drawApplication = null;
+		try {
+			proceed(newDrawingView);
+		}
+		catch(java.lang.InterruptedException ie) {
+			drawApplication = (DrawApplication) thisJoinPoint.getThis();
+			System.err.println(ie.getMessage());
+			ie.printStackTrace();
+			drawApplication.exit();
+		}
+		catch(java.lang.reflect.InvocationTargetException ite) {
+			drawApplication = (DrawApplication) thisJoinPoint.getThis();
+			System.err.println(ite.getMessage());
+			ite.printStackTrace();
+			drawApplication.exit();
+		}
+    }
+	
+	void around(): DrawApplication_saveDrawing() {
+		DrawApplication drawApplication = null;
+		try {
+			proceed();
+		}
+		catch(IOException e) {
+			drawApplication = (DrawApplication) thisJoinPoint.getThis();
+			drawApplication.showStatus(e.toString());
+		}
+		
+    }
+	
+	void around(): DrawApplication_loadDrawing() {
+		DrawApplication drawApplication = null;
+		try {
+			proceed();
+		}
+		catch (IOException e) {
+			drawApplication = (DrawApplication) thisJoinPoint.getThis();
+			drawApplication.showStatus("Error: " + e);
+		}
+		//@AJHD added
+		//catch the soft exception instead of the IO one, and get the wrapped one for report
+		catch (org.aspectj.lang.SoftException e) {
+			drawApplication = (DrawApplication) thisJoinPoint.getThis();
+			drawApplication.showStatus("Error: " + e.getWrappedThrowable());
+		}
+		
+    }
+	
+	void around(): DrawApplication_newLookAndFeel() {
+		try {
+			proceed();
+		}
+		catch (Exception e) {
+			System.err.println(e);
+		}
+		
+    }
+	
+	void around(): DrawApplication_executeCommandMenu() {
+		try {
+			proceed();
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+    }
+
+}

@@ -251,19 +251,7 @@ public	class DrawApplication
 		};
 
 		if (java.awt.EventQueue.isDispatchThread() == false) {
-			try {
-				java.awt.EventQueue.invokeAndWait(r);
-			}
-			catch(java.lang.InterruptedException ie) {
-				System.err.println(ie.getMessage());
-				ie.printStackTrace();
-				exit();
-			}
-			catch(java.lang.reflect.InvocationTargetException ite) {
-				System.err.println(ite.getMessage());
-				ite.printStackTrace();
-				exit();
-			}
+			java.awt.EventQueue.invokeAndWait(r);
 		}
 		else {
 			r.run();
@@ -1079,39 +1067,27 @@ public	class DrawApplication
 		if (view() == null) {
 			return;
 		}
-		try {
-			String name = storeFormat.store(file, view().drawing());
-			view().drawing().setTitle(name);
-			setDrawingTitle(name);
-		}
-		catch (IOException e) {
-			showStatus(e.toString());
-		}
+
+		String name = storeFormat.store(file, view().drawing());
+		view().drawing().setTitle(name);
+		setDrawingTitle(name);
+
 	}
 
 	/**
 	 * Load a Drawing from a file
 	 */
 	protected void loadDrawing(StorageFormat restoreFormat, String file) {
-		try {
-			Drawing restoredDrawing = restoreFormat.restore(file);
-			if (restoredDrawing != null) {
-				restoredDrawing.setTitle(file);
-				newWindow(restoredDrawing);
-			}
-			else {
-			   showStatus("Unknown file type: could not open file '" + file + "'");
-			}
+
+		Drawing restoredDrawing = restoreFormat.restore(file);
+		if (restoredDrawing != null) {
+			restoredDrawing.setTitle(file);
+			newWindow(restoredDrawing);
 		}
-		catch (IOException e) {
-			showStatus("Error: " + e);
+		else {
+		   showStatus("Unknown file type: could not open file '" + file + "'");
 		}
-		//@AJHD added
-		//catch the soft exception instead of the IO one, and get the wrapped one for report
-		catch (org.aspectj.lang.SoftException e) {
-			showStatus("Error: " + e.getWrappedThrowable());
-		}
-		//@AJHD end added
+
 
 	}
 
@@ -1119,13 +1095,10 @@ public	class DrawApplication
 	 * Switch to a new Look&Feel
 	 */
 	private void newLookAndFeel(String landf) {
-		try {
-			UIManager.setLookAndFeel(landf);
-			SwingUtilities.updateComponentTreeUI(this);
-		}
-		catch (Exception e) {
-			System.err.println(e);
-		}
+
+		UIManager.setLookAndFeel(landf);
+		SwingUtilities.updateComponentTreeUI(this);
+
 	}
 
 	/**
@@ -1264,13 +1237,11 @@ public static void executeCommandMenu(CommandMenu menu){
 	HashMap comandos = menu.hm;
 	Iterator itComandos = comandos.values().iterator();
 	while(itComandos.hasNext()){
-		try{
-			Command cmd = (Command) itComandos.next();
-			//cmd.execute();
-			System.out.println("Comando: "+cmd.name());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+
+		Command cmd = (Command) itComandos.next();
+		//cmd.execute();
+		System.out.println("Comando: "+cmd.name());
+
 	}
 
 }

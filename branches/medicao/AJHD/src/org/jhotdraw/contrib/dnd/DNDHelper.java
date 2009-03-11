@@ -21,6 +21,7 @@ import java.awt.dnd.*;
 import java.io.*;
 import java.util.List;
 
+
 /**
  * Changes made in hopes of eventually cleaning up the functionality and 
  * distributing it sensibly. 1/10/02
@@ -83,49 +84,40 @@ public abstract class DNDHelper {
 			return null;
 		}
 
-		try {
-		    if (flavor.equals(DataFlavor.stringFlavor)) {
-				receivedData = transferable.getTransferData(DataFlavor.stringFlavor);
-			}
-			else if (flavor.equals(DataFlavor.javaFileListFlavor)) {
-				List aList = (List)transferable.getTransferData(DataFlavor.javaFileListFlavor);
-				File fList [] = new File[aList.size()];
-				aList.toArray(fList);
-				receivedData = fList;
-			}
-			else if (flavor.equals(ASCIIFlavor)) {
-				/* this may be too much work for locally received data */
-				InputStream is = (InputStream)transferable.getTransferData(ASCIIFlavor);
-				int length = is.available();
-				byte[] bytes = new byte[length];
-				int n = is.read(bytes);
-				if (n > 0) {
-					/* seems to be a 0 tacked on the end of Windows strings.  I
-					 * havent checked other platforms.  This does not happen
-					 * with windows socket io.  strange?
-					 */
-					//for (int i = 0; i < length; i++) {
-					//    if (bytes[i] == 0) {
-					//        length = i;
-					//        break;
-					//    }
-					//}
-					receivedData = new String(bytes, 0, n);
-				}
-			}
-			else if (flavor.equals(DNDFiguresTransferable.DNDFiguresFlavor)) {
-				receivedData = transferable.getTransferData(DNDFiguresTransferable.DNDFiguresFlavor);
+
+	    if (flavor.equals(DataFlavor.stringFlavor)) {
+			receivedData = transferable.getTransferData(DataFlavor.stringFlavor);
+		}
+		else if (flavor.equals(DataFlavor.javaFileListFlavor)) {
+			List aList = (List)transferable.getTransferData(DataFlavor.javaFileListFlavor);
+			File fList [] = new File[aList.size()];
+			aList.toArray(fList);
+			receivedData = fList;
+		}
+		else if (flavor.equals(ASCIIFlavor)) {
+			/* this may be too much work for locally received data */
+			InputStream is = (InputStream)transferable.getTransferData(ASCIIFlavor);
+			int length = is.available();
+			byte[] bytes = new byte[length];
+			int n = is.read(bytes);
+			if (n > 0) {
+				/* seems to be a 0 tacked on the end of Windows strings.  I
+				 * havent checked other platforms.  This does not happen
+				 * with windows socket io.  strange?
+				 */
+				//for (int i = 0; i < length; i++) {
+				//    if (bytes[i] == 0) {
+				//        length = i;
+				//        break;
+				//    }
+				//}
+				receivedData = new String(bytes, 0, n);
 			}
 		}
-		catch (java.io.IOException ioe) {
-			System.err.println(ioe);
+		else if (flavor.equals(DNDFiguresTransferable.DNDFiguresFlavor)) {
+			receivedData = transferable.getTransferData(DNDFiguresTransferable.DNDFiguresFlavor);
 		}
-		catch (UnsupportedFlavorException ufe) {
-			System.err.println(ufe);
-		}
-		catch (ClassCastException cce) {
-			System.err.println(cce);
-		}
+	
 
 		return receivedData;
 	}
@@ -174,16 +166,10 @@ public abstract class DNDHelper {
 	protected DropTarget createDropTarget() {
 		DropTarget dt = null;
 		if (Component.class.isInstance(view())) {
-			try {
-				dt = new DropTarget((Component)view(), getDropTargetActions(), getDropTargetListener());
-				//System.out.println(view().toString() + " Initialized to DND.");
-			}
-			catch (NullPointerException npe) {
-				System.err.println("View Failed to initialize to DND.");
-				System.err.println("Container likely did not have peer before the DropTarget was added");
-				System.err.println(npe);
-				npe.printStackTrace();
-			}
+
+			dt = new DropTarget((Component)view(), getDropTargetActions(), getDropTargetListener());
+			//System.out.println(view().toString() + " Initialized to DND.");
+
 		}
 		return dt;
 	}
