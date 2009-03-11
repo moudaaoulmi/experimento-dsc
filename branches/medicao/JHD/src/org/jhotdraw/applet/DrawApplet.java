@@ -389,7 +389,7 @@ public class DrawApplet
 	public void viewSelectionChanged(DrawingView oldView, DrawingView newView) {
 	}
 
-	void initDrawing() {
+	private void initDrawing() {
 		fDrawing = createDrawing();
 		view().setDrawing(fDrawing);
 		toolDone();
@@ -453,10 +453,10 @@ public class DrawApplet
 			fDrawing = (Drawing)input.readStorable();
 			view().setDrawing(fDrawing);
 		}
+		//TODO não pode ser refatorado pois o initDrawing() é private
 		catch (IOException e) {
-			appletHandler.drawAppleTreadFromStorableInput(this, e, "Error:");
-//			initDrawing();
-//			showStatus("Error:" + e);
+			initDrawing();
+			showStatus("Error:" + e);
 		}
 	}
 
@@ -470,14 +470,12 @@ public class DrawApplet
 			view().setDrawing(fDrawing);
 		}
 		catch (IOException e) {
-			appletHandler.drawAppleTreadFromStorableInput(this, e, "Error:");
-//			initDrawing();
-//			showStatus("Error: " + e);
+			initDrawing();
+			showStatus("Error: " + e);
 		}
 		catch (ClassNotFoundException e) {
-			appletHandler.drawAppleTreadFromStorableInput(this, e, "Class not found: " );
-//			initDrawing();
-//			showStatus("Class not found: " + e);
+			initDrawing();
+			showStatus("Class not found: " + e);
 		}
 	}
 
