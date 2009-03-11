@@ -46,9 +46,9 @@ public  class NumberTextFigure extends TextFigure {
 		try {
 			value = Integer.parseInt(getText());
 		}
+		//TODO não pode ser refatorado pq é passagem por valor
 		catch (NumberFormatException e) {
-			utilHandler.defaultValue(value);
-			//value = 0;
+			value = 0;
 		}
 		return value;
 	}
