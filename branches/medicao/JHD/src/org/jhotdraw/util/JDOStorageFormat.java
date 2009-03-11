@@ -113,8 +113,7 @@ public class JDOStorageFormat extends StandardStorageFormat {
 				pm.makePersistent(txnDrawing);
 			}
 		} finally {
-			// endTransaction(pm, (drawingName != null));
-			utilHandler.jDOSStorageFormatStore(pm, (drawingName != null));
+			 endTransaction(pm, (drawingName != null));
 		}
 
 		// there must be always a transaction running
@@ -149,9 +148,7 @@ public class JDOStorageFormat extends StandardStorageFormat {
 				restoredDrawing = txnDrawing;
 			}
 		} finally {
-			// endTransaction(pm, false);
-			utilHandler.jDOSStorageFormatStore(pm, false);
-
+			 endTransaction(pm, false);
 		}
 
 		// there must be always a transaction running
@@ -203,7 +200,7 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		}
 	}
 
-	public static void endTransaction(PersistenceManager pm, boolean doCommit) {
+	private static void endTransaction(PersistenceManager pm, boolean doCommit) {
 		if (pm.currentTransaction().isActive()) {
 			if (doCommit) {
 				pm.currentTransaction().commit();

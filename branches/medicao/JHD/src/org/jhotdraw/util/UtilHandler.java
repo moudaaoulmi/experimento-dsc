@@ -24,10 +24,6 @@ public class UtilHandler extends GeneralException {
 	public void iconkitLoadRegisteredImages(){
 		// ignore: do nothing
 	}
-
-	public void jDOSStorageFormatStore(PersistenceManager pm, boolean b ){
-		JDOStorageFormat.endTransaction(pm, b);
-	}
 	
 	public void ignore(){
 		//ignore
