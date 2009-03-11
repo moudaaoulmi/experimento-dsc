@@ -16,10 +16,6 @@ public class GeneralException {
 		e.printStackTrace();
 	}
 	
-	public void defaultValue(Object object){
-		object = null;
-	}
-	
 	public void showStatusApplet(JApplet a, String msg){
 		a.showStatus(msg);
 	}
