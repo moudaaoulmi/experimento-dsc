@@ -16,7 +16,7 @@ public privileged aspect AppletHandler {
 	
 	pointcut DrawApplet_showHelp(): execution (* DrawApplet.showHelp(..)) ;
 	
-	void around(): DrawApplet_readFromStorableInput(){
+	void around(): DrawApplet_readFromStorableInput() || DrawApplet_readFromObjectInput(){
 		DrawApplet drawApplet = null;
 		try {
 			proceed();
@@ -25,6 +25,13 @@ public privileged aspect AppletHandler {
 			drawApplet = (DrawApplet) thisJoinPoint.getThis();
 			drawApplet.initDrawing();
 			drawApplet.showStatus("Error:" + e);
+		}
+	}
+	
+	void around(): DrawApplet_readFromStorableInput(){
+		DrawApplet drawApplet = null;
+		try {
+			proceed();
 		}
 		//@AJHD added
 		//catch the soft exception instead of the IO one, and get the wrapped one for report
@@ -38,11 +45,6 @@ public privileged aspect AppletHandler {
 		DrawApplet drawApplet = null;
 		try {
 			proceed();
-		}
-		catch (IOException e) {
-			drawApplet = (DrawApplet) thisJoinPoint.getThis();
-			drawApplet.initDrawing();
-			drawApplet.showStatus("Error: " + e);
 		}
 		catch (ClassNotFoundException e) {
 			drawApplet = (DrawApplet) thisJoinPoint.getThis();
