@@ -469,10 +469,12 @@ public class DrawApplet
 			fDrawing = (Drawing)input.readObject();
 			view().setDrawing(fDrawing);
 		}
+		//TODO não pode ser refatorado pois o initDrawing() é private
 		catch (IOException e) {
 			initDrawing();
 			showStatus("Error: " + e);
 		}
+		//TODO não pode ser refatorado pois o initDrawing() é private
 		catch (ClassNotFoundException e) {
 			initDrawing();
 			showStatus("Class not found: " + e);
