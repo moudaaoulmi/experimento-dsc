@@ -9,16 +9,15 @@ public privileged aspect JavadrawHandler {
 	// ---------------------------
 	// Declare soft's
 	// ---------------------------
-	declare soft: MalformedURLException: FollowURLTool_mouseUpInternal();
-
+	declare soft: MalformedURLException: FollowURLTool_mouseUp();
 	declare soft: Exception: JavaDrawApp_executeComandMenu1();
 	declare soft: IOException: JavaDrawViewer_loadDrawing();
 
 	// ---------------------------
 	// Pointcut's
 	// ---------------------------
-	pointcut FollowURLTool_mouseUpInternal(): 
-		execution(* FollowURLTool.mouseUpInternal(..));
+	pointcut FollowURLTool_mouseUp(): 
+		execution(* FollowURLTool.mouseUp(..));
 
 	pointcut JavaDrawApp_executeComandMenu1():
 		execution(* JavaDrawApp.executeComandMenu1(..));
@@ -50,7 +49,7 @@ public privileged aspect JavadrawHandler {
 		}
 	}
 
-	void around(): FollowURLTool_mouseUpInternal(){
+	void around(): FollowURLTool_mouseUp(){
 		try {
 			proceed();
 		} catch (MalformedURLException exception) {
