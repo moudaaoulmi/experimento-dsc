@@ -165,34 +165,27 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
     String pattern = mFileMatchPatternText.getText();
+
     protected void okPressed()
     {
+        //
+        // Try compiling the pattern using the regular expression compiler.
+        //
+        Pattern.compile(pattern);
 
-            //
-            // Try compiling the pattern using the regular expression compiler.
-            //
-            Pattern.compile(pattern);
+        if (mPattern == null)
+        {
+            mPattern = new FileMatchPattern(pattern);
 
-            if (mPattern == null)
-            {
-                internalFileMatchPattern();
-            }
-            else
-            {
-                internalsetMatchPattern();
-            }
+        }
+        else
+        {
+            mPattern.setMatchPattern(pattern);
+        }
 
-            mPattern.setIsIncludePattern(mIncludeButton.getSelection());
+        mPattern.setIsIncludePattern(mIncludeButton.getSelection());
 
         super.okPressed();
-    }
-    
-    public void internalFileMatchPattern(){
-            mPattern = new FileMatchPattern(pattern);
-    }
-    
-    public void internalsetMatchPattern(){
-                mPattern.setMatchPattern(pattern);
     }
 
 
@@ -226,8 +219,8 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog
         contentAssistant.setInformationControlCreator(new IInformationControlCreator()
         {
             /*
-             * @see org.eclipse.jface.text.IInformationControlCreator#createInformationControl(
-             *      org.eclipse.swt.widgets.Shell)
+             * @seeorg.eclipse.jface.text.IInformationControlCreator#
+             * createInformationControl( org.eclipse.swt.widgets.Shell)
              */
             public IInformationControl createInformationControl(Shell parent)
             {

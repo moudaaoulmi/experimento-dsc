@@ -79,6 +79,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationLabelPr
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationViewerSorter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 import com.atlassw.tools.eclipse.checkstyle.util.SWTUtil;
@@ -414,25 +415,24 @@ public class FileSetEditDialog extends TitleAreaDialog
         {
             public void run()
             {
-                internalRun();
-               
+                mMatchGroup.setText(Messages.FileSetEditDialog_msgBuildTestResults);
+                // mProjectFiles = getFiles(mProject);
+                internalRun(mProjectFiles, mProject);
+
+                // init the test area
+                mMatchesViewer.setInput(mProjectFiles);
+                updateMatchView();
+
             }
         });
-        
+
     }
 
-    public void internalRun(){
-        
-        mMatchGroup.setText(Messages.FileSetEditDialog_msgBuildTestResults);
-
-            mProjectFiles = getFiles(mProject);
-            
-        // init the test area
-        mMatchesViewer.setInput(mProjectFiles);
-        updateMatchView();
+    public void internalRun(List mProjectFiles, IProject mProject)
+    {
+        mProjectFiles = getFiles(mProject);
     }
-    
-    
+
     private void updateMatchView()
     {
         mMatchesViewer.refresh();
@@ -693,17 +693,21 @@ public class FileSetEditDialog extends TitleAreaDialog
                 if (config != null)
                 {
                     IProject project = (IProject) mPropertyPage.getElement();
-
-                        config.getCheckstyleConfiguration();
-
-                        CheckConfigurationWorkingCopy workingCopy = (CheckConfigurationWorkingCopy) config;
-
-                        CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
-                                getShell(), workingCopy);
-                        dialog.setBlockOnOpen(true);
-                        dialog.open();
+                    internalWidgetSelected(config, project);
                 }
             }
+        }
+
+        private void internalWidgetSelected(ICheckConfiguration config, IProject project)
+        {
+            config.getCheckstyleConfiguration();
+
+            CheckConfigurationWorkingCopy workingCopy = (CheckConfigurationWorkingCopy) config;
+
+            CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
+                    getShell(), workingCopy);
+            dialog.setBlockOnOpen(true);
+            dialog.open();
         }
 
         /**
@@ -785,180 +789,45 @@ public class FileSetEditDialog extends TitleAreaDialog
             return null;
         }
     }
-
-    public IProject getMProject()
-    {
-        return mProject;
-    }
-
-    public void setMProject(IProject project)
-    {
-        mProject = project;
-    }
-
-    public Text getMFileSetNameText()
-    {
-        return mFileSetNameText;
-    }
-
-    public void setMFileSetNameText(Text fileSetNameText)
-    {
-        mFileSetNameText = fileSetNameText;
-    }
-
-    public ComboViewer getMComboViewer()
-    {
-        return mComboViewer;
-    }
-
-    public void setMComboViewer(ComboViewer comboViewer)
-    {
-        mComboViewer = comboViewer;
-    }
-
-    public CheckboxTableViewer getMPatternViewer()
-    {
-        return mPatternViewer;
-    }
-
-    public void setMPatternViewer(CheckboxTableViewer patternViewer)
-    {
-        mPatternViewer = patternViewer;
-    }
-
-    public TableViewer getMMatchesViewer()
-    {
-        return mMatchesViewer;
-    }
-
-    public void setMMatchesViewer(TableViewer matchesViewer)
-    {
-        mMatchesViewer = matchesViewer;
-    }
-
-    public Group getMMatchGroup()
-    {
-        return mMatchGroup;
-    }
-
-    public void setMMatchGroup(Group matchGroup)
-    {
-        mMatchGroup = matchGroup;
-    }
-
-    public Button getMConfigureButton()
-    {
-        return mConfigureButton;
-    }
-
-    public void setMConfigureButton(Button configureButton)
-    {
-        mConfigureButton = configureButton;
-    }
-
-    public Button getMAddButton()
-    {
-        return mAddButton;
-    }
-
-    public void setMAddButton(Button addButton)
-    {
-        mAddButton = addButton;
-    }
-
-    public Button getMEditButton()
-    {
-        return mEditButton;
-    }
-
-    public void setMEditButton(Button editButton)
-    {
-        mEditButton = editButton;
-    }
-
-    public Button getMRemoveButton()
-    {
-        return mRemoveButton;
-    }
-
-    public void setMRemoveButton(Button removeButton)
-    {
-        mRemoveButton = removeButton;
-    }
-
-    public Button getMUpButton()
-    {
-        return mUpButton;
-    }
-
-    public void setMUpButton(Button upButton)
-    {
-        mUpButton = upButton;
-    }
-
-    public Button getMDownButton()
-    {
-        return mDownButton;
-    }
-
-    public void setMDownButton(Button downButton)
-    {
-        mDownButton = downButton;
-    }
-
-    public Controller getMController()
-    {
-        return mController;
-    }
-
-    public void setMController(Controller controller)
-    {
-        mController = controller;
-    }
-
-    public FileSet getMFileSet()
-    {
-        return mFileSet;
-    }
-
-    public void setMFileSet(FileSet fileSet)
-    {
-        mFileSet = fileSet;
-    }
-
-    public List getMProjectFiles()
-    {
-        return mProjectFiles;
-    }
-
-    public void setMProjectFiles(List projectFiles)
-    {
-        mProjectFiles = projectFiles;
-    }
-
-    public boolean isMIsCreatingNewFileset()
-    {
-        return mIsCreatingNewFileset;
-    }
-
-    public void setMIsCreatingNewFileset(boolean isCreatingNewFileset)
-    {
-        mIsCreatingNewFileset = isCreatingNewFileset;
-    }
-
-    public CheckstylePropertyPage getMPropertyPage()
-    {
-        return mPropertyPage;
-    }
-
-    public void setMPropertyPage(CheckstylePropertyPage propertyPage)
-    {
-        mPropertyPage = propertyPage;
-    }
-
-    public static String getDEFAULT_PATTERN()
-    {
-        return DEFAULT_PATTERN;
-    }
-    
+    /*
+     * public IProject getMProject() { return mProject; } public void
+     * setMProject(IProject project) { mProject = project; } public Text
+     * getMFileSetNameText() { return mFileSetNameText; } public void
+     * setMFileSetNameText(Text fileSetNameText) { mFileSetNameText =
+     * fileSetNameText; } public ComboViewer getMComboViewer() { return
+     * mComboViewer; } public void setMComboViewer(ComboViewer comboViewer) {
+     * mComboViewer = comboViewer; } public CheckboxTableViewer
+     * getMPatternViewer() { return mPatternViewer; } public void
+     * setMPatternViewer(CheckboxTableViewer patternViewer) { mPatternViewer =
+     * patternViewer; } public TableViewer getMMatchesViewer() { return
+     * mMatchesViewer; } public void setMMatchesViewer(TableViewer
+     * matchesViewer) { mMatchesViewer = matchesViewer; } public Group
+     * getMMatchGroup() { return mMatchGroup; } public void setMMatchGroup(Group
+     * matchGroup) { mMatchGroup = matchGroup; } public Button
+     * getMConfigureButton() { return mConfigureButton; } public void
+     * setMConfigureButton(Button configureButton) { mConfigureButton =
+     * configureButton; } public Button getMAddButton() { return mAddButton; }
+     * public void setMAddButton(Button addButton) { mAddButton = addButton; }
+     * public Button getMEditButton() { return mEditButton; } public void
+     * setMEditButton(Button editButton) { mEditButton = editButton; } public
+     * Button getMRemoveButton() { return mRemoveButton; } public void
+     * setMRemoveButton(Button removeButton) { mRemoveButton = removeButton; }
+     * public Button getMUpButton() { return mUpButton; } public void
+     * setMUpButton(Button upButton) { mUpButton = upButton; } public Button
+     * getMDownButton() { return mDownButton; } public void
+     * setMDownButton(Button downButton) { mDownButton = downButton; } public
+     * Controller getMController() { return mController; } public void
+     * setMController(Controller controller) { mController = controller; }
+     * public FileSet getMFileSet() { return mFileSet; } public void
+     * setMFileSet(FileSet fileSet) { mFileSet = fileSet; } public List
+     * getMProjectFiles() { return mProjectFiles; } public void
+     * setMProjectFiles(List projectFiles) { mProjectFiles = projectFiles; }
+     * public boolean isMIsCreatingNewFileset() { return mIsCreatingNewFileset;
+     * } public void setMIsCreatingNewFileset(boolean isCreatingNewFileset) {
+     * mIsCreatingNewFileset = isCreatingNewFileset; } public
+     * CheckstylePropertyPage getMPropertyPage() { return mPropertyPage; }
+     * public void setMPropertyPage(CheckstylePropertyPage propertyPage) {
+     * mPropertyPage = propertyPage; } public static String getDEFAULT_PATTERN()
+     * { return DEFAULT_PATTERN; }
+     */
 }
