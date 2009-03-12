@@ -109,7 +109,8 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		startTransaction(pm);
 		return drawingName;
 	}
-
+	
+	//extraiu pq era finally
 	private String storeInternal(Drawing storeDrawing, PersistenceManager pm,
 			Drawing txnDrawing, String drawingName) {
 		Extent extent = pm.getExtent(StandardDrawing.class, true);
