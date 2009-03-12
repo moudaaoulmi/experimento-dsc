@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -251,7 +252,7 @@ public	class DrawApplication
 		};
 
 		if (java.awt.EventQueue.isDispatchThread() == false) {
-			java.awt.EventQueue.invokeAndWait(r);
+			internalOpen(r);
 		}
 		else {
 			r.run();
@@ -260,6 +261,10 @@ public	class DrawApplication
 		toolDone();
 	}
 
+	private void internalOpen(Runnable r){
+		java.awt.EventQueue.invokeAndWait(r);
+	}
+	
 	/**
 	 * Registers the listeners for this window
 	 */
