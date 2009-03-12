@@ -67,7 +67,7 @@ public aspect GeneralExceptionHandler
                                  ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
                                  checkstyleBuilder_buildProjectsHandleHandle() ||
                                  ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
-                                 CheckFileOnOpenPartListener_internalPartClosedHandler() ||
+                                 CheckFileOnOpenPartListener_partClosedHandler() ||
                                  CheckFileOnOpenPartListener_isFileAffectedHandler() ||
                                  NonSrcDirsFilter_getSourceDirPathsHandler() ||
                                  internalRunHandler() ||
@@ -120,8 +120,8 @@ public aspect GeneralExceptionHandler
         call(* FileSetEditDialog.getFiles(..)) &&
         withincode(* FileSetEditDialog.internalRun(..));
 
-    pointcut CheckFileOnOpenPartListener_internalPartClosedHandler(): 
-        execution(* CheckFileOnOpenPartListener.internalPartClosed(..));
+    pointcut CheckFileOnOpenPartListener_partClosedHandler(): 
+        execution(* CheckFileOnOpenPartListener.partClosed(..));
 
     pointcut CheckFileOnOpenPartListener_isFileAffectedHandler(): 
         execution(* CheckFileOnOpenPartListener.isFileAffected(..));
@@ -236,7 +236,7 @@ public aspect GeneralExceptionHandler
     // ---------------------------
     // Advice's
     // ---------------------------
-    Object around(): CheckFileOnOpenPartListener_internalPartClosedHandler() ||
+    Object around(): CheckFileOnOpenPartListener_partClosedHandler() ||
                      CheckFileOnOpenPartListener_isFileAffectedHandler() ||
                      NonSrcDirsFilter_getSourceDirPathsHandler() ||
                      internalRunHandler() ||
