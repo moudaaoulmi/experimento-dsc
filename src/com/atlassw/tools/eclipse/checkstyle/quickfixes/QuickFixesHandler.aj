@@ -18,6 +18,8 @@ import com.atlassw.tools.eclipse.checkstyle.exception.GeneralExceptionHandler;
  * @author julianasaraiva
  *
  */
+
+
 public privileged aspect QuickFixesHandler {
     
     declare soft : BadLocationException : getLineInformationOfOffsetHandler();
