@@ -3,15 +3,11 @@ package com.atlassw.tools.eclipse.checkstyle.config.migration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.OutputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.xml.sax.SAXException;
 
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import java.text.DateFormat;
 import java.util.Date;
@@ -38,6 +34,7 @@ public aspect MigrationHandler
     // ---------------------------
     // Advice's
     // ---------------------------
+    
     void around(String name) throws CheckstylePluginException : checkConfigurationMigrator_internalStartElementHandler() && args(name){
         CheckConfigurationMigrator.OldConfigurationHandler ccmh = ((CheckConfigurationMigrator.OldConfigurationHandler) thisJoinPoint
                 .getThis());

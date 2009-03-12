@@ -28,7 +28,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -135,7 +134,7 @@ public final class CheckConfigurationMigrator
                     String location = "internal_config_" + "_" + System.currentTimeMillis() //$NON-NLS-1$ //$NON-NLS-2$
                             + ".xml"; //$NON-NLS-1$
 
-                    //ensureFileExists(location);
+                    // ensureFileExists(location);
 
                     mCurrentConfiguration.setLocation(location);
                 }
@@ -184,14 +183,13 @@ public final class CheckConfigurationMigrator
                     mCurrentModule.getProperties().add(property);
                 }
             }
-            
+
         }
 
         private void internalStartElement(String name) throws CheckstylePluginException
         {
-            
-            IConfigurationType internalType = ConfigurationTypes
-                    .getByInternalName("internal"); //$NON-NLS-1$
+
+            IConfigurationType internalType = ConfigurationTypes.getByInternalName("internal"); //$NON-NLS-1$
 
             mCurrentConfiguration = mWorkingSet.newWorkingCopy(internalType);
             mCurrentConfiguration.setName(name);
@@ -208,25 +206,25 @@ public final class CheckConfigurationMigrator
          */
         private boolean ensureFileExists(String location) throws CheckstylePluginException
         {
+                String resolvedLocation = InternalConfigurationType
+                        .resolveLocationInWorkspace(location);
 
-            String resolvedLocation = InternalConfigurationType
-                    .resolveLocationInWorkspace(location);
+                File file = new File(resolvedLocation);
+                if (!file.exists())
+                {
 
-            File file = new File(resolvedLocation);
-            if (!file.exists())
-            {
+                    OutputStream out = null;
 
-                OutputStream out = null;
-                
-                internalEnsureFileExists(file,out);
-               
-                return true;
-            }
+                    internalEnsureFileExists(file, out);
+
+                    return true;
+                }
 
             return true;
         }
 
-        private void internalEnsureFileExists(File file, OutputStream out) throws CheckstylePluginException
+        private void internalEnsureFileExists(File file, OutputStream out)
+            throws CheckstylePluginException
         {
             if (file.getParentFile() != null)
             {
