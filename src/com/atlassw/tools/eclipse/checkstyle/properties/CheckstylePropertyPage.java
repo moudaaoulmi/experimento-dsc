@@ -43,6 +43,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.window.Window;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -63,6 +64,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.builder.BuildProjectJob;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
@@ -75,6 +77,7 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFa
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.IFilterEditor;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -149,24 +152,22 @@ public class CheckstylePropertyPage extends PropertyPage
     {
         super.setElement(element);
 
-       
-            //
-            // Get the project.
-            //
+        //
+        // Get the project.
+        //
 
-            IProject project = null;
-            IResource resource = (IResource) element;
-            if (resource.getType() == IResource.PROJECT)
-            {
-                project = (IProject) resource;
-            }
+        IProject project = null;
+        IResource resource = (IResource) element;
+        if (resource.getType() == IResource.PROJECT)
+        {
+            project = (IProject) resource;
+        }
 
-            IProjectConfiguration projectConfig = ProjectConfigurationFactory
-                    .getConfiguration(project);
-            mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
+        IProjectConfiguration projectConfig = ProjectConfigurationFactory.getConfiguration(project);
+        mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
 
-            mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
-        
+        mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
+
     }
 
     /**
@@ -177,74 +178,74 @@ public class CheckstylePropertyPage extends PropertyPage
 
         Composite container = null;
 
-            this.mPageController = new PageController();
+        this.mPageController = new PageController();
 
-            // suppress default- & apply-buttons
-            noDefaultAndApplyButton();
+        // suppress default- & apply-buttons
+        noDefaultAndApplyButton();
 
-            mMainTab = new TabFolder(parent, SWT.TOP);
-            mMainTab.setLayoutData(new GridData(GridData.FILL_BOTH));
-            mMainTab.addSelectionListener(mPageController);
+        mMainTab = new TabFolder(parent, SWT.TOP);
+        mMainTab.setLayoutData(new GridData(GridData.FILL_BOTH));
+        mMainTab.addSelectionListener(mPageController);
 
-            // create the main container
-            container = new Composite(mMainTab, SWT.NULL);
-            container.setLayout(new FormLayout());
-            container.setLayoutData(new GridData(GridData.FILL_BOTH));
+        // create the main container
+        container = new Composite(mMainTab, SWT.NULL);
+        container.setLayout(new FormLayout());
+        container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-            // create the checkbox to enable/diable the simple configuration
-            this.mChkSimpleConfig = new Button(container, SWT.CHECK);
-            this.mChkSimpleConfig.setText(Messages.CheckstylePropertyPage_btnUseSimpleConfig);
-            this.mChkSimpleConfig.addSelectionListener(this.mPageController);
-            this.mChkSimpleConfig.setSelection(mProjectConfig.isUseSimpleConfig());
+        // create the checkbox to enable/diable the simple configuration
+        this.mChkSimpleConfig = new Button(container, SWT.CHECK);
+        this.mChkSimpleConfig.setText(Messages.CheckstylePropertyPage_btnUseSimpleConfig);
+        this.mChkSimpleConfig.addSelectionListener(this.mPageController);
+        this.mChkSimpleConfig.setSelection(mProjectConfig.isUseSimpleConfig());
 
-            FormData fd = new FormData();
-            // fd.left = new FormAttachment(this.mChkEnable, 0, SWT.RIGHT);
-            fd.top = new FormAttachment(0, 3);
-            fd.right = new FormAttachment(100, -3);
-            this.mChkSimpleConfig.setLayoutData(fd);
+        FormData fd = new FormData();
+        // fd.left = new FormAttachment(this.mChkEnable, 0, SWT.RIGHT);
+        fd.top = new FormAttachment(0, 3);
+        fd.right = new FormAttachment(100, -3);
+        this.mChkSimpleConfig.setLayoutData(fd);
 
-            // create the checkbox to enabel/disable checkstyle
-            this.mChkEnable = new Button(container, SWT.CHECK);
-            this.mChkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
-            this.mChkEnable.addSelectionListener(this.mPageController);
-            this.mChkEnable.setSelection(mCheckstyleInitiallyActivated);
+        // create the checkbox to enabel/disable checkstyle
+        this.mChkEnable = new Button(container, SWT.CHECK);
+        this.mChkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
+        this.mChkEnable.addSelectionListener(this.mPageController);
+        this.mChkEnable.setSelection(mCheckstyleInitiallyActivated);
 
-            fd = new FormData();
-            fd.left = new FormAttachment(0, 3);
-            fd.top = new FormAttachment(0, 3);
-            fd.right = new FormAttachment(this.mChkSimpleConfig, 3, SWT.LEFT);
-            this.mChkEnable.setLayoutData(fd);
+        fd = new FormData();
+        fd.left = new FormAttachment(0, 3);
+        fd.top = new FormAttachment(0, 3);
+        fd.right = new FormAttachment(this.mChkSimpleConfig, 3, SWT.LEFT);
+        this.mChkEnable.setLayoutData(fd);
 
-            // create the configuration area
-            mFileSetsContainer = new Composite(container, SWT.NULL);
-            Control configArea = createFileSetsArea(mFileSetsContainer);
-            fd = new FormData();
-            fd.left = new FormAttachment(0, 3);
-            fd.top = new FormAttachment(this.mChkEnable, 6, SWT.BOTTOM);
-            fd.right = new FormAttachment(100, -3);
-            fd.bottom = new FormAttachment(45);
-            configArea.setLayoutData(fd);
+        // create the configuration area
+        mFileSetsContainer = new Composite(container, SWT.NULL);
+        Control configArea = createFileSetsArea(mFileSetsContainer);
+        fd = new FormData();
+        fd.left = new FormAttachment(0, 3);
+        fd.top = new FormAttachment(this.mChkEnable, 6, SWT.BOTTOM);
+        fd.right = new FormAttachment(100, -3);
+        fd.bottom = new FormAttachment(45);
+        configArea.setLayoutData(fd);
 
-            // create the filter area
-            Control filterArea = createFilterArea(container);
-            fd = new FormData();
-            fd.left = new FormAttachment(0, 3);
-            fd.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
-            fd.right = new FormAttachment(100, -3);
-            fd.bottom = new FormAttachment(100, -3);
-            fd.width = 500;
-            filterArea.setLayoutData(fd);
+        // create the filter area
+        Control filterArea = createFilterArea(container);
+        fd = new FormData();
+        fd.left = new FormAttachment(0, 3);
+        fd.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
+        fd.right = new FormAttachment(100, -3);
+        fd.bottom = new FormAttachment(100, -3);
+        fd.width = 500;
+        filterArea.setLayoutData(fd);
 
-            // create the local configurations area
-            Control localConfigArea = createLocalConfigArea(mMainTab);
+        // create the local configurations area
+        Control localConfigArea = createLocalConfigArea(mMainTab);
 
-            TabItem mainItem = new TabItem(mMainTab, SWT.NULL);
-            mainItem.setControl(container);
-            mainItem.setText(Messages.CheckstylePropertyPage_tabMain);
+        TabItem mainItem = new TabItem(mMainTab, SWT.NULL);
+        mainItem.setControl(container);
+        mainItem.setText(Messages.CheckstylePropertyPage_tabMain);
 
-            TabItem localItem = new TabItem(mMainTab, SWT.NULL);
-            localItem.setControl(localConfigArea);
-            localItem.setText(Messages.CheckstylePropertyPage_tabCheckConfigs);
+        TabItem localItem = new TabItem(mMainTab, SWT.NULL);
+        localItem.setControl(localConfigArea);
+        localItem.setText(Messages.CheckstylePropertyPage_tabCheckConfigs);
 
         return container;
     }
@@ -421,22 +422,33 @@ public class CheckstylePropertyPage extends PropertyPage
      */
     public boolean isValid()
     {
-     // check if all check configurations resolve
+        // check if all check configurations resolve
         List fileSets = mProjectConfig.getFileSets();
         Iterator it = fileSets.iterator();
-        
         while (it.hasNext())
         {
             FileSet fileset = (FileSet) it.next();
             ICheckConfiguration checkConfig = fileset.getCheckConfig();
             if (checkConfig != null)
             {
-                
+                try
+                {
                     checkConfig.getCheckstyleConfiguration();
+                }
+              /*TODO não é aconselhável ser refatorado, pois tem que ser extraído para poder capturar a 
+               * variável local e tem que retornar algo por causa do return false dentro do catch só que 
+               * este metodo(o original) só deve retornar e sair do while se cair no catch, assim, teria 
+               * que fazer uma verificação depois para ver se é false ou true, se false retornava, senao,
+               * continuava o while.*/
+                catch (CheckstylePluginException e)
+                {
+                    CheckstyleLog.warningDialog(getShell(), NLS.bind(
+                            ErrorMessages.errorCannotResolveCheckLocation, checkConfig
+                                    .getLocation(), checkConfig.getName()), e);
                     return false;
                 }
             }
-        
+        }
 
         return true;
     }
@@ -450,64 +462,64 @@ public class CheckstylePropertyPage extends PropertyPage
 
         IProject project = mProjectConfig.getProject();
 
-            // save the edited project configuration
-            if (mProjectConfig.isDirty())
+        // save the edited project configuration
+        if (mProjectConfig.isDirty())
+        {
+            mProjectConfig.store();
+        }
+
+        boolean checkstyleEnabled = mChkEnable.getSelection();
+        boolean needRebuild = mProjectConfig.isRebuildNeeded();
+
+        // check if checkstyle nature has to be configured/deconfigured
+        if (checkstyleEnabled != mCheckstyleInitiallyActivated)
+        {
+
+            ConfigureDeconfigureNatureJob configOperation = new ConfigureDeconfigureNatureJob(
+                    project, CheckstyleNature.NATURE_ID);
+            configOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
+            configOperation.schedule();
+
+            needRebuild = needRebuild || !mCheckstyleInitiallyActivated;
+        }
+
+        // if a rebuild is advised, check/prompt if the rebuild should
+        // really be done.
+        if (checkstyleEnabled && needRebuild)
+        {
+
+            IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+            String promptRebuildPref = prefStore
+                    .getString(CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
+
+            boolean doRebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref)
+                    && needRebuild;
+
+            //
+            // Prompt for rebuild
+            //
+            if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref) && needRebuild)
             {
-                mProjectConfig.store();
+                MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
+                        getShell(), Messages.CheckstylePropertyPage_titleRebuild,
+                        Messages.CheckstylePropertyPage_msgRebuild,
+                        Messages.CheckstylePropertyPage_nagRebuild, false, prefStore,
+                        CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
+
+                doRebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
             }
 
-            boolean checkstyleEnabled = mChkEnable.getSelection();
-            boolean needRebuild = mProjectConfig.isRebuildNeeded();
-
-            // check if checkstyle nature has to be configured/deconfigured
-            if (checkstyleEnabled != mCheckstyleInitiallyActivated)
+            // check if a rebuild is necessary
+            if (checkstyleEnabled && doRebuild)
             {
 
-                ConfigureDeconfigureNatureJob configOperation = new ConfigureDeconfigureNatureJob(
-                        project, CheckstyleNature.NATURE_ID);
-                configOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
-                configOperation.schedule();
-
-                needRebuild = needRebuild || !mCheckstyleInitiallyActivated;
+                BuildProjectJob rebuildOperation = new BuildProjectJob(project,
+                        IncrementalProjectBuilder.FULL_BUILD);
+                rebuildOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
+                rebuildOperation.schedule();
             }
+        }
 
-            // if a rebuild is advised, check/prompt if the rebuild should
-            // really be done.
-            if (checkstyleEnabled && needRebuild)
-            {
-
-                IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-                String promptRebuildPref = prefStore
-                        .getString(CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
-
-                boolean doRebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref)
-                        && needRebuild;
-
-                //
-                // Prompt for rebuild
-                //
-                if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref) && needRebuild)
-                {
-                    MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
-                            getShell(), Messages.CheckstylePropertyPage_titleRebuild,
-                            Messages.CheckstylePropertyPage_msgRebuild,
-                            Messages.CheckstylePropertyPage_nagRebuild, false, prefStore,
-                            CheckstylePlugin.PREF_ASK_BEFORE_REBUILD);
-
-                    doRebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
-                }
-
-                // check if a rebuild is necessary
-                if (checkstyleEnabled && doRebuild)
-                {
-
-                    BuildProjectJob rebuildOperation = new BuildProjectJob(project,
-                            IncrementalProjectBuilder.FULL_BUILD);
-                    rebuildOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
-                    rebuildOperation.schedule();
-                }
-            }
-        
         return true;
     }
 
@@ -522,8 +534,7 @@ public class CheckstylePropertyPage extends PropertyPage
     {
 
         /**
-         * @see org.eclipse.swt.events.SelectionListener#widgetSelected(
-         *      org.eclipse.swt.events.SelectionEvent)
+         * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
          */
         public void widgetSelected(SelectionEvent e)
         {
@@ -543,47 +554,44 @@ public class CheckstylePropertyPage extends PropertyPage
             else if (source == mChkSimpleConfig)
             {
 
-                    mProjectConfig.setUseSimpleConfig(mChkSimpleConfig.getSelection());
+                mProjectConfig.setUseSimpleConfig(mChkSimpleConfig.getSelection());
 
-                    IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
-                    boolean showWarning = prefStore
-                            .getBoolean(CheckstylePlugin.PREF_FILESET_WARNING);
-                    if (mProjectConfig.isUseSimpleConfig() && showWarning)
+                IPreferenceStore prefStore = CheckstylePlugin.getDefault().getPreferenceStore();
+                boolean showWarning = prefStore.getBoolean(CheckstylePlugin.PREF_FILESET_WARNING);
+                if (mProjectConfig.isUseSimpleConfig() && showWarning)
+                {
+                    MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
+                            Messages.CheckstylePropertyPage_titleWarnFilesets, null,
+                            Messages.CheckstylePropertyPage_msgWarnFilesets,
+                            MessageDialogWithToggle.WARNING,
+                            new String[] { IDialogConstants.OK_LABEL }, 0,
+                            Messages.CheckstylePropertyPage_mgsWarnFileSetNagOption, showWarning)
                     {
-                        MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
-                                Messages.CheckstylePropertyPage_titleWarnFilesets, null,
-                                Messages.CheckstylePropertyPage_msgWarnFilesets,
-                                MessageDialogWithToggle.WARNING,
-                                new String[] { IDialogConstants.OK_LABEL }, 0,
-                                Messages.CheckstylePropertyPage_mgsWarnFileSetNagOption,
-                                showWarning)
+                        /**
+                         * Overwritten because we don't want to store which
+                         * button the user pressed but the state of the toggle.
+                         * 
+                         * @see MessageDialogWithToggle#buttonPressed(int)
+                         */
+                        protected void buttonPressed(int buttonId)
                         {
-                            /**
-                             * Overwritten because we don't want to store which
-                             * button the user pressed but the state of the
-                             * toggle.
-                             * 
-                             * @see MessageDialogWithToggle#buttonPressed(int)
-                             */
-                            protected void buttonPressed(int buttonId)
-                            {
-                                getPrefStore().setValue(getPrefKey(), getToggleState());
-                                setReturnCode(buttonId);
-                                close();
-                            }
+                            getPrefStore().setValue(getPrefKey(), getToggleState());
+                            setReturnCode(buttonId);
+                            close();
+                        }
 
-                        };
-                        dialog.setPrefStore(prefStore);
-                        dialog.setPrefKey(CheckstylePlugin.PREF_FILESET_WARNING);
-                        dialog.open();
+                    };
+                    dialog.setPrefStore(prefStore);
+                    dialog.setPrefKey(CheckstylePlugin.PREF_FILESET_WARNING);
+                    dialog.open();
 
-                    }
-                        createFileSetsArea(mFileSetsContainer);
-                   
-                    mFileSetsContainer.redraw();
-                    mFileSetsContainer.update();
-                    mFileSetsContainer.layout();
-                
+                }
+                createFileSetsArea(mFileSetsContainer);
+
+                mFileSetsContainer.redraw();
+                mFileSetsContainer.update();
+                mFileSetsContainer.layout();
+
             }
 
         }
@@ -641,8 +649,7 @@ public class CheckstylePropertyPage extends PropertyPage
         }
 
         /**
-         * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(
-         *      org.eclipse.jface.viewers.DoubleClickEvent)
+         * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
          */
         public void doubleClick(DoubleClickEvent event)
         {
@@ -664,25 +671,25 @@ public class CheckstylePropertyPage extends PropertyPage
 
                 if (selectedElement instanceof IFilter)
                 {
-                        IFilter aFilterDef = (IFilter) selectedElement;
+                    IFilter aFilterDef = (IFilter) selectedElement;
 
-                        if (!aFilterDef.isEditable())
-                        {
-                            return;
-                        }
+                    if (!aFilterDef.isEditable())
+                    {
+                        return;
+                    }
 
-                        Class editorClass = aFilterDef.getEditorClass();
+                    Class editorClass = aFilterDef.getEditorClass();
 
-                        IFilterEditor editableFilter = (IFilterEditor) editorClass.newInstance();
-                        editableFilter.setInputProject(mProjectConfig.getProject());
-                        editableFilter.setFilterData(aFilterDef.getFilterData());
+                    IFilterEditor editableFilter = (IFilterEditor) editorClass.newInstance();
+                    editableFilter.setInputProject(mProjectConfig.getProject());
+                    editableFilter.setFilterData(aFilterDef.getFilterData());
 
-                        if (Window.OK == editableFilter.openEditor(getShell()))
-                        {
+                    if (Window.OK == editableFilter.openEditor(getShell()))
+                    {
 
-                            aFilterDef.setFilterData(editableFilter.getFilterData());
-                            mFilterList.refresh();
-                        }
+                        aFilterDef.setFilterData(editableFilter.getFilterData());
+                        mFilterList.refresh();
+                    }
                 }
             }
         }

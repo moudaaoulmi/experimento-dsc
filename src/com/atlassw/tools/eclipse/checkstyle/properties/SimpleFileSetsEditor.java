@@ -50,6 +50,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationLabelPr
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationViewerSorter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -224,23 +225,30 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
         {
             if (mBtnManageConfigs == e.widget)
             {
-                 ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
+                ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
 
                 if (config != null)
                 {
                     IProject project = (IProject) mPropertyPage.getElement();
 
-                        config.getCheckstyleConfiguration();
+                    internalWidgetSelected(config, project);
 
-                        CheckConfigurationWorkingCopy workingCopy = (CheckConfigurationWorkingCopy) config;
-
-                        CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
-                                mTxtConfigDescription.getShell(), workingCopy);
-                        dialog.setBlockOnOpen(true);
-                        dialog.open();
-                    
                 }
             }
+        }
+
+        private void internalWidgetSelected(ICheckConfiguration config, IProject project)
+        {
+
+            config.getCheckstyleConfiguration();
+
+            CheckConfigurationWorkingCopy workingCopy = (CheckConfigurationWorkingCopy) config;
+
+            CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
+                    mTxtConfigDescription.getShell(), workingCopy);
+            dialog.setBlockOnOpen(true);
+            dialog.open();
+
         }
 
         /**
@@ -343,7 +351,5 @@ public class SimpleFileSetsEditor implements IFileSetsEditor
     {
         mPropertyPage = propertyPage;
     }
-    
-    
-    
+
 }

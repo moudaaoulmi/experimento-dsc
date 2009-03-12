@@ -4,181 +4,182 @@
 
 package com.atlassw.tools.eclipse.checkstyle.properties;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
+import java.util.regex.PatternSyntaxException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.jface.dialogs.*;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
- * @author julianasaraiva
+ * @author Cristiane Queiroz
  */
-public aspect PropertiesHandler
+public privileged aspect PropertiesHandler
 {
+    // ---------------------------
+    // Declare soft's
+    // ---------------------------
+    declare soft : CoreException : CheckstylePropertyPage_setElementHandler() ||
+                                   FileSetEditDialog_runHandler();
 
-    declare soft : CoreException : setElementHandler();
+    declare soft : IllegalAccessException : CheckstylePropertyPage_openFilterEditorHandler();
 
-    declare soft : IllegalAccessException : openFilterEditorHandler();
+    declare soft : InstantiationException : CheckstylePropertyPage_openFilterEditorHandler();
 
-    declare soft : InstantiationException : openFilterEditorHandler();
+    declare soft : CheckstylePluginException :  ComplexFileSetsEditor_addFileSetHandler() || 
+                                                ComplexFileSetsEditor_editFileSetHandler() || 
+                                                FileSetEditDialog_widgetSelectedHandler() || 
+                                                SimpleFileSetsEditor_widgetSelectedHandler() ||
+                                                FileMatchPatternEditDialog_okPressedHandler() || 
+                                                CheckstylePropertyPage_setElementHandler() || 
+                                                CheckstylePropertyPage_createContentsHandler() ||
+                                                CheckstylePropertyPage_performOkHandler() ||
+                                                CheckstylePropertyPage_createFileSetsAreaHandler();
 
-    declare soft : CheckstylePluginException :addFileSetHandler() || editFileSetHandler() || internalsetMatchPatternHandler() ||
-                                            widgetSelectedHandler() || widgetSelectedHandler2() || internalFileMatchPatternHandler() || 
-                                            setElementHandler() || createContentsHandler() ||
-                                            isValidHandler() || performOkHandler() ||createFileSetsAreaHandler();
+    // ---------------------------
+    // Pointcut's
+    // ---------------------------
+    pointcut FileMatchPatternEditDialog_okPressedHandler(): 
+        execution(* FileMatchPatternEditDialog.okPressed(..) );
 
-    pointcut internalFileMatchPatternHandler(): execution(* FileMatchPatternEditDialog.internalFileMatchPattern(..));
+    pointcut CheckstylePropertyPage_setElementHandler(): 
+        execution(* CheckstylePropertyPage.setElement(..));
 
-    pointcut setElementHandler(): execution(* CheckstylePropertyPage.setElement(..));
+    pointcut CheckstylePropertyPage_createContentsHandler(): 
+        execution(* CheckstylePropertyPage.createContents(..));
 
-    pointcut createContentsHandler(): execution(* CheckstylePropertyPage.createContents(..));
+    pointcut CheckstylePropertyPage_createFileSetsAreaHandler(): 
+        call(* CheckstylePropertyPage.createFileSetsArea(..));
 
-    pointcut isValidHandler(): execution(* CheckstylePropertyPage.isValid(..));
+    pointcut CheckstylePropertyPage_performOkHandler(): 
+        execution(* CheckstylePropertyPage.performOk(..));
 
-    pointcut performOkHandler(): execution(* CheckstylePropertyPage.performOk(..));
+    pointcut CheckstylePropertyPage_openFilterEditorHandler(): 
+        execution(* CheckstylePropertyPage.PageController.openFilterEditor(..));
 
-    pointcut createFileSetsAreaHandler(): call(* CheckstylePropertyPage.createFileSetsArea(..));
+    pointcut ComplexFileSetsEditor_addFileSetHandler(): 
+        execution(* ComplexFileSetsEditor.addFileSet(..));
 
-    pointcut openFilterEditorHandler(): execution(* CheckstylePropertyPage.PageController.openFilterEditor(..));
+    pointcut ComplexFileSetsEditor_editFileSetHandler():
+        execution(* ComplexFileSetsEditor.editFileSet(..));
 
-    pointcut addFileSetHandler(): execution(* ComplexFileSetsEditor.addFileSet(..));
+    //TODO TENTAR AJEITAR COM ROMULO PRA NÃO EXTRAIR!!!
+    pointcut FileSetEditDialog_runHandler(): 
+        execution(* FileSetEditDialog.internalRun(..));
+       /* call(* FileSetEditDialog.getFiles(..)) &&
+        withincode(* FileSetEditDialog.initializeControls(..));*/
 
-    pointcut editFileSetHandler(): execution(* ComplexFileSetsEditor.editFileSet(..));
+    pointcut FileSetEditDialog_widgetSelectedHandler(): 
+        execution(* FileSetEditDialog.Controller.internalWidgetSelected(..));
 
-    pointcut internalsetMatchPatternHandler(): execution(* FileMatchPatternEditDialog.internalsetMatchPattern(..));
+    pointcut SimpleFileSetsEditor_widgetSelectedHandler(): 
+        execution (* SimpleFileSetsEditor.Controller.internalWidgetSelected(..));
 
-    pointcut internalRunHandler(): call(* FileSetEditDialog.getFiles(..)) &&
-                   withincode(* FileSetEditDialog.internalRun(..));
-
-    pointcut widgetSelectedHandler(): execution(* FileSetEditDialog.Controller.widgetSelected(..));
-
-    pointcut widgetSelectedHandler2(): execution (* SimpleFileSetsEditor.Controller.widgetSelected(..));
-
-    void around() : internalFileMatchPatternHandler() || internalsetMatchPatternHandler() {
+    // ---------------------------
+    // Advice's
+    // ---------------------------
+    void around() : FileMatchPatternEditDialog_okPressedHandler() {
+        FileMatchPatternEditDialog fMPED = (FileMatchPatternEditDialog) thisJoinPoint.getThis();
         try
         {
             proceed();
         }
+        catch (PatternSyntaxException e)
+        {
+            fMPED.setErrorMessage(e.getLocalizedMessage());
+            return;
+        }
         catch (CheckstylePluginException e)
         {
-            TitleAreaDialog obj = (TitleAreaDialog) thisJoinPoint.getThis();
-            obj.setErrorMessage(e.getLocalizedMessage());
+            fMPED.setErrorMessage(e.getLocalizedMessage());
+            return;
         }
-    }// around()
+    }
 
-    void around() : setElementHandler() {
-        CheckstylePropertyPage object = (CheckstylePropertyPage) thisJoinPoint.getThis();
+    void around() : CheckstylePropertyPage_setElementHandler() {
+        CheckstylePropertyPage cPG = (CheckstylePropertyPage) thisJoinPoint.getThis();
         try
         {
             proceed();
         }
         catch (CoreException e)
         {
-            CheckstyleLog.errorDialog(object.getShell(), ErrorMessages.errorOpeningPropertiesPage,
-                    e, true);
+            CheckstyleLog.errorDialog(cPG.getShell(), ErrorMessages.errorOpeningPropertiesPage, e,
+                    true);
         }
         catch (CheckstylePluginException e)
         {
-            CheckstyleLog.errorDialog(object.getShell(), ErrorMessages.errorOpeningPropertiesPage,
-                    e, true);
+            CheckstyleLog.errorDialog(cPG.getShell(), ErrorMessages.errorOpeningPropertiesPage, e,
+                    true);
         }
-    }// around()
+    }
 
-    Control around() : createContentsHandler() {
-        Control c = null;
+    Control around() : CheckstylePropertyPage_createContentsHandler() {
+        Control result = null;
         try
         {
-            c = proceed();
+            result = proceed();
         }
         catch (CheckstylePluginException e)
         {
-            CheckstylePropertyPage object = (CheckstylePropertyPage) thisJoinPoint.getThis();
-            CheckstyleLog.errorDialog(object.getShell(), ErrorMessages.errorOpeningPropertiesPage,
-                    e, true);
+            CheckstylePropertyPage cPG = (CheckstylePropertyPage) thisJoinPoint.getThis();
+            CheckstyleLog.errorDialog(cPG.getShell(), ErrorMessages.errorOpeningPropertiesPage, e,
+                    true);
         }
-        return c;
-    }// around()
+        return result;
+    }
 
-    Control around() : createFileSetsAreaHandler()  {
-        Control c = null;
+    Control around() : CheckstylePropertyPage_createFileSetsAreaHandler()  {
+        Control result = null;
         try
         {
-            c = proceed();
+            result = proceed();
         }
         catch (CheckstylePluginException e)
         {
-            CheckstylePropertyPage object = (CheckstylePropertyPage) thisJoinPoint.getThis();
-            CheckstyleLog.errorDialog(object.getShell(), ErrorMessages.errorChangingFilesetEditor,
-                    e, true);
+            CheckstylePropertyPage cPG = (CheckstylePropertyPage) thisJoinPoint.getThis();
+            CheckstyleLog.errorDialog(cPG.getShell(), ErrorMessages.errorChangingFilesetEditor, e,
+                    true);
         }
-        return c;
-    }// around()
+        return result;
+    }
 
-    boolean around() : performOkHandler() {
-        boolean c = false;
+    boolean around() : CheckstylePropertyPage_performOkHandler() {
+        boolean result = false;
         try
         {
-            c = proceed();
+            result = proceed();
         }
         catch (CheckstylePluginException e)
         {
-            CheckstylePropertyPage object = (CheckstylePropertyPage) thisJoinPoint.getThis();
-            CheckstyleLog.errorDialog(object.getShell(), e, true);
+            CheckstylePropertyPage cPG = (CheckstylePropertyPage) thisJoinPoint.getThis();
+            CheckstyleLog.errorDialog(cPG.getShell(), e, true);
         }
-        return c;
-    }// around()
+        return result;
+    }
 
-    boolean around() : isValidHandler() {
-        boolean c = false;
-        try
-        {
-            c = proceed();
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstylePropertyPage object = (CheckstylePropertyPage) thisJoinPoint.getThis();
-
-            // check if all check configurations resolve
-            List fileSets = object.getMProjectConfig().getFileSets();
-            Iterator it = fileSets.iterator();
-
-            FileSet fileset = (FileSet) it.next();
-            ICheckConfiguration checkConfig = fileset.getCheckConfig();
-
-            CheckstyleLog.warningDialog(object.getShell(), NLS.bind(
-                    ErrorMessages.errorCannotResolveCheckLocation, checkConfig.getLocation(),
-                    checkConfig.getName()), e);
-            return false;
-        }
-        return c;
-    }// around()
-
-    void around() : openFilterEditorHandler() {
-        CheckstylePropertyPage object = (CheckstylePropertyPage) thisJoinPoint.getThis();
+    void around() : CheckstylePropertyPage_openFilterEditorHandler() {
+        CheckstylePropertyPage cPG = (CheckstylePropertyPage) thisJoinPoint.getThis();
         try
         {
             proceed();
         }
         catch (IllegalAccessException ex)
         {
-            CheckstyleLog.errorDialog(object.getShell(), ex, true);
+            CheckstyleLog.errorDialog(cPG.getShell(), ex, true);
         }
         catch (InstantiationException ex)
         {
-            CheckstyleLog.errorDialog(object.getShell(), ex, true);
+            CheckstyleLog.errorDialog(cPG.getShell(), ex, true);
         }
-    }// around()
+    }
 
-    void around() : addFileSetHandler() || editFileSetHandler() {
+    void around() : ComplexFileSetsEditor_addFileSetHandler() ||
+                    ComplexFileSetsEditor_editFileSetHandler() {
         try
         {
             proceed();
@@ -186,56 +187,52 @@ public aspect PropertiesHandler
         catch (CheckstylePluginException e)
         {
             ComplexFileSetsEditor obj = (ComplexFileSetsEditor) thisJoinPoint.getThis();
-            CheckstyleLog.errorDialog(obj.getMComposite().getShell(), NLS.bind(
+            CheckstyleLog.errorDialog(obj.mComposite.getShell(), NLS.bind(
                     ErrorMessages.errorFailedAddFileset, e.getMessage()), e, true);
         }
-    }// around()
+    }
 
-//    List around() : internalRunHandler() {
-//        List c = null;
-//        try
-//        {
-//            c = proceed();
-//        }
-//        catch (CoreException e)
-//        {
-//            CheckstyleLog.log(e);
-//        }
-//        return c;
-//    }// around()
-
-    void around() : widgetSelectedHandler() {
+    void around(): FileSetEditDialog_runHandler(){
         try
         {
             proceed();
         }
-        catch (CheckstylePluginException ex)
+        catch (CoreException e)
         {
-            FileSetEditDialog object = (FileSetEditDialog) thisJoinPoint.getThis();
-            IProject project = (IProject) object.getMPropertyPage().getElement();
-            ICheckConfiguration config = object.getMFileSet().getCheckConfig();
-            CheckstyleLog.warningDialog(object.getMPropertyPage().getShell(), Messages.bind(
-                    Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound, project,
-                    config.getLocation()), ex);
+            CheckstyleLog.log(e);
         }
-    }// around()
+    }
 
-    void around() : widgetSelectedHandler2() {
+    void around(ICheckConfiguration config, IProject project) : 
+            FileSetEditDialog_widgetSelectedHandler() &&
+            args(config, project){
         try
         {
-            proceed();
+            proceed(config, project);
         }
         catch (CheckstylePluginException ex)
         {
-            SimpleFileSetsEditor object = (SimpleFileSetsEditor) thisJoinPoint.getThis();
+            FileSetEditDialog fSED = (FileSetEditDialog) thisJoinPoint.getThis();
+            CheckstyleLog.warningDialog(fSED.mPropertyPage.getShell(), Messages.bind(
+                    Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
+                    project, config.getLocation()), ex);
+        }
+    }
 
-            ICheckConfiguration config = object.getMDefaultFileSet().getCheckConfig();
-            IProject project = (IProject) object.getMPropertyPage().getElement();
-
-            CheckstyleLog.warningDialog(object.getMPropertyPage().getShell(), Messages.bind(
+    void around (ICheckConfiguration config, IProject project) : 
+            SimpleFileSetsEditor_widgetSelectedHandler() &&
+            args(config, project){
+        try
+        {
+            proceed(config, project);
+        }
+        catch (CheckstylePluginException ex)
+        {
+            SimpleFileSetsEditor cFSE = (SimpleFileSetsEditor) thisJoinPoint.getThis();
+            CheckstyleLog.warningDialog(cFSE.getMPropertyPage().getShell(), Messages.bind(
                     Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound, project,
                     config.getLocation()), ex);
         }
-    }// around()
+    }
 
-}// PropertiesHandler
+}
