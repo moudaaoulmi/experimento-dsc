@@ -75,13 +75,8 @@ public class CheckFileOnOpenPartListener implements IPartListener2
         IFile editorFile = getEditorFile(partRef);
         if (editorFile != null && isFileAffected(editorFile))
         {
-            internalPartClosed(editorFile);
+            editorFile.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IFile.DEPTH_INFINITE);
         }
-    }
-
-    private void internalPartClosed(IFile editorFile)
-    {
-        editorFile.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IFile.DEPTH_INFINITE);
     }
 
     /**

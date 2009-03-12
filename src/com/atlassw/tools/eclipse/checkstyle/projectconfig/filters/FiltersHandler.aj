@@ -21,7 +21,7 @@ public privileged aspect FiltersHandler
 
     declare soft : TeamException : FilesInSyncFilter2_getSyncInfoHandler();
 
-    declare soft : CVSException : FilesInSyncFilter_isIgnoredHandler();
+    declare soft : CVSException : FilesInSyncFilter_acceptHandler();
 
     // ---------------------------
     // PointCut's
@@ -29,7 +29,7 @@ public privileged aspect FiltersHandler
 
     pointcut FilesInSyncFilter2_getSyncInfoHandler(): execution(*  FilesInSyncFilter2.accept(..));
 
-    pointcut FilesInSyncFilter_isIgnoredHandler(): execution(* FilesInSyncFilter.accept(..));
+    pointcut FilesInSyncFilter_acceptHandler(): execution(* FilesInSyncFilter.accept(..));
 
     pointcut SourceFolderContentProvider_handleProjectHandler(): execution(* PackageFilterEditor.SourceFolderContentProvider.handleProject(..));
 
@@ -66,7 +66,7 @@ public privileged aspect FiltersHandler
         return result;
     }
 
-    boolean around() : FilesInSyncFilter_isIgnoredHandler() {
+    boolean around() : FilesInSyncFilter_acceptHandler() {
         boolean c = false;
         try
         {
