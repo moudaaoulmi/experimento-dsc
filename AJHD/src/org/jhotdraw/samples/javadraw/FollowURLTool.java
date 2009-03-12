@@ -59,12 +59,9 @@ class FollowURLTool extends AbstractTool {
 		if (urlstring == null) {
 			return;
 		}
-
-		mouseUpInternal(urlstring);
-	}
-
-	private void mouseUpInternal(String urlstring) {
 		URL url = new URL(fApplet.getDocumentBase(), urlstring);
 		fApplet.getAppletContext().showDocument(url);
 	}
+
+
 }
