@@ -18,7 +18,7 @@ public aspect DndHandler {
 	
 	pointcut DNDHelper_createDropTarget(): execution (* DNDHelper.createDropTarget(..)) ;
 	
-	pointcut JHDDropTargetListener_drop(): execution (* JHDDropTargetListener.drop(..)) ;
+	pointcut JHDDropTargetListener_internalDrop(): execution (* JHDDropTargetListener.internalDrop(..)) ;
 	
 	Object around(): DNDHelper_processReceivedData() {
 		Object retorno = null;
@@ -53,7 +53,7 @@ public aspect DndHandler {
 		
     }
 	
-	void around(java.awt.dnd.DropTargetDropEvent dtde): JHDDropTargetListener_drop() && args(dtde){
+	void around(java.awt.dnd.DropTargetDropEvent dtde): JHDDropTargetListener_internalDrop() && args(dtde){
 		try {
 			proceed(dtde);
 		

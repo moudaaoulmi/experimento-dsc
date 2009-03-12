@@ -6,6 +6,7 @@ import org.jhotdraw.applet.DrawApplet;
 import org.jhotdraw.framework.Drawing;
 import org.jhotdraw.framework.DrawingView;
 
+import java.lang.Runnable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.InterruptedException;
 
@@ -16,28 +17,22 @@ import org.jhotdraw.framework.*;
 
 public aspect ApplicationHandler {
 	
-	declare soft: InterruptedException :DrawApplication_open();
-		
-	declare soft: InvocationTargetException :DrawApplication_open() ;
-	
+	declare soft: InterruptedException :DrawApplication_internalOpen();
+	declare soft: InvocationTargetException :DrawApplication_internalOpen() ;
 	declare soft: IOException :DrawApplication_saveDrawing() || DrawApplication_loadDrawing();
-	
 	declare soft: Exception :DrawApplication_newLookAndFeel() || DrawApplication_executeCommandMenu();
 	
-	pointcut DrawApplication_open(): execution (void DrawApplication.open(DrawingView)) ;
 	
+	pointcut DrawApplication_internalOpen(): execution (* DrawApplication.internalOpen(..)) ;
 	pointcut DrawApplication_saveDrawing(): execution (* DrawApplication.saveDrawing(..) );
-	
 	pointcut DrawApplication_loadDrawing(): execution (* DrawApplication.loadDrawing(..) );
-	
 	pointcut DrawApplication_newLookAndFeel(): execution (* DrawApplication.newLookAndFeel(..) );
-	
 	pointcut DrawApplication_executeCommandMenu(): execution (* DrawApplication.executeCommandMenu(..) );
 	
-	void around(final DrawingView newDrawingView): DrawApplication_open() && args(newDrawingView){
+	void around(Runnable r) : DrawApplication_internalOpen() && args(r){
 		DrawApplication drawApplication = null;
 		try {
-			proceed(newDrawingView);
+			proceed(r);
 		}
 		catch(java.lang.InterruptedException ie) {
 			drawApplication = (DrawApplication) thisJoinPoint.getThis();
