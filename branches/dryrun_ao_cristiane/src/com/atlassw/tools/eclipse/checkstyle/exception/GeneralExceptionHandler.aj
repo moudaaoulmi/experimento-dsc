@@ -218,15 +218,20 @@ public aspect GeneralExceptionHandler
     pointcut checkstyleBuilder_buildProjectsHandleHandle(): 
         execution(* CheckstyleBuilder.buildProjectsHandle(..));
 
-    pointcut FileMatchPattern_cloneHandler(): execution(* FileMatchPattern.clone(..));
+    pointcut FileMatchPattern_cloneHandler(): 
+        execution(* FileMatchPattern.clone(..));
     
-    pointcut FileMatchPattern_cloneFileSetHandler(): execution(* FileSet.clone(..));
+    pointcut FileMatchPattern_cloneFileSetHandler(): 
+        execution(* FileSet.clone(..));
 
-    pointcut FileMatchPattern_cloneProjectHandler(): execution(* ProjectConfiguration.clone(..));
+    pointcut FileMatchPattern_cloneProjectHandler(): 
+        execution(* ProjectConfiguration.clone(..));
 
-    pointcut FileMatchPattern_cloneWorkingCopyHandler(): execution(* ProjectConfigurationWorkingCopy.clone(..));
+    pointcut FileMatchPattern_cloneWorkingCopyHandler(): 
+        execution(* ProjectConfigurationWorkingCopy.clone(..));
     
-    pointcut AbstractFilter_cloneHandler(): execution(* AbstractFilter.clone(..));
+    pointcut AbstractFilter_cloneHandler(): 
+        execution(* AbstractFilter.clone(..));
     
     // ---------------------------
     // Advice's
@@ -418,8 +423,10 @@ public aspect GeneralExceptionHandler
 
     }
 
-    Object around() : FileMatchPattern_cloneHandler() || FileMatchPattern_cloneFileSetHandler() || 
-                      FileMatchPattern_cloneProjectHandler() || FileMatchPattern_cloneWorkingCopyHandler() ||
+    Object around() : FileMatchPattern_cloneHandler() || 
+                      FileMatchPattern_cloneFileSetHandler() || 
+                      FileMatchPattern_cloneProjectHandler() || 
+                      FileMatchPattern_cloneWorkingCopyHandler() ||
                       AbstractFilter_cloneHandler(){
         try
         {
