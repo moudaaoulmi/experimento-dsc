@@ -162,8 +162,11 @@ public aspect GeneralExceptionHandler
     pointcut ConfigurationType_internalStaticHandler():
         execution(* ConfigurationTypes.internalStatic(..));
 
-    pointcut CheckstylePlugin_startHandle(): 
-        execution(* CheckstylePlugin.start(..));
+    /*A principio (codigo original) nem precisava do tratador, dessa forma que estava
+     * afetando o metodo todo, ele mudava o comportamento, pois tava tratando (super.start(context)) 
+     * o que na verdade é para relançar, como está no codigo original.
+     * pointcut CheckstylePlugin_startHandle(): 
+        execution(* CheckstylePlugin.start(..));*/
 
     pointcut auditor_addErrorHandle(): execution (* Auditor.CheckstyleAuditListener.addError(..)) ;
 
@@ -393,7 +396,7 @@ public aspect GeneralExceptionHandler
     // passaram a não mais existir em outros aspectos.
     // se existissem, teria que acontecer uma precedencia entre os aspectos.
     void around(): ConfigurationType_internalStaticHandler() || 
-                   CheckstylePlugin_startHandle() || 
+                   /*CheckstylePlugin_startHandle() || */
                    saveFilters_internalHandler() ||
                    PluginFilters_internalHandler(){
         try
