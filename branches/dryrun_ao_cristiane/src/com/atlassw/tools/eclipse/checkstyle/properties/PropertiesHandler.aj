@@ -70,8 +70,6 @@ public privileged aspect PropertiesHandler
     //TODO TENTAR AJEITAR COM ROMULO PRA NÃO EXTRAIR!!!
     pointcut FileSetEditDialog_runHandler(): 
         execution(* FileSetEditDialog.internalRun(..));
-       /* call(* FileSetEditDialog.getFiles(..)) &&
-        withincode(* FileSetEditDialog.initializeControls(..));*/
 
     pointcut FileSetEditDialog_widgetSelectedHandler(): 
         execution(* FileSetEditDialog.Controller.internalWidgetSelected(..));
