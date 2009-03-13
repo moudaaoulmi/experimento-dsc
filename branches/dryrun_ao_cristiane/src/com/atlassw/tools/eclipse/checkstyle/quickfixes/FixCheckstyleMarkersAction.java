@@ -91,7 +91,8 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate
         {
 
             // open the file the editor
-            runInternal(file);
+            IJavaElement javaElement = JavaCore.create(file);
+            JavaUI.openInEditor(javaElement);
 
             // call the fixing job
             Job job = new FixCheckstyleMarkersJob(file);
@@ -100,9 +101,4 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate
         }
     }
 
-    private void runInternal(IFile file)
-    {
-        IJavaElement javaElement = JavaCore.create(file);
-        JavaUI.openInEditor(javaElement);
-    }
 }

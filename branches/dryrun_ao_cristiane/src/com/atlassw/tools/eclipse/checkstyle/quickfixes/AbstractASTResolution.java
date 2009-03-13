@@ -159,6 +159,8 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
         if (bufferManager != null)
         {
             runInternal(bufferManager, path);
+            // TODO - nao consegui linkar com call...
+            //bufferManager.disconnect(path, null);
         }
     }
 
