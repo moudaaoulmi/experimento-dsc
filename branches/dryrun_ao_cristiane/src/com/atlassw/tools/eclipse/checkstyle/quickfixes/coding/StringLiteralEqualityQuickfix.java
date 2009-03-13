@@ -20,6 +20,7 @@
 
 package com.atlassw.tools.eclipse.checkstyle.quickfixes.coding;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -35,11 +36,12 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.swt.graphics.Image;
 
 import com.atlassw.tools.eclipse.checkstyle.quickfixes.AbstractASTResolution;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginImages;
 
 /**
- * Quickfix implementation that replaces a string literal comparison using == or !=
- * with a proper equals() comparison.
+ * Quickfix implementation that replaces a string literal comparison using == or
+ * != with a proper equals() comparison.
  * 
  * @author Lars Ködderitzsch
  */
@@ -107,31 +109,31 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution
                 }
                 return true;
             }
+
+            /**
+             * Replaces the given node with the replacement node (using
+             * reflection since I am not aware of a proper API to do this).
+             * 
+             * @param node the node to replace
+             * @param replacementNode the replacement
+             */
+            private void replaceNode(ASTNode node, ASTNode replacementNode)
+            {
+                if (node.getLocationInParent().isChildProperty())
+                {
+                    PropertyUtils.setProperty(node.getParent(), node.getLocationInParent().getId(),
+                            replacementNode);
+                }
+                else if (node.getLocationInParent().isChildListProperty())
+                {
+                    Method listMethod = node.getParent().getClass().getMethod(
+                            node.getLocationInParent().getId(), null);
+                    List list = (List) listMethod.invoke(node.getParent(), null);
+                    list.set(list.indexOf(node), replacementNode);
+                }
+
+            }
         };
-    }
-    
-    /**
-     * Replaces the given node with the replacement node (using
-     * reflection since I am not aware of a proper API to do this).
-     * 
-     * @param node the node to replace
-     * @param replacementNode the replacement
-     */
-    private void replaceNode(ASTNode node, ASTNode replacementNode)
-    {
-        if (node.getLocationInParent().isChildProperty())
-        {
-            PropertyUtils.setProperty(node.getParent(), node.getLocationInParent()
-                    .getId(), replacementNode);
-        }
-        else if (node.getLocationInParent().isChildListProperty())
-        {
-            Method listMethod = node.getParent().getClass().getMethod(
-                    node.getLocationInParent().getId(), null);
-            List list = (List) listMethod.invoke(node.getParent(), null);
-            list.set(list.indexOf(node), replacementNode);
-        }
-      
     }
 
     /**
