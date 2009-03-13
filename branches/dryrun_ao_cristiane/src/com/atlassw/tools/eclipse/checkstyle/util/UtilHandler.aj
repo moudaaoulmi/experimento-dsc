@@ -57,11 +57,10 @@ public privileged aspect UtilHandler
         return doit;
     }
 
-    Point around(): internalShellActivatedHandler(){
-        Point initialSize;
+    Point around(Point initialSize): internalShellActivatedHandler() && args(initialSize){
         try
         {
-            initialSize = proceed();
+            initialSize = proceed(initialSize);
         }
         catch (Exception e1)
         {

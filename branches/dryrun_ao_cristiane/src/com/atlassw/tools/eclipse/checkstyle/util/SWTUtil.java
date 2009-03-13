@@ -328,7 +328,7 @@ public final class SWTUtil
                 Point initialSize = null;
 
                 // Hack to get the initial size computed for this dialog
-                initialSize = internalShellActivated();
+                initialSize = internalShellActivated(initialSize);
                 Shell shell = (Shell) e.getSource();
                 
                 //this is only supported in Eclipse 3.1 and greater
@@ -379,10 +379,8 @@ public final class SWTUtil
                         .getInt(WIDTH), bounds.getInt(HEIGHT));
         }
 
-        private Point internalShellActivated()
+        private Point internalShellActivated(Point initialSize)
         {
-            Point initialSize;
-            
             Method getInitialSizeMethod = Window.class.getDeclaredMethod("getInitialSize", //$NON-NLS-1$
                     null);
             getInitialSizeMethod.setAccessible(true);
