@@ -13,24 +13,24 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralExceptionHandler;
-
-/**
- * @author julianasaraiva
- *
- */
-
+import org.eclipse.core.filebuffers.ITextFileBufferManager;
 
 public privileged aspect QuickFixesHandler {
     
     declare soft : BadLocationException : getLineInformationOfOffsetHandler();
     declare soft : CoreException : getLineInformationOfOffsetHandler()
                     || runInternalHandler()
-                    || runInternalHandler2()
+                    || runHandler2()
                     || runInUIThreadHandler();
     
     pointcut getLineInformationOfOffsetHandler(): execution(* AbstractASTResolution.run(..));
-    pointcut runInternalHandler(): execution(* AbstractASTResolution.runInternal(..));
-    pointcut runInternalHandler2(): execution(* FixCheckstyleMarkersAction.runInternal(..));
+    /*pointcut runInternalHandler(): 
+        call(* ITextFileBufferManager.disconnect(..) ) && 
+        withincode(* AbstractASTResolution.run(..) );*/
+    pointcut runInternalHandler(): 
+        execution(* AbstractASTResolution.runInternal(..) );
+    
+    pointcut runHandler2(): execution(* FixCheckstyleMarkersAction.run(..));
     pointcut runInUIThreadHandler(): execution(* FixCheckstyleMarkersJob.runInUIThread(..));
 
     void around(): getLineInformationOfOffsetHandler() {
@@ -56,7 +56,7 @@ public privileged aspect QuickFixesHandler {
     /**
      * O advice atinge o método, mas não o afeta porque ele é private
      */
-    void around(): runInternalHandler2(){
+    void around(): runHandler2(){
         try {
             proceed();
         } catch (CoreException e) {
