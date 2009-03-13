@@ -250,13 +250,15 @@ public class EnhancedTableViewer extends TableViewer
     {
         IDialogSettings settings = mSettingsProvider != null ? mSettingsProvider.getTableSettings()
                 : null;
-
+        
         if (settings == null)
         {
             return;
         }
+        
+        mSortedColumnIndex = settings.getInt(TAG_COLUMN_INDEX);
+        
         internalRestoreState(settings);
-        internalRestoreState2(settings);
 
         TableLayout layout = new TableLayout();
         boolean allColumnsHaveStoredData = true;
@@ -266,7 +268,7 @@ public class EnhancedTableViewer extends TableViewer
         for (int i = 0, size = columns.length; i < size; i++)
         {
 
-            allColumnsHaveStoredData = internalRestoreState3(settings, layout,
+            allColumnsHaveStoredData = internalRestoreState1(settings, layout,
                     allColumnsHaveStoredData, columns, i);
         }
 
@@ -279,19 +281,13 @@ public class EnhancedTableViewer extends TableViewer
         }
 
         // restore the selection
-        internalRestoreState4(settings);
+        this.getTable().select(settings.getInt(TAG_CURRENT_SELECTION));
 
         resort();
     }
 
-    private void internalRestoreState4(IDialogSettings settings)
-    {
-        
-        this.getTable().select(settings.getInt(TAG_CURRENT_SELECTION));
-        
-    }
 
-    private boolean internalRestoreState3(IDialogSettings settings, TableLayout layout,
+    private boolean internalRestoreState1(IDialogSettings settings, TableLayout layout,
             boolean allColumnsHaveStoredData, TableColumn[] columns, int i)
     {
         
@@ -301,16 +297,11 @@ public class EnhancedTableViewer extends TableViewer
         return allColumnsHaveStoredData;
     }
 
-    private void internalRestoreState2(IDialogSettings settings)
+    private void internalRestoreState(IDialogSettings settings)
     {
         mSortDirection = settings.getInt(TAG_SORT_DIRECTION);
     }
 
-    private void internalRestoreState(IDialogSettings settings)
-    {
-        
-        mSortedColumnIndex = settings.getInt(TAG_COLUMN_INDEX);
-    }
 
     /**
      * Helper method to resort the table viewer.
