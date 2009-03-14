@@ -154,18 +154,18 @@ public final class ConfigurationReader
 
                 String tabWidthProp = prop.getValue() != null ? prop.getValue() : prop
                         .getMetaData().getDefaultValue();
-                tabWidth = getAdditionalConfigDataHandle(tabWidth, tabWidthProp);
+                tabWidth = Integer.parseInt(tabWidthProp);
             }
         }
 
         return new AdditionalConfigData(tabWidth, messages);
     }
 
-    private static int getAdditionalConfigDataHandle(int tabWidth, String tabWidthProp)
-    {
-        tabWidth = Integer.parseInt(tabWidthProp);
-        return tabWidth;
-    }
+//    private static int getAdditionalConfigDataHandle(int tabWidth, String tabWidthProp)
+//    {
+//        tabWidth = Integer.parseInt(tabWidthProp);
+//        return tabWidth;
+//    }
 
     /**
      * SAX-Handler for parsing checkstyle configurations and building modules.
