@@ -2,12 +2,14 @@
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -18,9 +20,12 @@ import org.xml.sax.SAXException;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import java.io.InputStream;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 
 public privileged aspect BuilderHandler
 {
@@ -90,6 +95,9 @@ public privileged aspect BuilderHandler
 
     pointcut runCheckstyleOnFilesJob_runInWorkspaceHandle(): 
         execution (* RunCheckstyleOnFilesJob.runInWorkspace(..)) ;
+    
+    pointcut checkerFactory_internalCreateCheckerHandler(): 
+        execution (* CheckerFactory.internalCreateChecker(..)) ;
 
     IStatus around(): buildProjectJob_runHandler() {
         IStatus result = null;
@@ -265,4 +273,17 @@ public privileged aspect BuilderHandler
         return null;
     }
 
+    InputStream around(CheckstyleConfigurationFile configFileData, InputStream in): 
+            checkerFactory_internalCreateCheckerHandler() && args(configFileData,in) {
+        try
+        {
+            in =  proceed(configFileData,in);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
+        }
+        return in;
+    }
+    
 }

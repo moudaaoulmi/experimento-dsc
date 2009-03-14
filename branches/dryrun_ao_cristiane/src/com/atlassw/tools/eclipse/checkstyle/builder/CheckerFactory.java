@@ -138,15 +138,8 @@ public final class CheckerFactory
             }
 
             InputStream in = null;
-            try
-            {
-                in = configFileData.getCheckConfigFileStream();
-                checker = createCheckerInternal(in, resolver);
-            }
-            finally
-            {
-                IOUtils.closeQuietly(in);
-            }
+            in = internalCreateChecker(configFileData,in);
+            checker = createCheckerInternal(in, resolver);
 
             // store checker in cache
             Long modified = new Long(configFileData.getModificationStamp());
@@ -155,6 +148,12 @@ public final class CheckerFactory
         }
 
         return checker;
+    }
+
+    private static InputStream internalCreateChecker(CheckstyleConfigurationFile configFileData, InputStream in)
+    {
+        in = configFileData.getCheckConfigFileStream();
+        return in;
     }
 
     /**
