@@ -89,12 +89,6 @@ public class MessageResourceBundle
             // can only set value of public static non-final fields
             if ((field.getModifiers() & MOD_MASK) != MOD_EXPECTED)
                 return null;
-            internalPut(value, field);
-            return null;
-        }
-
-        private void internalPut(Object value, final Field field)
-        {
             // Check to see if we are allowed to modify the field. If we aren't
             // (for instance
             // if the class is not public) then change the accessible attribute
@@ -111,7 +105,9 @@ public class MessageResourceBundle
             // will fail later in the code and if so then we will see both the
             // NPE and this error.
             field.set(null, value);
+            return null;
         }
+
     }
 
     private static FrameworkAdaptor adaptor;
@@ -202,29 +198,27 @@ public class MessageResourceBundle
             // if the field has a a value assigned, there is nothing to do
             if (fieldMap.get(field.getName()) == ASSIGNED)
                 continue;
-            internalComputeMissingMessages(bundleName, isAccessible, field);
+            // Set a value for this empty field. We should never get an exception
+            // here because
+            // we know we have a public static non-final field. If we do get an
+            // exception, silently
+            // log it and continue. This means that the field will (most likely) be
+            // un-initialized and
+            // will fail later in the code and if so then we will see both the NPE
+            // and this error.
+            String value = "NLS missing message: " + field.getName() + " in: " + bundleName; //$NON-NLS-1$ //$NON-NLS-2$
+            if (DEBUG_MESSAGE_BUNDLE)
+                System.out.println(value);
+            log(SEVERITY_WARNING, value, null);
+            if (!isAccessible)
+                makeAccessible(field);
+            internalComputeMissingMessages(field, value);
         }
     }
-
-    private static void internalComputeMissingMessages(String bundleName, boolean isAccessible,
-            Field field)
-    {
-        // Set a value for this empty field. We should never get an exception
-        // here because
-        // we know we have a public static non-final field. If we do get an
-        // exception, silently
-        // log it and continue. This means that the field will (most likely) be
-        // un-initialized and
-        // will fail later in the code and if so then we will see both the NPE
-        // and this error.
-        String value = "NLS missing message: " + field.getName() + " in: " + bundleName; //$NON-NLS-1$ //$NON-NLS-2$
-        if (DEBUG_MESSAGE_BUNDLE)
-            System.out.println(value);
-        log(SEVERITY_WARNING, value, null);
-        if (!isAccessible)
-            makeAccessible(field);
-        field.set(null, value);
+    private static void internalComputeMissingMessages(Field field, String value){
+        field.set(null, value);       
     }
+
 
     /**
      * Load the given resource bundle using the specified class loader.
@@ -252,7 +246,9 @@ public class MessageResourceBundle
             final InputStream input = loader.getResourceAsStream(variants[i]);
             if (input == null)
                 continue;
-            internalLoad(bundleName, isAccessible, fields, variants, i, input);
+            final MessagesProperties properties = new MessagesProperties(fields, bundleName,
+                    isAccessible);
+            internalLoad(properties, variants, i, input);
         }
         computeMissingMessages(bundleName, clazz, fields, fieldArray, isAccessible);
         if (DEBUG_MESSAGE_BUNDLE)
@@ -260,14 +256,9 @@ public class MessageResourceBundle
                     .println("Time to load message bundle: " + bundleName + " was " + (System.currentTimeMillis() - start) + "ms."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
-    private static void internalLoad(final String bundleName, boolean isAccessible, Map fields,
-            final String[] variants, int i, final InputStream input)
+    private static void internalLoad(MessagesProperties properties, final String[] variants, int i, final InputStream input)
     {
-
-        final MessagesProperties properties = new MessagesProperties(fields, bundleName,
-                isAccessible);
         properties.load(input);
-
     }
 
     static void log(int severity, String msg, Exception e)
