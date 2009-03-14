@@ -164,8 +164,6 @@ public class CheckstylePlugin extends AbstractUIPlugin
     public void start(BundleContext context) throws Exception
     {
         super.start(context);
-
-        
         Logger checkstyleErrorLog = Logger
                 .getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog"); //$NON-NLS-1$
         checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
