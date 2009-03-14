@@ -63,13 +63,14 @@ public privileged aspect ConfigHandle
     pointcut CheckstyleLogMessage_removeCheckConfigurationHandle():
         call(* ProjectConfigurationFactory.isCheckConfigInUse(..)) &&
         withincode(* GlobalCheckConfigurationWorkingSet.removeCheckConfiguration(..)) ;
-//continuar daqui!
-    pointcut ConfigurationReaderHandle_getAdditionalConfigDataHandleHandle(): 
-        execution (* ConfigurationReader.getAdditionalConfigDataHandle(..)) ;
+
+    pointcut ConfigurationReaderHandle_getAdditionalConfigDataHandler(): 
+        call(* Integer.parseInt(..)) &&
+        withincode (* ConfigurationReader.getAdditionalConfigData(..)) ;
 
     pointcut ConfigurationReaderHandle_startElementHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.startElementHandle(..)) ;
-
+    //continuar daqui!
     pointcut cloneHandle(): 
         execution (* CheckConfigurationWorkingCopy.clone(..)) || 
         execution (* Module.clone(..)) || 
@@ -82,7 +83,8 @@ public privileged aspect ConfigHandle
     pointcut RetrowException_resolveEntityHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.resolveEntityHandle(..)) ;
 
-    pointcut RetrowException_exportConfigurationHandle(): execution (* CheckConfigurationFactory.exportConfiguration(..)) ;
+    pointcut RetrowException_exportConfigurationHandle(): 
+        execution (* CheckConfigurationFactory.exportConfiguration(..)) ;
 
     pointcut RetrowException_loadFromPersistenceHandle(): 
         execution (* CheckConfigurationFactory.loadFromPersistence(..)) ;
@@ -150,11 +152,11 @@ public privileged aspect ConfigHandle
         return result;
     }
 
-    int around(int tabWidth, String tabWidthProp): ConfigurationReaderHandle_getAdditionalConfigDataHandleHandle() && args(tabWidth, tabWidthProp)  {
-        int result = tabWidth;
+    int around(): ConfigurationReaderHandle_getAdditionalConfigDataHandler() {
+        int result = 0;
         try
         {
-            result = proceed(tabWidth, tabWidthProp);
+            result = proceed();
         }
         catch (NumberFormatException se)
         {
