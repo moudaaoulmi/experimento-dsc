@@ -22,7 +22,8 @@ public privileged aspect ActionsHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    pointcut CheckSelectedFilesActionHandle_runHandle(): execution (* CheckSelectedFilesAction.run(..)) ;
+    pointcut CheckSelectedFilesActionHandle_runHandle(): 
+        execution (* CheckSelectedFilesAction.run(..)) ;
 
     pointcut ConfigureProjectFromBluePrintActionHandle_runInWorkspaceHandle():  
         execution (* ConfigureProjectFromBluePrintAction.BulkConfigureJob.runInWorkspace(IProgressMonitor));
