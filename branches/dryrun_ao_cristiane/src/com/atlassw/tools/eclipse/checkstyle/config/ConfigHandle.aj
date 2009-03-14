@@ -4,10 +4,11 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 import org.eclipse.osgi.util.NLS;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.xml.sax.SAXException;
 
@@ -53,25 +54,30 @@ public privileged aspect ConfigHandle
         execution (* CheckConfigurationWorkingCopy.setLocationHandle(..)) ;
 
     pointcut CheckConfigurationWorkingCopy_setModulesIterationHandle(): 
-        execution (* CheckConfigurationWorkingCopy.setModulesIteration(..)) ;
+        call (* IResource.refreshLocal(..)) &&
+        withincode (* CheckConfigurationWorkingCopy.setModules(..)) ;
 
     pointcut CheckstyleLogMessage_refreshHandle(): 
         execution (* CheckConfigurationFactory.refresh(..)) ;
 
-    pointcut CheckstyleLogMessage_removeCheckConfigurationHandle(): 
-        execution (* GlobalCheckConfigurationWorkingSet.removeCheckConfiguration(..)) ;
-
+    pointcut CheckstyleLogMessage_removeCheckConfigurationHandle():
+        call(* ProjectConfigurationFactory.isCheckConfigInUse(..)) &&
+        withincode(* GlobalCheckConfigurationWorkingSet.removeCheckConfiguration(..)) ;
+//continuar daqui!
     pointcut ConfigurationReaderHandle_getAdditionalConfigDataHandleHandle(): 
         execution (* ConfigurationReader.getAdditionalConfigDataHandle(..)) ;
 
     pointcut ConfigurationReaderHandle_startElementHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.startElementHandle(..)) ;
 
-    pointcut cloneHandle(): execution (* CheckConfigurationWorkingCopy.clone(..)) || 
-        execution (* Module.clone(..)) || execution (* ConfigProperty.clone(..)) ||
+    pointcut cloneHandle(): 
+        execution (* CheckConfigurationWorkingCopy.clone(..)) || 
+        execution (* Module.clone(..)) || 
+        execution (* ConfigProperty.clone(..)) ||
         execution (* ResolvableProperty.clone(..)) ;
 
-    pointcut RetrowException_endElementHandle(): execution (* CheckConfigurationFactory.CheckConfigurationsFileHandler.endElement(..)) ;
+    pointcut RetrowException_endElementHandle(): 
+        execution (* CheckConfigurationFactory.CheckConfigurationsFileHandler.endElement(..)) ;
 
     pointcut RetrowException_resolveEntityHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.resolveEntityHandle(..)) ;
@@ -102,7 +108,8 @@ public privileged aspect ConfigHandle
     // ---------------------------
     // Advice's
     // ---------------------------
-    void around(String location, String oldLocation) throws CheckstylePluginException: CheckConfigurationWorkingCopy_setLocationHandle() 
+    void around(String location, String oldLocation) throws CheckstylePluginException: 
+        CheckConfigurationWorkingCopy_setLocationHandle() 
             && args(location, oldLocation) {
         try
         {
@@ -129,7 +136,8 @@ public privileged aspect ConfigHandle
         }
     }
 
-    Object around(): CheckstyleLogMessage_removeCheckConfigurationHandle() || CheckstyleLogMessage_refreshHandle() {
+    Object around(): CheckstyleLogMessage_removeCheckConfigurationHandle() || 
+                     CheckstyleLogMessage_refreshHandle() {
         Object result = null;
         try
         {

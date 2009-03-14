@@ -314,7 +314,8 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
         IFile[] files = CheckstylePlugin.getWorkspace().getRoot().findFilesForLocation(path);
         for (int i = 0; i < files.length; i++)
         {
-            setModulesIteration(files, i);
+            //setModulesIteration(files, i);
+            files[i].refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
         }
 
         mHasConfigChanged = true;
@@ -323,11 +324,6 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
         CheckConfigurationFactory.refresh();
         IOUtils.closeQuietly(byteOut);
         IOUtils.closeQuietly(out);
-    }
-
-    private void setModulesIteration(IFile[] files, int i)
-    {
-        files[i].refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
     }
 
     //
