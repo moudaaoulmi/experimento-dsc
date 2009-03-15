@@ -11,7 +11,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.xml.sax.SAXException;
-
+import org.xml.sax.InputSource;
 import java.io.IOException;
 
 import javax.xml.transform.TransformerConfigurationException;
@@ -40,8 +40,7 @@ public privileged aspect ConfigHandle
                             || RetrowException_setModulesHandle() 
                             || RetrowException_runHandle();
 
-    declare soft: SAXException: //RetrowException_runHandle() ||
-                            RetrowException_writeHandle();
+    declare soft: SAXException: RetrowException_writeHandle();
 
     declare soft: CloneNotSupportedException: cloneHandle();
 
@@ -70,7 +69,7 @@ public privileged aspect ConfigHandle
 
     pointcut ConfigurationReaderHandle_startElementHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.startElementHandle(..)) ;
-    //continuar daqui!
+
     pointcut cloneHandle(): 
         execution (* CheckConfigurationWorkingCopy.clone(..)) || 
         execution (* Module.clone(..)) || 
@@ -78,11 +77,12 @@ public privileged aspect ConfigHandle
         execution (* ResolvableProperty.clone(..)) ;
 
     pointcut RetrowException_endElementHandle(): 
-        execution (* CheckConfigurationFactory.CheckConfigurationsFileHandler.endElement(..)) ;
+        execution (* CheckConfigurationFactory.CheckConfigurationsFileHandler.endElement(..));
 
     pointcut RetrowException_resolveEntityHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.resolveEntityHandle(..)) ;
 
+    // esse ta errado, ajeitar!!!
     pointcut RetrowException_exportConfigurationHandle(): 
         execution (* CheckConfigurationFactory.exportConfiguration(..)) ;
 
@@ -189,9 +189,20 @@ public privileged aspect ConfigHandle
         return result;
     }
 
-    Object around() throws SAXException: RetrowException_resolveEntityHandleHandle() 
-                                         || RetrowException_endElementHandle() {
-        Object result = null;
+    void around():RetrowException_endElementHandle(){
+        try
+        {
+            proceed();
+        }
+        catch (Exception e)
+        {
+            throw new SAXException(e);
+        }
+    }
+
+    InputSource around() throws SAXException: 
+        RetrowException_resolveEntityHandleHandle(){
+        InputSource result = null;
         try
         {
             result = proceed();
@@ -199,10 +210,6 @@ public privileged aspect ConfigHandle
         catch (IOException e)
         {
             throw new SAXException("" + e, e);
-        }
-        catch (CheckstylePluginException e)
-        {
-            throw new SAXException(e);
         }
         return result;
     }
