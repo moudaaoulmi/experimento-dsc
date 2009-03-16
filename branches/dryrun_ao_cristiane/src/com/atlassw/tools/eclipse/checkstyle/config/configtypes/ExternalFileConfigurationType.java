@@ -69,20 +69,14 @@ public class ExternalFileConfigurationType extends ConfigurationType
         String newLocation = location;
 
         // support dynamic locations for external configurations
-        newLocation = internalResolveDynamicLocation(newLocation);
-
-        return newLocation;
-    }
-
-    private static String internalResolveDynamicLocation(String newLocation)
-        throws CheckstylePluginException
-    {
         while (PropertyUtil.hasUnresolvedProperties(newLocation))
         {
             newLocation = PropertyUtil.replaceProperties(newLocation, DYNAMIC_LOC_RESOLVER);
         }
+
         return newLocation;
     }
+
 
     /**
      * {@inheritDoc}
@@ -91,14 +85,13 @@ public class ExternalFileConfigurationType extends ConfigurationType
     {
         String location = checkConfiguration.getLocation();
         // support dynamic locations for external configurations
-        //TODO REFATORAR
         internalResolveLocation(location);
 
         return new File(location).toURL();
 
     }
     private void internalResolveLocation(String location) throws IOException{
-            location = resolveDynamicLocation(location);
+        location = resolveDynamicLocation(location);
     }
 
     /**

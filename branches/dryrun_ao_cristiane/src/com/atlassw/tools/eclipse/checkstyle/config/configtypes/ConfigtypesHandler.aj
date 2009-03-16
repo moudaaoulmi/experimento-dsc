@@ -67,7 +67,7 @@ public privileged aspect ConfigtypesHandler
 
     declare soft: CoreException: RemoteConfigurationType_removeCachedAuthInfoHandler();
 
-    declare soft: MalformedURLException: RemoteConfigurationEditor_internalGetEditedWorkingCopyHandler();
+    declare soft: MalformedURLException: RemoteConfigurationEditor_getEditedWorkingCopyHandler();
 
     declare soft: UnknownHostException: RemoteConfigurationType_internalGetCheckstyleConfigurationHandler();
 
@@ -90,7 +90,7 @@ public privileged aspect ConfigtypesHandler
         execution(* ExternalFileConfigurationEditor.internalGetEditedWorkingCopy(..));
 
     pointcut ExternalFileConfiguration_resolveDynamicLocationHandler(): 
-        execution(* ExternalFileConfigurationType.internalResolveDynamicLocation(..));
+        execution(* ExternalFileConfigurationType.resolveDynamicLocation(..));
 
     pointcut ExternalFileConfiguration_isConfigurableHandler():
         execution(* ExternalFileConfigurationType.internalIsConfigurable(..));
@@ -116,8 +116,8 @@ public privileged aspect ConfigtypesHandler
     pointcut RemoteConfigurationEditor_internalCreateEditorControlHandler():
         execution(* RemoteConfigurationEditor.internalCreateEditorControl(..));
 
-    pointcut RemoteConfigurationEditor_internalGetEditedWorkingCopyHandler():
-        execution(* RemoteConfigurationEditor.internalGetEditedWorkingCopy(..));
+    pointcut RemoteConfigurationEditor_getEditedWorkingCopyHandler():
+        execution(* RemoteConfigurationEditor.getEditedWorkingCopy(..));
 
     pointcut RemoteConfigurationType_internalGetCheckstyleConfigurationHandler():
         execution(* RemoteConfigurationType.internalGetCheckstyleConfiguration(..));
@@ -126,7 +126,7 @@ public privileged aspect ConfigtypesHandler
         execution(* RemoteConfigurationType.secInternalGetCheckstyleConfiguration(..));
 
     pointcut RemoteConfigurationType_internalGetBytesFromCacheBundleFileHandler():
-        execution(* RemoteConfigurationType.internalGetBytesFromCacheBundleFile(..));
+        execution(* RemoteConfigurationType.getBytesFromCacheBundleFile(..));
 
     pointcut RemoteConfigurationType_oneWriteToCacheFileHandler():
         execution(* RemoteConfigurationType.oneWriteToCacheFile(..));
@@ -153,7 +153,7 @@ public privileged aspect ConfigtypesHandler
     // ---------------------------
     
     Object around() throws CheckstylePluginException: 
-        RemoteConfigurationEditor_internalGetEditedWorkingCopyHandler() ||
+        RemoteConfigurationEditor_getEditedWorkingCopyHandler() ||
         ExternalFileConfiguration_resolveDynamicLocationHandler(){
         
         Object result = null;
@@ -309,13 +309,13 @@ public privileged aspect ConfigtypesHandler
     }
     
     void around(): InternalConfigurationEditor_widgetSelectedHandler(){
-        InternalConfigurationEditor icE = (InternalConfigurationEditor) thisJoinPoint.getThis();
         try
         {
             proceed();
         }
         catch (CheckstylePluginException ex)
         {
+            InternalConfigurationEditor icE = (InternalConfigurationEditor) thisJoinPoint.getThis();
             icE.mDialog.setErrorMessage(ex.getLocalizedMessage());
         }
     }
