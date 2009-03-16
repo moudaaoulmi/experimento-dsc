@@ -45,6 +45,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.IConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.config.migration.CheckConfigurationMigrator;
@@ -109,8 +110,8 @@ public final class CheckConfigurationFactory
      * Get an <code>CheckConfiguration</code> instance by its name.
      * 
      * @param name Name of the requested instance.
-     * @return The requested instance or <code>null</code> if the named
-     *         instance could not be found.
+     * @return The requested instance or <code>null</code> if the named instance
+     *         could not be found.
      */
     public static ICheckConfiguration getByName(String name)
     {
@@ -213,27 +214,36 @@ public final class CheckConfigurationFactory
      */
     public static void exportConfiguration(File file, ICheckConfiguration config)
         throws CheckstylePluginException
-        {
+    {
 
         InputStream in = null;
         OutputStream out = null;
 
+        internalExportConfiguration(config, file, in, out);
+    }
+
+    public static void internalExportConfiguration(ICheckConfiguration config, File file,
+            InputStream in, OutputStream out) throws CheckstylePluginException
+    {
         // Just copy the checkstyle configuration
         in = config.getCheckstyleConfiguration().getCheckConfigFileStream();
         out = new BufferedOutputStream(new FileOutputStream(file));
 
         IOUtils.copy(in, out);
-        IOUtils.closeQuietly(in);
-        IOUtils.closeQuietly(out);
-        }
+    }
 
     /**
      * Load the check configurations from the persistent state storage.
      */
     private static void loadFromPersistence() throws CheckstylePluginException
     {
-
         InputStream inStream = null;
+        internalLoadFromPersistence(inStream);
+    }
+
+    private static void internalLoadFromPersistence(InputStream inStream)
+        throws CheckstylePluginException
+    {
 
         IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
         configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);
@@ -276,7 +286,6 @@ public final class CheckConfigurationFactory
             }
         }
 
-        IOUtils.closeQuietly(inStream);
     }
 
     /**
@@ -310,7 +319,13 @@ public final class CheckConfigurationFactory
 
         InputStream inStream = null;
         InputStream defaultConfigStream = null;
+        internalMigrate(inStream, defaultConfigStream);
 
+    }
+
+    private static void internalMigrate(InputStream inStream, InputStream defaultConfigStream)
+        throws CheckstylePluginException
+    {
 
         // get inputstream to the current oldstyle config
         IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
@@ -325,8 +340,6 @@ public final class CheckConfigurationFactory
 
         // refresh the cached instances
         refresh();
-        IOUtils.closeQuietly(inStream);
-        IOUtils.closeQuietly(defaultConfigStream);
     }
 
     /**
@@ -374,8 +387,8 @@ public final class CheckConfigurationFactory
         }
 
         /**
-         * Returns the default check configuration name or <code>null</code>
-         * if none was specified.
+         * Returns the default check configuration name or <code>null</code> if
+         * none was specified.
          * 
          * @return the default check configuration name or <code>null</code>
          */
