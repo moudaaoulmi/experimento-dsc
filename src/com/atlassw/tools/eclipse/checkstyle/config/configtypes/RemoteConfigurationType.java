@@ -242,23 +242,15 @@ public class RemoteConfigurationType extends ConfigurationType
             return null;
         }
 
-        byte[] result = internalGetBytesFromCacheBundleFile(cacheFileLocation);
-        return result;
-    }
-
-    private byte[] internalGetBytesFromCacheBundleFile(String cacheFileLocation)
-    {
-
         IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
         cacheFilePath = cacheFilePath.append(cacheFileLocation);
         File cacheFile = cacheFilePath.toFile();
 
         URL configURL = cacheFile.toURL();
         URLConnection connection = configURL.openConnection();
-
         return getBytesFromURLConnection(connection);
-
     }
+
 
     private void writeToCacheFile(ICheckConfiguration checkConfig, byte[] configFileBytes,
             byte[] bundleBytes)

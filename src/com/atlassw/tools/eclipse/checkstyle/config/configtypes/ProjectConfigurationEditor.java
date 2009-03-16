@@ -277,7 +277,6 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
     {
 
         IFile file = null;
-        //TODO REFATORAR 
         secInternalEnsureFileExists(file, location);
 
         if (!file.exists() && file.getLocation() != null)

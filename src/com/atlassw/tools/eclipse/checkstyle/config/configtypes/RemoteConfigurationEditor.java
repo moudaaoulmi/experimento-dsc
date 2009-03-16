@@ -234,7 +234,18 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         }
 
         // store credentials if necessary
-        internalGetEditedWorkingCopy();
+        //internalGetEditedWorkingCopy();
+        if (StringUtils.trimToNull(mUserName.getText()) != null
+                || StringUtils.trimToNull(mPassword.getText()) != null)
+        {
+            RemoteConfigurationType.RemoteConfigAuthenticator.storeCredentials(new URL(
+                    mLocation.getText()), mUserName.getText(), mPassword.getText());
+        }
+        else
+        {
+            RemoteConfigurationType.RemoteConfigAuthenticator.removeCachedAuthInfo(new URL(
+                    mLocation.getText()));
+        }
 
         mWorkingCopy.setName(mConfigName.getText());
         mWorkingCopy.setLocation(mLocation.getText());
@@ -246,7 +257,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
         return mWorkingCopy;
     }
     
-    private void internalGetEditedWorkingCopy() throws CheckstylePluginException{
+    /*private void internalGetEditedWorkingCopy() throws CheckstylePluginException{
 
             if (StringUtils.trimToNull(mUserName.getText()) != null
                     || StringUtils.trimToNull(mPassword.getText()) != null)
@@ -261,5 +272,5 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor
             }
 
 
-    }
+    }*/
 }
