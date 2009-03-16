@@ -189,7 +189,7 @@ public privileged aspect ConfigHandle
         return result;
     }
 
-    void around():RetrowException_endElementHandle(){
+    void around() throws SAXException :RetrowException_endElementHandle(){
         try
         {
             proceed();
