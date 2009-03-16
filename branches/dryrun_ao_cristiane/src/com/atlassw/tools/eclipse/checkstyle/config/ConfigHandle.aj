@@ -2,7 +2,6 @@
 package com.atlassw.tools.eclipse.checkstyle.config;
 
 import org.eclipse.osgi.util.NLS;
-
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -13,16 +12,20 @@ import org.eclipse.core.runtime.CoreException;
 import org.xml.sax.SAXException;
 import org.xml.sax.InputSource;
 import java.io.IOException;
-
+import java.io.File;
 import javax.xml.transform.TransformerConfigurationException;
-
+import java.io.InputStream;
+import java.io.OutputStream;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
+import org.apache.commons.io.IOUtils;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
 
 public privileged aspect ConfigHandle
 {
     // ---------------------------
     // Declare soft's
     // ---------------------------
+    declare soft: CheckstyleException: RetrowException_getUnresolvedPropertiesIterationHandle();
     declare soft: Exception: CheckConfigurationWorkingCopy_setLocationHandle() 
                             || RetrowException_endElementHandle()
                             || RetrowException_exportConfigurationHandle()
@@ -82,19 +85,18 @@ public privileged aspect ConfigHandle
     pointcut RetrowException_resolveEntityHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.resolveEntityHandle(..)) ;
 
-    // esse ta errado, ajeitar!!!
     pointcut RetrowException_exportConfigurationHandle(): 
-        execution (* CheckConfigurationFactory.exportConfiguration(..)) ;
+        execution (* CheckConfigurationFactory.internalExportConfiguration(..)) ;
 
     pointcut RetrowException_loadFromPersistenceHandle(): 
-        execution (* CheckConfigurationFactory.loadFromPersistence(..)) ;
+        execution (* CheckConfigurationFactory.internalLoadFromPersistence(..)) ;
 
     pointcut RetrowException_migrateHandle(): 
-        execution (* CheckConfigurationFactory.migrate(..)) ;
+        execution (* CheckConfigurationFactory.internalMigrate(..)) ;
 
     pointcut RetrowException_getUnresolvedPropertiesIterationHandle(): 
         execution (* CheckConfigurationTester.getUnresolvedPropertiesIteration(..)) ;
-
+//ver daqui
     pointcut RetrowException_setModulesHandle(): 
         execution (* CheckConfigurationWorkingCopy.setModules(..)) ;
 
@@ -214,8 +216,26 @@ public privileged aspect ConfigHandle
         return result;
     }
 
-    void around() throws CheckstylePluginException: RetrowException_exportConfigurationHandle()
-                                                    || RetrowException_setModulesHandle() {
+    void around(ICheckConfiguration config, File file, InputStream in, OutputStream out)
+        throws CheckstylePluginException: RetrowException_exportConfigurationHandle()
+        && args(config, file, in, out)
+    {
+        try
+        {
+            proceed(config, file, in, out);
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
+        }
+    }
+
+    void around() throws CheckstylePluginException: RetrowException_setModulesHandle() {
         try
         {
             proceed();
@@ -224,30 +244,65 @@ public privileged aspect ConfigHandle
         {
             CheckstylePluginException.rethrow(e);
         }
+
     }
 
-    void around() throws CheckstylePluginException: RetrowException_loadFromPersistenceHandle() {
+    void around(InputStream inStream) throws CheckstylePluginException: RetrowException_loadFromPersistenceHandle() 
+        && args(inStream){
         try
         {
-            proceed();
+            proceed(inStream);
         }
         catch (CheckstylePluginException e)
         {
             CheckstylePluginException.rethrow(e, ErrorMessages.errorLoadingConfigFile);
         }
+        finally
+        {
+            IOUtils.closeQuietly(inStream);
+        }
     }
 
-    void around() throws CheckstylePluginException: RetrowException_migrateHandle() {
+    void around(InputStream inStream, InputStream defaultConfigStream)
+        throws CheckstylePluginException: 
+        RetrowException_migrateHandle()  && args(inStream, defaultConfigStream){
         try
         {
-            proceed();
+            proceed(inStream, defaultConfigStream);
         }
         catch (CheckstylePluginException e)
         {
             CheckstylePluginException.rethrow(e, ErrorMessages.errorMigratingConfig);
         }
+        finally
+        {
+            IOUtils.closeQuietly(inStream);
+            IOUtils.closeQuietly(defaultConfigStream);
+        }
     }
+    
+    void around(CheckstyleConfigurationFile configFile, PropertyResolver resolver,
+            ClassLoader contextClassloader, InputStream in) throws CheckstylePluginException:
+            RetrowException_getUnresolvedPropertiesIterationHandle() &&
+            args(configFile, resolver, contextClassloader, in)
+    {
+        try
+        {
+            proceed(configFile, resolver, contextClassloader, in);
+        }
+        catch (CheckstyleException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
 
+            // restore the original classloader
+            Thread.currentThread().setContextClassLoader(contextClassloader);
+        }
+
+    }
     void around() throws CheckstylePluginException: RetrowException_storeToPersistenceHandle() {
         try
         {
