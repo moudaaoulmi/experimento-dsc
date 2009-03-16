@@ -95,7 +95,7 @@ public privileged aspect ConfigHandle
         execution (* CheckConfigurationFactory.internalMigrate(..)) ;
 
     pointcut RetrowException_getUnresolvedPropertiesIterationHandle(): 
-        execution (* CheckConfigurationTester.getUnresolvedPropertiesIteration(..)) ;
+        execution (* CheckConfigurationTester.getUnresolvedPropertiesIteration(..));
 //ver daqui
     pointcut RetrowException_setModulesHandle(): 
         execution (* CheckConfigurationWorkingCopy.setModules(..)) ;
