@@ -204,10 +204,10 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
     private void setLocationHandle(String location, String oldLocation)
         throws CheckstylePluginException
     {
-            mEditedLocation = location;
+        mEditedLocation = location;
 
-            // test if configuration file exists
-            getCheckstyleConfiguration();
+        // test if configuration file exists
+        getCheckstyleConfiguration();
     }
 
     /**
@@ -268,17 +268,16 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
 
         InputStream in = null;
 
-        try
-        {
-            in = getCheckstyleConfiguration().getCheckConfigFileStream();
-            result = ConfigurationReader.read(in);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-        }
+        internalGetModules(in, result);
 
         return result;
+    }
+
+    private void internalGetModules(InputStream in, List result) 
+    throws CheckstylePluginException
+    {
+        in = getCheckstyleConfiguration().getCheckConfigFileStream();
+        result = ConfigurationReader.read(in);
     }
 
     /**
@@ -294,6 +293,13 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
 
         OutputStream out = null;
         ByteArrayOutputStream byteOut = null;
+        internalSetModules(modules, out, byteOut);
+
+    }
+
+    public void internalSetModules(List modules, OutputStream out, ByteArrayOutputStream byteOut)
+        throws CheckstylePluginException
+    {
 
         // First write to a byte array outputstream
         // because otherwise in an error case the original
@@ -314,7 +320,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
         IFile[] files = CheckstylePlugin.getWorkspace().getRoot().findFilesForLocation(path);
         for (int i = 0; i < files.length; i++)
         {
-            //setModulesIteration(files, i);
+            // setModulesIteration(files, i);
             files[i].refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
         }
 
@@ -322,8 +328,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
 
         // throw away the cached Checkstyle configurations
         CheckConfigurationFactory.refresh();
-        IOUtils.closeQuietly(byteOut);
-        IOUtils.closeQuietly(out);
+
     }
 
     //
