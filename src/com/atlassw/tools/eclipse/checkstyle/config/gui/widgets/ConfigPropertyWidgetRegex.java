@@ -220,11 +220,6 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase
         {
             return;
         }
-        internalTestRegex(mTextWidget,mRedColor);
-    }
-
-    private void internalTestRegex(Text mTextWidget,Color mRedColor)
-    {
         Pattern pattern = Pattern.compile(mTextWidget.getText());
         Matcher matcher = pattern.matcher(mRegexTestWidget.getText());
         if (matcher.find())
@@ -238,6 +233,7 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase
     
         mTextWidget.setBackground(mTextBgColor);
     }
+
 
     /**
      * Creates the content assistant.

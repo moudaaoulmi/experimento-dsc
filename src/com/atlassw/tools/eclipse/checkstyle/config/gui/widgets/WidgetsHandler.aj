@@ -6,6 +6,7 @@ package com.atlassw.tools.eclipse.checkstyle.config.gui.widgets;
 import java.util.MissingResourceException;
 import java.util.regex.PatternSyntaxException;
 
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Text;
 
@@ -23,7 +24,7 @@ public aspect WidgetsHandler
     pointcut validateIntegerHandler() : execution(* ConfigPropertyWidgetInteger.validate(..));
     pointcut validateRegexHandler() : execution(* ConfigPropertyWidgetRegex.validate(..));
     pointcut internalGetTextHandler() : execution(* ConfigPropertyWidgetMultiCheck.TokenLabelProvider.internalGetText(..));
-    pointcut internalGetText_2Handler() : execution(* ConfigPropertyWidgetRegex.internalTestRegex(..));
+    pointcut testRegexHandler() : execution(* ConfigPropertyWidgetRegex.testRegex(..));
     
     void around() throws CheckstylePluginException: 
         validateIntegerHandler() || validateRegexHandler() {    
@@ -46,10 +47,12 @@ public aspect WidgetsHandler
     }
     
     
-    void around(Text mTextWidget,Color mRedColor): internalGetText_2Handler() && args(mTextWidget,mRedColor){
+    void around(): testRegexHandler(){
         try {
-            proceed(mTextWidget,mRedColor);
+            proceed();
         }catch (PatternSyntaxException e){
+            Text mTextWidget = (Text) thisJoinPoint.getThis();
+            Color mRedColor = (Color) thisJoinPoint.getThis();
             mTextWidget.setBackground(mRedColor);
         }
     }
