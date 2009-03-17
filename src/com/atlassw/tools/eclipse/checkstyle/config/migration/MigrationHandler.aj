@@ -36,15 +36,15 @@ public aspect MigrationHandler
     // ---------------------------
     
     void around(String name) throws CheckstylePluginException : checkConfigurationMigrator_internalStartElementHandler() && args(name){
-        CheckConfigurationMigrator.OldConfigurationHandler ccmh = ((CheckConfigurationMigrator.OldConfigurationHandler) thisJoinPoint
-                .getThis());
-        CheckConfigurationWorkingCopy current = ccmh.getMCurrentConfiguration();
         try
         {
             proceed(name);
         }
         catch (CheckstylePluginException cpe)
         {
+            CheckConfigurationMigrator.OldConfigurationHandler ccmh = ((CheckConfigurationMigrator.OldConfigurationHandler) thisJoinPoint
+                    .getThis());
+            CheckConfigurationWorkingCopy current = ccmh.getMCurrentConfiguration();
             // we probably got a name collision so we try to use a
             // unique name
             String nameAddition = NLS.bind(
