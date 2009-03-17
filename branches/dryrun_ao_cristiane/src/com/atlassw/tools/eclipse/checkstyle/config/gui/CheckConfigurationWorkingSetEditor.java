@@ -488,17 +488,13 @@ public class CheckConfigurationWorkingSetEditor
         dialog.setBlockOnOpen(true);
         if (CheckConfigurationPropertiesDialog.OK == dialog.open())
         {
-            internalAddCheckConfig(dialog);
+            CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
+            mWorkingSet.addCheckConfiguration(newConfig);
+            mViewer.setInput(mWorkingSet.getWorkingCopies());
+            mViewer.refresh(true);
         }
     }
 
-    private void internalAddCheckConfig(CheckConfigurationPropertiesDialog dialog)
-    {
-        CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
-        mWorkingSet.addCheckConfiguration(newConfig);
-        mViewer.setInput(mWorkingSet.getWorkingCopies());
-        mViewer.refresh(true);
-    }
 
     /**
      * Edit the properties of a check configuration.
@@ -556,12 +552,6 @@ public class CheckConfigurationWorkingSetEditor
             //
             return;
         }
-        internalCopyCheckConfig(sourceConfig);
-
-    }
-
-    private void internalCopyCheckConfig(ICheckConfiguration sourceConfig)
-    {
         // Open the properties dialog to change default name and description
         CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(
                 getShell(), null, mWorkingSet);
@@ -583,6 +573,7 @@ public class CheckConfigurationWorkingSetEditor
         }
 
     }
+
 
     /**
      * Remove a config.

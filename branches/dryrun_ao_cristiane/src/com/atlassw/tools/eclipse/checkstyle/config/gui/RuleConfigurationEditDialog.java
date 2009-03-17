@@ -393,7 +393,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         //
         SeverityLevel severity = mRule.getSeverity();
 
-        internalOkPressed(severity);
+        severity = (SeverityLevel) ((IStructuredSelection) mSeverityCombo.getSelection())
+        .getFirstElement();
 
         // Get the comment.
         String comment = StringUtils.trimToNull(mCommentText.getText());
@@ -417,7 +418,21 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 IConfigPropertyWidget widget = mConfigPropertyWidgets[i];
                 ConfigProperty property = widget.getConfigProperty();
 
-                secInternalOkPressed(widget, property);
+          //      internalOkPressed(widget, property);
+                //TODO DUVIDA: PODE SER EXTRAÍDO COM UM RETURN DENTRO DO CATCH?
+                //QUANDO ELE É EXTRAÍDO NÃO ACEITA QUE TENHA UM RETURN POIS O AROUND É VOID
+                try
+                {
+                    widget.validate();
+                }
+                catch (CheckstylePluginException e)
+                {
+                    RuleConfigurationEditDialog rC = (RuleConfigurationEditDialog) thisJoinPoint.getThis();
+                    String message = NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue,
+                            property.getMetaData().getName());
+                    rC.setErrorMessage(message);
+                    return;
+                }
                 property.setValue(widget.getValue());
             }
         }
@@ -436,17 +451,10 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
     }
 
-    private void secInternalOkPressed(IConfigPropertyWidget widget, ConfigProperty property)
-    {
-        widget.validate();
-    }
-
-    private void internalOkPressed(SeverityLevel severity)
-    {
-        severity = (SeverityLevel) ((IStructuredSelection) mSeverityCombo.getSelection())
-                .getFirstElement();
-
-    }
+//    private void internalOkPressed(IConfigPropertyWidget widget, ConfigProperty property)
+//    {
+//        widget.validate();
+//    }
 
     private void createConfigPropertyEntries(Composite parent)
     {
