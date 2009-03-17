@@ -233,7 +233,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 prefStore.putBoolean(CheckstylePlugin.PREF_TRANSLATE_TOKENS, ((Button) e.widget)
                         .getSelection());
 
-                internalWidgetSelected(prefStore);
+                prefStore.flush();
 
             }
 
@@ -264,7 +264,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 prefStore.putBoolean(CheckstylePlugin.PREF_SORT_TOKENS, ((Button) e.widget)
                         .getSelection());
 
-                internalWidgetSelected(prefStore);
+                internalFlush(prefStore);
 
             }
 
@@ -281,11 +281,10 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
         return composite;
     }
-
-    private void internalWidgetSelected(IEclipsePreferences prefStore)
-    {
+    private void internalFlush(IEclipsePreferences prefStore){
         prefStore.flush();
     }
+
 
     protected void createButtonsForButtonBar(Composite parent)
     {
@@ -427,10 +426,11 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 }
                 catch (CheckstylePluginException e)
                 {
-                    RuleConfigurationEditDialog rC = (RuleConfigurationEditDialog) thisJoinPoint.getThis();
-                    String message = NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue,
-                            property.getMetaData().getName());
-                    rC.setErrorMessage(message);
+                    //RuleConfigurationEditDialog rC = (RuleConfigurationEditDialog) thisJoinPoint.getThis();
+                    String message = NLS.bind(
+                            Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue, property
+                                    .getMetaData().getName());
+                    this.setErrorMessage(message);
                     return;
                 }
                 property.setValue(widget.getValue());
