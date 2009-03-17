@@ -395,15 +395,11 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             ByteArrayOutputStream pipeOut, InputStream pipeIn) throws CheckstylePluginException
     {
         pipeOut = new ByteArrayOutputStream();
-
         // Write the configuration document by pushing sax events through
         // the transformer handler
         TransformerHandler xmlOut = XMLUtil.writeWithSax(pipeOut, null, null);
-
         writeProjectConfig(config, xmlOut);
-
         pipeIn = new ByteArrayInputStream(pipeOut.toByteArray());
-
         // create or overwrite the .checkstyle file
         IProject project = config.getProject();
         IFile file = project.getFile(ProjectConfigurationFactory.PROJECT_CONFIGURATION_FILE);
@@ -416,12 +412,8 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         {
             file.setContents(pipeIn, true, true, null);
         }
-
         config.getLocalCheckConfigWorkingSet().store();
-        
-        IOUtils.closeQuietly(pipeIn);
-        IOUtils.closeQuietly(pipeOut);
-        
+
     }
 
     /**
