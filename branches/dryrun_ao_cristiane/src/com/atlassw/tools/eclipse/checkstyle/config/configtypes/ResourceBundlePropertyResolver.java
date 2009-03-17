@@ -68,17 +68,10 @@ class ResourceBundlePropertyResolver implements PropertyResolver
 
         if (value == null && mBundle != null)
         {
-            value = internalResolve(property, value);
+            value = mBundle.getString(property);
         }
 
         return value;
     }
 
-    private String internalResolve(String property, String value)
-    {
-
-        value = mBundle.getString(property);
-
-        return value;
-    }
 }

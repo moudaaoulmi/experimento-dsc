@@ -36,7 +36,7 @@ import java.net.Authenticator;
 import java.net.UnknownHostException;
 
 import java.util.MissingResourceException;
-
+import java.net.Authenticator;
 
 public privileged aspect ConfigtypesHandler
 {
@@ -138,14 +138,14 @@ public privileged aspect ConfigtypesHandler
         execution(* RemoteConfigurationType.RemoteConfigAuthenticator.removeCachedAuthInfo(..));
 
     pointcut RemoteConfigurationType_internalGetDefaultHandler() : 
-        execution(* RemoteConfigurationType.RemoteConfigAuthenticator.internalGetDefault(..));
+        execution(* RemoteConfigurationType.RemoteConfigAuthenticator.getDefault(..));
 
     pointcut RemoteConfigurationType_internalGetBytesFromURLConnectionHandler():
         execution(* RemoteConfigurationType.internalGetBytesFromURLConnection(..));
 
 
-    pointcut ResourceBundlePropertyResolver_internalResolveHandle(): 
-        execution(* ResourceBundlePropertyResolver.internalResolve(..));
+    pointcut ResourceBundlePropertyResolver_resolveHandle(): 
+        execution(* ResourceBundlePropertyResolver.resolve(..));
     
 
     // ---------------------------
@@ -465,11 +465,11 @@ public privileged aspect ConfigtypesHandler
         }
     }
 
-    void around(): RemoteConfigurationType_internalGetDefaultHandler(){
-
+    Authenticator around(): RemoteConfigurationType_internalGetDefaultHandler(){
+        Authenticator currentDefault = null;
         try
         {
-            proceed();
+            currentDefault = proceed();
         }
         catch (IllegalArgumentException e)
         {
@@ -479,10 +479,10 @@ public privileged aspect ConfigtypesHandler
         {
             CheckstyleLog.log(e);
         }
-
+        return currentDefault;
     }
 
-    String around():ResourceBundlePropertyResolver_internalResolveHandle(){
+    String around():ResourceBundlePropertyResolver_resolveHandle(){
         String result = null;
         try
         {
