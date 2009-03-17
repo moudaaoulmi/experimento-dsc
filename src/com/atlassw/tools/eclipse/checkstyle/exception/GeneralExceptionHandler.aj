@@ -1,6 +1,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.exception;
-
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -49,6 +49,8 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.AbstractFilter
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWorkingCopy;
+import org.eclipse.swt.events.SelectionListener;
+import org.osgi.service.prefs.Preferences;
 
 public aspect GeneralExceptionHandler
 {
@@ -185,9 +187,13 @@ public aspect GeneralExceptionHandler
 
     pointcut internalCreateButtonBarHandler():
         execution(* CheckConfigurationConfigureDialog.internalCreateButtonBar(..));
-
+    
+//TODO DOCUMENTAR
     pointcut internalWidgetSelectedHandler():
-        execution(* RuleConfigurationEditDialog.internalWidgetSelected(..));
+        (call(* Preferences.flush()) &&
+        within(RuleConfigurationEditDialog) &&
+        within(SelectionListener+)) ||
+        (execution(* RuleConfigurationEditDialog.internalFlush(..)));
 
     pointcut PrefsInitializer_internalinitializeDefaultPreferencesHandler() : 
         execution(* PrefsInitializer.internalinitializeDefaultPreferences(..));
