@@ -338,7 +338,13 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
         BufferedOutputStream out = null;
         ByteArrayOutputStream byteOut = null;
+        internalStoreToPersistence(out, byteOut);
 
+    }
+
+    private void internalStoreToPersistence(BufferedOutputStream out, ByteArrayOutputStream byteOut)
+        throws CheckstylePluginException
+    {
         IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
         configPath = configPath.append(CheckConfigurationFactory.CHECKSTYLE_CONFIG_FILE);
         File configFile = configPath.toFile();
@@ -356,8 +362,6 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
         out = new BufferedOutputStream(new FileOutputStream(configFile));
         out.write(byteOut.toByteArray());
 
-        IOUtils.closeQuietly(byteOut);
-        IOUtils.closeQuietly(out);
     }
 
     /**

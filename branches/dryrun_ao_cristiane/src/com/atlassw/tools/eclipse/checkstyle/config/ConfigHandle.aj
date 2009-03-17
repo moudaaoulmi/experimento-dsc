@@ -11,6 +11,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.xml.sax.SAXException;
 import org.xml.sax.InputSource;
+
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.File;
 import javax.xml.transform.TransformerConfigurationException;
@@ -19,6 +21,8 @@ import java.io.OutputStream;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 import org.apache.commons.io.IOUtils;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 public privileged aspect ConfigHandle
 {
@@ -26,6 +30,7 @@ public privileged aspect ConfigHandle
     // Declare soft's
     // ---------------------------
     declare soft: CheckstyleException: RetrowException_getUnresolvedPropertiesIterationHandle();
+
     declare soft: Exception: CheckConfigurationWorkingCopy_setLocationHandle() 
                             || RetrowException_endElementHandle()
                             || RetrowException_exportConfigurationHandle()
@@ -36,12 +41,12 @@ public privileged aspect ConfigHandle
     declare soft: CoreException: CheckConfigurationWorkingCopy_setModulesIterationHandle();
 
     declare soft: CheckstylePluginException: CheckstyleLogMessage_refreshHandle()
-                            || CheckstyleLogMessage_removeCheckConfigurationHandle();
+                            || CheckstyleLogMessage_removeCheckConfigurationHandle()
+                            || CheckConfigurationWorkingCopy_internalGetModules();
 
     declare soft: IOException: ConfigurationReaderHandle_startElementHandleHandle()
                             || RetrowException_resolveEntityHandleHandle()
-                            || RetrowException_setModulesHandle() 
-                            || RetrowException_runHandle();
+                            || RetrowException_setModulesHandle();
 
     declare soft: SAXException: RetrowException_writeHandle();
 
@@ -57,7 +62,7 @@ public privileged aspect ConfigHandle
 
     pointcut CheckConfigurationWorkingCopy_setModulesIterationHandle(): 
         call (* IResource.refreshLocal(..)) &&
-        withincode (* CheckConfigurationWorkingCopy.setModules(..)) ;
+        withincode (* CheckConfigurationWorkingCopy.internalSetModules(..)) ;
 
     pointcut CheckstyleLogMessage_refreshHandle(): 
         execution (* CheckConfigurationFactory.refresh(..)) ;
@@ -96,22 +101,37 @@ public privileged aspect ConfigHandle
 
     pointcut RetrowException_getUnresolvedPropertiesIterationHandle(): 
         execution (* CheckConfigurationTester.getUnresolvedPropertiesIteration(..));
-//ver daqui
-    pointcut RetrowException_setModulesHandle(): 
-        execution (* CheckConfigurationWorkingCopy.setModules(..)) ;
 
-    pointcut RetrowException_runHandle(): 
-        execution (* ConfigurationReader.read(..)) ;
+    // ver daqui
+    pointcut RetrowException_setModulesHandle(): 
+        execution (* CheckConfigurationWorkingCopy.internalSetModules(..)) ;
 
     pointcut RetrowException_writeHandle(): 
         execution (* ConfigurationWriter.write(..)) ;
 
     pointcut RetrowException_storeToPersistenceHandle(): 
-        execution (* GlobalCheckConfigurationWorkingSet.storeToPersistence(..)) ;
+        execution (* GlobalCheckConfigurationWorkingSet.internalStoreToPersistence(..)) ;
+
+    pointcut CheckConfigurationWorkingCopy_internalGetModules():
+        execution(* CheckConfigurationWorkingCopy.internalGetModules(..));
 
     // ---------------------------
     // Advice's
     // ---------------------------
+    void around(InputStream in, Object result) throws CheckstylePluginException:
+        CheckConfigurationWorkingCopy_internalGetModules() &&
+        args(in, result){
+        
+        try
+        {
+            proceed(in, result);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
+        }
+    }
+
     void around(String location, String oldLocation) throws CheckstylePluginException: 
         CheckConfigurationWorkingCopy_setLocationHandle() 
             && args(location, oldLocation) {
@@ -235,14 +255,21 @@ public privileged aspect ConfigHandle
         }
     }
 
-    void around() throws CheckstylePluginException: RetrowException_setModulesHandle() {
+    void around(Object modules, OutputStream out, ByteArrayOutputStream byteOut)
+        throws CheckstylePluginException: RetrowException_setModulesHandle() &&
+        args(modules, out, byteOut){
         try
         {
-            proceed();
+            proceed(modules, out, byteOut);
         }
         catch (CheckstylePluginException e)
         {
             CheckstylePluginException.rethrow(e);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(byteOut);
+            IOUtils.closeQuietly(out);
         }
 
     }
@@ -280,7 +307,7 @@ public privileged aspect ConfigHandle
             IOUtils.closeQuietly(defaultConfigStream);
         }
     }
-    
+
     void around(CheckstyleConfigurationFile configFile, PropertyResolver resolver,
             ClassLoader contextClassloader, InputStream in) throws CheckstylePluginException:
             RetrowException_getUnresolvedPropertiesIterationHandle() &&
@@ -297,20 +324,27 @@ public privileged aspect ConfigHandle
         finally
         {
             IOUtils.closeQuietly(in);
-
             // restore the original classloader
             Thread.currentThread().setContextClassLoader(contextClassloader);
         }
 
     }
-    void around() throws CheckstylePluginException: RetrowException_storeToPersistenceHandle() {
+
+    void around(BufferedOutputStream out, ByteArrayOutputStream byteOut)
+        throws CheckstylePluginException: RetrowException_storeToPersistenceHandle() &&
+        args( out,  byteOut){
         try
         {
-            proceed();
+            proceed(out, byteOut);
         }
         catch (CheckstyleException e)
         {
             CheckstylePluginException.rethrow(e, ErrorMessages.errorWritingConfigFile);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(byteOut);
+            IOUtils.closeQuietly(out);
         }
     }
 
