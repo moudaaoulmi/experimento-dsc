@@ -374,15 +374,12 @@ public class RemoteConfigurationType extends ConfigurationType
                 if (Authenticator.class.equals(fields[i].getType()))
                 {
                     fields[i].setAccessible(true);
-                    internalGetDefault(currentDefault, i, fields);
+                    //internalGetDefault(currentDefault, i, fields);
+                    currentDefault = (Authenticator) fields[i].get(Authenticator.class);
                     break;
                 }
             }
             return currentDefault;
-        }
-        public static void internalGetDefault( Authenticator currentDefault, int i, Field[] fields){
-           //TODO REFATORAR CRISTIANE
-            currentDefault = (Authenticator) fields[i].get(Authenticator.class);
         }
 
         /**
