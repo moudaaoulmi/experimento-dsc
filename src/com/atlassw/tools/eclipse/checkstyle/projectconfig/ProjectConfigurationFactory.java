@@ -407,17 +407,12 @@ public final class ProjectConfigurationFactory
         {
             if (XMLTags.CHECK_CONFIG_TAG.equals(qName))
             {
-                internalEndElement();
+                ICheckConfiguration checkConfig = new CheckConfiguration(mCurrentName,
+                        mCurrentLocation, mCurrentDescription, mCurrentConfigType, false,
+                         mResolvableProperties, mCurrentAddValues);
+           
+                   mCheckConfigs.add(checkConfig);
             }
-        }
-
-        private void internalEndElement() throws SAXException
-        {
-            ICheckConfiguration checkConfig = new CheckConfiguration(mCurrentName,
-                 mCurrentLocation, mCurrentDescription, mCurrentConfigType, false,
-                  mResolvableProperties, mCurrentAddValues);
-    
-            mCheckConfigs.add(checkConfig);
         }
     }
 }
