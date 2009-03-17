@@ -14,7 +14,8 @@ public aspect NatureHandler
     // ---------------------------
     // Pointcuts
     // ---------------------------
-    pointcut nature_runInWorkspace() : execution(* ConfigureDeconfigureNatureJob.runInWorkspace(..));
+    pointcut nature_runInWorkspace() : 
+        execution(* ConfigureDeconfigureNatureJob.runInWorkspace(..));
     
     // ---------------------------
     // Advice's
