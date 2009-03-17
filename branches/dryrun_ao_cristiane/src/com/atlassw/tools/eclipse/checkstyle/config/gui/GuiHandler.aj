@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 package com.atlassw.tools.eclipse.checkstyle.config.gui;
 
 import java.util.ArrayList;
@@ -18,9 +14,8 @@ import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.widgets.IConfigPropertyWidget;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.RuleConfigurationEditDialog;
-/**
- * @author julianasaraiva
- */
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+
 public privileged aspect GuiHandler
 {
 
@@ -32,10 +27,10 @@ public privileged aspect GuiHandler
                                              CheckConfigurationConfigureDialog_ModuleHandler();
 
     declare soft: CheckstylePluginException:
-                    widgetSelectedHandler()|| 
+        CheckConfigurationPropertiesDialog_widgetSelectedHandler()|| 
                     okPressedHandler() || 
                     setUniqueNameHandler() ||
-                    internalSelectionChangedHandler() ||
+                    CheckConfigurationPropertiesDialog_createDialogAreaHandler() ||
                     internalCheckConfigHandler() ||
                     internalConfigureCheckConfigHandler() ||
                     exportCheckstyleCheckConfigHandler() ||
@@ -60,14 +55,17 @@ public privileged aspect GuiHandler
       || (  call(* CheckConfigurationWorkingCopy.setModules(..)) &&
             withincode(* CheckConfigurationConfigureDialog.okPressed(..))
           );
-//ver a partir daqui!!!!!!!!!!!
-    pointcut internalSelectionChangedHandler(): 
-        execution(* CheckConfigurationPropertiesDialog.internalSelectionChanged(..));
 
-    pointcut widgetSelectedHandler():
+    pointcut CheckConfigurationPropertiesDialog_createDialogAreaHandler(): 
+        call(* CheckConfigurationWorkingCopy.setName(..)) &&
+        within(CheckConfigurationPropertiesDialog) &&
+        within(ISelectionChangedListener+);
+
+    pointcut CheckConfigurationPropertiesDialog_widgetSelectedHandler():
         execution(* CheckConfigurationPropertiesDialog.getEditedWorkingCopyInternal(..));
-
-    pointcut okPressedHandler(): execution(* CheckConfigurationPropertiesDialog.okPressed(..));
+  //ver a partir daqui!!!!!!!!!!!
+    pointcut okPressedHandler(): 
+        execution(* CheckConfigurationPropertiesDialog.okPressed(..));
 
     pointcut createConfigurationEditorHandler():
         execution(* CheckConfigurationPropertiesDialog.createConfigurationEditor(..));
@@ -168,7 +166,7 @@ public privileged aspect GuiHandler
         }
     }
 
-    void around(): internalSelectionChangedHandler(){
+    void around(): CheckConfigurationPropertiesDialog_createDialogAreaHandler(){
         try
         {
             proceed();
@@ -179,7 +177,7 @@ public privileged aspect GuiHandler
         }
     }
 
-    void around(): widgetSelectedHandler(){
+    void around(): CheckConfigurationPropertiesDialog_widgetSelectedHandler(){
         try
         {
             proceed();
@@ -252,4 +250,4 @@ public privileged aspect GuiHandler
         }
     }
 
-}// GuiHandler
+}

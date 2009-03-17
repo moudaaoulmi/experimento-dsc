@@ -233,7 +233,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
 
                         mCheckConfig = mWorkingSet.newWorkingCopy(type);
 
-                        internalSelectionChanged(oldName);
+                        mCheckConfig.setName(oldName);
                         mCheckConfig.setDescription(oldDescr);
                     }
 
@@ -254,12 +254,12 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         return composite;
     }
 
-    private void internalSelectionChanged(String oldName)
-    {
-
-        mCheckConfig.setName(oldName);
-
-    }
+//    private void internalSelectionChanged(String oldName)
+//    {
+//
+//
+//
+//    }
 
     /**
      * {@inheritDoc}
