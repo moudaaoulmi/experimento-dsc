@@ -240,14 +240,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
      */
     protected void okPressed()
     {
-
-        internalOkPressed();
-
-        super.okPressed();
-    }
-
-    private void internalOkPressed()
-    {
         // only write the modules back if the config is configurable
         // and was actually changed
         if (mConfigurable && mIsDirty)
@@ -255,6 +247,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
             mConfiguration.setModules(mModules);
         }
 
+        super.okPressed();
     }
 
     private Control createTreeViewer(Composite parent)
@@ -460,7 +453,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
         mConfigurable = mConfiguration.isConfigurable();
 
-        internalInitialize();
+        mModules = mConfiguration.getModules();
         mTableViewer.setInput(mModules);
 
         this.setTitle(NLS.bind(Messages.CheckConfigurationConfigureDialog_titleMessageArea,
@@ -487,10 +480,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         mTreeViewer.setSelection(initialSelection);
     }
 
-    private void internalInitialize()
-    {
-        mModules = mConfiguration.getModules();
-    }
+    // private void internalInitialize()
+    // {
+    // mModules = mConfiguration.getModules();
+    // }
 
     /**
      * Controller for this page.
@@ -744,7 +737,41 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                     else if (selectedElement instanceof RuleMetadata)
                     {
 
-                        internalNewModule(openOnAdd, selectedElement);
+                        RuleMetadata metadata = (RuleMetadata) selectedElement;
+
+                        // check if the module is a singleton and already
+                        // configured
+                        if (metadata.isSingleton() && isAlreadyConfigured(metadata))
+                        {
+                            return;
+                        }
+
+                        Module workingCopy = new Module(metadata, false);
+
+                        if (openOnAdd)
+                        {
+
+                            RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(
+                                    getShell(), workingCopy, !mConfigurable,
+                                    Messages.CheckConfigurationConfigureDialog_titleNewModule);
+                            if (RuleConfigurationEditDialog.OK == dialog.open() && mConfigurable)
+                            {
+                                mModules.add(workingCopy);
+                                mIsDirty = true;
+                                mTableViewer.refresh(true);
+                                refreshTableViewerState();
+                                mTreeViewer.refresh();
+                            }
+                        }
+                        else
+                        {
+                            mModules.add(workingCopy);
+                            mIsDirty = true;
+                            mTableViewer.refresh(true);
+                            refreshTableViewerState();
+                            mTreeViewer.refresh();
+                        }
+
                     }
                 }
             }
@@ -753,40 +780,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
 
         private void internalNewModule(boolean openOnAdd, Object selectedElement)
         {
-            RuleMetadata metadata = (RuleMetadata) selectedElement;
-
-            // check if the module is a singleton and already
-            // configured
-            if (metadata.isSingleton() && isAlreadyConfigured(metadata))
-            {
-                return;
-            }
-
-            Module workingCopy = new Module(metadata, false);
-
-            if (openOnAdd)
-            {
-
-                RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
-                        workingCopy, !mConfigurable,
-                        Messages.CheckConfigurationConfigureDialog_titleNewModule);
-                if (RuleConfigurationEditDialog.OK == dialog.open() && mConfigurable)
-                {
-                    mModules.add(workingCopy);
-                    mIsDirty = true;
-                    mTableViewer.refresh(true);
-                    refreshTableViewerState();
-                    mTreeViewer.refresh();
-                }
-            }
-            else
-            {
-                mModules.add(workingCopy);
-                mIsDirty = true;
-                mTableViewer.refresh(true);
-                refreshTableViewerState();
-                mTreeViewer.refresh();
-            }
 
         }
 
