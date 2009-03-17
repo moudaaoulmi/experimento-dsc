@@ -83,8 +83,7 @@ public aspect GeneralExceptionHandler
                                          internalWidgetSelectedHandler() || 
                                          PrefsInitializer_internalinitializeDefaultPreferencesHandler();
 
-    declare soft: CheckstyleException: auditor_runAuditHandle() ||
-                                       RetrowException_getUnresolvedPropertiesIterationHandle();;
+    declare soft: CheckstyleException: auditor_runAuditHandle();
 
     declare soft: IOException: auditor_runAuditHandle()||
                                packageNamesLoader_getPackageNameInteration1Handle() ||
@@ -112,7 +111,7 @@ public aspect GeneralExceptionHandler
     declare soft : CloneNotSupportedException : FileMatchPattern_cloneHandler() || FileMatchPattern_cloneFileSetHandler() || 
                    FileMatchPattern_cloneProjectHandler() || FileMatchPattern_cloneWorkingCopyHandler() ||
                    AbstractFilter_cloneHandler();
-    
+
     // ---------------------------
     // Pointcut's
     // ---------------------------
@@ -153,20 +152,19 @@ public aspect GeneralExceptionHandler
     pointcut packageNamesLoader_getPackageNameInteration1Handle(): 
         execution (* PackageNamesLoader.getPackageNameInteration1(..)) ;
 
-    pointcut RetrowException_getUnresolvedPropertiesIterationHandle(): 
-        execution (* CheckConfigurationTester.getUnresolvedPropertiesIteration(..)) ;
-
     pointcut auditor_runAuditHandle(): 
         execution (* Auditor.runAudit(..)) ;
 
     pointcut ConfigurationType_internalStaticHandler():
         execution(* ConfigurationTypes.internalStatic(..));
 
-    /*A principio (codigo original) nem precisava do tratador, dessa forma que estava
-     * afetando o metodo todo, ele mudava o comportamento, pois tava tratando (super.start(context)) 
-     * o que na verdade é para relançar, como está no codigo original.
-     * pointcut CheckstylePlugin_startHandle(): 
-        execution(* CheckstylePlugin.start(..));*/
+    /*
+     * A principio (codigo original) nem precisava do tratador, dessa forma que
+     * estava afetando o metodo todo, ele mudava o comportamento, pois tava
+     * tratando (super.start(context)) o que na verdade é para relançar, como
+     * está no codigo original. pointcut CheckstylePlugin_startHandle():
+     * execution( CheckstylePlugin.start(..));
+     */
 
     pointcut auditor_addErrorHandle(): execution (* Auditor.CheckstyleAuditListener.addError(..)) ;
 
@@ -223,7 +221,7 @@ public aspect GeneralExceptionHandler
 
     pointcut FileMatchPattern_cloneHandler(): 
         execution(* FileMatchPattern.clone(..));
-    
+
     pointcut FileMatchPattern_cloneFileSetHandler(): 
         execution(* FileSet.clone(..));
 
@@ -232,10 +230,10 @@ public aspect GeneralExceptionHandler
 
     pointcut FileMatchPattern_cloneWorkingCopyHandler(): 
         execution(* ProjectConfigurationWorkingCopy.clone(..));
-    
+
     pointcut AbstractFilter_cloneHandler(): 
         execution(* AbstractFilter.clone(..));
-    
+
     // ---------------------------
     // Advice's
     // ---------------------------
@@ -379,8 +377,7 @@ public aspect GeneralExceptionHandler
         }
     }
 
-    void around() throws CheckstylePluginException: auditor_runAuditHandle() ||
-                                                    RetrowException_getUnresolvedPropertiesIterationHandle() {
+    void around() throws CheckstylePluginException: auditor_runAuditHandle(){
         try
         {
             proceed();
