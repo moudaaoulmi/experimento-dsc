@@ -54,12 +54,7 @@ public class PrefsInitializer extends AbstractPreferenceInitializer
         prefs.putBoolean(CheckstylePlugin.PREF_LIMIT_MARKERS_PER_RESOURCE, false);
         prefs.putInt(CheckstylePlugin.PREF_MARKER_AMOUNT_LIMIT, CheckstylePlugin.MARKER_LIMIT);
         prefs.putBoolean(CheckstylePlugin.PREF_DISABLE_PROJ_CLASSLOADER, false);
-        internalinitializeDefaultPreferences(prefs);
-    }
-
-    private void internalinitializeDefaultPreferences(IEclipsePreferences prefs)
-    {
+        //internalinitializeDefaultPreferences(prefs);
         prefs.flush();
     }
-
 }
