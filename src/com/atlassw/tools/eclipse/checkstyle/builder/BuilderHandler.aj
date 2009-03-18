@@ -31,7 +31,7 @@ public privileged aspect BuilderHandler
 {
 
     declare soft: CoreException: buildProjectJob_runHandler();
-    
+
     declare soft: CheckstylePluginException: checkstyleBuilder_buildHandler()|| checkstyleBuilder_handleBuildSelectionHandler();
 
     declare soft: BadLocationException: auditor_calculateMarkerOffsetHandle();
@@ -49,7 +49,11 @@ public privileged aspect BuilderHandler
 
     declare soft: MalformedURLException: projectClassLoader_handlePathHandle();
 
-    declare soft: CheckstyleException: packageObjectFactory_createModuleInternalHandle()||   packageObjectFactory_createModuleHandle()||   packageObjectFactory_doMakeObjectHandle()||  packageObjectFactory_doMakeObjectInternal2Handle()||auditor_runAuditHandle();
+    declare soft: CheckstyleException: packageObjectFactory_createModuleInternalHandle()||  
+                                       packageObjectFactory_createModuleHandle()||  
+                                       packageObjectFactory_doMakeObjectHandle()||  
+                                       packageObjectFactory_internalDoMakeObjectHandle()||
+                                       auditor_runAuditHandle();
 
     declare soft: ParserConfigurationException: packageNamesLoader_getPackageNamesHandle();
 
@@ -57,11 +61,14 @@ public privileged aspect BuilderHandler
 
     // pointcuts
 
-    pointcut buildProjectJob_runHandler(): execution (* BuildProjectJob.run(..)) ;
+    pointcut buildProjectJob_runHandler():
+        execution (* BuildProjectJob.run(..)) ;
 
-    pointcut checkstyleBuilder_buildHandler(): execution(* CheckstyleBuilder.build(..)) ;
+    pointcut checkstyleBuilder_buildHandler(): 
+        execution(* CheckstyleBuilder.build(..)) ;
 
-    pointcut checkstyleBuilder_handleBuildSelectionHandler(): execution(* CheckstyleBuilder.handleBuildSelection(..));
+    pointcut checkstyleBuilder_handleBuildSelectionHandler(): 
+        execution(* CheckstyleBuilder.handleBuildSelection(..));
 
     pointcut auditor_calculateMarkerOffsetHandle(): 
         execution (* Auditor.CheckstyleAuditListener.calculateMarkerOffset(..)) ;
@@ -82,10 +89,11 @@ public privileged aspect BuilderHandler
         execution (* PackageObjectFactory.createModule(..)) ;
 
     pointcut packageObjectFactory_doMakeObjectHandle(): 
-        execution (* PackageObjectFactory.doMakeObject(..)) ;
+        execution(* PackageObjectFactory.doMakeObject(..)) ;
 
-    pointcut packageObjectFactory_doMakeObjectInternal2Handle(): 
-        execution (* PackageObjectFactory.doMakeObjectInternal2(..)) ;
+    pointcut packageObjectFactory_internalDoMakeObjectHandle():
+         call(* PackageObjectFactory.createObject(..)) &&
+         withincode(* PackageObjectFactory.internalDoMakeObject(..)) ;
 
     pointcut auditor_runAuditHandle(): 
         execution (* Auditor.runAudit(..)) ;
@@ -95,7 +103,7 @@ public privileged aspect BuilderHandler
 
     pointcut runCheckstyleOnFilesJob_runInWorkspaceHandle(): 
         execution (* RunCheckstyleOnFilesJob.runInWorkspace(..)) ;
-    
+
     pointcut checkerFactory_internalCreateCheckerHandler(): 
         execution (* CheckerFactory.internalCreateChecker(..)) ;
 
@@ -170,7 +178,8 @@ public privileged aspect BuilderHandler
         }
     }
 
-    Object around(String aClassName) throws CheckstyleException: packageObjectFactory_createObjectHandle() && args(aClassName) {
+    Object around(String aClassName) throws CheckstyleException: 
+        packageObjectFactory_createObjectHandle() && args(aClassName) {
         Object result = null;
         try
         {
@@ -195,7 +204,8 @@ public privileged aspect BuilderHandler
         return result;
     }
 
-    Object around(String aName) throws CheckstyleException: packageObjectFactory_createModuleInternalHandle() && args(aName) {
+    Object around(String aName) throws CheckstyleException: 
+        packageObjectFactory_createModuleInternalHandle() && args(aName) {
         Object result = null;
         try
         {
@@ -208,9 +218,8 @@ public privileged aspect BuilderHandler
         return result;
     }
 
-    Object around(String aName) throws CheckstyleException: ( packageObjectFactory_doMakeObjectHandle()||
-                                                              packageObjectFactory_createModuleHandle()   ) 
-                                                              && args(aName) {
+    Object around(String aName) throws CheckstyleException: 
+        packageObjectFactory_doMakeObjectHandle() && args(aName){
         Object result = null;
         try
         {
@@ -218,21 +227,22 @@ public privileged aspect BuilderHandler
         }
         catch (CheckstyleException e)
         {
-            PackageObjectFactory p = (PackageObjectFactory) thisJoinPoint.getThis();
-            result = p.doMakeObjectInternal(aName);
+            PackageObjectFactory pOF = (PackageObjectFactory) thisJoinPoint.getThis();
+            pOF.internalDoMakeObject(aName);
         }
         return result;
     }
 
-    Object around(String className): packageObjectFactory_doMakeObjectInternal2Handle() && args(className) {
+    Object around() throws CheckstyleException: 
+        packageObjectFactory_internalDoMakeObjectHandle() {
         Object result = null;
         try
         {
-            result = proceed(className);
+            result = proceed();
         }
         catch (CheckstyleException e)
         {
-            // Do nothing
+            ; // Keep looking
         }
         return result;
     }
@@ -245,7 +255,8 @@ public privileged aspect BuilderHandler
         }
         catch (ParserConfigurationException e)
         {
-            CheckstylePluginException.rethrow(e, "unable to parse " + PackageNamesLoader.DEFAULT_PACKAGES); //$NON-NLS-1$
+            CheckstylePluginException.rethrow(e,
+                    "unable to parse " + PackageNamesLoader.DEFAULT_PACKAGES); //$NON-NLS-1$
         }
         catch (SAXException e)
         {
@@ -254,7 +265,8 @@ public privileged aspect BuilderHandler
         }
         catch (IOException e)
         {
-            CheckstylePluginException.rethrow(e, "unable to parse " + PackageNamesLoader.DEFAULT_PACKAGES); //$NON-NLS-1$
+            CheckstylePluginException.rethrow(e,
+                    "unable to parse " + PackageNamesLoader.DEFAULT_PACKAGES); //$NON-NLS-1$
         }
         return result;
     }
@@ -277,7 +289,7 @@ public privileged aspect BuilderHandler
             checkerFactory_internalCreateCheckerHandler() && args(configFileData,in) {
         try
         {
-            in =  proceed(configFileData,in);
+            in = proceed(configFileData, in);
         }
         finally
         {
@@ -285,5 +297,5 @@ public privileged aspect BuilderHandler
         }
         return in;
     }
-    
+
 }
