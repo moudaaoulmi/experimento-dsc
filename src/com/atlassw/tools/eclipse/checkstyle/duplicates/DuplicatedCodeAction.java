@@ -133,13 +133,18 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
         // if null, we can't do anything
         if (duplicatedCodeView != null)
         {
-            checker = internalCreateChecker(checker, check, mWorkbenchPart);
+            checker = new Checker();
+            checker.setBasedir(ResourcesPlugin.getWorkspace().getRoot().getLocation()
+                    .toString());
+            checker.addFileSetCheck(check);
+            // checker.addListener(new
+            // DuplicatedCodeAuditListener(duplicatedCodeView));
         }
 
         return checker;
     }
 
-    private Checker internalCreateChecker(Checker checker, StrictDuplicateCodeCheck check,IWorkbenchPart mWorkbenchPart)
+    /*private Checker internalCreateChecker(Checker checker, StrictDuplicateCodeCheck check,IWorkbenchPart mWorkbenchPart)
     {
         checker = new Checker();
         checker.setBasedir(ResourcesPlugin.getWorkspace().getRoot().getLocation()
@@ -149,7 +154,7 @@ public class DuplicatedCodeAction implements IObjectActionDelegate
         // DuplicatedCodeAuditListener(duplicatedCodeView));
         
         return checker;
-    }
+    }*/
 
     /**
      * Tries to retrive the duplicated code view.
