@@ -417,8 +417,8 @@ public class FileSetEditDialog extends TitleAreaDialog
             {
                 mMatchGroup.setText(Messages.FileSetEditDialog_msgBuildTestResults);
                 // mProjectFiles = getFiles(mProject);
-                internalRun(mProjectFiles, mProject);
-
+              //  internalRun(mProjectFiles, mProject);
+                mProjectFiles = getFiles(mProject);
                 // init the test area
                 mMatchesViewer.setInput(mProjectFiles);
                 updateMatchView();
@@ -426,11 +426,6 @@ public class FileSetEditDialog extends TitleAreaDialog
             }
         });
 
-    }
-
-    public void internalRun(List mProjectFiles, IProject mProject)
-    {
-        mProjectFiles = getFiles(mProject);
     }
 
     private void updateMatchView()
