@@ -67,9 +67,10 @@ public privileged aspect PropertiesHandler
     pointcut ComplexFileSetsEditor_editFileSetHandler():
         execution(* ComplexFileSetsEditor.editFileSet(..));
 
-    //TODO TENTAR AJEITAR COM ROMULO PRA NÃO EXTRAIR!!!
     pointcut FileSetEditDialog_runHandler(): 
-        execution(* FileSetEditDialog.internalRun(..));
+        execution(* run(..)) && 
+        within(FileSetEditDialog) && 
+        within(Runnable+);
 
     pointcut FileSetEditDialog_widgetSelectedHandler(): 
         execution(* FileSetEditDialog.Controller.internalWidgetSelected(..));
@@ -212,12 +213,12 @@ public privileged aspect PropertiesHandler
         {
             FileSetEditDialog fSED = (FileSetEditDialog) thisJoinPoint.getThis();
             CheckstyleLog.warningDialog(fSED.mPropertyPage.getShell(), Messages.bind(
-                    Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
-                    project, config.getLocation()), ex);
+                    Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound, project,
+                    config.getLocation()), ex);
         }
     }
 
-    void around (ICheckConfiguration config, IProject project) : 
+    void around(ICheckConfiguration config, IProject project) : 
             SimpleFileSetsEditor_widgetSelectedHandler() &&
             args(config, project){
         try
