@@ -76,26 +76,21 @@ class PackageObjectFactory implements ModuleFactory
      */
     private Object doMakeObject(String aName) throws CheckstyleException
     {
-        // try aName first
         return createObject(aName);
     }
 
-    private Object doMakeObjectInternal(String aName) throws CheckstyleException
+    private Object internalDoMakeObject(String aName) throws CheckstyleException
     {
         // now try packages
         for (int i = 0; i < mPackages.size(); i++)
         {
             final String packageName = (String) mPackages.get(i);
             final String className = packageName + aName;
-            return doMakeObjectInternal2(className);
+            return createObject(className);
         }
 
         throw new CheckstyleException("Unable to instantiate " + aName); //$NON-NLS-1$
-    }
 
-    private Object doMakeObjectInternal2(final String className)
-    {
-        return createObject(className);
     }
 
     /**
@@ -107,9 +102,9 @@ class PackageObjectFactory implements ModuleFactory
      */
     private Object createObject(String aClassName) throws CheckstyleException
     {
-            final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            final Class clazz = Class.forName(aClassName, true, loader);
-            return clazz.newInstance();
+        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        final Class clazz = Class.forName(aClassName, true, loader);
+        return clazz.newInstance();
     }
 
     /**
@@ -133,5 +128,5 @@ class PackageObjectFactory implements ModuleFactory
         // try again with suffix "Check"
         return doMakeObject(aName + "Check"); //$NON-NLS-1$
     }
-    
+
 }
