@@ -3,6 +3,7 @@ package com.atlassw.tools.eclipse.checkstyle.preferences;
 import java.util.Collection;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.duplicates.DuplicatedCodeAction;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
@@ -22,22 +23,26 @@ public aspect PreferencesHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    pointcut CheckstylePreferencePage_performOkHandler() : execution (* CheckstylePreferencePage.internalPerformOk(..));
+    pointcut CheckstylePreferencePage_performOkHandler() : execution (* CheckstylePreferencePage.performOk(..));
     pointcut CheckstylePreferencePage_internarPerformOkInternalHandler() : execution (* CheckstylePreferencePage.internarPerformOkInternal(..));
     
     // ---------------------------
     // Advice's
     // ---------------------------
-    void around(Shell shell) : CheckstylePreferencePage_performOkHandler() && args(shell){
+    boolean around() : CheckstylePreferencePage_performOkHandler(){
+        boolean result = true;
         try{
-            proceed(shell);
+            result = proceed();
         }catch (CheckstylePluginException e){
-            CheckstyleLog.errorDialog(shell, NLS.bind(
+            CheckstylePreferencePage checkstylePreferencePage = ((CheckstylePreferencePage) thisJoinPoint.getThis());
+            CheckstyleLog.errorDialog(checkstylePreferencePage.getShell(), NLS.bind(
                     ErrorMessages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
         }catch (BackingStoreException e){
-            CheckstyleLog.errorDialog(shell, NLS.bind(
+            CheckstylePreferencePage checkstylePreferencePage = ((CheckstylePreferencePage) thisJoinPoint.getThis());
+            CheckstyleLog.errorDialog(checkstylePreferencePage.getShell(), NLS.bind(
                     ErrorMessages.errorFailedSavePreferences, e.getLocalizedMessage()), e, true);
         }
+        return result;
     }
     
     void around(boolean needRebuildAllProjects,

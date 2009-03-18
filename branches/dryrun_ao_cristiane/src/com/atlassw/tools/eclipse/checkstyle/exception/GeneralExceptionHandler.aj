@@ -196,7 +196,7 @@ public aspect GeneralExceptionHandler
         (execution(* RuleConfigurationEditDialog.internalFlush(..)));
 
     pointcut PrefsInitializer_internalinitializeDefaultPreferencesHandler() : 
-        execution(* PrefsInitializer.internalinitializeDefaultPreferences(..));
+        execution(* PrefsInitializer.initializeDefaultPreferences(..));
 
     pointcut PluginFilters_internalHandler() :
         execution(* PluginFilters.internal(..));
