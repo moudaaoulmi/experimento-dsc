@@ -64,7 +64,6 @@ public privileged aspect MetaHandler
     pointcut metadataFactory_localizeHandler() : 
         execution(* MetadataFactory.MetaDataHandler.localize(..));
 
-    // aqui
     pointcut metadataFactory_internalDoHandler() : 
         execution(* MetadataFactory.internalDo(..));
 
