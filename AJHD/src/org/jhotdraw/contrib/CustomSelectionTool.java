@@ -165,15 +165,15 @@ public class CustomSelectionTool extends SelectionTool {
 			// Calculate position on physical screen based
 			// on x,y coordinates
 			Point newLocation;
-			try {
+			//try {
 				newLocation = comp.getLocationOnScreen();
-			} catch (IllegalComponentStateException e) {
+			//} catch (IllegalComponentStateException e) {
 				// For some reason, the component
 				// apparently isn't showing on the
 				// screen (huh?). Never mind - don't
 				// show the popup..
-				return;
-			}
+				//return;
+			//}
 			// If this is a ZoomDrawingView, we'll need to
 			// compensate here too:
 			if (comp instanceof ZoomDrawingView) {

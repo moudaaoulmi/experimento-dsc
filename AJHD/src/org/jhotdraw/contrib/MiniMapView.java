@@ -157,13 +157,17 @@ public class MiniMapView extends JComponent {
 	 */
 	protected void scrollSubjectTo(int upperLeftX, int upperLeftY) {
 		AffineTransform at = null;
-		try {
+		
+		at = getViewToMiniMapTransform(getMappedComponent()).createInverse();
+		
+		/** Refactored */
+		/*try {
 			at = getViewToMiniMapTransform(getMappedComponent()).createInverse();
 		}
 		catch (NoninvertibleTransformException nite) {
 			nite.printStackTrace();
 			return;
-		}
+		}*/
 
 		double [] srcPoints = new double[2];
 		double [] destPoints = new double[2];

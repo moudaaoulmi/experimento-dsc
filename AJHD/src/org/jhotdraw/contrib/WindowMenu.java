@@ -13,7 +13,6 @@ package org.jhotdraw.contrib;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyVetoException;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JInternalFrame;
@@ -89,17 +88,24 @@ public class WindowMenu extends CommandMenu {
 				public void actionPerformed(ActionEvent ae) {
 					JInternalFrame frame = ((ChildMenuItem)ae.getSource()).getFrame();
 					frame.moveToFront();
-					try {
-						frame.setSelected(true);
-					}
-					catch (PropertyVetoException e) {
-						e.printStackTrace();
-					}
+					buildChildMenusPartOne(frame);
 				}
 			});
 			menu.setIcon(array[i].getFrameIcon());
 			add(menu);
 		}
+	}
+
+	public void buildChildMenusPartOne(JInternalFrame frame) {
+		frame.setSelected(true);
+		
+		/** Refactored */
+		/*try {
+			frame.setSelected(true);
+		}
+		catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}*/
 	}
 
 	/* This JCheckBoxMenuItem descendant is used to track the child frame that corresponds

@@ -58,7 +58,9 @@ public class ResourceContentProducer extends AbstractContentProducer
 	 * @return              The content value
 	 */
 	public Object getContent(ContentProducerContext context, String ctxAttrName, Object ctxAttrValue) {
-		try {
+		
+		/** Refactored */
+		//try {
 			// if we have our own resource then use it
 			// otherwise use the one supplied
 			String resourceName = (getResourceName() != null) ? getResourceName() : (String)ctxAttrValue;
@@ -69,11 +71,11 @@ public class ResourceContentProducer extends AbstractContentProducer
 			reader.read(contents, 0, available);
 			reader.close();
 			return new String(contents);
-		}
+		/*}
 		catch (Exception ex) {
 			ex.printStackTrace();
 			return ex.toString();
-		}
+		}*/
 	}
 
 	/**

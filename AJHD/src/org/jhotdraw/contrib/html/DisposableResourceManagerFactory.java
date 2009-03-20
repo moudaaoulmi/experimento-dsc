@@ -87,12 +87,20 @@ public abstract class DisposableResourceManagerFactory {
 			}
 
 			// start the whole thing
-			try {
-				currentManager.startDisposing();
-			}
-			catch (ResourceManagerNotSetException ex) {
-				// we set it so we shouldn't get here
-			}
+			initManagerPartOne();
 		}
+	}
+
+	private static void initManagerPartOne() {
+		currentManager.startDisposing();
+		
+		
+		/** Refactored */
+		/*try {
+			currentManager.startDisposing();
+		}
+		catch (ResourceManagerNotSetException ex) {
+			// we set it so we shouldn't get here
+		}*/
 	}
 }

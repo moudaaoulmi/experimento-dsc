@@ -13,7 +13,6 @@ package org.jhotdraw.contrib;
 
 import java.awt.*;
 
-import javax.swing.JButton;
 
 /**
  * A helper class for implementing autoscrolling
