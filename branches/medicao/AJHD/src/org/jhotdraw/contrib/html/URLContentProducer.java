@@ -62,7 +62,9 @@ public class URLContentProducer extends FigureDataContentProducer
 	 * @return              the contents of the URL pointed object as a string
 	 */
 	public Object getContent(ContentProducerContext context, String ctxAttrName, Object ctxAttrValue) {
-		try {
+		
+		/** Refactored */
+		//try {
 			// if we have our own URL then use it
 			// otherwise use the one supplied
 			URL url = (getURL() != null) ? new URL(getURL().toExternalForm()) : new URL(((URL)ctxAttrValue).toExternalForm());
@@ -73,11 +75,11 @@ public class URLContentProducer extends FigureDataContentProducer
 			reader.read(contents, 0, available);
 			reader.close();
 			return new String(contents);
-		}
-		catch (Exception ex) {
+		//}
+		/*catch (Exception ex) {
 			ex.printStackTrace();
 			return ex.toString();
-		}
+		}*/
 	}
 
 	/**

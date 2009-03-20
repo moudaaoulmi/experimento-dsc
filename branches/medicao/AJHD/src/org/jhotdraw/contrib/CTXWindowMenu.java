@@ -11,7 +11,6 @@
 package org.jhotdraw.contrib;
 
 import java.awt.event.*;
-import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -160,17 +159,24 @@ public class CTXWindowMenu extends CTXCommandMenu {
 					public void actionPerformed(ActionEvent ae) {
 						JInternalFrame frame = ((ChildMenuItem)ae.getSource()).getFrame();
 						frame.moveToFront();
-						try {
-							frame.setSelected(true);
-						}
-						catch (PropertyVetoException e) {
-							e.printStackTrace();
-						}
+						buildChildMenusPartOne(frame);
 					}
 				});
 			menu.setIcon(array[i].getFrameIcon());
 			add(menu);
 		}
+	}
+
+	public void buildChildMenusPartOne(JInternalFrame frame) {
+		frame.setSelected(true);
+		
+		/** Refactored */
+		/*try {
+			frame.setSelected(true);
+		}
+		catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}*/
 	}
 
 	/*

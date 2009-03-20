@@ -653,12 +653,31 @@ public class HTMLTextAreaFigure extends TextAreaFigure
 	 * @return          The resulting string with its attributes replaced
 	 */
 	protected String substituteEntityKeywords(String template) {
-		int endPos;
+		//int endPos;
 		StringBuffer finalText = new StringBuffer();
 
 		int startPos = 0;
 		int chunkEnd = startPos;
+		chunkEnd = substituteEntityKeywordsPartOne(template, finalText,
+				startPos, chunkEnd);
+
+		// append whatever is left
+		finalText.append(template.substring(chunkEnd));
+
+		// and return it
+		return finalText.toString();
+	}
+
+	private int substituteEntityKeywordsPartOne(String template, 
+			StringBuffer finalText, int startPos, int chunkEnd) {
+		
+		/**
+		 * 
+		 * REFATORAR, DANDO ERRO PORQUE A CLASSE DA EXCE‚ÌO ƒ PRIVADA
+		 * 
+		 */
 		try {
+			int endPos;
 			while ((startPos = template.indexOf(START_ENTITY_CHAR, startPos)) != -1) {
 				if (startPos != 0 && template.charAt(startPos - 1) == ESCAPE_CHAR) {
 					// found an escaped parameter starter
@@ -699,12 +718,7 @@ public class HTMLTextAreaFigure extends TextAreaFigure
 		catch (InvalidAttributeMarker ex) {
 			// invalid marker, ignore
 		}
-
-		// append whatever is left
-		finalText.append(template.substring(chunkEnd));
-
-		// and return it
-		return finalText.toString();
+		return chunkEnd;
 	}
 
 	/**

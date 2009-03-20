@@ -121,6 +121,18 @@ public class ETSLADisposalStrategy implements ResourceDisposabilityStrategy {
 			return;
 		}
 		// request the thread to stop and wait for it
+		stopDisposingPartOne(millis);
+	}
+
+	private void stopDisposingPartOne(long millis) {
+		/** 
+		 * REFATORAR DANDO ERRO, VARIAVEL PRIVATE.
+		 * VERSÌO QUE DEVERIA FICAR COM A REFATORA‚ÌO
+		 * 
+		disposalThread.interruptDisposalPending = true;
+		disposalThread.join(millis);
+		*/
+		
 		try {
 			disposalThread.interruptDisposalPending = true;
 			disposalThread.join(millis);
@@ -216,6 +228,9 @@ class DisposalThread extends Thread {
 
 	/**
 	 * Main processing method for the DisposalThread object
+	 * 
+	 * 
+	 * CHECAr se pode haver a refatoracao....
 	 */
 	public void run() {
 		interruptDisposalPending = false;

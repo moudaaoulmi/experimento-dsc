@@ -16,7 +16,7 @@ import org.jhotdraw.standard.*;
 import org.jhotdraw.util.*;
 import org.jhotdraw.figures.*;
 import java.awt.*;
-import java.io.*;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -337,10 +337,22 @@ public class GraphicalCompositeFigure extends CompositeFigure implements Layouta
 	 * together with all child components. The Layouter
 	 * is not stored and therefore not read.
 	 */
-	public void read(StorableInput dr) /*@AJHD refactored throws IOException*/ {
+	public void read(StorableInput dr) {
 		super.read(dr);
-		setPresentationFigure((Figure)dr.readStorable());
-		setLayouter((Layouter)dr.readStorable());
+		try {
+			setPresentationFigure((Figure)dr.readStorable());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			//VER SE TA ASSIM NO ORIGINALLLLL
+		}
+		try {
+			setLayouter((Layouter)dr.readStorable());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

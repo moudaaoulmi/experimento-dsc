@@ -13,12 +13,10 @@ package org.jhotdraw.contrib;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
 import javax.swing.*;
 
 import org.jhotdraw.framework.JHotDrawRuntimeException;
 import org.jhotdraw.util.Command;
-import org.jhotdraw.util.CommandListener;
 import org.jhotdraw.util.CommandMenu;
 
 /**
