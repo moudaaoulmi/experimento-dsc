@@ -25,32 +25,33 @@ public privileged aspect UtilHandler
     // ---------------------------
     // Declare soft's
     // ---------------------------
-    declare soft: Exception : internalShellActivatedHandler();
-    
-    declare soft : TransformerConfigurationException : writeWithSaxInternalHandler();
+    declare soft: Exception : SWTUtil_internalShellActivatedHandler();
+
+    declare soft : TransformerConfigurationException : XMLUtil_writeWithSaxInternalHandler();
 
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    pointcut intenalVerifyTextHandler(): 
+    pointcut SWTUtil_intenalVerifyTextHandler(): 
         execution (* SWTUtil.OnlyDigitsVerifyListener.intenalVerifyText(..));
 
-    pointcut internalShellActivatedHandler(): 
+    pointcut SWTUtil_internalShellActivatedHandler(): 
         execution (* SWTUtil.ShellResizeSupportListener.internalShellActivated(..));
 
-    pointcut internalShellActivate2dHandler(): 
+    pointcut SWTUtil_internalShellActivate2dHandler(): 
         execution (* SWTUtil.ShellResizeSupportListener.internalShellActivated2(..));
 
-    pointcut getDocumentBuilderHandler(): 
+    pointcut XMLUtil_getDocumentBuilderHandler(): 
         execution(* XMLUtil.getDocumentBuilder(..)) ;
-    
-    pointcut writeWithSaxInternalHandler() : 
+
+    pointcut XMLUtil_writeWithSaxInternalHandler() : 
         execution (* XMLUtil.writeWithSaxInternal(..));
 
     // ---------------------------
     // Advice's
     // ---------------------------
-    boolean around(VerifyEvent e, boolean doit): intenalVerifyTextHandler() && args(e,doit) {
+    boolean around(VerifyEvent e, boolean doit): SWTUtil_intenalVerifyTextHandler() && 
+            args(e,doit) {
         try
         {
             proceed(e, doit);
@@ -62,7 +63,8 @@ public privileged aspect UtilHandler
         return doit;
     }
 
-    Point around(Point initialSize): internalShellActivatedHandler() && args(initialSize){
+    Point around(Point initialSize): SWTUtil_internalShellActivatedHandler() && 
+            args(initialSize){
         try
         {
             initialSize = proceed(initialSize);
@@ -74,7 +76,8 @@ public privileged aspect UtilHandler
         return initialSize;
     }
 
-    void around(Shell shell, IDialogSettings bounds): internalShellActivate2dHandler() && args(shell,bounds){
+    void around(Shell shell, IDialogSettings bounds): SWTUtil_internalShellActivate2dHandler() &&
+            args(shell,bounds){
         try
         {
             proceed(shell, bounds);
@@ -91,8 +94,9 @@ public privileged aspect UtilHandler
      * O advice não pôde afetar o método createDocumentBuilder() porque o mesmo
      * é private static synchronized
      */
-    DocumentBuilder around() throws ParserConfigurationException : getDocumentBuilderHandler(){
-        DocumentBuilder c = null;
+    DocumentBuilder around() throws ParserConfigurationException : 
+            XMLUtil_getDocumentBuilderHandler(){
+            DocumentBuilder c = null;
         try
         {
             c = proceed();
@@ -104,12 +108,16 @@ public privileged aspect UtilHandler
         }
         return c;
     }
-    
-    void around(InputStream in, Templates templates, SAXTransformerFactory saxFactory) : writeWithSaxInternalHandler() 
+
+    void around(InputStream in, Templates templates, SAXTransformerFactory saxFactory) :
+            XMLUtil_writeWithSaxInternalHandler() 
             && args(in, templates, saxFactory){
-        try{
+        try
+        {
             proceed(in, templates, saxFactory);
-        } finally {
+        }
+        finally
+        {
             IOUtils.closeQuietly(in);
         }
     }
