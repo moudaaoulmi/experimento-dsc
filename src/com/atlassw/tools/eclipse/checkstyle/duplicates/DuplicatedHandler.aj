@@ -1,19 +1,17 @@
+
 package com.atlassw.tools.eclipse.checkstyle.duplicates;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.ui.IWorkbenchPart;
 
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.checks.duplicates.StrictDuplicateCodeCheck;
 import org.eclipse.ui.PartInitException;
 
 import java.util.MissingResourceException;
 import java.lang.NumberFormatException;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.text.BadLocationException;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -22,14 +20,15 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.core.runtime.Status;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.ui.IWorkbenchPart;
 
-public privileged aspect DuplicatedHandler {
-    
+public privileged aspect DuplicatedHandler
+{
+
     // ---------------------------
     // Declare soft's
     // ---------------------------
     declare soft: CheckstyleException : DuplicatedCodeAction_createCheckerHandler();
+
     declare soft: CoreException : DuplicatedCodeAction_addJavaFilesToSetHandler() 
                                 || DuplicatedCodeView_selectHandler() 
                                 || DuplicatedCodeView_internalGetChildrenHandler() 
@@ -37,33 +36,56 @@ public privileged aspect DuplicatedHandler {
                                 || DuplicatedCodeView_runHandler() 
                                 || DuplicatedCodeView_internal2Handler() 
                                 || DuplicatedCodeView_internalGetChildren2Handler();
-    
+
     declare soft: PartInitException: DuplicatedCodeAction_findDuplicatedCodeViewHandler() 
                                      || DuplicatedCodeView_runHandler() 
                                      || DuplicatedCodeView_internal2Handler();
+
     declare soft : BadLocationException : DuplicatedCodeView_selectAndRevealDuplicatedLinesHandler();
 
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    pointcut DuplicatedCodeAction_createCheckerHandler() : execution(* DuplicatedCodeAction.createChecker(..));
-    pointcut DuplicatedCodeAction_addJavaFilesToSetHandler() : execution(* DuplicatedCodeAction.addJavaFilesToSet(..));
-    pointcut DuplicatedCodeAction_findDuplicatedCodeViewHandler() : execution(* DuplicatedCodeAction.findDuplicatedCodeView(..));
-    pointcut DuplicatedCode_internalHandler() : execution(* DuplicatedCode.internal(..));
-    pointcut DuplicatedCode_internalGetNumberOfDuplicatedLinesHandler() : execution(* DuplicatedCode.internalGetNumberOfDuplicatedLines(..));
-    pointcut DuplicatedCodeView_selectHandler() : execution (* DuplicatedCodeView.DuplicatesFilter.select(..));
-    pointcut DuplicatedCodeView_selectAndRevealDuplicatedLinesHandler(): execution (* DuplicatedCodeView.selectAndRevealDuplicatedLines(..));
-    pointcut DuplicatedCodeView_internalGetChildrenHandler(): execution (* DuplicatedCodeView.ViewContentProvider.internalGetChildren(..));
-    pointcut DuplicatedCodeView_internalRunHandler() : execution (* DuplicatedCodeView.internalRun(..));
-    pointcut DuplicatedCodeView_runHandler(): execution(* DuplicatedCodeView.internal(..));
-    /*pointcut DuplicatedCodeView_runHandler():  
-        execution(public void run(..)) && 
-        within(DuplicatedCodeView) &&
-        within(Action+) &&
-        withincode(* DuplicatedCodeView.createOpenSourceFileAction(..));*/
+    pointcut DuplicatedCodeAction_createCheckerHandler() : 
+        execution(* DuplicatedCodeAction.createChecker(..));
+
+    pointcut DuplicatedCodeAction_addJavaFilesToSetHandler() : 
+        execution(* DuplicatedCodeAction.addJavaFilesToSet(..));
+
+    pointcut DuplicatedCodeAction_findDuplicatedCodeViewHandler() : 
+        execution(* DuplicatedCodeAction.findDuplicatedCodeView(..));
+
+    pointcut DuplicatedCode_internalHandler() : 
+        execution(* DuplicatedCode.internal(..));
+
+    pointcut DuplicatedCode_internalGetNumberOfDuplicatedLinesHandler() : 
+        execution(* DuplicatedCode.internalGetNumberOfDuplicatedLines(..));
+
+    pointcut DuplicatedCodeView_selectHandler() : 
+        execution (* DuplicatedCodeView.DuplicatesFilter.select(..));
+
+    pointcut DuplicatedCodeView_selectAndRevealDuplicatedLinesHandler(): 
+        execution (* DuplicatedCodeView.selectAndRevealDuplicatedLines(..));
+
+    pointcut DuplicatedCodeView_internalGetChildrenHandler(): 
+        execution (* DuplicatedCodeView.ViewContentProvider.internalGetChildren(..));
+
+    pointcut DuplicatedCodeView_internalRunHandler() : 
+        execution (* DuplicatedCodeView.internalRun(..));
+
+     pointcut DuplicatedCodeView_runHandler(): 
+         execution(* DuplicatedCodeView.internal(..));
     
-    pointcut DuplicatedCodeView_internal2Handler() : execution (* DuplicatedCodeView.internal2(..));
-    pointcut DuplicatedCodeView_internalGetChildren2Handler(): execution (* DuplicatedCodeView.ViewContentProvider.internalGetChildren2(..));
+//    pointcut DuplicatedCodeView_runHandler():
+//        withincode(* DuplicatedCodeView.createOpenSourceFileAction()) &&
+//        execution(* run(..)) && 
+//        within(Action+);
+
+    pointcut DuplicatedCodeView_internal2Handler() :
+        execution (* DuplicatedCodeView.internal2(..));
+
+    pointcut DuplicatedCodeView_internalGetChildren2Handler(): 
+        execution (* DuplicatedCodeView.ViewContentProvider.internalGetChildren2(..));
 
     // ---------------------------
     // Advice's
@@ -73,22 +95,31 @@ public privileged aspect DuplicatedHandler {
                     || DuplicatedCodeView_selectAndRevealDuplicatedLinesHandler() 
                     || DuplicatedCodeAction_findDuplicatedCodeViewHandler() {
         Object result = null;
-        try {
+        try
+        {
             result = proceed();
-        }catch (PartInitException e) {
-                DuplicatedCodeAction duplicate = ((DuplicatedCodeAction) thisJoinPoint.getThis());
-                CheckstyleLog.errorDialog(duplicate.mWorkbenchPart.getSite().getShell(),
-                        "Error opening the duplicated code view '" + DuplicatedCodeView.VIEW_ID + "'.",
-                        e, true);
-            
-        }catch (CoreException e){
+        }
+        catch (PartInitException e)
+        {
+            DuplicatedCodeAction duplicate = ((DuplicatedCodeAction) thisJoinPoint.getThis());
+            CheckstyleLog.errorDialog(duplicate.mWorkbenchPart.getSite().getShell(),
+                    "Error opening the duplicated code view '" + DuplicatedCodeView.VIEW_ID + "'.",
+                    e, true);
+
+        }
+        catch (CoreException e)
+        {
             // we can't do anything : just log the pbm...
             CheckstyleLog.log(e, "Error while scanning files for the duplication code analysis.");
-        } catch (MissingResourceException e){
+        }
+        catch (MissingResourceException e)
+        {
             String DUPLICATES_MESSAGE_BUNDLE = "com.puppycrawl.tools.checkstyle.checks.duplicates.messages";
             CheckstyleLog.log(e, "Unable to get the resource bundle " //$NON-NLS-1$
                     + DUPLICATES_MESSAGE_BUNDLE + "."); //$NON-NLS-1$
-        } catch (BadLocationException e){
+        }
+        catch (BadLocationException e)
+        {
             DuplicatedCodeView dcv = (DuplicatedCodeView) thisJoinPoint.getThis();
             TreeViewer tv = dcv.getMViewer();
             CheckstyleLog.errorDialog(tv.getControl().getShell(),
@@ -96,11 +127,14 @@ public privileged aspect DuplicatedHandler {
         }
         return result;
     }
-    
+
     boolean around() : DuplicatedCodeView_selectHandler(){
-        try{
+        try
+        {
             proceed();
-        }catch (CoreException e){
+        }
+        catch (CoreException e)
+        {
             return false;
         }
         return true;
@@ -109,65 +143,77 @@ public privileged aspect DuplicatedHandler {
     Object[] around() : DuplicatedCodeView_internalGetChildrenHandler() 
                         || DuplicatedCodeView_internalGetChildren2Handler(){
         Object[] obj = null;
-        try{
+        try
+        {
             return obj = proceed();
-        }catch (CoreException e){
+        }
+        catch (CoreException e)
+        {
             obj = new Object[0];
         }
         return obj;
     }
-    
-    
+
     void around() : DuplicatedCodeView_runHandler() 
-                || DuplicatedCodeView_internal2Handler(){ 
-        try{
+                || DuplicatedCodeView_internal2Handler(){
+        try
+        {
             proceed();
-        }catch (PartInitException e){
+        }
+        catch (PartInitException e)
+        {
             DuplicatedCodeView dcv = (DuplicatedCodeView) thisJoinPoint.getThis();
             CheckstyleLog.errorDialog(dcv.mViewer.getControl().getShell(),
                     ErrorMessages.errorWhileOpeningEditor, e, true);
-        }catch (CoreException e){
+        }
+        catch (CoreException e)
+        {
             DuplicatedCodeView dcv = (DuplicatedCodeView) thisJoinPoint.getThis();
             CheckstyleLog.errorDialog(dcv.mViewer.getControl().getShell(),
                     ErrorMessages.errorWhileOpeningEditor, e, true);
         }
     }
-    
+
     Checker around(): DuplicatedCodeAction_createCheckerHandler(){
         Checker checker = null;
-        try {
+        try
+        {
             checker = proceed();
-        }catch (CheckstyleException e){
+        }
+        catch (CheckstyleException e)
+        {
             DuplicatedCodeAction duplicate = ((DuplicatedCodeAction) thisJoinPoint.getThis());
             CheckstyleLog.errorDialog(duplicate.mWorkbenchPart.getSite().getShell(),
                     "Unable to launch the duplicated code analyser.", e, true);
         }
         return checker;
     }
-    
+
     int around(): DuplicatedCode_internalGetNumberOfDuplicatedLinesHandler() {
         int result = 0;
-        try {
+        try
+        {
             result = proceed();
-        }catch (NumberFormatException e){
+        }
+        catch (NumberFormatException e)
+        {
             result = 0;
         }
         return result;
     }
-    
+
     IStatus around(IProgressMonitor monitor, IProject project) : DuplicatedCodeView_internalRunHandler() && args(monitor, project){
         IStatus result = null;
-        try{
-            return result = proceed(monitor, project);
-        }catch (CoreException e)
+        try
         {
-            CheckstyleLog
-            .log(e, NLS.bind(ErrorMessages.errorWhileBuildingProject,
-                    project.getName()));
-            result = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                    IStatus.OK, NLS.bind(
-                            ErrorMessages.errorWhileBuildingProject, project
-                            .getName()), e);
+            return result = proceed(monitor, project);
+        }
+        catch (CoreException e)
+        {
+            CheckstyleLog.log(e, NLS.bind(ErrorMessages.errorWhileBuildingProject, project
+                    .getName()));
+            result = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK, NLS.bind(
+                    ErrorMessages.errorWhileBuildingProject, project.getName()), e);
         }
         return result;
     }
