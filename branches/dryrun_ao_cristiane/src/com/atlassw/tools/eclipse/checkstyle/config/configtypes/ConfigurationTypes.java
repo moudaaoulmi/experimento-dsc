@@ -95,7 +95,6 @@ public final class ConfigurationTypes
 
         for (int i = 0; i < elements.length; i++)
         {
-
             internalStatic(elements, i);
         }
     }

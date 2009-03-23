@@ -36,7 +36,7 @@ import java.net.Authenticator;
 import java.net.UnknownHostException;
 
 import java.util.MissingResourceException;
-import java.net.Authenticator;
+import org.eclipse.swt.events.SelectionListener;
 
 public privileged aspect ConfigtypesHandler
 {
@@ -99,7 +99,10 @@ public privileged aspect ConfigtypesHandler
         execution(* ExternalFileConfigurationType.internalResolveLocation(..));
 
     pointcut InternalConfigurationEditor_widgetSelectedHandler():
-        execution(* InternalConfigurationEditor.internalWidgetSelected(..));
+        execution(* widgetSelected(..)) &&
+        within(InternalConfigurationEditor) && 
+        within(SelectionListener+);
+
 
     pointcut InternalConfigurationEditor_internalGetEditedWorkingCopyHandler2():
         execution(* InternalConfigurationEditor.internalGetEditedWorkingCopy(..));
@@ -147,11 +150,10 @@ public privileged aspect ConfigtypesHandler
     pointcut ResourceBundlePropertyResolver_resolveHandle(): 
         execution(* ResourceBundlePropertyResolver.resolve(..));
     
-
     // ---------------------------
     // Advice's
     // ---------------------------
-    
+
     Object around() throws CheckstylePluginException: 
         RemoteConfigurationEditor_getEditedWorkingCopyHandler() ||
         ExternalFileConfiguration_resolveDynamicLocationHandler(){
