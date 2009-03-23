@@ -1,7 +1,3 @@
-/* 
- * 25th, November, 2008 
- */
-
 package com.atlassw.tools.eclipse.checkstyle.voting;
 
 import java.io.IOException;
