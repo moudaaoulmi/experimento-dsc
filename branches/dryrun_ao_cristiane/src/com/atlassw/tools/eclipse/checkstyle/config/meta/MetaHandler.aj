@@ -54,9 +54,8 @@ public privileged aspect MetaHandler
     pointcut metadataFactory_getMetadataI18NBundleHandler() : 
         execution(* MetadataFactory.getMetadataI18NBundle(..));
 
-    // TODO VERIFICAR ESSE COM ROMULO
     pointcut metadataFactory_resolveEntityHandler() : 
-        execution(* MetadataFactory.MetaDataHandler.internalResolveEntity(..));
+        execution(* MetadataFactory.MetaDataHandler.resolveEntity(..));
 
     pointcut metadataFactory_internalStartElementHandler() : 
         execution(* MetadataFactory.MetaDataHandler.internalStartElement(..));
