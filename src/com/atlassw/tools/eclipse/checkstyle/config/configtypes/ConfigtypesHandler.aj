@@ -1,3 +1,4 @@
+
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
-
+import java.net.URL;
 import java.lang.IllegalArgumentException;
 
 import java.net.MalformedURLException;
@@ -37,13 +38,14 @@ import java.net.UnknownHostException;
 
 import java.util.MissingResourceException;
 import org.eclipse.swt.events.SelectionListener;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 
 public privileged aspect ConfigtypesHandler
 {
     // ---------------------------
     // Declare soft's
     // ---------------------------
-    
+
     declare soft: IOException : ConfigurationType_internalGetAdditionPropertiesBundleBytesHandler() ||
                                 RemoteConfigurationType_internalGetCheckstyleConfigurationHandler() ||
                                 RemoteConfigurationType_secInternalGetCheckstyleConfigurationHandler() ||
@@ -52,7 +54,7 @@ public privileged aspect ConfigtypesHandler
                                 RemoteConfigurationType_twoWriteToCacheFile();
 
     declare soft: Exception : RemoteConfigurationType_internalGetBytesFromURLConnectionHandler();
-    
+
     declare soft: CheckstylePluginException: ExternalFileConfiguration_internalGetEditedWorkingCopyHandler() ||
                                              ExternalFileConfiguration_isConfigurableHandler() ||
                                              ExternalFileConfiguration_internalResolveLocationHandler() ||
@@ -78,31 +80,34 @@ public privileged aspect ConfigtypesHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    
+
     pointcut ConfigurationType_internalGetAdditionPropertiesBundleBytesHandler():
-            execution (* ConfigurationType.internalGetAdditionPropertiesBundleBytes(..)) &&
+            execution (* ConfigurationType.getAdditionPropertiesBundleBytes(..)) &&
             within (ConfigurationType);
 
     pointcut ConfigurationType_internalGetBytesFromURLConnectionHandler():
         execution (* ConfigurationType.internalGetBytesFromURLConnection(..));
-    
+
     pointcut ExternalFileConfiguration_internalGetEditedWorkingCopyHandler():
-        execution(* ExternalFileConfigurationEditor.internalGetEditedWorkingCopy(..));
+        call (* CheckConfigurationWorkingCopy.setLocation(..)) &&
+        withincode(* ExternalFileConfigurationEditor.getEditedWorkingCopy(..));
 
     pointcut ExternalFileConfiguration_resolveDynamicLocationHandler(): 
         execution(* ExternalFileConfigurationType.resolveDynamicLocation(..));
+
 
     pointcut ExternalFileConfiguration_isConfigurableHandler():
         execution(* ExternalFileConfigurationType.internalIsConfigurable(..));
 
     pointcut ExternalFileConfiguration_internalResolveLocationHandler():
-        execution(* ExternalFileConfigurationType.internalResolveLocation(..));
-
+        /*call(* ExternalFileConfigurationType.resolveDynamicLocation(..)) &&
+        withincode(* ExternalFileConfigurationType.resolveLocation(..));*/
+        execution(* ExternalFileConfigurationType.resolveLocation(..));
+    //a partir daqui
     pointcut InternalConfigurationEditor_widgetSelectedHandler():
         execution(* widgetSelected(..)) &&
         within(InternalConfigurationEditor) && 
         within(SelectionListener+);
-
 
     pointcut InternalConfigurationEditor_internalGetEditedWorkingCopyHandler2():
         execution(* InternalConfigurationEditor.internalGetEditedWorkingCopy(..));
@@ -112,13 +117,14 @@ public privileged aspect ConfigtypesHandler
 
     pointcut ProjectConfigurationEditor_secInternalEnsureFileExistsHandler():
         execution(* ProjectConfigurationEditor.secInternalEnsureFileExists(..));
-   
+
     pointcut ProjectConfigurationType_internalIsConfigurableHandler():
         execution(* ProjectConfigurationType.internalIsConfigurable(..));
-   
+
     pointcut RemoteConfigurationEditor_internalCreateEditorControlHandler():
         execution(* RemoteConfigurationEditor.internalCreateEditorControl(..));
 
+    // fiz esse
     pointcut RemoteConfigurationEditor_getEditedWorkingCopyHandler():
         execution(* RemoteConfigurationEditor.getEditedWorkingCopy(..));
 
@@ -146,19 +152,30 @@ public privileged aspect ConfigtypesHandler
     pointcut RemoteConfigurationType_internalGetBytesFromURLConnectionHandler():
         execution(* RemoteConfigurationType.internalGetBytesFromURLConnection(..));
 
-
     pointcut ResourceBundlePropertyResolver_resolveHandle(): 
         execution(* ResourceBundlePropertyResolver.resolve(..));
-    
+
     // ---------------------------
     // Advice's
     // ---------------------------
 
-    Object around() throws CheckstylePluginException: 
-        RemoteConfigurationEditor_getEditedWorkingCopyHandler() ||
-        ExternalFileConfiguration_resolveDynamicLocationHandler(){
-        
-        Object result = null;
+    String around() throws CheckstylePluginException: 
+            ExternalFileConfiguration_resolveDynamicLocationHandler(){
+        String result = null;
+        try
+        {
+            result = proceed();
+        }
+        catch (CheckstyleException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        return result;
+    }
+
+    CheckConfigurationWorkingCopy around() throws CheckstylePluginException: 
+        RemoteConfigurationEditor_getEditedWorkingCopyHandler(){
+        CheckConfigurationWorkingCopy result = null;
         try
         {
             result = proceed();
@@ -167,23 +184,20 @@ public privileged aspect ConfigtypesHandler
         {
             CheckstylePluginException.rethrow(e);
         }
-        catch(CheckstyleException e){
-            CheckstylePluginException.rethrow(e);   
-        }
         return result;
     }
-    
 
     void around() throws CheckstylePluginException: ExternalFileConfiguration_internalGetEditedWorkingCopyHandler()
     {
-        ExternalFileConfigurationEditor eFC = (ExternalFileConfigurationEditor) thisJoinPoint
-                .getThis();
+
         try
         {
             proceed();
         }
         catch (CheckstylePluginException e)
         {
+            ExternalFileConfigurationEditor eFC = (ExternalFileConfigurationEditor) thisJoinPoint
+                    .getThis();
             String location = eFC.mLocation.getText();
 
             if (StringUtils.trimToNull(location) != null && eFC.ensureFileExists(location))
@@ -196,7 +210,7 @@ public privileged aspect ConfigtypesHandler
             }
         }
     }
-    
+
     void around(String location) throws CheckstylePluginException: 
         InternalConfigurationEditor_internalGetEditedWorkingCopyHandler2() && args(location){
 
@@ -217,7 +231,7 @@ public privileged aspect ConfigtypesHandler
             }
         }
     }
-    
+
     void around() throws CheckstylePluginException :
         ProjectConfigurationEditor_secInternalEnsureFileExistsHandler(){
         try
@@ -229,7 +243,7 @@ public privileged aspect ConfigtypesHandler
             CheckstylePluginException.rethrow(e);
         }
     }
-        
+
     void around(URLConnection connection, InputStream in, byte[] configurationFileData):
             ConfigurationType_internalGetBytesFromURLConnectionHandler() &&
             args(connection,in,configurationFileData)
@@ -260,7 +274,8 @@ public privileged aspect ConfigtypesHandler
             CheckstyleConfigurationFile data, String currentRedirects,
             Authenticator oldAuthenticator) throws CheckstylePluginException: 
             RemoteConfigurationType_internalGetCheckstyleConfigurationHandler()
-            && args(checkConfiguration, useCacheFile, data, currentRedirects, oldAuthenticator){
+            && args(checkConfiguration, useCacheFile, data, currentRedirects, 
+                    oldAuthenticator){
         try
         {
             proceed(checkConfiguration, useCacheFile, data, currentRedirects, oldAuthenticator);
@@ -295,8 +310,9 @@ public privileged aspect ConfigtypesHandler
     }
 
     Object around(Object checkConfiguration, boolean isConfigurable): 
-        (ProjectConfigurationType_internalIsConfigurableHandler() 
-        || ExternalFileConfiguration_isConfigurableHandler()) && args(checkConfiguration, isConfigurable){
+        (ProjectConfigurationType_internalIsConfigurableHandler() ||
+         ExternalFileConfiguration_isConfigurableHandler()) && 
+         args(checkConfiguration, isConfigurable){
         Object result = null;
         try
         {
@@ -309,7 +325,7 @@ public privileged aspect ConfigtypesHandler
         }
         return result;
     }
-    
+
     void around(): InternalConfigurationEditor_widgetSelectedHandler(){
         try
         {
@@ -321,7 +337,7 @@ public privileged aspect ConfigtypesHandler
             icE.mDialog.setErrorMessage(ex.getLocalizedMessage());
         }
     }
-    
+
     void around() throws CheckstylePluginException : 
         ProjectConfigurationEditor_internalGetEditedWorkingCopyHandler(){
         ProjectConfigurationEditor pCE = (ProjectConfigurationEditor) thisJoinPoint.getThis();
@@ -367,13 +383,12 @@ public privileged aspect ConfigtypesHandler
             }
         }
     }
-    
-    
-    void around() throws IOException: 
+
+    /*String*/ URL around() throws IOException: 
         ExternalFileConfiguration_internalResolveLocationHandler(){
         try
         {
-            proceed();
+            return proceed();
         }
         catch (CheckstylePluginException e)
         {
@@ -392,7 +407,6 @@ public privileged aspect ConfigtypesHandler
             CheckstyleLog.errorDialog(shell, e, true);
         }
     }
-  
 
     void around(CheckstyleConfigurationFile data, boolean useCacheFile,
             boolean originalFileSuccess, byte[] configurationFileData,
@@ -433,12 +447,12 @@ public privileged aspect ConfigtypesHandler
             // we won't load the bundle then
             // disabled logging bug #1647602
             // CheckstyleLog.log(ioe);
-            // IF RemoteConfigurationType_twoWriteToCacheFile() THEN 
+            // IF RemoteConfigurationType_twoWriteToCacheFile() THEN
             // ignore this since there simply might be no properties file
         }
         return result;
     }
-    
+
     void around(File cacheFile, byte[] configFileBytes, ICheckConfiguration checkConfig): 
         RemoteConfigurationType_oneWriteToCacheFileHandler() && args (cacheFile, configFileBytes, checkConfig){
         try
@@ -452,7 +466,6 @@ public privileged aspect ConfigtypesHandler
                             .getName(), checkConfig.getLocation()));
         }
     }
-
 
     void around(URLConnection connection, byte[] configurationFileData, InputStream in)
         throws IOException: RemoteConfigurationType_internalGetBytesFromURLConnectionHandler() &&

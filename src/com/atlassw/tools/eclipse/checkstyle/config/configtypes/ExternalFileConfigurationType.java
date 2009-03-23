@@ -85,14 +85,12 @@ public class ExternalFileConfigurationType extends ConfigurationType
     {
         String location = checkConfiguration.getLocation();
         // support dynamic locations for external configurations
-        internalResolveLocation(location);
+        location = resolveDynamicLocation(location);
 
         return new File(location).toURL();
 
     }
-    private void internalResolveLocation(String location) throws IOException{
-        location = resolveDynamicLocation(location);
-    }
+
 
     /**
      * {@inheritDoc}

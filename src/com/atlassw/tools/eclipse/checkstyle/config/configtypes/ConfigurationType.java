@@ -229,17 +229,17 @@ public abstract class ConfigurationType implements IConfigurationType
         }
 
         propsLocation = propsLocation + ".properties"; //$NON-NLS-1$
-        byte[] result = internalGetAdditionPropertiesBundleBytes(propsLocation);
-
-        return result;
-    }
-
-    private byte[] internalGetAdditionPropertiesBundleBytes(String propsLocation)
-    {
         URL propertyFileURL = new URL(propsLocation);
         URLConnection connection = propertyFileURL.openConnection();
         return getBytesFromURLConnection(connection);
     }
+
+//    private byte[] internalGetAdditionPropertiesBundleBytes(String propsLocation)
+//    {
+//        URL propertyFileURL = new URL(propsLocation);
+//        URLConnection connection = propertyFileURL.openConnection();
+//        return getBytesFromURLConnection(connection);
+//    }
 
     /**
      * Gets the property resolver for this configuration type used to expand

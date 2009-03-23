@@ -217,15 +217,15 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         mWorkingCopy.getAdditionalData().put(ExternalFileConfigurationType.KEY_PROTECT_CONFIG,
                 "" + mChkProtectConfig.getSelection()); //$NON-NLS-1$
 
-        internalGetEditedWorkingCopy();
+        mWorkingCopy.setLocation(mLocation.getText());
 
         return mWorkingCopy;
     }
-
-    private void internalGetEditedWorkingCopy() throws CheckstylePluginException
-    {
-        mWorkingCopy.setLocation(mLocation.getText());
-    }
+//
+//    private void internalGetEditedWorkingCopy() throws CheckstylePluginException
+//    {
+//
+//    }
 
     /**
      * Helper method trying to ensure that the file location provided by the
