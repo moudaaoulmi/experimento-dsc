@@ -153,7 +153,20 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
 
             public void widgetSelected(SelectionEvent e)
             {
-                internalWidgetSelected();
+                ICheckConfiguration targetConfig = getEditedWorkingCopy();
+
+                FileDialog fileDialog = new FileDialog(mConfigName.getShell());
+                fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
+                fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
+
+                String configFileString = fileDialog.open();
+                if (configFileString != null && new File(configFileString).exists())
+                {
+                    ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", //$NON-NLS-1$
+                            configFileString, null, new ExternalFileConfigurationType(), true, null, null);
+
+                    CheckConfigurationFactory.copyConfiguration(tmpSourceConfig, targetConfig);
+                }
             }
 
             public void widgetDefaultSelected(SelectionEvent e)
@@ -243,20 +256,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
 
     private void internalWidgetSelected()
     {
-        ICheckConfiguration targetConfig = getEditedWorkingCopy();
-
-        FileDialog fileDialog = new FileDialog(mConfigName.getShell());
-        fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
-        fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
-
-        String configFileString = fileDialog.open();
-        if (configFileString != null && new File(configFileString).exists())
-        {
-            ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", //$NON-NLS-1$
-                    configFileString, null, new ExternalFileConfigurationType(), true, null, null);
-
-            CheckConfigurationFactory.copyConfiguration(tmpSourceConfig, targetConfig);
-        }
+ 
 
     }
 }
