@@ -120,13 +120,7 @@ class PackageObjectFactory implements ModuleFactory
      */
     public Object createModule(String aName) throws CheckstyleException
     {
-        return createModuleInternal(aName);
-    }
-
-    private Object createModuleInternal(String aName) throws CheckstyleException
-    {
-        // try again with suffix "Check"
-        return doMakeObject(aName + "Check"); //$NON-NLS-1$
+        return doMakeObject(aName);
     }
 
 }
