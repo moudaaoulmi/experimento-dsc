@@ -61,8 +61,7 @@ public aspect GeneralExceptionHandler
                               ConfigurationType_getCheckstyleConfigurationHandler() ||
                               FileMatchPattern_internalSetMatchPatternHandler();
 
-    declare soft: CoreException: auditor_runAuditHandle() ||
-                                 ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
+    declare soft: CoreException: ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
                                  checkstyleBuilder_buildProjectsHandleHandle() ||
                                  ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
                                  CheckFileOnOpenPartListener_partClosedHandler() ||
@@ -81,10 +80,7 @@ public aspect GeneralExceptionHandler
                                          internalWidgetSelectedHandler() || 
                                          PrefsInitializer_internalinitializeDefaultPreferencesHandler();
 
-    declare soft: CheckstyleException: auditor_runAuditHandle();
-
-    declare soft: IOException: auditor_runAuditHandle()||
-                               packageNamesLoader_getPackageNameInteration1Handle() ||
+    declare soft: IOException: packageNamesLoader_getPackageNameInteration1Handle() ||
                                buildHandler() ||
                                ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
                                ExternalFileConfiguration_internalEnsureFileExistsHandler() ||
@@ -150,8 +146,7 @@ public aspect GeneralExceptionHandler
     pointcut packageNamesLoader_getPackageNameInteration1Handle(): 
         execution (* PackageNamesLoader.getPackageNameInteration1(..)) ;
 
-    pointcut auditor_runAuditHandle(): 
-        execution (* Auditor.runAudit(..)) ;
+
 
     pointcut ConfigurationType_internalStaticHandler():
         execution(* ConfigurationTypes.internalStatic(..));
@@ -298,7 +293,6 @@ public aspect GeneralExceptionHandler
     }
 
     Object around() throws CheckstylePluginException: checkstyleBuilder_buildProjectsHandleHandle()||
-                                                      auditor_runAuditHandle() ||
                                                       ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
                                                       ProjectConfigurationFactory_internalLoadFromPersistenceHandler(){
         Object result = null;
@@ -379,16 +373,6 @@ public aspect GeneralExceptionHandler
         }
     }
 
-    void around() throws CheckstylePluginException: auditor_runAuditHandle(){
-        try
-        {
-            proceed();
-        }
-        catch (CheckstyleException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-    }
 
     // Esses com catch (Exception) só estão aqui sendo reusados pq os pointcuts
     // deles passaram a não mais existir em outros aspectos.
