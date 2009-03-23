@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
+import org.eclipse.core.runtime.IConfigurationElement;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
@@ -49,7 +49,7 @@ public privileged aspect BuilderHandler
 
     declare soft: MalformedURLException: projectClassLoader_handlePathHandle();
 
-    declare soft: CheckstyleException: packageObjectFactory_createModuleInternalHandle()||  
+    declare soft: CheckstyleException: //packageObjectFactory_createModuleInternalHandle()||  
                                        packageObjectFactory_createModuleHandle()||  
                                        packageObjectFactory_doMakeObjectHandle()||  
                                        packageObjectFactory_internalDoMakeObjectHandle()||
@@ -82,9 +82,6 @@ public privileged aspect BuilderHandler
     pointcut projectClassLoader_handlePathHandle(): 
         execution (* ProjectClassLoader.handlePath(..)) ;
 
-    pointcut packageObjectFactory_createModuleInternalHandle(): 
-        execution (* PackageObjectFactory.createModuleInternal(..)) ;
-
     pointcut packageObjectFactory_createModuleHandle(): 
         execution (* PackageObjectFactory.createModule(..)) ;
 
@@ -107,6 +104,21 @@ public privileged aspect BuilderHandler
     pointcut checkerFactory_internalCreateCheckerHandler(): 
         execution (* CheckerFactory.internalCreateChecker(..)) ;
 
+    
+    Object around(String aName) throws CheckstyleException:
+        packageObjectFactory_createModuleHandle() && args(aName){
+        try{
+            return proceed(aName);
+        }catch(CheckstyleException ex){
+            try{
+                PackageObjectFactory pOF = (PackageObjectFactory) thisJoinPoint.getThis();
+                return pOF.doMakeObject(aName + "Check");
+            }catch(CheckstyleException ex2){
+                throw new CheckstyleException("Unable to instantiate " + aName , ex2);
+            }
+        }
+    }
+    
     IStatus around(): buildProjectJob_runHandler() {
         IStatus result = null;
         try
@@ -200,20 +212,6 @@ public privileged aspect BuilderHandler
             // /CLOVER:OFF
             throw new CheckstyleException("Unable to instantiate " + aClassName, e); //$NON-NLS-1$
             // /CLOVER:ON
-        }
-        return result;
-    }
-
-    Object around(String aName) throws CheckstyleException: 
-        packageObjectFactory_createModuleInternalHandle() && args(aName) {
-        Object result = null;
-        try
-        {
-            result = proceed(aName);
-        }
-        catch (CheckstyleException e)
-        {
-            throw new CheckstyleException("Unable to instantiate " + aName, e);//$NON-NLS-1$
         }
         return result;
     }
