@@ -4,21 +4,21 @@
 
 package com.atlassw.tools.eclipse.checkstyle.util;
 
-import java.io.IOException;
-import java.util.EmptyStackException;
 import javax.xml.transform.TransformerConfigurationException;
-import java.io.InputStream;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.Templates;
 
-import org.apache.commons.io.IOUtils;
-import org.eclipse.jface.dialogs.IDialogSettings;
+import java.util.EmptyStackException;
+import java.io.InputStream;
+
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
+
+import org.apache.commons.io.IOUtils;
+import org.eclipse.jface.dialogs.IDialogSettings;
 
 public privileged aspect UtilHandler
 {
@@ -32,15 +32,20 @@ public privileged aspect UtilHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    pointcut intenalVerifyTextHandler(): execution (* SWTUtil.OnlyDigitsVerifyListener.intenalVerifyText(..));
+    pointcut intenalVerifyTextHandler(): 
+        execution (* SWTUtil.OnlyDigitsVerifyListener.intenalVerifyText(..));
 
-    pointcut internalShellActivatedHandler(): execution (* SWTUtil.ShellResizeSupportListener.internalShellActivated(..));
+    pointcut internalShellActivatedHandler(): 
+        execution (* SWTUtil.ShellResizeSupportListener.internalShellActivated(..));
 
-    pointcut internalShellActivate2dHandler(): execution (* SWTUtil.ShellResizeSupportListener.internalShellActivated2(..));
+    pointcut internalShellActivate2dHandler(): 
+        execution (* SWTUtil.ShellResizeSupportListener.internalShellActivated2(..));
 
-    pointcut getDocumentBuilderHandler(): execution(* XMLUtil.getDocumentBuilder(..)) ;
+    pointcut getDocumentBuilderHandler(): 
+        execution(* XMLUtil.getDocumentBuilder(..)) ;
     
-    pointcut writeWithSaxInternalHandler() : execution (* XMLUtil.writeWithSaxInternal(..));
+    pointcut writeWithSaxInternalHandler() : 
+        execution (* XMLUtil.writeWithSaxInternal(..));
 
     // ---------------------------
     // Advice's
