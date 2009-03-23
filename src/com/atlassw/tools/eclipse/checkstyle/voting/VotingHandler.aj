@@ -1,30 +1,40 @@
 /* 
  * 25th, November, 2008 
  */
+
 package com.atlassw.tools.eclipse.checkstyle.voting;
 
 import java.io.IOException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
-/**
- * @author juliana
- *
- */
-public privileged aspect VotingHandler {
-    declare soft : IOException : castHandler();
+public privileged aspect VotingHandler
+{
+    // ---------------------------
+    // Declare soft
+    // ---------------------------
+    declare soft : IOException : VotingPreferencePage_castHandler();
 
-    pointcut castHandler(): call(* Vote.cast(..)) &&
+    // ---------------------------
+    // Pointcut
+    // ---------------------------
+    pointcut VotingPreferencePage_castHandler(): 
+        call(* Vote.cast(..)) &&
         withincode(* VotingPreferencePage.PageController.widgetSelected(..)) ;
 
-    void around() : castHandler() {
-        try{
-            proceed();
-        }catch (IOException e1)
+    // ---------------------------
+    // Advice
+    // ---------------------------
+    void around() : VotingPreferencePage_castHandler() {
+        try
         {
-            VotingPreferencePage v = (VotingPreferencePage)thisJoinPoint.getThis();
-            CheckstyleLog.errorDialog(v.getShell(), e1, false);
+            proceed();
+        }
+        catch (IOException e)
+        {
+            VotingPreferencePage vPP = (VotingPreferencePage) thisJoinPoint.getThis();
+            CheckstyleLog.errorDialog(vPP.getShell(), e, false);
         }
 
-    }//around()
+    }
 
-}//VotingPreferencePageHandler{}
+}
