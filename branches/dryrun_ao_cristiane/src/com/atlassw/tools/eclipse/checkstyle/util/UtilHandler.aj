@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 package com.atlassw.tools.eclipse.checkstyle.util;
 
 import javax.xml.transform.TransformerConfigurationException;
