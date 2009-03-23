@@ -281,10 +281,11 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
         return composite;
     }
-    private void internalFlush(IEclipsePreferences prefStore){
+
+    private void internalFlush(IEclipsePreferences prefStore)
+    {
         prefStore.flush();
     }
-
 
     protected void createButtonsForButtonBar(Composite parent)
     {
@@ -393,7 +394,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         SeverityLevel severity = mRule.getSeverity();
 
         severity = (SeverityLevel) ((IStructuredSelection) mSeverityCombo.getSelection())
-        .getFirstElement();
+                .getFirstElement();
 
         // Get the comment.
         String comment = StringUtils.trimToNull(mCommentText.getText());
@@ -403,58 +404,44 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
         // Get the custom message
         String customMessage = StringUtils.trimToNull(mCustomMessageText.getText());
-
+        IConfigPropertyWidget widget = null;
+        ConfigProperty property = null;
         //
         // Build a new collection of configuration properties.
         //
         // Note: if the rule does not have any configuration properties then
         // skip over the populating of the config property hash map.
         //
+        internalOkPressed(widget, property, severity, comment, customMessage, id);
+
+    }
+
+    //
+    // If we made it this far then all of the user input validated and we
+    // can
+    // update the final rule with the values the user entered.
+    //
+
+    private void internalOkPressed(IConfigPropertyWidget widget, ConfigProperty property, SeverityLevel severity, 
+            String comment, String customMessage, String id)
+    {
         if (mConfigPropertyWidgets != null)
         {
             for (int i = 0; i < mConfigPropertyWidgets.length; i++)
             {
-                IConfigPropertyWidget widget = mConfigPropertyWidgets[i];
-                ConfigProperty property = widget.getConfigProperty();
-
-          //      internalOkPressed(widget, property);
-                //TODO DUVIDA: PODE SER EXTRAÍDO COM UM RETURN DENTRO DO CATCH?
-                //QUANDO ELE É EXTRAÍDO NÃO ACEITA QUE TENHA UM RETURN POIS O AROUND É VOID
-                try
-                {
-                    widget.validate();
-                }
-                catch (CheckstylePluginException e)
-                {
-                    //RuleConfigurationEditDialog rC = (RuleConfigurationEditDialog) thisJoinPoint.getThis();
-                    String message = NLS.bind(
-                            Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue, property
-                                    .getMetaData().getName());
-                    this.setErrorMessage(message);
-                    return;
-                }
+                widget = mConfigPropertyWidgets[i];
+                property = widget.getConfigProperty();
+                widget.validate();
                 property.setValue(widget.getValue());
             }
         }
-
-        //
-        // If we made it this far then all of the user input validated and we
-        // can
-        // update the final rule with the values the user entered.
-        //
         mRule.setSeverity(severity);
         mRule.setComment(comment);
         mRule.setId(id);
         mRule.setCustomMessage(customMessage);
 
         super.okPressed();
-
     }
-
-//    private void internalOkPressed(IConfigPropertyWidget widget, ConfigProperty property)
-//    {
-//        widget.validate();
-//    }
 
     private void createConfigPropertyEntries(Composite parent)
     {

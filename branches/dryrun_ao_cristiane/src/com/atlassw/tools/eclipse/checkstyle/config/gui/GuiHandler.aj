@@ -15,7 +15,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ComboViewer;
-
+import com.atlassw.tools.eclipse.checkstyle.config.gui.widgets.IConfigPropertyWidget;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.Messages;
+import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 public privileged aspect GuiHandler
 {
@@ -36,9 +39,8 @@ public privileged aspect GuiHandler
                     CheckConfigurationWorkingSetEditor_internalConfigureCheckConfigHandler() ||
                     CheckConfigurationFactory_exportCheckstyleCheckConfigHandler() ||
                     ResolvablePropertiesDialog_findPropertyItemsHandler() ||
-                    RuleConfigurationEditDialog_okPressedHandler();// ||
-
-    // RuleConfigurationEditDialog_internalOkPressedHandler();
+                    RuleConfigurationEditDialog_okPressedHandler() ||
+                    RuleConfigurationEditDialog_internalOkPressedHandler();
 
     declare soft: Exception: CheckConfigurationPropertiesDialog_createConfigurationEditorHandler();
 
@@ -93,8 +95,8 @@ public privileged aspect GuiHandler
         withincode(* RuleConfigurationEditDialog.okPressed(..));
 
     // TODO VERIFICAR COM ROMULO E DEPOIS DOCUMENTAR
-    // pointcut RuleConfigurationEditDialog_internalOkPressedHandler():
-    // execution(* RuleConfigurationEditDialog.internalOkPressed(..));
+    pointcut RuleConfigurationEditDialog_internalOkPressedHandler():
+        execution(* RuleConfigurationEditDialog.internalOkPressed(..) );
 
     // ---------------------------
     // Advice's
@@ -240,23 +242,22 @@ public privileged aspect GuiHandler
         }
     }
 
-    // void around(IConfigPropertyWidget widget, ConfigProperty property):
-    // RuleConfigurationEditDialog_internalOkPressedHandler()
-    // && args (widget, property){
-    // try
-    // {
-    // proceed(widget, property);
-    // }
-    // catch (CheckstylePluginException e)
-    // {
-    // RuleConfigurationEditDialog rC = (RuleConfigurationEditDialog)
-    // thisJoinPoint.getThis();
-    // String message =
-    // NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue,
-    // property.getMetaData().getName());
-    // rC.setErrorMessage(message);
-    // //return;
-    // }
-    // }
+    void around(IConfigPropertyWidget widget, ConfigProperty property, SeverityLevel severity, 
+            String comment, String customMessage, String id):
+        RuleConfigurationEditDialog_internalOkPressedHandler()
+        && args (widget, property, severity, comment, customMessage, id){
+        try
+        {
+            proceed(widget, property, severity, comment, customMessage, id);
+        }
+        catch (CheckstylePluginException e)
+        {
+            RuleConfigurationEditDialog rC = (RuleConfigurationEditDialog) thisJoinPoint.getThis();
+            String message = NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue,
+                    property.getMetaData().getName());
+            rC.setErrorMessage(message);
+            // return;
+        }
+    }
 
 }
