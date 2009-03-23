@@ -101,7 +101,6 @@ public class BuildProjectJob extends Job
         }
         status = Status.OK_STATUS;
 
-        monitor.done();
         return status;
     }
 }

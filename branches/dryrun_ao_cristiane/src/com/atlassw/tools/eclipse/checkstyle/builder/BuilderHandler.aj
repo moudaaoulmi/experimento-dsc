@@ -6,40 +6,44 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import org.eclipse.core.runtime.IConfigurationElement;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.text.BadLocationException;
 import org.xml.sax.SAXException;
-
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import com.puppycrawl.tools.checkstyle.Checker;
+import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import java.io.InputStream;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
+import com.puppycrawl.tools.checkstyle.api.Filter;
 
 public privileged aspect BuilderHandler
 {
+    // ---------------------------
+    // Declare soft's
+    // ---------------------------
+    declare soft: CoreException: buildProjectJob_runHandler() ||
+                                 auditor_runAuditHandle();
 
-    declare soft: CoreException: buildProjectJob_runHandler();
-
-    declare soft: CheckstylePluginException: checkstyleBuilder_buildHandler()|| checkstyleBuilder_handleBuildSelectionHandler();
+    declare soft: CheckstylePluginException: checkstyleBuilder_buildHandler()|| 
+                                             checkstyleBuilder_handleBuildSelectionHandler();
 
     declare soft: BadLocationException: auditor_calculateMarkerOffsetHandle();
 
-    declare soft: SAXException: packageNamesLoader_getPackageNameInteration3Handle()||packageNamesLoader_getPackageNamesHandle();
+    declare soft: SAXException: packageNamesLoader_getPackageNameInteration3Handle()||
+                                packageNamesLoader_getPackageNamesHandle();
 
     declare soft: IOException: packageNamesLoader_getPackageNameInteration3Handle()||
-                               packageNamesLoader_getPackageNamesHandle();
+                               packageNamesLoader_getPackageNamesHandle() ||
+                               auditor_runAuditHandle();
 
     declare soft: ClassNotFoundException: packageObjectFactory_createObjectHandle();
 
@@ -49,8 +53,7 @@ public privileged aspect BuilderHandler
 
     declare soft: MalformedURLException: projectClassLoader_handlePathHandle();
 
-    declare soft: CheckstyleException: //packageObjectFactory_createModuleInternalHandle()||  
-                                       packageObjectFactory_createModuleHandle()||  
+    declare soft: CheckstyleException: packageObjectFactory_createModuleHandle()||  
                                        packageObjectFactory_doMakeObjectHandle()||  
                                        packageObjectFactory_internalDoMakeObjectHandle()||
                                        auditor_runAuditHandle();
@@ -59,13 +62,17 @@ public privileged aspect BuilderHandler
 
     declare soft: CheckstylePluginException: runCheckstyleOnFilesJob_runInWorkspaceHandle();
 
-    // pointcuts
+    // ---------------------------
+    // Pointcut's
+    // ---------------------------
 
     pointcut buildProjectJob_runHandler():
         execution (* BuildProjectJob.run(..)) ;
 
     pointcut checkstyleBuilder_buildHandler(): 
-        execution(* CheckstyleBuilder.build(..)) ;
+//        call(* ProjectConfigurationFactory.getConfiguration(..)) &&
+//        withincode(* CheckstyleBuilder.build(..)) ;
+        execution(* CheckstyleBuilder.build(..));
 
     pointcut checkstyleBuilder_handleBuildSelectionHandler(): 
         execution(* CheckstyleBuilder.handleBuildSelection(..));
@@ -73,30 +80,31 @@ public privileged aspect BuilderHandler
     pointcut auditor_calculateMarkerOffsetHandle(): 
         execution (* Auditor.CheckstyleAuditListener.calculateMarkerOffset(..)) ;
 
+    pointcut auditor_runAuditHandle(): 
+        execution (* Auditor.internalRunAudit(..)) ;
+
     pointcut packageNamesLoader_getPackageNameInteration3Handle(): 
         execution (* PackageNamesLoader.getPackageNameInteration3(..)) ;
 
+    pointcut packageNamesLoader_getPackageNamesHandle(): 
+        execution (* PackageNamesLoader.getPackageNames(..)) ;
+
+    //caso esquisito esse, que só continua o método se cair na exceção
     pointcut packageObjectFactory_createObjectHandle(): 
         execution (* PackageObjectFactory.createObject(..)) ;
 
-    pointcut projectClassLoader_handlePathHandle(): 
-        execution (* ProjectClassLoader.handlePath(..)) ;
-
     pointcut packageObjectFactory_createModuleHandle(): 
         execution (* PackageObjectFactory.createModule(..)) ;
-
+    
     pointcut packageObjectFactory_doMakeObjectHandle(): 
         execution(* PackageObjectFactory.doMakeObject(..)) ;
-
+    
     pointcut packageObjectFactory_internalDoMakeObjectHandle():
-         call(* PackageObjectFactory.createObject(..)) &&
-         withincode(* PackageObjectFactory.internalDoMakeObject(..)) ;
-
-    pointcut auditor_runAuditHandle(): 
-        execution (* Auditor.runAudit(..)) ;
-
-    pointcut packageNamesLoader_getPackageNamesHandle(): 
-        execution (* PackageNamesLoader.getPackageNames(..)) ;
+        call(* PackageObjectFactory.createObject(..)) &&
+        withincode(* PackageObjectFactory.internalDoMakeObject(..)) ;
+    
+    pointcut projectClassLoader_handlePathHandle(): 
+        execution (* ProjectClassLoader.handlePath(..)) ;
 
     pointcut runCheckstyleOnFilesJob_runInWorkspaceHandle(): 
         execution (* RunCheckstyleOnFilesJob.runInWorkspace(..)) ;
@@ -104,36 +112,85 @@ public privileged aspect BuilderHandler
     pointcut checkerFactory_internalCreateCheckerHandler(): 
         execution (* CheckerFactory.internalCreateChecker(..)) ;
 
-    
+    // ---------------------------
+    // Advice's
+    // ---------------------------
+    void around(IProject project, IProgressMonitor monitor, Checker checker,
+            AuditListener listener, Filter runtimeExceptionFilter, ClassLoader contextClassloader)
+        throws CheckstylePluginException: auditor_runAuditHandle() &&
+        args(project, monitor, checker, listener, runtimeExceptionFilter,
+                contextClassloader){
+        try
+        {
+            proceed(project, monitor, checker, listener, runtimeExceptionFilter, contextClassloader);
+        }
+        catch (IOException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        catch (CoreException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        catch (CheckstyleException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        finally
+        {
+            monitor.done();
+            // Cleanup listener and filter
+            if (checker != null)
+            {
+                checker.removeListener(listener);
+                checker.removeFilter(runtimeExceptionFilter);
+            }
+            // restore the original classloader
+            Thread.currentThread().setContextClassLoader(contextClassloader);
+        }
+    }
+
     Object around(String aName) throws CheckstyleException:
         packageObjectFactory_createModuleHandle() && args(aName){
-        try{
+        try
+        {
             return proceed(aName);
-        }catch(CheckstyleException ex){
-            try{
+        }
+        catch (CheckstyleException ex)
+        {
+            try
+            {
                 PackageObjectFactory pOF = (PackageObjectFactory) thisJoinPoint.getThis();
                 return pOF.doMakeObject(aName + "Check");
-            }catch(CheckstyleException ex2){
-                throw new CheckstyleException("Unable to instantiate " + aName , ex2);
+            }
+            catch (CheckstyleException ex2)
+            {
+                throw new CheckstyleException("Unable to instantiate " + aName, ex2);
             }
         }
     }
-    
-    IStatus around(): buildProjectJob_runHandler() {
+
+    IStatus around(IProgressMonitor monitor): buildProjectJob_runHandler() && 
+            args(monitor){
         IStatus result = null;
         try
         {
-            result = proceed();
+            result = proceed(monitor);
         }
         catch (CoreException e)
         {
             result = e.getStatus();
         }
+        finally
+        {
+            monitor.done();
+        }
         return result;
     }
 
-    IProject[] around() throws CoreException:  checkstyleBuilder_buildHandler() {
-        IProject[] result = null;
+    /* IProjectConfiguration */IProject[] around() throws CoreException: 
+        checkstyleBuilder_buildHandler(){
+        /* IProjectConfiguration */IProject[] result = null;
         try
         {
             result = proceed();
@@ -161,7 +218,8 @@ public privileged aspect BuilderHandler
         }
     }
 
-    void around(PackageNamesLoader nameLoader, URL aPackageFile): packageNamesLoader_getPackageNameInteration3Handle() 
+    void around(PackageNamesLoader nameLoader, URL aPackageFile): 
+            packageNamesLoader_getPackageNameInteration3Handle() 
             && args(nameLoader, aPackageFile) {
         try
         {
@@ -245,7 +303,8 @@ public privileged aspect BuilderHandler
         return result;
     }
 
-    List<Object> around() throws CheckstylePluginException: packageNamesLoader_getPackageNamesHandle() {
+    List<Object> around() throws CheckstylePluginException: 
+            packageNamesLoader_getPackageNamesHandle() {
         List<Object> result = null;
         try
         {
@@ -269,7 +328,8 @@ public privileged aspect BuilderHandler
         return result;
     }
 
-    Object around() throws CoreException : runCheckstyleOnFilesJob_runInWorkspaceHandle() ||checkstyleBuilder_handleBuildSelectionHandler() {
+    Object around() throws CoreException : runCheckstyleOnFilesJob_runInWorkspaceHandle() ||
+                                           checkstyleBuilder_handleBuildSelectionHandler() {
         try
         {
             proceed();
