@@ -27,19 +27,24 @@ public privileged aspect FiltersHandler
     // PointCut's
     // ---------------------------
 
-    pointcut FilesInSyncFilter2_getSyncInfoHandler(): execution(*  FilesInSyncFilter2.accept(..));
+    pointcut FilesInSyncFilter2_getSyncInfoHandler(): 
+        execution(*  FilesInSyncFilter2.accept(..));
 
-    pointcut FilesInSyncFilter_acceptHandler(): execution(* FilesInSyncFilter.accept(..));
+    pointcut FilesInSyncFilter_acceptHandler(): 
+        execution(* FilesInSyncFilter.accept(..));
 
-    pointcut SourceFolderContentProvider_handleProjectHandler(): execution(* PackageFilterEditor.SourceFolderContentProvider.handleProject(..));
+    pointcut SourceFolderContentProvider_handleProjectHandler(): 
+        execution(* PackageFilterEditor.SourceFolderContentProvider.handleProject(..));
 
-    pointcut SourceFolderContentProvider_handleContainerHandler(): execution(* PackageFilterEditor.SourceFolderContentProvider.handleContainer(..));
+    pointcut SourceFolderContentProvider_handleContainerHandler(): 
+        execution(* PackageFilterEditor.SourceFolderContentProvider.handleContainer(..));
 
     // ---------------------------
     // Advices's
     // ---------------------------
 
-    List around() : SourceFolderContentProvider_handleProjectHandler() || SourceFolderContentProvider_handleContainerHandler() {
+    List around() : SourceFolderContentProvider_handleProjectHandler() || 
+                    SourceFolderContentProvider_handleContainerHandler() {
         List c = null;
         try
         {
@@ -53,7 +58,8 @@ public privileged aspect FiltersHandler
         return c;
     }
 
-    boolean around(Object element) : FilesInSyncFilter2_getSyncInfoHandler() && args(element) {
+    boolean around(Object element) : FilesInSyncFilter2_getSyncInfoHandler() && 
+        args(element) {
         boolean result = false;
         try
         {
