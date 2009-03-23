@@ -1,6 +1,5 @@
 
 package com.atlassw.tools.eclipse.checkstyle.exception;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -12,7 +11,6 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
-import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.builder.Auditor;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationWorkingSetEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
@@ -24,7 +22,6 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.PluginFilters;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationTester;
 import com.atlassw.tools.eclipse.checkstyle.builder.PackageNamesLoader;
 import com.atlassw.tools.eclipse.checkstyle.util.CustomLibrariesClassLoader;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ExternalFileConfigurationEditor;
@@ -44,7 +41,6 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.NonSrcDirsFilt
 import com.atlassw.tools.eclipse.checkstyle.properties.FileSetEditDialog;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.CheckFileOnOpenPartListener;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteConfigurationType;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.AbstractFilter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
@@ -395,11 +391,9 @@ public aspect GeneralExceptionHandler
     }
 
     // Esses com catch (Exception) só estão aqui sendo reusados pq os pointcuts
-    // deles
-    // passaram a não mais existir em outros aspectos.
+    // deles passaram a não mais existir em outros aspectos.
     // se existissem, teria que acontecer uma precedencia entre os aspectos.
     void around(): ConfigurationType_internalStaticHandler() || 
-                   /*CheckstylePlugin_startHandle() || */
                    saveFilters_internalHandler() ||
                    PluginFilters_internalHandler(){
         try
