@@ -159,49 +159,47 @@ public class Auditor
         // store the current context class loader
         ClassLoader contextClassloader = Thread.currentThread().getContextClassLoader();
 
-            // get the classloader that is able to load classes from custom jars
-            // within the extension-libraries dir
-            ClassLoader customClassLoader = CustomLibrariesClassLoader.get();
-            Thread.currentThread().setContextClassLoader(customClassLoader);
+        internalRunAudit(project, monitor, checker, listener, runtimeExceptionFilter,
+                contextClassloader);
+    }
 
-            File[] filesToAudit = getFileArray();
+    private void internalRunAudit(IProject project, IProgressMonitor monitor, Checker checker,
+            AuditListener listener, Filter runtimeExceptionFilter, ClassLoader contextClassloader)
+        throws CheckstylePluginException
+    {
 
-            // begin task
-            monitor.beginTask(NLS.bind(Messages.Auditor_msgCheckingConfig, mCheckConfiguration
-                    .getName()), filesToAudit.length);
+        // get the classloader that is able to load classes from custom jars
+        // within the extension-libraries dir
+        ClassLoader customClassLoader = CustomLibrariesClassLoader.get();
+        Thread.currentThread().setContextClassLoader(customClassLoader);
 
-            // create checker
-            checker = CheckerFactory.createChecker(mCheckConfiguration, project);
+        File[] filesToAudit = getFileArray();
 
-            // get the additional data
-            ConfigurationReader.AdditionalConfigData additionalData = CheckerFactory
-                    .getAdditionalData(mCheckConfiguration, project);
+        // begin task
+        monitor.beginTask(NLS.bind(Messages.Auditor_msgCheckingConfig, mCheckConfiguration
+                .getName()), filesToAudit.length);
 
-            // create and add listener
-            listener = new CheckstyleAuditListener(project, additionalData);
-            checker.addListener(listener);
+        // create checker
+        checker = CheckerFactory.createChecker(mCheckConfiguration, project);
 
-            // reconfigure the shared classloader for the current
-            // project
-            if (project.hasNature(JavaCore.NATURE_ID))
-            {
-                CheckerFactory.getSharedClassLoader().intializeWithProject(project);
-            }
+        // get the additional data
+        ConfigurationReader.AdditionalConfigData additionalData = CheckerFactory.getAdditionalData(
+                mCheckConfiguration, project);
 
-            // run the files through the checker
-            checker.process(filesToAudit);
+        // create and add listener
+        listener = new CheckstyleAuditListener(project, additionalData);
+        checker.addListener(listener);
 
-            monitor.done();
+        // reconfigure the shared classloader for the current
+        // project
+        if (project.hasNature(JavaCore.NATURE_ID))
+        {
+            CheckerFactory.getSharedClassLoader().intializeWithProject(project);
+        }
 
-            // Cleanup listener and filter
-            if (checker != null)
-            {
-                checker.removeListener(listener);
-                checker.removeFilter(runtimeExceptionFilter);
-            }
+        // run the files through the checker
+        checker.process(filesToAudit);
 
-            // restore the original classloader
-            Thread.currentThread().setContextClassLoader(contextClassloader);
     }
 
     /**
@@ -344,52 +342,49 @@ public class Auditor
 
         public void addError(AuditEvent error)
         {
-                if (!mLimitMarkers || mMarkerCount < mMarkerLimit)
+            if (!mLimitMarkers || mMarkerCount < mMarkerLimit)
+            {
+
+                SeverityLevel severity = error.getSeverityLevel();
+
+                if (!severity.equals(SeverityLevel.IGNORE) && mResource != null)
                 {
 
-                    SeverityLevel severity = error.getSeverityLevel();
+                    RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
 
-                    if (!severity.equals(SeverityLevel.IGNORE) && mResource != null)
+                    // create generic metadata if none can be found
+                    if (metaData == null)
                     {
-
-                        RuleMetadata metaData = MetadataFactory.getRuleMetadata(error
-                                .getSourceName());
-
-                        // create generic metadata if none can be found
-                        if (metaData == null)
-                        {
-                            Module module = new Module(error.getSourceName());
-                            metaData = MetadataFactory.createGenericMetadata(module);
-                        }
-
-                        mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData
-                                .getInternalName());
-                        mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, getMessageKey(error));
-                        mMarkerAttributes.put(IMarker.PRIORITY,
-                                new Integer(IMarker.PRIORITY_NORMAL));
-                        mMarkerAttributes.put(IMarker.SEVERITY, new Integer(
-                                getSeverityValue(severity)));
-
-                        MarkerUtilities.setLineNumber(mMarkerAttributes, error.getLine());
-                        MarkerUtilities.setMessage(mMarkerAttributes, getMessage(error));
-
-                        // calculate offset for editor annotations
-                        calculateMarkerOffset(error, mMarkerAttributes);
-
-                        // enables own category under Java Problem Type
-                        // setting for Problems view (RFE 1530366)
-                        mMarkerAttributes.put("categoryId", new Integer(999)); //$NON-NLS-1$
-
-                        // create a marker for the actual resource
-                        MarkerUtilities.createMarker(mResource, mMarkerAttributes,
-                                CheckstyleMarker.MARKER_ID);
-                        mMarkerCount++;
-
-                        // clear the marker attributes to reuse the map for the
-                        // next error
-                        mMarkerAttributes.clear();
+                        Module module = new Module(error.getSourceName());
+                        metaData = MetadataFactory.createGenericMetadata(module);
                     }
+
+                    mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME, metaData.getInternalName());
+                    mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY, getMessageKey(error));
+                    mMarkerAttributes.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
+                    mMarkerAttributes
+                            .put(IMarker.SEVERITY, new Integer(getSeverityValue(severity)));
+
+                    MarkerUtilities.setLineNumber(mMarkerAttributes, error.getLine());
+                    MarkerUtilities.setMessage(mMarkerAttributes, getMessage(error));
+
+                    // calculate offset for editor annotations
+                    calculateMarkerOffset(error, mMarkerAttributes);
+
+                    // enables own category under Java Problem Type
+                    // setting for Problems view (RFE 1530366)
+                    mMarkerAttributes.put("categoryId", new Integer(999)); //$NON-NLS-1$
+
+                    // create a marker for the actual resource
+                    MarkerUtilities.createMarker(mResource, mMarkerAttributes,
+                            CheckstyleMarker.MARKER_ID);
+                    mMarkerCount++;
+
+                    // clear the marker attributes to reuse the map for the
+                    // next error
+                    mMarkerAttributes.clear();
                 }
+            }
 
         }
 
@@ -423,7 +418,7 @@ public class Auditor
          */
         private void calculateMarkerOffset(AuditEvent error, Map markerAttributes)
             throws CoreException
-            {
+        {
 
             // lazy create the document for the current file
             if (mDocument == null && mResource instanceof IFile)
@@ -440,8 +435,7 @@ public class Auditor
 
                 int line = error.getLine();
 
-                IRegion lineInformation = mDocument
-                .getLineInformation(line == 0 ? 0 : line - 1);
+                IRegion lineInformation = mDocument.getLineInformation(line == 0 ? 0 : line - 1);
                 int lineOffset = lineInformation.getOffset();
                 int lineLength = lineInformation.getLength();
 
@@ -454,7 +448,7 @@ public class Auditor
                 MarkerUtilities.setCharStart(markerAttributes, lineOffset + offset);
                 MarkerUtilities.setCharEnd(markerAttributes, lineOffset + lineLength);
             }
-            }
+        }
 
         /**
          * Calculates the offset for the given column within this line. This is

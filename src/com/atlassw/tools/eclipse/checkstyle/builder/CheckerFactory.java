@@ -30,7 +30,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.collections.ReferenceMap;
-import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
