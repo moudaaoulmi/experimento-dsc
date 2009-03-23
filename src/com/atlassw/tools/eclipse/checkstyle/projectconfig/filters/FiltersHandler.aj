@@ -59,7 +59,7 @@ public privileged aspect FiltersHandler
     }
 
     boolean around(Object element) : FilesInSyncFilter2_getSyncInfoHandler() && 
-        args(element) {
+            args(element) {
         boolean result = false;
         try
         {
