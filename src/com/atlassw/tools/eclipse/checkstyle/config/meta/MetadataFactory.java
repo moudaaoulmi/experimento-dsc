@@ -384,20 +384,13 @@ public final class MetadataFactory
             // DefaultHeader.resolveEntity():
             // sometimes it throws SAX- and IO- exceptions
             // sometime SAX only :(
-            
-            InputSource inputSource = internalResolveEntity(publicId, systemId);
-            
-            return inputSource;
-            
-        }
-
-        private InputSource internalResolveEntity(String publicId, String systemId)throws SAXException{
             if (false)
             {
                 throw new IOException(""); //$NON-NLS-1$
             }
             return super.resolveEntity(publicId, systemId);
         }
+
         /**
          * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
          *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
