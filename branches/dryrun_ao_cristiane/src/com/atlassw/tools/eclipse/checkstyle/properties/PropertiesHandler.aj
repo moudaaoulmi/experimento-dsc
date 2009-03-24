@@ -82,36 +82,38 @@ public privileged aspect PropertiesHandler
     // Advice's
     // ---------------------------
     void around() : FileMatchPatternEditDialog_okPressedHandler() {
-        FileMatchPatternEditDialog fMPED = (FileMatchPatternEditDialog) thisJoinPoint.getThis();
         try
         {
             proceed();
         }
         catch (PatternSyntaxException e)
         {
+            FileMatchPatternEditDialog fMPED = (FileMatchPatternEditDialog) thisJoinPoint.getThis();
             fMPED.setErrorMessage(e.getLocalizedMessage());
             return;
         }
         catch (CheckstylePluginException e)
         {
+            FileMatchPatternEditDialog fMPED = (FileMatchPatternEditDialog) thisJoinPoint.getThis();
             fMPED.setErrorMessage(e.getLocalizedMessage());
             return;
         }
     }
 
     void around() : CheckstylePropertyPage_setElementHandler() {
-        CheckstylePropertyPage cPG = (CheckstylePropertyPage) thisJoinPoint.getThis();
         try
         {
             proceed();
         }
         catch (CoreException e)
         {
+            CheckstylePropertyPage cPG = (CheckstylePropertyPage) thisJoinPoint.getThis();
             CheckstyleLog.errorDialog(cPG.getShell(), ErrorMessages.errorOpeningPropertiesPage, e,
                     true);
         }
         catch (CheckstylePluginException e)
         {
+            CheckstylePropertyPage cPG = (CheckstylePropertyPage) thisJoinPoint.getThis();
             CheckstyleLog.errorDialog(cPG.getShell(), ErrorMessages.errorOpeningPropertiesPage, e,
                     true);
         }
@@ -148,7 +150,7 @@ public privileged aspect PropertiesHandler
     }
 
     boolean around() : CheckstylePropertyPage_performOkHandler() {
-        boolean result = false;
+        boolean result = true;
         try
         {
             result = proceed();
