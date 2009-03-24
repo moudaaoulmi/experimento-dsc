@@ -72,7 +72,9 @@ public privileged aspect MetaHandler
     // ---------------------------
     // Advice's
     // ---------------------------
-    String around(Module module, String parent): metadataFactory_internalRuleMetadataHandler() && args(module,parent){
+    String around(Module module, String parent): 
+            metadataFactory_internalRuleMetadataHandler() && 
+            args(module,parent){
         try
         {
             return proceed(module, parent);
@@ -85,7 +87,9 @@ public privileged aspect MetaHandler
         return parent;
     }
 
-    void around(ClassLoader customsLoader, String metadataFile, InputStream metadataStream): metadataFactory_internalDoInitializationHandler() && args(customsLoader,metadataFile,metadataStream){
+    void around(ClassLoader customsLoader, String metadataFile, InputStream metadataStream): 
+            metadataFactory_internalDoInitializationHandler() && 
+            args(customsLoader,metadataFile,metadataStream){
         try
         {
             proceed(customsLoader, metadataFile, metadataStream);
@@ -136,7 +140,9 @@ public privileged aspect MetaHandler
         }
     }
 
-    int around(Attributes attributes, int priority): metadataFactory_internalStartElementHandler() && args(attributes,priority){
+    int around(Attributes attributes, int priority): 
+            metadataFactory_internalStartElementHandler() && 
+            args(attributes,priority){
         try
         {
             return proceed(attributes, priority);
@@ -149,7 +155,9 @@ public privileged aspect MetaHandler
         return priority;
     }
 
-    String around(String localizationCandidate): metadataFactory_localizeHandler() && args(localizationCandidate){
+    String around(String localizationCandidate): 
+            metadataFactory_localizeHandler() && 
+            args(localizationCandidate){
         String retorno = localizationCandidate;
         try
         {
@@ -161,8 +169,9 @@ public privileged aspect MetaHandler
         }
     }
 
-    void around(ClassLoader contextClassLoader): metadataFactory_internalDoHandler() 
-        && args(contextClassLoader){
+    void around(ClassLoader contextClassLoader): 
+            metadataFactory_internalDoHandler() && 
+            args(contextClassLoader){
         try
         {
             proceed(contextClassLoader);
