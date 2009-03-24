@@ -102,7 +102,6 @@ public privileged aspect ConfigHandle
     pointcut RetrowException_getUnresolvedPropertiesIterationHandle(): 
         execution (* CheckConfigurationTester.getUnresolvedPropertiesIteration(..));
 
-    // ver daqui
     pointcut RetrowException_setModulesHandle(): 
         execution (* CheckConfigurationWorkingCopy.internalSetModules(..)) ;
 
@@ -119,8 +118,8 @@ public privileged aspect ConfigHandle
     // Advice's
     // ---------------------------
     void around(InputStream in, Object result) throws CheckstylePluginException:
-        CheckConfigurationWorkingCopy_internalGetModules() &&
-        args(in, result){
+                CheckConfigurationWorkingCopy_internalGetModules() &&
+                args(in, result){
         
         try
         {
@@ -133,8 +132,8 @@ public privileged aspect ConfigHandle
     }
 
     void around(String location, String oldLocation) throws CheckstylePluginException: 
-        CheckConfigurationWorkingCopy_setLocationHandle() 
-            && args(location, oldLocation) {
+                CheckConfigurationWorkingCopy_setLocationHandle() 
+                && args(location, oldLocation) {
         try
         {
             proceed(location, oldLocation);
