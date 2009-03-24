@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 public privileged aspect DuplicatedHandler
 {
-
     // ---------------------------
     // Declare soft's
     // ---------------------------
@@ -47,7 +46,8 @@ public privileged aspect DuplicatedHandler
     // Pointcut's
     // ---------------------------
     pointcut DuplicatedCodeAction_createCheckerHandler() : 
-        execution(* DuplicatedCodeAction.createChecker(..));
+        call(Checker.new()) &&
+        withincode(* DuplicatedCodeAction.createChecker(..));
 
     pointcut DuplicatedCodeAction_addJavaFilesToSetHandler() : 
         execution(* DuplicatedCodeAction.addJavaFilesToSet(..));
@@ -56,7 +56,7 @@ public privileged aspect DuplicatedHandler
         execution(* DuplicatedCodeAction.findDuplicatedCodeView(..));
 
     pointcut DuplicatedCode_internalHandler() : 
-        execution(* DuplicatedCode.internal(..));
+        staticinitialization(DuplicatedCode);
 
     pointcut DuplicatedCode_internalGetNumberOfDuplicatedLinesHandler() : 
         execution(* DuplicatedCode.internalGetNumberOfDuplicatedLines(..));
@@ -73,13 +73,13 @@ public privileged aspect DuplicatedHandler
     pointcut DuplicatedCodeView_internalRunHandler() : 
         execution (* DuplicatedCodeView.internalRun(..));
 
-     pointcut DuplicatedCodeView_runHandler(): 
+    pointcut DuplicatedCodeView_runHandler(): 
          execution(* DuplicatedCodeView.internal(..));
-    
-//    pointcut DuplicatedCodeView_runHandler():
-//        withincode(* DuplicatedCodeView.createOpenSourceFileAction()) &&
-//        execution(* run(..)) && 
-//        within(Action+);
+
+//     pointcut DuplicatedCodeView_runHandler():
+//     withincode(* DuplicatedCodeView.createOpenSourceFileAction()) &&
+//     within(Action+) &&
+//     execution(* run(..));
 
     pointcut DuplicatedCodeView_internal2Handler() :
         execution (* DuplicatedCodeView.internal2(..));
@@ -105,7 +105,6 @@ public privileged aspect DuplicatedHandler
             CheckstyleLog.errorDialog(duplicate.mWorkbenchPart.getSite().getShell(),
                     "Error opening the duplicated code view '" + DuplicatedCodeView.VIEW_ID + "'.",
                     e, true);
-
         }
         catch (CoreException e)
         {
@@ -202,7 +201,9 @@ public privileged aspect DuplicatedHandler
         return result;
     }
 
-    IStatus around(IProgressMonitor monitor, IProject project) : DuplicatedCodeView_internalRunHandler() && args(monitor, project){
+    IStatus around(IProgressMonitor monitor, IProject project) : 
+            DuplicatedCodeView_internalRunHandler() && 
+            args(monitor, project){
         IStatus result = null;
         try
         {
