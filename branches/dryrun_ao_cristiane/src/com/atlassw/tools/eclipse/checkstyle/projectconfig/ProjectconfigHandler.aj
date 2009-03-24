@@ -52,8 +52,8 @@ public privileged aspect ProjectconfigHandler
 
     void around(ProjectConfigurationWorkingCopy config, ByteArrayOutputStream pipeOut,
             InputStream pipeIn) throws CheckstylePluginException : 
-                ProjectConfigurationWorkingCopy_internalStoreToPersistenceHandler()
-                && args (config, pipeOut, pipeIn){
+                ProjectConfigurationWorkingCopy_internalStoreToPersistenceHandler()&& 
+                args (config, pipeOut, pipeIn){
         try
         {
             proceed(config, pipeOut, pipeIn);
