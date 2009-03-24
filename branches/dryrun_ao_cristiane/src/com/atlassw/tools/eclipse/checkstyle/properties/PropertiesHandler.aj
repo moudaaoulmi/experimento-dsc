@@ -164,17 +164,18 @@ public privileged aspect PropertiesHandler
     }
 
     void around() : CheckstylePropertyPage_openFilterEditorHandler() {
-        CheckstylePropertyPage cPG = (CheckstylePropertyPage) thisJoinPoint.getThis();
         try
         {
             proceed();
         }
         catch (IllegalAccessException ex)
         {
+            CheckstylePropertyPage cPG = (CheckstylePropertyPage) thisJoinPoint.getThis();
             CheckstyleLog.errorDialog(cPG.getShell(), ex, true);
         }
         catch (InstantiationException ex)
         {
+            CheckstylePropertyPage cPG = (CheckstylePropertyPage) thisJoinPoint.getThis();
             CheckstyleLog.errorDialog(cPG.getShell(), ex, true);
         }
     }

@@ -8,8 +8,8 @@ import org.eclipse.osgi.framework.internal.core.MessageResourceBundle.*;
 
 public privileged aspect CoreHandler
 {
-    declare soft: Exception:  Core_putHandle() ||
-    Core_internalComputeMissingMessagesHandler();
+    declare soft: Exception: Core_putHandle() ||
+                             Core_internalComputeMissingMessagesHandler();
 
     declare soft: IOException: Core_internalLoadHandler();
 
@@ -36,7 +36,8 @@ public privileged aspect CoreHandler
     }
 
     void around(Field field, String value): 
-        Core_internalComputeMissingMessagesHandler() && args(field, value){
+                Core_internalComputeMissingMessagesHandler() && 
+                args(field, value){
         try
         {
             proceed(field, value);
