@@ -64,7 +64,13 @@ public privileged aspect GuiHandler
         call(* CheckConfigurationWorkingCopy.setName(..)) &&
         within(CheckConfigurationPropertiesDialog) &&
         within(ISelectionChangedListener+);
+    
+    /*pointcut CheckConfigurationPropertiesDialog_widgetSelectedHandler(): 
+        call(* CheckConfigurationPropertiesDialog.widgetSelected(..)) &&
+        within(CheckConfigurationPropertiesDialog) &&
+        within(SelectionListener+);*/
 
+    //TODO: tentar colocar como classe anonima
     pointcut CheckConfigurationPropertiesDialog_widgetSelectedHandler():
         execution(* CheckConfigurationPropertiesDialog.getEditedWorkingCopyInternal(..));
 
