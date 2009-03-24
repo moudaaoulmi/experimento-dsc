@@ -1,60 +1,77 @@
-/**
- * 
- */
 package com.atlassw.tools.eclipse.checkstyle.config.gui.widgets;
 
 import java.util.MissingResourceException;
 import java.util.regex.PatternSyntaxException;
 
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
-/**
- * @author julianasaraiva
- *
- */
 public aspect WidgetsHandler
 {
+    // ---------------------------
+    // Declare soft's
+    // ---------------------------
+    declare soft: Exception: ConfigPropertyWidgetInteger_validateIntegerHandler() || 
+    ConfigPropertyWidgetRegex_validateRegexHandler();
 
-    declare soft: Exception: validateIntegerHandler() || validateRegexHandler();
-    
-    pointcut validateIntegerHandler() : execution(* ConfigPropertyWidgetInteger.validate(..));
-    pointcut validateRegexHandler() : execution(* ConfigPropertyWidgetRegex.validate(..));
-    pointcut internalGetTextHandler() : execution(* ConfigPropertyWidgetMultiCheck.TokenLabelProvider.internalGetText(..));
-    pointcut testRegexHandler() : execution(* ConfigPropertyWidgetRegex.testRegex(..));
-    
+    // ---------------------------
+    // Pointcut's
+    // ---------------------------
+    pointcut ConfigPropertyWidgetInteger_validateIntegerHandler() : 
+        execution(* ConfigPropertyWidgetInteger.validate(..));
+
+    pointcut ConfigPropertyWidgetRegex_validateRegexHandler() : 
+        execution(* ConfigPropertyWidgetRegex.validate(..));
+
+    pointcut ConfigPropertyWidgetMultiCheck_internalGetTextHandler() : 
+        execution(* ConfigPropertyWidgetMultiCheck.TokenLabelProvider.internalGetText(..));
+
+    pointcut ConfigPropertyWidgetRegex_testRegexHandler() : 
+        execution(* ConfigPropertyWidgetRegex.testRegex(..));
+
+    // ---------------------------
+    // Advice's
+    // ---------------------------
     void around() throws CheckstylePluginException: 
-        validateIntegerHandler() || validateRegexHandler() {    
-        try{
+            ConfigPropertyWidgetInteger_validateIntegerHandler() || 
+            ConfigPropertyWidgetRegex_validateRegexHandler() {
+        try
+        {
             proceed();
-        }catch (Exception e){
+        }
+        catch (Exception e)
+        {
             CheckstylePluginException.rethrow(e, e.getLocalizedMessage());
-        }        
+        }
     }
-    
-    
-    String around(Object element): internalGetTextHandler() && args(element){
+
+    String around(Object element): ConfigPropertyWidgetMultiCheck_internalGetTextHandler() 
+            && args(element){
         String translation;
-        try {
+        try
+        {
             return proceed(element);
-        } catch (MissingResourceException e) {
+        }
+        catch (MissingResourceException e)
+        {
             translation = "" + element; //$NON-NLS-1$
         }
         return translation;
     }
-    
-    
-    void around(): testRegexHandler(){
-        try {
+
+    void around(): ConfigPropertyWidgetRegex_testRegexHandler(){
+        try
+        {
             proceed();
-        }catch (PatternSyntaxException e){
+        }
+        catch (PatternSyntaxException e)
+        {
             Text mTextWidget = (Text) thisJoinPoint.getThis();
             Color mRedColor = (Color) thisJoinPoint.getThis();
             mTextWidget.setBackground(mRedColor);
         }
     }
-    
+
 }
