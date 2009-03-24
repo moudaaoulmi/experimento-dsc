@@ -286,7 +286,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
 
             public void widgetSelected(SelectionEvent e)
             {
-                CheckConfigurationPropertiesDialog.getEditedWorkingCopyInternal(CheckConfigurationPropertiesDialog.this);
+                getEditedWorkingCopyInternal(CheckConfigurationPropertiesDialog.this);
             }
 
             public void widgetDefaultSelected(SelectionEvent e)

@@ -19,6 +19,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.gui.widgets.IConfigPropertyWi
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
+import org.eclipse.swt.events.SelectionListener;
 
 public privileged aspect GuiHandler
 {
@@ -94,7 +95,6 @@ public privileged aspect GuiHandler
         call(* ComboViewer.getSelection(..)) &&
         withincode(* RuleConfigurationEditDialog.okPressed(..));
 
-    // TODO VERIFICAR COM ROMULO E DEPOIS DOCUMENTAR
     pointcut RuleConfigurationEditDialog_internalOkPressedHandler():
         execution(* RuleConfigurationEditDialog.internalOkPressed(..) );
 
