@@ -166,7 +166,7 @@ public privileged aspect ConfigHandle
         {
             result = proceed();
         }
-        catch (CheckstyleException e)
+        catch (CheckstylePluginException e)
         {
             CheckstyleLog.log(e);
         }
@@ -179,14 +179,16 @@ public privileged aspect ConfigHandle
         {
             result = proceed();
         }
-        catch (NumberFormatException se)
+        catch (Exception se)
         {
             // ignore
         }
         return result;
     }
 
-    void around(String value, Module module): ConfigurationReaderHandle_startElementHandleHandle() && args(value, module) {
+    void around(String value, Module module): 
+            ConfigurationReaderHandle_startElementHandleHandle() &&
+            args(value, module) {
         try
         {
             proceed(value, module);
@@ -203,7 +205,7 @@ public privileged aspect ConfigHandle
         {
             result = proceed();
         }
-        catch (CheckstylePluginException e)
+        catch (CloneNotSupportedException e)
         {
             throw new InternalError(); // this should never happen
         }
@@ -221,8 +223,7 @@ public privileged aspect ConfigHandle
         }
     }
 
-    InputSource around() throws SAXException: 
-        RetrowException_resolveEntityHandleHandle(){
+    InputSource around() throws SAXException: RetrowException_resolveEntityHandleHandle(){
         InputSource result = null;
         try
         {
@@ -243,7 +244,7 @@ public privileged aspect ConfigHandle
         {
             proceed(config, file, in, out);
         }
-        catch (CheckstylePluginException e)
+        catch (Exception e)
         {
             CheckstylePluginException.rethrow(e);
         }
@@ -261,7 +262,7 @@ public privileged aspect ConfigHandle
         {
             proceed(modules, out, byteOut);
         }
-        catch (CheckstylePluginException e)
+        catch (IOException e)
         {
             CheckstylePluginException.rethrow(e);
         }
@@ -279,7 +280,7 @@ public privileged aspect ConfigHandle
         {
             proceed(inStream);
         }
-        catch (CheckstylePluginException e)
+        catch (Exception e)
         {
             CheckstylePluginException.rethrow(e, ErrorMessages.errorLoadingConfigFile);
         }
@@ -289,14 +290,14 @@ public privileged aspect ConfigHandle
         }
     }
 
-    void around(InputStream inStream, InputStream defaultConfigStream)
-        throws CheckstylePluginException: 
-        RetrowException_migrateHandle()  && args(inStream, defaultConfigStream){
+    void around(InputStream inStream, InputStream defaultConfigStream) throws CheckstylePluginException: 
+        RetrowException_migrateHandle()  && 
+        args(inStream, defaultConfigStream){
         try
         {
             proceed(inStream, defaultConfigStream);
         }
-        catch (CheckstylePluginException e)
+        catch (Exception e)
         {
             CheckstylePluginException.rethrow(e, ErrorMessages.errorMigratingConfig);
         }
@@ -336,7 +337,7 @@ public privileged aspect ConfigHandle
         {
             proceed(out, byteOut);
         }
-        catch (CheckstyleException e)
+        catch (Exception e)
         {
             CheckstylePluginException.rethrow(e, ErrorMessages.errorWritingConfigFile);
         }
