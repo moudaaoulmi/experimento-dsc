@@ -1,9 +1,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.migration;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 import org.xml.sax.SAXException;
 
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
@@ -18,24 +15,29 @@ public aspect MigrationHandler
     // ---------------------------
     // Declare Soft's
     // ---------------------------
-    declare soft: CheckstylePluginException : checkConfigurationMigrator_endElementHandler() || checkConfigurationMigrator_internalStartElementHandler() || checkConfigurationMigrator_startElementHandler();
+    declare soft: CheckstylePluginException : checkConfigurationMigrator_endElementHandler() || 
+                                              checkConfigurationMigrator_internalStartElementHandler() || 
+                                              checkConfigurationMigrator_startElementHandler();
 
     // ---------------------------
     // Pointcut's
     // ---------------------------
-    pointcut checkConfigurationMigrator_ensureFileExistsHandler() : execution(* CheckConfigurationMigrator.OldConfigurationHandler.internalEnsureFileExists(..));
+    pointcut checkConfigurationMigrator_endElementHandler() : 
+        execution(* CheckConfigurationMigrator.OldConfigurationHandler.endElement(..));
 
-    pointcut checkConfigurationMigrator_endElementHandler() : execution(* CheckConfigurationMigrator.OldConfigurationHandler.endElement(..));
+    pointcut checkConfigurationMigrator_internalStartElementHandler() : 
+        execution(* CheckConfigurationMigrator.OldConfigurationHandler.internalStartElement(..));
 
-    pointcut checkConfigurationMigrator_internalStartElementHandler() : execution(* CheckConfigurationMigrator.OldConfigurationHandler.internalStartElement(..));
-
-    pointcut checkConfigurationMigrator_startElementHandler(): execution(* CheckConfigurationMigrator.OldConfigurationHandler.startElement(..));
+    pointcut checkConfigurationMigrator_startElementHandler(): 
+        execution(* CheckConfigurationMigrator.OldConfigurationHandler.startElement(..));
 
     // ---------------------------
     // Advice's
     // ---------------------------
     
-    void around(String name) throws CheckstylePluginException : checkConfigurationMigrator_internalStartElementHandler() && args(name){
+    void around(String name) throws CheckstylePluginException : 
+            checkConfigurationMigrator_internalStartElementHandler() 
+            && args(name){
         try
         {
             proceed(name);
@@ -55,27 +57,8 @@ public aspect MigrationHandler
         }
     }
 
-//    void around() throws CheckstylePluginException : checkConfigurationMigrator_migrateHandler(){
-//        try
-//        {
-//            proceed();
-//        }
-//        catch (SAXException se)
-//        {
-//            Exception ex = se.getException() != null ? se.getException() : se;
-//            CheckstylePluginException.rethrow(ex);
-//        }
-//        catch (ParserConfigurationException pe)
-//        {
-//            CheckstylePluginException.rethrow(pe);
-//        }
-//        catch (IOException ioe)
-//        {
-//            CheckstylePluginException.rethrow(ioe);
-//        }
-//    }
-
-    void around() throws SAXException : checkConfigurationMigrator_startElementHandler() || checkConfigurationMigrator_endElementHandler() {
+    void around() throws SAXException : checkConfigurationMigrator_startElementHandler() || 
+                                        checkConfigurationMigrator_endElementHandler() {
         try
         {
             proceed();
