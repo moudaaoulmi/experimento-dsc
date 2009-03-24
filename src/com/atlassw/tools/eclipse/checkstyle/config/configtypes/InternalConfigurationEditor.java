@@ -154,11 +154,9 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
             public void widgetSelected(SelectionEvent e)
             {
                 ICheckConfiguration targetConfig = getEditedWorkingCopy();
-
                 FileDialog fileDialog = new FileDialog(mConfigName.getShell());
                 fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
                 fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
-
                 String configFileString = fileDialog.open();
                 if (configFileString != null && new File(configFileString).exists())
                 {

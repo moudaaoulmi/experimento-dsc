@@ -260,7 +260,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
 
     private void internalGetEditedWorkingCopy() throws CheckstylePluginException
     {
-            mWorkingCopy.setLocation(mLocation.getText());
+        mWorkingCopy.setLocation(mLocation.getText());
     }
 
     /**
@@ -272,13 +272,12 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
      * @throws CheckstylePluginException error when trying to ensure the
      *             location file existance
      */
-    
+
     private boolean ensureFileExists(String location) throws CheckstylePluginException
     {
 
         IFile file = null;
         secInternalEnsureFileExists(file, location);
-
         if (!file.exists() && file.getLocation() != null)
         {
             boolean confirm = MessageDialog.openQuestion(mBtnBrowse.getShell(),
@@ -298,26 +297,27 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
 
         return true;
     }
-    private void secInternalEnsureFileExists(IFile file, String location) throws CheckstylePluginException{
 
-            file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(location));
-
+    private void secInternalEnsureFileExists(IFile file, String location)
+        throws CheckstylePluginException
+    {
+        file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(location));
     }
 
     private void internalEnsureFileExists(IFile file, OutputStream out)
         throws CheckstylePluginException
     {
-        
-            File trueFile = file.getLocation().toFile();
 
-            if (trueFile.getParentFile() != null)
-            {
-                trueFile.getParentFile().mkdirs();
-            }
-            out = new BufferedOutputStream(new FileOutputStream(trueFile));
-            ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
+        File trueFile = file.getLocation().toFile();
 
-            file.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-       
+        if (trueFile.getParentFile() != null)
+        {
+            trueFile.getParentFile().mkdirs();
+        }
+        out = new BufferedOutputStream(new FileOutputStream(trueFile));
+        ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
+
+        file.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+
     }
 }

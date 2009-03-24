@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-
+import org.apache.commons.io.FileUtils;
 import java.net.URLConnection;
 
 import org.apache.commons.io.IOUtils;
@@ -103,7 +103,7 @@ public privileged aspect ConfigtypesHandler
         /*call(* ExternalFileConfigurationType.resolveDynamicLocation(..)) &&
         withincode(* ExternalFileConfigurationType.resolveLocation(..));*/
         execution(* ExternalFileConfigurationType.resolveLocation(..));
-    //a partir daqui
+
     pointcut InternalConfigurationEditor_widgetSelectedHandler():
         execution(* widgetSelected(..)) &&
         within(InternalConfigurationEditor) && 
@@ -124,7 +124,6 @@ public privileged aspect ConfigtypesHandler
     pointcut RemoteConfigurationEditor_internalCreateEditorControlHandler():
         execution(* RemoteConfigurationEditor.internalCreateEditorControl(..));
 
-    // fiz esse
     pointcut RemoteConfigurationEditor_getEditedWorkingCopyHandler():
         execution(* RemoteConfigurationEditor.getEditedWorkingCopy(..));
 
@@ -141,7 +140,8 @@ public privileged aspect ConfigtypesHandler
         execution(* RemoteConfigurationType.oneWriteToCacheFile(..));
 
     pointcut RemoteConfigurationType_twoWriteToCacheFile():
-        execution(* RemoteConfigurationType.twoWriteToCacheFile(..));
+        call(* FileUtils.writeByteArrayToFile(..)) &&
+        withincode(* RemoteConfigurationType.writeToCacheFile(..));
 
     pointcut RemoteConfigurationType_removeCachedAuthInfoHandler():
         execution(* RemoteConfigurationType.RemoteConfigAuthenticator.removeCachedAuthInfo(..));
