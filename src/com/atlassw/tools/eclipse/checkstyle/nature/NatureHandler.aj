@@ -20,7 +20,9 @@ public aspect NatureHandler
     // ---------------------------
     // Advice's
     // ---------------------------
-    IStatus around(IProgressMonitor monitor) throws CoreException : nature_runInWorkspace() && args(monitor) {
+    IStatus around(IProgressMonitor monitor) throws CoreException : 
+            nature_runInWorkspace() && 
+               args(monitor) {
         IStatus status = null;
         try {
             status = proceed(monitor);
