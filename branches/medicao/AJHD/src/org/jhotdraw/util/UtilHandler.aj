@@ -11,61 +11,62 @@ public privileged aspect  UtilHandler{
 	// ---------------------------
 	// Declare soft's
 	// ---------------------------
-	declare soft: ClassNotFoundException: CollectionsFactory_isJDK12() ||
-										  CollectionsFactory_createCollectionsFactory() ||
-										  SerializationStorageFormat_restore() ||
-										  StorableInput_makeInstance();
+	declare soft: ClassNotFoundException: isJDK12Handler() ||
+  										  createCollectionsFactoryHandler() ||
+  										  restoreHandler() ||
+  										  makeInstanceHandler();
 
-	declare soft: InstantiationException: CollectionsFactory_createCollectionsFactory() ||
-										  StorableInput_makeInstance();
+	declare soft: InstantiationException: createCollectionsFactoryHandler() ||
+										  makeInstanceHandler();
 
-	declare soft: IllegalAccessException: CollectionsFactory_createCollectionsFactory() ||
-										  StorableInput_makeInstance();
+	declare soft: IllegalAccessException: createCollectionsFactoryHandler() ||
+										  makeInstanceHandler();
 
-	declare soft: Exception: Iconkit_loadImageResource();
+	declare soft: Exception: loadImageResourceHandler();
 
 
 
-	declare soft: NoSuchMethodError: StorableInput_makeInstance();
+	declare soft: NoSuchMethodError: makeInstanceHandler();
 	
-	declare soft: IOException: VersionManagement_readVersionFromFile() ||
-				  JDOStorageFormat_main();
+	declare soft: IOException: readVersionFromFileHandler() ||
+				  mainHandler();
 
 	// ---------------------------
 	// Pointcut's
 	// ---------------------------
-	pointcut CollectionsFactory_isJDK12(): 
+	pointcut isJDK12Handler(): 
 		execution (* CollectionsFactory.isJDK12(..));
 
-	pointcut CollectionsFactory_createCollectionsFactory(): 
+	pointcut createCollectionsFactoryHandler(): 
 		execution(* CollectionsFactory.createCollectionsFactory(..));
 
-	pointcut Iconkit_loadImageResource():
+	pointcut loadImageResourceHandler():
 		execution(* Iconkit.loadImageResource(..));
 
-	pointcut JDOStorageFormat_storeInternal():
+	/**
+	pointcut storeInternalHandler():
 		execution(* JDOStorageFormat.storeInternal(..));
 
-	pointcut JDOStorageFormat_restoreInternal():
-		execution(* JDOStorageFormat.restoreInternal(..));
+	 pointcut restoreInternalHandler():
+		execution(* JDOStorageFormat.restoreInternal(..)); */
 
-	pointcut SerializationStorageFormat_restore():
-		execution(* SerializationStorageFormat.restore(..));
+	pointcut restoreHandler():
+		execution(* SerializationStorageFormat.restore(..)); 
 
-	pointcut StorableInput_makeInstance():
+	pointcut makeInstanceHandler():
 		execution(* StorableInput.makeInstance(..));
 
-	pointcut VersionManagement_readVersionFromFile():
+	pointcut readVersionFromFileHandler():
 		execution(* VersionManagement.readVersionFromFile(..));
 
-	pointcut JDOStorageFormat_main():
+	pointcut mainHandler():
 		execution(* JDOStorageFormat.main(..));
 
 	// ---------------------------
 	// Advice's
 	// ---------------------------
 
-	boolean around(): CollectionsFactory_isJDK12(){
+	boolean around(): isJDK12Handler(){
 
 		boolean result = false;
 		try {
@@ -76,7 +77,7 @@ public privileged aspect  UtilHandler{
 		return result;
 	}
 
-	CollectionsFactory around(): CollectionsFactory_createCollectionsFactory(){
+	CollectionsFactory around(): createCollectionsFactoryHandler(){
 		CollectionsFactory result = null;
 		try {
 			result = proceed();
@@ -91,7 +92,7 @@ public privileged aspect  UtilHandler{
 	}
 
 
-	Image around(): Iconkit_loadImageResource(){
+	Image around(): loadImageResourceHandler(){
 		Image result = null;
 		try {
 			result = proceed();
@@ -101,9 +102,14 @@ public privileged aspect  UtilHandler{
 		return result;
 	}
 
+	/**
+	 * Cenário em que não dah pra refatorar pois tenta 
+	 * chamar um método privado da classe JDOStorageFormat
+	 * 
+	 * 
 	String around(Drawing storeDrawing, PersistenceManager pm,
 			Drawing txnDrawing, String drawingName): 
-		JDOStorageFormat_storeInternal() &&
+		storeInternalHandler() &&
 		args(storeDrawing, pm, txnDrawing, drawingName){
 
 		String result = null;
@@ -115,10 +121,17 @@ public privileged aspect  UtilHandler{
 			jDSF.endTransaction(pm, (drawingName != null));
 		}
 		return result;
-	}
+	} */
 
+	/**
+	 * 
+	 * Cenário em que não dah pra refatorar pois tenta 
+	 * chamar um método privado da classe JDOStorageFormat
+	 * 
+	 * 
+	 * 
 	Drawing around(PersistenceManager pm, Drawing restoredDrawing): 
-		JDOStorageFormat_restoreInternal() &&
+		restoreInternalHandler() &&
 			args( pm, restoredDrawing){
 
 		Drawing result = null;
@@ -129,12 +142,12 @@ public privileged aspect  UtilHandler{
 			jDSF.endTransaction(pm, false);
 		}
 		return result;
-	}
+	}*/
 
 
 
 	Drawing around(String fileName) throws IOException:
-		SerializationStorageFormat_restore() &&
+		restoreHandler() &&
 		args(fileName){
 
 		Drawing result = null;
@@ -148,7 +161,7 @@ public privileged aspect  UtilHandler{
 	}
 
 	Object around(String className) throws IOException: 
-		StorableInput_makeInstance() &&
+		makeInstanceHandler() &&
 		args(className){
 
 		Object result = null;
@@ -167,8 +180,8 @@ public privileged aspect  UtilHandler{
 		return result;
 	}
 	
-	Object around(): VersionManagement_readVersionFromFile() ||
-	JDOStorageFormat_main(){
+	Object around(): readVersionFromFileHandler() ||
+	mainHandler(){
 		Object result = null;
 		try {
 			result = proceed();

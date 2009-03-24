@@ -174,6 +174,7 @@ public class CustomSelectionTool extends SelectionTool {
 				// show the popup..
 				//return;
 			//}
+				
 			// If this is a ZoomDrawingView, we'll need to
 			// compensate here too:
 			if (comp instanceof ZoomDrawingView) {

@@ -110,6 +110,13 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		return drawingName;
 	}
 	
+	/**Não há como refatorar e o bloco try/catch/finally 
+	 * não foi colocado como originalmente. Não tinha esse
+	 * bloco comentado e não há nenhuma método que exige o
+	 *  tratamento da exceção
+	 *  
+	 *  
+	 *  */
 	//extraiu pq era finally
 	private String storeInternal(Drawing storeDrawing, PersistenceManager pm,
 			Drawing txnDrawing, String drawingName) {
@@ -121,7 +128,11 @@ public class JDOStorageFormat extends StandardStorageFormat {
 			txnDrawing.setTitle(drawingName);
 			pm.makePersistent(txnDrawing);
 		}
+		
+		
+		
 		return drawingName;
+		
 	}
 
 	/**
@@ -147,6 +158,17 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		return restoredDrawing;
 	}
 
+	
+	/**
+	 * Não há como refatorar e o bloco try/catch/finally 
+	 * não foi colocado como originalmente. Não tinha esse
+	 * bloco comentado e não há nenhuma método que exige o
+	 *  tratamento da exceção
+	 * 
+	 * @param pm
+	 * @param restoredDrawing
+	 * @return
+	 */
 	private Drawing restoreInternal(PersistenceManager pm,
 			Drawing restoredDrawing) {
 		Extent extent = pm.getExtent(StandardDrawing.class, true);
@@ -205,7 +227,7 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		}
 	}
 
-	private static void endTransaction(PersistenceManager pm, boolean doCommit) {
+	private  void endTransaction(PersistenceManager pm, boolean doCommit) {
 		if (pm.currentTransaction().isActive()) {
 			if (doCommit) {
 				pm.currentTransaction().commit();

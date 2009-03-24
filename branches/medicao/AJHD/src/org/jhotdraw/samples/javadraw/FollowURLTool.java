@@ -14,6 +14,7 @@ package org.jhotdraw.samples.javadraw;
 import javax.swing.JApplet;
 import java.awt.event.*;
 import java.net.*;
+
 import org.jhotdraw.framework.*;
 import org.jhotdraw.standard.AbstractTool;
 
@@ -46,8 +47,11 @@ class FollowURLTool extends AbstractTool {
 	}
 
 	/**
-	 * Handles mouse up in the drawing view assuming mouseUp came from active
-	 * drawing.
+	 * 
+	 * Nao pode ser aspectizado porque existe o acesso a 
+	 * uma variavel privada
+	 * 
+	 * 
 	 */
 	public void mouseUp(MouseEvent e, int x, int y) {
 		Figure figure = getActiveDrawing().findFigureInside(x, y);
@@ -59,7 +63,13 @@ class FollowURLTool extends AbstractTool {
 		if (urlstring == null) {
 			return;
 		}
-		URL url = new URL(fApplet.getDocumentBase(), urlstring);
+		URL url = null;
+		
+		try {
+			url = new URL(fApplet.getDocumentBase(), urlstring);
+		} catch (MalformedURLException e1) {
+			fApplet.showStatus(e1.toString());
+		}
 		fApplet.getAppletContext().showDocument(url);
 	}
 

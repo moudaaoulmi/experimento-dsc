@@ -676,7 +676,7 @@ public class HTMLTextAreaFigure extends TextAreaFigure
 		 * REFATORAR, DANDO ERRO PORQUE A CLASSE DA EXCE‚ÌO ƒ PRIVADA
 		 * 
 		 */
-		try {
+		//try {
 			int endPos;
 			while ((startPos = template.indexOf(START_ENTITY_CHAR, startPos)) != -1) {
 				if (startPos != 0 && template.charAt(startPos - 1) == ESCAPE_CHAR) {
@@ -714,10 +714,10 @@ public class HTMLTextAreaFigure extends TextAreaFigure
 					startPos++;
 				}
 			}
-		}
-		catch (InvalidAttributeMarker ex) {
-			// invalid marker, ignore
-		}
+//		}
+//		catch (InvalidAttributeMarker ex) {
+//			// invalid marker, ignore
+//		}
 		return chunkEnd;
 	}
 

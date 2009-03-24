@@ -10,8 +10,8 @@ import  javax.swing.*;
 public aspect ContribHandler {
 
 	declare soft:  PropertyVetoException: setSelectedHandler() || setSelectedHandler2() ;
-	declare soft: NoninvertibleTransformException: getViewToMiniMapTransformHandler();
-	//declare soft: IllegalComponentStateException: getLocationOnScreenHandler();  -------- É RUNTIME EXCEPTION ----------
+	declare soft: NoninvertibleTransformException: scrollSubjectToHandler();
+	//declare soft: IllegalComponentStateException: showPopupMenuHandler();  -------- É RUNTIME EXCEPTION ----------
 	
 	
     pointcut setSelectedHandler(): call (* JInternalFrame.setSelected(..)) && withincode( * *.buildChildMenusPartOne(..) )   
@@ -24,10 +24,8 @@ public aspect ContribHandler {
     
     pointcut setSelectedHandler2(): call(* JInternalFrame.setSelected(..)) &&
 											withincode( * MDIDesktopPane.addToDesktop(..) );
-    pointcut getViewToMiniMapTransformHandler(): call(* AffineTransform.createInverse(..)) &&
-    										withincode(* MiniMapView.scrollSubjectTo(..));
-    pointcut getLocationOnScreenHandler(): call(* Component.getLocationOnScreen(..)) &&
-										    withincode(* CustomSelectionTool.showPopupMenu(..));
+    pointcut scrollSubjectToHandler(): execution(* MiniMapView.scrollSubjectTo(..));
+    pointcut showPopupMenuHandler(): execution(* CustomSelectionTool.showPopupMenu(..));
 
     void around(): setSelectedHandler(){
     	try {
@@ -48,27 +46,41 @@ public aspect ContribHandler {
 		}
 	}
 	
-	
-    AffineTransform around(): getViewToMiniMapTransformHandler(){
+	/**
+	 * 
+	 * Tive que mudar para afetar o método todo
+	 * (scrollSubjectTo) por causa do statement 
+	 * 'return'que tem dentro do catch
+	 * 
+	 * @return
+	 */
+    void around(): scrollSubjectToHandler(){
 		try {
-			 return proceed();
+			 proceed();
 		}
 		catch (NoninvertibleTransformException nite) {
 			nite.printStackTrace();
-			return null;
 		}
 	}
 	
-    /** verificar de pode colocar null */
-    Point around(): getLocationOnScreenHandler(){
-    	Point obj = null;
+    /** 
+	 * 
+	 * Tive que mudar para afetar o método todo
+	 * (showPopupMenu) por causa do statement 
+	 * 'return'que tem dentro do catch 
+	 * 
+	 */
+    void  around(): showPopupMenuHandler(){
 		try {
-		    obj = proceed();
+		    proceed();
 		}
 		catch (IllegalComponentStateException nite) {
-			return null;
+			// For some reason, the component
+			// apparently isn't showing on the
+			// screen (huh?). Never mind - don't
+			// show the popup..
+			//return;
 		}
-		return obj;
 	}
    
 
