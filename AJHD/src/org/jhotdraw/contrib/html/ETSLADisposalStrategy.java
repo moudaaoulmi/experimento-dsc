@@ -235,6 +235,8 @@ class DisposalThread extends Thread {
 	public void run() {
 		interruptDisposalPending = false;
 		while (!interruptDisposalPending) {
+			
+			/** fazer a refatoracao! */
 			try {
 				sleep(periodicity);
 			}

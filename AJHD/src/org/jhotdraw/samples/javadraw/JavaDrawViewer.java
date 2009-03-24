@@ -53,11 +53,29 @@ public class JavaDrawViewer extends JApplet implements DrawingEditor {
 	}
 
 	private void loadDrawing(String filename) {
-		URL url = new URL(getCodeBase(), filename);
-		InputStream stream = url.openStream();
+		URL url = null;
+		
+			try {
+				url = new URL(getCodeBase(), filename);
+			} catch (MalformedURLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		
+		
+		
+		InputStream stream = null;
 		StorableInput reader = new StorableInput(stream);
-		fDrawing = (Drawing) reader.readStorable();
-
+		
+		try {
+			stream = url.openStream();
+			fDrawing = (Drawing) reader.readStorable();
+		} catch (IOException e) {
+			fDrawing = createDrawing();
+			System.err.println("Error when Loading: " + e);
+			showStatus("Error when Loading: " + e);
+		}
+		
 	}
 
 	protected Drawing createDrawing() {

@@ -160,7 +160,7 @@ public class MiniMapView extends JComponent {
 		
 		at = getViewToMiniMapTransform(getMappedComponent()).createInverse();
 		
-		/** Refactored */
+		/** Refactored, comentado dentro do aspecto */
 		/*try {
 			at = getViewToMiniMapTransform(getMappedComponent()).createInverse();
 		}

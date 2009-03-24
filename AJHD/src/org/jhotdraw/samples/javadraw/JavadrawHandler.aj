@@ -1,35 +1,37 @@
 package org.jhotdraw.samples.javadraw;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
-import org.aspectj.lang.SoftException;
 
 public privileged aspect JavadrawHandler {
 
 	// ---------------------------
 	// Declare soft's
 	// ---------------------------
-	declare soft: MalformedURLException: FollowURLTool_mouseUp();
-	declare soft: Exception: JavaDrawApp_executeComandMenu1();
-	declare soft: IOException: JavaDrawViewer_loadDrawing();
+	/**declare soft: MalformedURLException: mouseUpHandler();*/
+	declare soft: Exception: executeComandMenu1Handler();
+	/** declare soft: IOException: loadDrawingHandler(); */
 
 	// ---------------------------
 	// Pointcut's
 	// ---------------------------
-	pointcut FollowURLTool_mouseUp(): 
+	pointcut mouseUpHandler(): 
 		execution(* FollowURLTool.mouseUp(..));
 
-	pointcut JavaDrawApp_executeComandMenu1():
+	pointcut executeComandMenu1Handler():
 		execution(* JavaDrawApp.executeComandMenu1(..));
 
-	pointcut JavaDrawViewer_loadDrawing():
-		execution(* JavaDrawViewer.loadDrawing(..));
+	/** pointcut loadDrawingHandler():
+		execution(* JavaDrawViewer.loadDrawing(..)); */
 
 	// ---------------------------
 	// Advice's
 	// ---------------------------
-
-	void around(): JavaDrawViewer_loadDrawing(){
+/**
+ * Nao tenho como refatorar porque acessa uma
+ * variavel privada -> "fDrawing"
+ * 
+ * 
+	void around(): loadDrawingHandler(){
 		JavaDrawViewer jDV = (JavaDrawViewer) thisJoinPoint.getThis();
 		try {
 			proceed();
@@ -47,9 +49,10 @@ public privileged aspect JavadrawHandler {
 					.println("Error when Loading: " + e.getWrappedThrowable());
 			jDV.showStatus("Error when Loading: " + e.getWrappedThrowable());
 		}
-	}
+	}*/
 
-	void around(): FollowURLTool_mouseUp(){
+	/**
+	void around(): mouseUpHandler(){
 		try {
 			proceed();
 		} catch (MalformedURLException exception) {
@@ -57,8 +60,9 @@ public privileged aspect JavadrawHandler {
 			fUT.fApplet.showStatus(exception.toString());
 		}
 	}
+	*/
 
-	void around(): JavaDrawApp_executeComandMenu1(){
+	void around(): executeComandMenu1Handler(){
 		try {
 			proceed();
 		} catch (Exception e) {
