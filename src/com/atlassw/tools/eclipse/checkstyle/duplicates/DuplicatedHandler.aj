@@ -1,21 +1,23 @@
 
 package com.atlassw.tools.eclipse.checkstyle.duplicates;
 
-import org.eclipse.core.runtime.CoreException;
 
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import org.eclipse.ui.PartInitException;
+
 
 import java.util.MissingResourceException;
 import java.lang.NumberFormatException;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.jface.text.BadLocationException;
-import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.viewers.TreeViewer;
+
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.core.runtime.Status;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
@@ -23,6 +25,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 public privileged aspect DuplicatedHandler
 {
+
     // ---------------------------
     // Declare soft's
     // ---------------------------
