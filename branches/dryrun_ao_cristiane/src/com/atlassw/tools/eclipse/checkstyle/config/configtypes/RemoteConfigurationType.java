@@ -257,24 +257,18 @@ public class RemoteConfigurationType extends ConfigurationType
     {
         String cacheFileLocation = (String) checkConfig.getAdditionalData().get(
                 KEY_CACHE_FILE_LOCATION);
-
         IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
         cacheFilePath = cacheFilePath.append(cacheFileLocation);
         File cacheFile = cacheFilePath.toFile();
-
         oneWriteToCacheFile(cacheFile, configFileBytes, checkConfig);
-
         if (bundleBytes != null)
         {
-
             String propsCacheFileLocation = (String) checkConfig.getAdditionalData().get(
                     KEY_CACHE_PROPS_FILE_LOCATION);
-
             IPath propsCacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
             propsCacheFilePath = propsCacheFilePath.append(propsCacheFileLocation);
             File propsCacheFile = propsCacheFilePath.toFile();
-
-            twoWriteToCacheFile(propsCacheFile, bundleBytes);
+            FileUtils.writeByteArrayToFile(propsCacheFile, bundleBytes);
         }
     }
 
@@ -282,11 +276,6 @@ public class RemoteConfigurationType extends ConfigurationType
             ICheckConfiguration checkConfig)
     {
         FileUtils.writeByteArrayToFile(cacheFile, configFileBytes);
-    }
-
-    private void twoWriteToCacheFile(File propsCacheFile, byte[] bundleBytes)
-    {
-        FileUtils.writeByteArrayToFile(propsCacheFile, bundleBytes);
     }
 
     protected byte[] getBytesFromURLConnection(URLConnection connection) throws IOException
