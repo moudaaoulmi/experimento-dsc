@@ -26,7 +26,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 
-
 /**
  * <p>
  * Lightweight object that associates two files that have code in commons, and
@@ -68,11 +67,6 @@ public class DuplicatedCode
 
     static
     {
-        internal();
-    }
-
-    private static void internal()
-    {
         ResourceBundle resourceBundle = ResourceBundle.getBundle(DUPLICATES_MESSAGE_BUNDLE);
         String localProperty = resourceBundle.getString(DUPLICATE_LINE_MESSAGE);
         sMask1 = localProperty.substring(0, localProperty.indexOf("{0}")); //$NON-NLS-1$
@@ -81,6 +75,7 @@ public class DuplicatedCode
         sMask3 = localProperty.substring(localProperty.indexOf("{1}") + 3, localProperty //$NON-NLS-1$
                 .indexOf("{2}")); //$NON-NLS-1$
     }
+
 
     /**
      * The file to which this duplication applies to.

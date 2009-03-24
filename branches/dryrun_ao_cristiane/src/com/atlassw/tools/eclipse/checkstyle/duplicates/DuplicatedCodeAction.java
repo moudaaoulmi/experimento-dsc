@@ -44,7 +44,6 @@ import org.eclipse.ui.PlatformUI;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.checks.duplicates.StrictDuplicateCodeCheck;
-
 /**
  * Action that launches the duplicated code check on a project.
  * 
