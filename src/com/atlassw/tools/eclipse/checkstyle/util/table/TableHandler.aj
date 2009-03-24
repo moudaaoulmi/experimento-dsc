@@ -14,7 +14,7 @@ public privileged aspect TableHandler
         call(* IDialogSettings.getInt(String)) &&
         withincode(* EnhancedTableViewer.restoreState(..));
 
-  //Extraiu pq não consegui diferenciar os joinpoints
+    //Extraiu pq não consegui diferenciar os joinpoints
     pointcut EnhancedTableViewer_internalRestoreStateHandler(): 
         execution(* EnhancedTableViewer.internalRestoreState(..)) ;
 
