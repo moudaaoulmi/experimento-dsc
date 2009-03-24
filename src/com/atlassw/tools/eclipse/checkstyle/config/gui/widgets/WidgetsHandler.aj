@@ -14,7 +14,7 @@ public aspect WidgetsHandler
     // Declare soft's
     // ---------------------------
     declare soft: Exception: ConfigPropertyWidgetInteger_validateIntegerHandler() || 
-    ConfigPropertyWidgetRegex_validateRegexHandler();
+                             ConfigPropertyWidgetRegex_validateRegexHandler();
 
     // ---------------------------
     // Pointcut's
