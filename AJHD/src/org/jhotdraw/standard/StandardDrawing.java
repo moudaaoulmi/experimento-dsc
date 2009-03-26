@@ -191,12 +191,13 @@ public class StandardDrawing extends CompositeFigure implements Drawing {
 			return;
 		}
 		while (fDrawingLockHolder != null) {
-			try {
-				wait();
-			}
-			catch (InterruptedException ex) { }
+			internalLock();
 		}
 		fDrawingLockHolder = current;
+	}
+
+	private void internalLock() {
+			wait();
 	}
 
 	/**

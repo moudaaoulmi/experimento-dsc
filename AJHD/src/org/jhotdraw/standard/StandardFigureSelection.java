@@ -73,28 +73,21 @@ public class StandardFigureSelection implements FigureSelection, Serializable {
 			List result = CollectionsFactory.current().createList(10);
 			StorableInput reader = new StorableInput(input);
 			int numRead = 0;
-			try {
-				int count = reader.readInt();
-				while (numRead < count) {
-					Figure newFigure = (Figure) reader.readStorable();
-					result.add(newFigure);
-					numRead++;
-				}
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-				System.err.println(e.toString());
-			}
-			//@AJHD added
-			//catch the soft exception instead of the IO one, and get the wrapped one for report
-			catch (org.aspectj.lang.SoftException e) {
-				System.err.println(e.getWrappedThrowable().toString());
-			}
+			internalGetData(result, reader, numRead);
 			//@AJHD end added
 
 			return new FigureEnumerator(result);
 		}
 		return null;
+	}
+
+	private void internalGetData(List result, StorableInput reader, int numRead) {
+			int count = reader.readInt();
+			while (numRead < count) {
+				Figure newFigure = (Figure) reader.readStorable();
+				result.add(newFigure);
+				numRead++;
+			}		
 	}
 
 	public static FigureEnumeration duplicateFigures(FigureEnumeration toBeCloned, int figureCount) {

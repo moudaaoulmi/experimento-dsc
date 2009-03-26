@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Iterator;
 
-/**
+/** 
  * A container for a figure's attributes. The attributes are stored
  * as key/value pairs.
  *

@@ -66,23 +66,22 @@ public class SelectAreaTracker extends AbstractTool {
 	private void drawXORRect(Rectangle r) {
 		Graphics g = view().getGraphics();
 		if ( g != null ) {
-			try {
-                if (g instanceof Graphics2D) {
-                    // Do dotted-line in Java2
-                    Stroke dashedStroke = new BasicStroke(1.0f,
-                        BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
-                        10.0f, new float[] {5f, 5f, 5f, 5f}, 5.0f);
-                    ((Graphics2D) g).setStroke(dashedStroke);
-                }
-
-				g.setXORMode(view().getBackground());
-                g.setColor(fRubberBandColor);
-				g.drawRect(r.x, r.y, r.width, r.height);
-			}
-			finally {
-				g.dispose(); // SF bugtracker id: #490663
-			}
+			internaldrawXORRect(r, g);
 		}
+	}
+
+	private void internaldrawXORRect(Rectangle r, Graphics g) {
+		    if (g instanceof Graphics2D) {
+		        // Do dotted-line in Java2
+		        Stroke dashedStroke = new BasicStroke(1.0f,
+		            BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
+		            10.0f, new float[] {5f, 5f, 5f, 5f}, 5.0f);
+		        ((Graphics2D) g).setStroke(dashedStroke);
+		    }
+
+			g.setXORMode(view().getBackground());
+		    g.setColor(fRubberBandColor);
+			g.drawRect(r.x, r.y, r.width, r.height);
 	}
 
 	private void selectGroup(boolean toggle) {
