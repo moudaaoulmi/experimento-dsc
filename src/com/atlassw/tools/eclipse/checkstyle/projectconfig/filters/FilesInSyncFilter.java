@@ -41,18 +41,20 @@ public class FilesInSyncFilter extends AbstractFilter
     public boolean accept(Object element)
     {
         boolean passes = true;
-
         if (element instanceof IFile)
         {
             ICVSResource cvsResource = CVSWorkspaceRoot.getCVSResourceFor((IFile) element);
+            passes = internalAccent(passes, cvsResource);
+        }
+        return passes;
+    }
 
-            
-                if (cvsResource.isIgnored()
-                        || (cvsResource.isManaged() && !cvsResource.isModified(null)))
-                {
-                    passes = false;
-                }
-            }
+    private boolean internalAccent(boolean passes, ICVSResource cvsResource) throws CVSException
+    {
+        if (cvsResource.isIgnored() || (cvsResource.isManaged() && !cvsResource.isModified(null)))
+        {
+            passes = false;
+        }
         return passes;
     }
 

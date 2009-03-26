@@ -29,7 +29,7 @@ import org.eclipse.team.core.RepositoryProvider;
 import org.eclipse.team.core.subscribers.Subscriber;
 import org.eclipse.team.core.synchronize.SyncInfo;
 import org.osgi.framework.Bundle;
-
+import org.eclipse.team.core.TeamException;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
@@ -61,28 +61,28 @@ public class FilesInSyncFilter2 extends AbstractFilter
 
             IFile file = (IFile) element;
             IProject project = file.getProject();
-
             if (RepositoryProvider.isShared(project))
             {
-
                 RepositoryProvider provider = RepositoryProvider.getProvider(project);
-
                 if (provider != null)
                 {
-
                     Subscriber subscriber = provider.getSubscriber();
-
-                   
-                        SyncInfo synchInfo = subscriber.getSyncInfo(file);
-
-                        if (synchInfo != null)
-                        {
-                            int kind = synchInfo.getKind();
-                            passes = (SyncInfo.getDirection(kind) & SyncInfo.OUTGOING) == SyncInfo.OUTGOING;
-                        }
-                    }
+                    passes = internalAccent(passes, file, subscriber);
+                }
             }
         }
+        return passes;
+    }
+
+    private boolean internalAccent(boolean passes, IFile file, Subscriber subscriber) throws TeamException
+    {
+            SyncInfo synchInfo = subscriber.getSyncInfo(file);
+
+            if (synchInfo != null)
+            {
+                int kind = synchInfo.getKind();
+                passes = (SyncInfo.getDirection(kind) & SyncInfo.OUTGOING) == SyncInfo.OUTGOING;
+            }
         return passes;
     }
 
