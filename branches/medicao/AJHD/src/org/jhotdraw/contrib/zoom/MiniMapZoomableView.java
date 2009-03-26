@@ -29,7 +29,7 @@ public class MiniMapZoomableView extends MiniMapView {
 	public MiniMapZoomableView(DrawingView newMappedDrawingView, JScrollPane subject) {
 		super(newMappedDrawingView, subject);
 	}
-
+ 
 // Overridden
 	public AffineTransform getInverseSubjectTransform() {
 		double subjectsScale = ((ZoomDrawingView)getMappedComponent()).getScale();

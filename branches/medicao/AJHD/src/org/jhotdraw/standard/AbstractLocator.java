@@ -37,12 +37,7 @@ public abstract class AbstractLocator implements Locator, Storable, Cloneable {
 	}
 
 	public Object clone() {
-		try {
-			return super.clone();
-		}
-		catch (CloneNotSupportedException e) {
-			throw new InternalError();
-		}
+		return super.clone();
 	}
 
 	/**

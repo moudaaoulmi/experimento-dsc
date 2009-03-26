@@ -381,27 +381,23 @@ public abstract class AbstractFigure implements Figure {
 	public Object clone() {
 		Object clone = null;
 		ByteArrayOutputStream output = new ByteArrayOutputStream(200);
-		try {
+		internalClone(output);
+
+		InputStream input = new ByteArrayInputStream(output.toByteArray());
+		clone = internalClone2(clone, input);
+		return clone;
+	}
+
+	private Object internalClone2(Object clone, InputStream input) {
+			ObjectInput reader = new ObjectInputStream(input);
+			clone = reader.readObject();
+			return clone;
+	}
+
+	private void internalClone(ByteArrayOutputStream output) {
 			ObjectOutput writer = new ObjectOutputStream(output);
 			writer.writeObject(this);
 			writer.close();
-		}
-		catch (IOException e) {
-			System.err.println("Class not found: " + e);
-		}
-
-		InputStream input = new ByteArrayInputStream(output.toByteArray());
-		try {
-			ObjectInput reader = new ObjectInputStream(input);
-			clone = reader.readObject();
-		}
-		catch (IOException e) {
-			System.err.println(e.toString());
-		}
-		catch (ClassNotFoundException e) {
-			System.err.println("Class not found: " + e);
-		}
-		return clone;
 	}
 
 //	AJHD: refactored persistence - the persistence-specific methods,
