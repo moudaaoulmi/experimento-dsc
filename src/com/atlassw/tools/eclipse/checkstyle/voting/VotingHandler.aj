@@ -30,7 +30,5 @@ public privileged aspect VotingHandler
             VotingPreferencePage vPP = (VotingPreferencePage) thisJoinPoint.getThis();
             CheckstyleLog.errorDialog(vPP.getShell(), e, false);
         }
-
     }
-
 }
