@@ -1,6 +1,6 @@
+
 package com.atlassw.tools.eclipse.checkstyle.util;
 
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.sax.SAXTransformerFactory;
@@ -23,8 +23,6 @@ public privileged aspect UtilHandler
     // ---------------------------
     declare soft: Exception : SWTUtil_internalShellActivatedHandler();
 
-    declare soft : TransformerConfigurationException : XMLUtil_writeWithSaxInternalHandler();
-
     // ---------------------------
     // Pointcut's
     // ---------------------------
@@ -40,8 +38,11 @@ public privileged aspect UtilHandler
     pointcut XMLUtil_getDocumentBuilderHandler(): 
         execution(* XMLUtil.getDocumentBuilder(..)) ;
 
-    pointcut XMLUtil_writeWithSaxInternalHandler() : 
-        execution (* XMLUtil.writeWithSaxInternal(..));
+    //esse caso tinham duas escritas em variáveis, mas apenas uma das variaveis eram
+    //usadas após o catch, com isso, pode ser feita a extração.
+    pointcut XMLUtil_internalWriteWithSaxHandler() : 
+        call(* XMLUtil.internalWriteWithSax(..)) &&
+        withincode  (* XMLUtil.writeWithSax(..));
 
     // ---------------------------
     // Advice's
@@ -50,7 +51,7 @@ public privileged aspect UtilHandler
             args(e,doit) {
         try
         {
-            proceed(e, doit);
+            doit = proceed(e, doit);
         }
         catch (NumberFormatException ex)
         {
@@ -92,30 +93,32 @@ public privileged aspect UtilHandler
      */
     DocumentBuilder around() throws ParserConfigurationException : 
             XMLUtil_getDocumentBuilderHandler(){
-            DocumentBuilder c = null;
+        DocumentBuilder dB = null;
         try
         {
-            c = proceed();
+            dB = proceed();
         }
         catch (EmptyStackException e)
         {
-            XMLUtil obj = (XMLUtil) thisJoinPoint.getThis();
-            c = obj.createDocumentBuilder();
+            XMLUtil xMLU = (XMLUtil) thisJoinPoint.getThis();
+            dB = xMLU.createDocumentBuilder();
         }
-        return c;
+        return dB;
     }
 
-    void around(InputStream in, Templates templates, SAXTransformerFactory saxFactory) :
-            XMLUtil_writeWithSaxInternalHandler() 
-            && args(in, templates, saxFactory){
+    Templates around(SAXTransformerFactory saxFactory, InputStream in) :
+            XMLUtil_internalWriteWithSaxHandler() 
+            && args(saxFactory, in){
+        Templates result = null;
         try
         {
-            proceed(in, templates, saxFactory);
+            result = proceed(saxFactory, in);
         }
         finally
         {
             IOUtils.closeQuietly(in);
         }
+        return result;
     }
 
 }
