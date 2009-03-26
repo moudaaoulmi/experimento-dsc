@@ -40,7 +40,6 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
  */
 public class FilesInSyncFilter2 extends AbstractFilter
 {
-
     /**
      * {@inheritDoc}
      */
