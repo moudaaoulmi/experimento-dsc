@@ -234,6 +234,23 @@ public aspect GeneralExceptionHandler
     // ---------------------------
     // Advice's
     // ---------------------------
+    IProjectConfiguration around(IProject project, IProjectConfiguration configuration, IFile file,
+            InputStream inStream) throws CheckstylePluginException : 
+                    ProjectConfigurationFactory_internalLoadFromPersistenceHandler() && 
+                    args(project,configuration, file, inStream){
+
+        IProjectConfiguration result = configuration;
+        try
+        {
+            result = proceed(project, configuration, file, inStream);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(inStream);
+        }
+        return result;
+    }
+    
     Object around(): CheckFileOnOpenPartListener_partClosedHandler() ||
                      CheckFileOnOpenPartListener_isFileAffectedHandler() ||
                      NonSrcDirsFilter_getSourceDirPathsHandler() ||
@@ -303,23 +320,6 @@ public aspect GeneralExceptionHandler
         catch (CoreException e)
         {
             CheckstylePluginException.rethrow(e);
-        }
-        return result;
-    }
-
-    IProjectConfiguration around(IProject project, IProjectConfiguration configuration, IFile file,
-            InputStream inStream) throws CheckstylePluginException : 
-                    ProjectConfigurationFactory_internalLoadFromPersistenceHandler() && 
-                    args(project,configuration, file, inStream){
-
-        IProjectConfiguration result = configuration;
-        try
-        {
-            result = proceed(project, configuration, file, inStream);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(inStream);
         }
         return result;
     }
