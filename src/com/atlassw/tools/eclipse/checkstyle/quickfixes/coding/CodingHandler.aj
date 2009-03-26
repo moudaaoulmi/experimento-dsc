@@ -6,7 +6,6 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 
 public aspect CodingHandler
 {
-
     // ---------------------------
     // Declare soft's
     // ---------------------------
