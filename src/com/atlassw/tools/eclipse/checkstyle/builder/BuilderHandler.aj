@@ -124,18 +124,6 @@ public privileged aspect BuilderHandler
         {
             proceed(project, monitor, checker, listener, runtimeExceptionFilter, contextClassloader);
         }
-        catch (IOException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        catch (CoreException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        catch (CheckstyleException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
         finally
         {
             monitor.done();
@@ -149,6 +137,28 @@ public privileged aspect BuilderHandler
             Thread.currentThread().setContextClassLoader(contextClassloader);
         }
     }
+    
+    void around()  throws CheckstylePluginException: auditor_runAuditHandle(){
+            try
+            {
+                proceed();
+            }
+            catch (IOException e)
+            {
+                CheckstylePluginException.rethrow(e);
+            }
+            catch (CoreException e)
+            {
+                CheckstylePluginException.rethrow(e);
+            }
+            catch (CheckstyleException e)
+            {
+                CheckstylePluginException.rethrow(e);
+            }
+        }
+
+  
+
 
     Object around(String aName) throws CheckstyleException:
         packageObjectFactory_createModuleHandle() && args(aName){
@@ -235,7 +245,6 @@ public privileged aspect BuilderHandler
             CheckstyleLog.log(e, "unable to read " + aPackageFile.toExternalForm()); //$NON-NLS-1$
         }
     }
-
     void around(): projectClassLoader_handlePathHandle() {
         try
         {
