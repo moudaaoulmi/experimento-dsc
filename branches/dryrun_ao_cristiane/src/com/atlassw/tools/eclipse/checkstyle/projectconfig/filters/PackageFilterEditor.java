@@ -230,17 +230,13 @@ public class PackageFilterEditor implements IFilterEditor
 
             if (project.isAccessible())
             {
-
                     IJavaProject javaProject = JavaCore.create(project);
                     if (javaProject.exists())
                     {
-
                         IPackageFragmentRoot[] packageRoots = javaProject
                                 .getAllPackageFragmentRoots();
-
                         for (int i = 0, size = packageRoots.length; i < size; i++)
                         {
-
                             // special case - project itself is package root
                             if (project.equals(packageRoots[i].getResource()))
                             {

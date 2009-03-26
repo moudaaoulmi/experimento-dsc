@@ -43,9 +43,9 @@ public privileged aspect FiltersHandler
     // Advices's
     // ---------------------------
 
-    Object around() : SourceFolderContentProvider_handleProjectHandler() || 
+    List around() : SourceFolderContentProvider_handleProjectHandler() || 
                     SourceFolderContentProvider_handleContainerHandler() {
-        Object c = null;
+        List c = null;
         try
         {
             c = proceed();
