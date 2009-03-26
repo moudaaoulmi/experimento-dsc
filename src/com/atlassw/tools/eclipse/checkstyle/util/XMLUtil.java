@@ -168,8 +168,8 @@ public final class XMLUtil
      * 
      * @param node The nade to get the attribute from.
      * @param attrName Name of the attribute.
-     * @return Value of the attribute or <code>null</code> if the attribute
-     *         was not found.
+     * @return Value of the attribute or <code>null</code> if the attribute was
+     *         not found.
      */
     public static String getNodeAttributeValue(Node node, String attrName)
     {
@@ -388,10 +388,8 @@ public final class XMLUtil
 
         SAXTransformerFactory saxFactory = (SAXTransformerFactory) sTransformerFactory;
         Templates templates = null;
-
         InputStream in = null;
-        
-        writeWithSaxInternal(in, templates, saxFactory);        
+        templates = internalWriteWithSax(saxFactory, in);
 
         StreamResult result = new StreamResult(out);
 
@@ -410,10 +408,17 @@ public final class XMLUtil
 
         return handler;
     }
-    
-    private static void writeWithSaxInternal(InputStream in, Templates templates, SAXTransformerFactory saxFactory){
-        in = new BufferedInputStream(XMLUtil.class.getResourceAsStream("identity.xsl")); //$NON-NLS-1$
-        templates = saxFactory.newTemplates(new StreamSource(in));
+
+    private static Templates internalWriteWithSax(SAXTransformerFactory saxFactory,
+            InputStream in)
+        throws TransformerConfigurationException
+    {
+        Templates templates;
+
+            in = new BufferedInputStream(XMLUtil.class.getResourceAsStream("identity.xsl")); //$NON-NLS-1$
+            templates = saxFactory.newTemplates(new StreamSource(in));
+
+        return templates;
     }
 
     private static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException
