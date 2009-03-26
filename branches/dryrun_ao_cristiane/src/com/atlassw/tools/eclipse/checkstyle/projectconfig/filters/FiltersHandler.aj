@@ -2,11 +2,9 @@
 package com.atlassw.tools.eclipse.checkstyle.projectconfig.filters;
 
 import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.team.core.TeamException;
 import org.eclipse.team.internal.ccvs.core.CVSException;
-
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 public privileged aspect FiltersHandler
@@ -19,7 +17,7 @@ public privileged aspect FiltersHandler
     declare soft : CoreException : SourceFolderContentProvider_handleProjectHandler() || 
                                    SourceFolderContentProvider_handleContainerHandler();
 
-    declare soft : TeamException : FilesInSyncFilter2_getSyncInfoHandler();
+    declare soft : TeamException : FilesInSyncFilter2_acceptHandler();
 
     declare soft : CVSException : FilesInSyncFilter_acceptHandler();
 
@@ -27,11 +25,13 @@ public privileged aspect FiltersHandler
     // PointCut's
     // ---------------------------
 
-    pointcut FilesInSyncFilter2_getSyncInfoHandler(): 
-        execution(*  FilesInSyncFilter2.accept(..));
+    pointcut FilesInSyncFilter2_acceptHandler(): 
+        call(* FilesInSyncFilter2.internalAccent(..)) &&
+        withincode(* FilesInSyncFilter2.accept(..));
 
     pointcut FilesInSyncFilter_acceptHandler(): 
-        execution(* FilesInSyncFilter.accept(..));
+        call(* FilesInSyncFilter.internalAccent(..)) &&
+        withincode(* FilesInSyncFilter.accept(..));
 
     pointcut SourceFolderContentProvider_handleProjectHandler(): 
         execution(* PackageFilterEditor.SourceFolderContentProvider.handleProject(..));
@@ -43,9 +43,9 @@ public privileged aspect FiltersHandler
     // Advices's
     // ---------------------------
 
-    List around() : SourceFolderContentProvider_handleProjectHandler() || 
+    Object around() : SourceFolderContentProvider_handleProjectHandler() || 
                     SourceFolderContentProvider_handleContainerHandler() {
-        List c = null;
+        Object c = null;
         try
         {
             c = proceed();
@@ -58,12 +58,11 @@ public privileged aspect FiltersHandler
         return c;
     }
 
-    boolean around(Object element) : FilesInSyncFilter2_getSyncInfoHandler() && 
-            args(element) {
+    boolean around() : FilesInSyncFilter2_acceptHandler(){
         boolean result = false;
         try
         {
-            result = proceed(element);
+            result = proceed();
         }
         catch (TeamException e)
         {
@@ -73,7 +72,7 @@ public privileged aspect FiltersHandler
     }
 
     boolean around() : FilesInSyncFilter_acceptHandler() {
-        boolean c = false;
+        boolean c = true;
         try
         {
             c = proceed();
