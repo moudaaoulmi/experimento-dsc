@@ -29,7 +29,7 @@ public privileged aspect UtilHandler
     pointcut SWTUtil_intenalVerifyTextHandler(): 
         execution (* SWTUtil.OnlyDigitsVerifyListener.intenalVerifyText(..));
 
-    // esse caso tinham duas escritas em variáveis, mas apenas uma das variáveis
+    //XXX esse caso tinham duas escritas em variáveis, mas apenas uma das variáveis
     // eram usadas após o catch, com isso, pode ser feita a extração.
     pointcut SWTUtil_internalShellActivatedHandler(): 
         execution (* SWTUtil.ShellResizeSupportListener.internalShellActivated(..));
@@ -40,7 +40,7 @@ public privileged aspect UtilHandler
     pointcut XMLUtil_getDocumentBuilderHandler(): 
         execution(* XMLUtil.getDocumentBuilder(..)) ;
 
-    // esse caso tinham duas escritas em variáveis, mas apenas uma das variáveis
+    //XXX esse caso tinham duas escritas em variáveis, mas apenas uma das variáveis
     // eram usadas após o catch, com isso, pode ser feita a extração.
     pointcut XMLUtil_internalWriteWithSaxHandler() : 
         call(* XMLUtil.internalWriteWithSax(..)) &&
