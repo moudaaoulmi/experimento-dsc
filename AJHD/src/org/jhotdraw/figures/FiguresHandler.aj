@@ -3,13 +3,13 @@ package org.jhotdraw.figures;
 
 public privileged aspect FiguresHandler {
 	
-	pointcut FigureAttributes_clone() : execution(public Object FigureAttributes.clone());
+	pointcut cloneHandler() : execution(public Object FigureAttributes.clone());
 	
 
-    declare soft : CloneNotSupportedException : FigureAttributes_clone();
+    declare soft : CloneNotSupportedException : cloneHandler();
     
     
-    Object around() throws InternalError : FigureAttributes_clone() {
+    Object around() throws InternalError : cloneHandler() {
     	try {
 			return proceed();
 		}
