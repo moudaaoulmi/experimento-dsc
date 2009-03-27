@@ -1,4 +1,4 @@
-package org.jhotdraw;
+package org.jhotdraw.Exception;
 
 import java.awt.MediaTracker;
 import org.jhotdraw.util.Iconkit;

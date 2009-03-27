@@ -5,18 +5,14 @@ import java.awt.geom.NoninvertibleTransformException;
 
 public aspect ZoomHandler {
 	
-	// Poitcuts
-	pointcut MiniMapZoomableView_getInverseSubjectTransform(): execution(private AffineTransform MiniMapZoomableView.internalInverseSubjectTransForm(..));
-	
-	
-	
 	// Declare Soft
-	declare soft: NoninvertibleTransformException : MiniMapZoomableView_getInverseSubjectTransform();
+	declare soft: NoninvertibleTransformException : getInverseSubjectTransforHandler();
 	
+	// Poitcuts
+	pointcut getInverseSubjectTransforHandler(): execution(private AffineTransform MiniMapZoomableView.internalInverseSubjectTransForm(..));
 	
 	// Around 
-	
-	AffineTransform around(double subjectsScale, AffineTransform at) : MiniMapZoomableView_getInverseSubjectTransform()&& args(subjectsScale,at) {
+	AffineTransform around(double subjectsScale, AffineTransform at) : getInverseSubjectTransforHandler()&& args(subjectsScale,at) {
 		try {
 			return proceed(subjectsScale,at);
 		}

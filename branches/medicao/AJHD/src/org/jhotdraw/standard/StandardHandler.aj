@@ -7,34 +7,37 @@ import java.io.InputStream;
 import org.aspectj.lang.SoftException;
 
 public privileged aspect StandardHandler {
+	
+	// Declare Soft
+	declare soft : IOException : internalClone2Hander() || internalCloneHandler() || internalGetDataHandler();
+	declare soft : ClassNotFoundException:	internalClone2Hander();
+	declare soft : CloneNotSupportedException  :cloneHandler();
+	declare soft : Exception: internaldrawXORRectHandler();
+	declare soft : InterruptedException :  internalLockHandler();
+	//declare soft : Throwable : StandardDrawingView_DrawingViewMouseListener_mousePressed();
+	declare soft : Exception: internalToolButtonHandler();
+	
+	
+	//Pointcuts
+	pointcut internalClone2Hander(): execution( private Object AbstractFigure.internalClone2(..));
 
-	pointcut AbstractFigure_internalClone2(): execution( private Object AbstractFigure.internalClone2(..));
+	pointcut internalCloneHandler(): execution( private void AbstractFigure.internalClone(..));
 
-	pointcut AbstractFigure_internalClone(): execution( private void AbstractFigure.internalClone(..));
+	pointcut cloneHandler(): execution (public Object AbstractLocator.clone());
 
-	pointcut AbstractLocator_clone(): execution (public Object AbstractLocator.clone());
+	pointcut internaldrawXORRectHandler(): execution(private void SelectAreaTracker.internaldrawXORRect(..));
 
-	pointcut SelectAreaTracker_internaldrawXORRect(): execution(private void SelectAreaTracker.internaldrawXORRect(..));
-
-	pointcut StandardDrawing_internalLock() : execution(private void StandardDrawing.internalLock(..));
+	pointcut internalLockHandler() : execution(private void StandardDrawing.internalLock(..));
 	
 	//pointcut StandardDrawingView_DrawingViewMouseListener_mousePressed(): execution(public void mousePressed(..));
 	
-	pointcut StandardFigureSelection_internalGetData(): execution(private void StandardFigureSelection.internalGetData(..));
+	pointcut internalGetDataHandler(): execution(private void StandardFigureSelection.internalGetData(..));
 	
-	pointcut ToolButton_internalToolButton(): execution(private void ToolButton.internalToolButton(..));
+	pointcut internalToolButtonHandler(): execution(private void ToolButton.internalToolButton(..));
 
-	// Declare Soft
+	
 
-	declare soft : IOException : AbstractFigure_internalClone2() || AbstractFigure_internalClone() || StandardFigureSelection_internalGetData();
-	declare soft : ClassNotFoundException:	AbstractFigure_internalClone2();
-	declare soft : CloneNotSupportedException  :AbstractLocator_clone();
-	declare soft : Exception: SelectAreaTracker_internaldrawXORRect();
-	declare soft : InterruptedException :  StandardDrawing_internalLock();
-	//declare soft : Throwable : StandardDrawingView_DrawingViewMouseListener_mousePressed();
-	declare soft : Exception: ToolButton_internalToolButton();
-
-	Object around(Object clone, InputStream input):  AbstractFigure_internalClone2() && args(clone,input){
+	Object around(Object clone, InputStream input):  internalClone2Hander() && args(clone,input){
 		try {
 			return proceed(clone, input);
 		} catch (IOException e) {
@@ -45,7 +48,7 @@ public privileged aspect StandardHandler {
 		return clone;
 	}
 
-	void around():  AbstractFigure_internalClone(){
+	void around():  internalCloneHandler(){
 		try {
 			proceed();
 		} catch (IOException e) {
@@ -53,7 +56,7 @@ public privileged aspect StandardHandler {
 		}
 	}
 
-	Object around() throws InternalError:  AbstractLocator_clone(){
+	Object around() throws InternalError:  cloneHandler(){
 		try {
 			return proceed();
 		} catch (CloneNotSupportedException e) {
@@ -61,7 +64,7 @@ public privileged aspect StandardHandler {
 		}
 	}
 
-	void around(Rectangle r, Graphics g) : SelectAreaTracker_internaldrawXORRect() && args(r,g) {
+	void around(Rectangle r, Graphics g) : internaldrawXORRectHandler() && args(r,g) {
 		try {
 			proceed(r, g);
 		} finally {
@@ -69,12 +72,22 @@ public privileged aspect StandardHandler {
 		}
 	}
 
-	void around() : StandardDrawing_internalLock() {
+	void around() : internalLockHandler()  || internalToolButtonHandler(){
 		try {
 			proceed();
 		} catch (InterruptedException e) {
+			
 		}
 	}
+	
+	/** REUSE ______
+	void around(): internalToolButtonHandler(){
+		try{
+			proceed();
+		}catch (Exception e) {
+			// ignore exception
+		}
+	}*/
 	
 //	void around(StandardDrawingView d) : StandardDrawingView_DrawingViewMouseListener_mousePressed()&& this(d){
 //		try{
@@ -84,7 +97,7 @@ public privileged aspect StandardHandler {
 //		}
 //	}
 	
-	void around() : StandardFigureSelection_internalGetData(){
+	void around() : internalGetDataHandler(){
 		try{
 			proceed();
 		}catch (IOException e) {
@@ -98,12 +111,6 @@ public privileged aspect StandardHandler {
 		}
 	}
 	
-	void around(): ToolButton_internalToolButton(){
-		try{
-			proceed();
-		}catch (Exception e) {
-			// ignore exception
-		}
-	}
+	
 
 }
