@@ -192,6 +192,13 @@ public class CheckstylePropertyPage extends PropertyPage
         container.setLayout(new FormLayout());
         container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
+        internalCreateContentes(container);
+
+        return container;
+    }
+
+    private void internalCreateContentes(Composite container)
+    {
         // create the checkbox to enable/diable the simple configuration
         this.mChkSimpleConfig = new Button(container, SWT.CHECK);
         this.mChkSimpleConfig.setText(Messages.CheckstylePropertyPage_btnUseSimpleConfig);
@@ -218,6 +225,7 @@ public class CheckstylePropertyPage extends PropertyPage
 
         // create the configuration area
         mFileSetsContainer = new Composite(container, SWT.NULL);
+        //AQUI
         Control configArea = createFileSetsArea(mFileSetsContainer);
         fd = new FormData();
         fd.left = new FormAttachment(0, 3);
@@ -246,8 +254,6 @@ public class CheckstylePropertyPage extends PropertyPage
         TabItem localItem = new TabItem(mMainTab, SWT.NULL);
         localItem.setControl(localConfigArea);
         localItem.setText(Messages.CheckstylePropertyPage_tabCheckConfigs);
-
-        return container;
     }
 
     /**

@@ -8,12 +8,14 @@ import org.eclipse.core.resources.IProject;
 import java.util.regex.PatternSyntaxException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
+import org.eclipse.swt.events.SelectionEvent;
 
 /**
  * @author Cristiane Queiroz
@@ -36,7 +38,7 @@ public privileged aspect PropertiesHandler
                                                 SimpleFileSetsEditor_widgetSelectedHandler() ||
                                                 FileMatchPatternEditDialog_okPressedHandler() || 
                                                 CheckstylePropertyPage_setElementHandler() || 
-                                                CheckstylePropertyPage_createContentsHandler() ||
+                                                CheckstylePropertyPage_internalCreateContentsHandler() ||
                                                 CheckstylePropertyPage_performOkHandler() ||
                                                 CheckstylePropertyPage_createFileSetsAreaHandler();
 
@@ -49,11 +51,11 @@ public privileged aspect PropertiesHandler
     pointcut CheckstylePropertyPage_setElementHandler(): 
         execution(* CheckstylePropertyPage.setElement(..));
 
-    pointcut CheckstylePropertyPage_createContentsHandler(): 
-        execution(* CheckstylePropertyPage.createContents(..));
-
+    pointcut CheckstylePropertyPage_internalCreateContentsHandler(): 
+        execution(* CheckstylePropertyPage.internalCreateContentes(..));
+    
     pointcut CheckstylePropertyPage_createFileSetsAreaHandler(): 
-        call(* CheckstylePropertyPage.createFileSetsArea(..));
+        execution (* CheckstylePropertyPage.PageController.widgetSelected(..));
 
     pointcut CheckstylePropertyPage_performOkHandler(): 
         execution(* CheckstylePropertyPage.performOk(..));
@@ -68,9 +70,7 @@ public privileged aspect PropertiesHandler
         execution(* ComplexFileSetsEditor.editFileSet(..));
 
     pointcut FileSetEditDialog_runHandler(): 
-        execution(* run(..)) && 
-        within(FileSetEditDialog) && 
-        within(Runnable+);
+        execution(* FileSetEditDialog.internalRun(..));
 
     pointcut FileSetEditDialog_widgetSelectedHandler(): 
         execution(* FileSetEditDialog.Controller.internalWidgetSelected(..));
@@ -119,11 +119,12 @@ public privileged aspect PropertiesHandler
         }
     }
 
-    Control around() : CheckstylePropertyPage_createContentsHandler() {
-        Control result = null;
+    void around(Composite container) : 
+            CheckstylePropertyPage_internalCreateContentsHandler() &&
+            args(container){
         try
         {
-            result = proceed();
+            proceed(container);
         }
         catch (CheckstylePluginException e)
         {
@@ -131,14 +132,14 @@ public privileged aspect PropertiesHandler
             CheckstyleLog.errorDialog(cPG.getShell(), ErrorMessages.errorOpeningPropertiesPage, e,
                     true);
         }
-        return result;
     }
 
-    Control around() : CheckstylePropertyPage_createFileSetsAreaHandler()  {
-        Control result = null;
+    void around(SelectionEvent selectionEvent) : 
+            CheckstylePropertyPage_createFileSetsAreaHandler() &&
+            args(selectionEvent){
         try
         {
-            result = proceed();
+            proceed(selectionEvent);
         }
         catch (CheckstylePluginException e)
         {
@@ -146,7 +147,6 @@ public privileged aspect PropertiesHandler
             CheckstyleLog.errorDialog(cPG.getShell(), ErrorMessages.errorChangingFilesetEditor, e,
                     true);
         }
-        return result;
     }
 
     boolean around() : CheckstylePropertyPage_performOkHandler() {
