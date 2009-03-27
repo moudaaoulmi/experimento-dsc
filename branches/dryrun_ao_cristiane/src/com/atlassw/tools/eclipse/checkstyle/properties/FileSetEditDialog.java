@@ -418,14 +418,19 @@ public class FileSetEditDialog extends TitleAreaDialog
                 mMatchGroup.setText(Messages.FileSetEditDialog_msgBuildTestResults);
                 // mProjectFiles = getFiles(mProject);
               //  internalRun(mProjectFiles, mProject);
-                mProjectFiles = getFiles(mProject);
+                internalRun();
                 // init the test area
                 mMatchesViewer.setInput(mProjectFiles);
                 updateMatchView();
 
             }
+
         });
 
+    }
+    private void internalRun()
+    {
+        mProjectFiles = getFiles(mProject);
     }
 
     private void updateMatchView()
