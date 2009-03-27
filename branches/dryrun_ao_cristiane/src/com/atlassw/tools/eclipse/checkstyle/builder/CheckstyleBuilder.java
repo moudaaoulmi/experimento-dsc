@@ -39,6 +39,8 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.texteditor.MarkerUtilities;
 
@@ -156,27 +158,22 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
      */
     protected final IProject[] build(int kind, Map args, IProgressMonitor monitor)
-    throws CoreException
+        throws CoreException
     {
-
         // get the associated project for this builder
         IProject project = getProject();
-
         // remove project level error markers
         project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
-
         if (CheckstyleNature.hasCorrectBuilderOrder(project))
         {
-
             if (project != null)
             {
-
                 //
                 // get the project configuration
                 //
                 IProjectConfiguration config = null;
-                
-                config = ProjectConfigurationFactory.getConfiguration(project);
+
+                config = internalBuild(project, config);
 
                 Collection files = null;
 
@@ -226,6 +223,13 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
         return new IProject[] { project };
     }
 
+    private IProjectConfiguration internalBuild(IProject project, IProjectConfiguration config)
+        throws CoreException
+    {
+        config = ProjectConfigurationFactory.getConfiguration(project);
+        return config;
+    }
+
     /**
      * Builds the selected resources.
      * 
@@ -237,16 +241,16 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
      */
     protected void handleBuildSelection(Collection resources, IProjectConfiguration configuration,
             IProgressMonitor monitor, IProject project, int kind) throws CoreException
-            {
+    {
 
-        //System.out.println(new java.util.Date() + " kind: " + kind + " files: " + resources.size());
+        // System.out.println(new java.util.Date() + " kind: " + kind +
+        // " files: " + resources.size());
 
         // on full build remove all previous checkstyle markers
         if (kind == IncrementalProjectBuilder.FULL_BUILD)
         {
             project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
         }
-
 
         //
         // Build a set of auditors from the file sets of this project
@@ -305,8 +309,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
                         audit.addFile(file);
 
                         // remove markers on this file
-                        file.deleteMarkers(CheckstyleMarker.MARKER_ID, false,
-                                IResource.DEPTH_ZERO);
+                        file.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
 
                         // remove markers from package to prevent
                         // packagehtml messages from accumulatin
@@ -327,7 +330,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder
             }
             ((Auditor) it.next()).runAudit(project, monitor);
         }
-            }
+    }
 
     /**
      * Get the files for the build by analyzing the resource delta.

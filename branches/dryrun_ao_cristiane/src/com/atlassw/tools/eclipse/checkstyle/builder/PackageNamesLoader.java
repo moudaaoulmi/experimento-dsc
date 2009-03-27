@@ -20,6 +20,7 @@
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
-
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
@@ -35,6 +35,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.api.AbstractLoader;
 
@@ -139,51 +140,48 @@ public final class PackageNamesLoader extends AbstractLoader
      */
     public static List getPackageNames(ClassLoader aClassLoader) throws CheckstylePluginException
     {
+            if (sPackages == null)
+            {
+                sPackages = new ArrayList();
 
-        if (sPackages == null)
-        {
-            sPackages = new ArrayList();
+                PackageNamesLoader nameLoader = null;
 
-            PackageNamesLoader nameLoader = null;
+                nameLoader = internalGetPackageNames(aClassLoader, nameLoader);
 
+                // load custom package files
+
+                Enumeration packageFiles = aClassLoader.getResources("checkstyle_packages.xml"); //$NON-NLS-1$
+
+                while (packageFiles.hasMoreElements())
+                {
+
+                    URL aPackageFile = (URL) packageFiles.nextElement();
+                    InputStream iStream = null;
+
+                    internalgetPackageNames2(nameLoader, aPackageFile, iStream);
+                }
+            }
+        
+        return sPackages;
+    }
+
+    private static void internalgetPackageNames2(PackageNamesLoader nameLoader, URL aPackageFile,
+            InputStream iStream)
+    {
+            iStream = new BufferedInputStream(aPackageFile.openStream());
+            InputSource source = new InputSource(iStream);
+            nameLoader.parseInputSource(source);
+    }
+
+    private static PackageNamesLoader internalGetPackageNames(ClassLoader aClassLoader,
+            PackageNamesLoader nameLoader) throws CheckstylePluginException
+    {
             nameLoader = new PackageNamesLoader();
             final InputStream stream = aClassLoader.getResourceAsStream(DEFAULT_PACKAGES);
             InputSource source = new InputSource(stream);
             nameLoader.parseInputSource(source);
-
-            getPackageNameInteration1(aClassLoader, nameLoader);
-        }
-
-        return sPackages;
-    }
-
-    private static void getPackageNameInteration1(ClassLoader aClassLoader,
-            PackageNamesLoader nameLoader) throws CheckstylePluginException
-    {
-        // load custom package files
-        Enumeration packageFiles = aClassLoader.getResources("checkstyle_packages.xml"); //$NON-NLS-1$
-
-        while (packageFiles.hasMoreElements())
-        {
-            getPackageNameInteration2(nameLoader, packageFiles);
-        }
-       
-    }
-
-    private static void getPackageNameInteration2(PackageNamesLoader nameLoader,
-            Enumeration packageFiles)
-    {
-        URL aPackageFile = (URL) packageFiles.nextElement();
-        getPackageNameInteration3(nameLoader, aPackageFile);
-    }
-
-    private static void getPackageNameInteration3(PackageNamesLoader nameLoader, URL aPackageFile)
-    {
-        InputStream iStream = null;
-        iStream = new BufferedInputStream(aPackageFile.openStream());
-        InputSource source = new InputSource(iStream);
-        nameLoader.parseInputSource(source);
-        IOUtils.closeQuietly(iStream);
+  
+        return nameLoader;
     }
 
     /**

@@ -24,6 +24,7 @@ import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Filter;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 
 public privileged aspect BuilderHandler
 {
@@ -34,16 +35,19 @@ public privileged aspect BuilderHandler
                                  auditor_runAuditHandle();
 
     declare soft: CheckstylePluginException: checkstyleBuilder_buildHandler()|| 
-                                             checkstyleBuilder_handleBuildSelectionHandler();
+                  checkstyleBuilder_handleBuildSelectionHandler();
 
     declare soft: BadLocationException: auditor_calculateMarkerOffsetHandle();
 
-    declare soft: SAXException: packageNamesLoader_getPackageNameInteration3Handle()||
-                                packageNamesLoader_getPackageNamesHandle();
+    declare soft: IOException: PackageNamesLoader_getPackageNames() ||
+                  PackageNamesLoader_internalgetPackageNames2()||
+                  auditor_runAuditHandle() ||
+                  PackageNamesLoader_internalgetPackageNames();
 
-    declare soft: IOException: packageNamesLoader_getPackageNameInteration3Handle()||
-                               packageNamesLoader_getPackageNamesHandle() ||
-                               auditor_runAuditHandle();
+    declare soft: ParserConfigurationException: PackageNamesLoader_internalgetPackageNames();
+
+    declare soft: SAXException: PackageNamesLoader_internalgetPackageNames2() ||
+                                PackageNamesLoader_internalgetPackageNames();
 
     declare soft: ClassNotFoundException: packageObjectFactory_createObjectHandle();
 
@@ -58,8 +62,6 @@ public privileged aspect BuilderHandler
                                        packageObjectFactory_internalDoMakeObjectHandle()||
                                        auditor_runAuditHandle();
 
-    declare soft: ParserConfigurationException: packageNamesLoader_getPackageNamesHandle();
-
     declare soft: CheckstylePluginException: runCheckstyleOnFilesJob_runInWorkspaceHandle();
 
     // ---------------------------
@@ -70,9 +72,7 @@ public privileged aspect BuilderHandler
         execution (* BuildProjectJob.run(..)) ;
 
     pointcut checkstyleBuilder_buildHandler(): 
-//        call(* ProjectConfigurationFactory.getConfiguration(..)) &&
-//        withincode(* CheckstyleBuilder.build(..)) ;
-        execution(* CheckstyleBuilder.build(..));
+        execution(* CheckstyleBuilder.internalBuild(..)) ;
 
     pointcut checkstyleBuilder_handleBuildSelectionHandler(): 
         execution(* CheckstyleBuilder.handleBuildSelection(..));
@@ -83,26 +83,29 @@ public privileged aspect BuilderHandler
     pointcut auditor_runAuditHandle(): 
         execution (* Auditor.internalRunAudit(..)) ;
 
-    pointcut packageNamesLoader_getPackageNameInteration3Handle(): 
-        execution (* PackageNamesLoader.getPackageNameInteration3(..)) ;
+    pointcut PackageNamesLoader_getPackageNames():
+        execution(* PackageNamesLoader.getPackageNames(..));
 
-    pointcut packageNamesLoader_getPackageNamesHandle(): 
-        execution (* PackageNamesLoader.getPackageNames(..)) ;
+    pointcut PackageNamesLoader_internalgetPackageNames2():
+        execution(* PackageNamesLoader.internalgetPackageNames2(..));
 
-    //caso esquisito esse, que só continua o método se cair na exceção
+    pointcut PackageNamesLoader_internalgetPackageNames():
+        execution(* PackageNamesLoader.internalGetPackageNames(..));
+//ate aqui
+    // caso esquisito esse, que só continua o método se cair na exceção
     pointcut packageObjectFactory_createObjectHandle(): 
         execution (* PackageObjectFactory.createObject(..)) ;
 
     pointcut packageObjectFactory_createModuleHandle(): 
         execution (* PackageObjectFactory.createModule(..)) ;
-    
+
     pointcut packageObjectFactory_doMakeObjectHandle(): 
         execution(* PackageObjectFactory.doMakeObject(..)) ;
-    
+
     pointcut packageObjectFactory_internalDoMakeObjectHandle():
         call(* PackageObjectFactory.createObject(..)) &&
         withincode(* PackageObjectFactory.internalDoMakeObject(..)) ;
-    
+
     pointcut projectClassLoader_handlePathHandle(): 
         execution (* ProjectClassLoader.handlePath(..)) ;
 
@@ -115,11 +118,70 @@ public privileged aspect BuilderHandler
     // ---------------------------
     // Advice's
     // ---------------------------
+    PackageNamesLoader around() throws CheckstylePluginException: PackageNamesLoader_internalgetPackageNames(){
+        PackageNamesLoader result = null;
+        try
+        {
+            result = proceed();
+        }
+        catch (ParserConfigurationException e)
+        {
+            PackageNamesLoader pNL = (PackageNamesLoader) thisJoinPoint.getThis();
+            CheckstylePluginException.rethrow(e, "unable to parse " + pNL.DEFAULT_PACKAGES); //$NON-NLS-1$
+        }
+        catch (SAXException e)
+        {
+            PackageNamesLoader pNL = (PackageNamesLoader) thisJoinPoint.getThis();
+            CheckstylePluginException.rethrow(e, "unable to parse " + pNL.DEFAULT_PACKAGES + " - " //$NON-NLS-1$ //$NON-NLS-2$
+                    + e.getMessage());
+        }
+        catch (IOException e)
+        {
+            PackageNamesLoader pNL = (PackageNamesLoader) thisJoinPoint.getThis();
+            CheckstylePluginException.rethrow(e, "unable to read " + pNL.DEFAULT_PACKAGES); //$NON-NLS-1$
+        }
+        return result;
+    }
+
+    void around(PackageNamesLoader nameLoader, URL aPackageFile, InputStream iStream): PackageNamesLoader_internalgetPackageNames2()
+        && args(nameLoader, aPackageFile, iStream){
+        try
+        {
+            proceed(nameLoader, aPackageFile, iStream);
+        }
+        catch (SAXException e)
+        {
+            CheckstyleLog.log(e, "unable to parse " + aPackageFile.toExternalForm() //$NON-NLS-1$
+                    + " - " + e.getLocalizedMessage()); //$NON-NLS-1$
+        }
+        catch (IOException e)
+        {
+            CheckstyleLog.log(e, "unable to read " + aPackageFile.toExternalForm()); //$NON-NLS-1$
+        }
+        finally
+        {
+            IOUtils.closeQuietly(iStream);
+        }
+    }
+
+    List around() throws CheckstylePluginException: PackageNamesLoader_getPackageNames() {
+        List result = null;
+        try
+        {
+            result = proceed();
+        }
+        catch (IOException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        return result;
+    }
+
     void around(IProject project, IProgressMonitor monitor, Checker checker,
             AuditListener listener, Filter runtimeExceptionFilter, ClassLoader contextClassloader)
-        throws CheckstylePluginException: auditor_runAuditHandle() &&
-        args(project, monitor, checker, listener, runtimeExceptionFilter,
-                contextClassloader){
+            throws CheckstylePluginException: auditor_runAuditHandle() &&
+            args(project, monitor, checker, listener, runtimeExceptionFilter, contextClassloader)
+        {
         try
         {
             proceed(project, monitor, checker, listener, runtimeExceptionFilter, contextClassloader);
@@ -137,28 +199,25 @@ public privileged aspect BuilderHandler
             Thread.currentThread().setContextClassLoader(contextClassloader);
         }
     }
-    
-    void around()  throws CheckstylePluginException: auditor_runAuditHandle(){
-            try
-            {
-                proceed();
-            }
-            catch (IOException e)
-            {
-                CheckstylePluginException.rethrow(e);
-            }
-            catch (CoreException e)
-            {
-                CheckstylePluginException.rethrow(e);
-            }
-            catch (CheckstyleException e)
-            {
-                CheckstylePluginException.rethrow(e);
-            }
+
+    void around() throws CheckstylePluginException: auditor_runAuditHandle(){
+        try
+        {
+            proceed();
         }
-
-  
-
+        catch (IOException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        catch (CoreException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        catch (CheckstyleException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+    }
 
     Object around(String aName) throws CheckstyleException:
         packageObjectFactory_createModuleHandle() && args(aName){
@@ -181,7 +240,7 @@ public privileged aspect BuilderHandler
     }
 
     IStatus around(IProgressMonitor monitor): buildProjectJob_runHandler() && 
-            args(monitor){
+        args(monitor){
         IStatus result = null;
         try
         {
@@ -198,9 +257,9 @@ public privileged aspect BuilderHandler
         return result;
     }
 
-    /* IProjectConfiguration */IProject[] around() throws CoreException: 
+    IProjectConfiguration around() throws CoreException: 
         checkstyleBuilder_buildHandler(){
-        /* IProjectConfiguration */IProject[] result = null;
+        IProjectConfiguration result = null;
         try
         {
             result = proceed();
@@ -228,23 +287,6 @@ public privileged aspect BuilderHandler
         }
     }
 
-    void around(PackageNamesLoader nameLoader, URL aPackageFile): 
-            packageNamesLoader_getPackageNameInteration3Handle() 
-            && args(nameLoader, aPackageFile) {
-        try
-        {
-            proceed(nameLoader, aPackageFile);
-        }
-        catch (SAXException e)
-        {
-            CheckstyleLog.log(e, "unable to parse " + aPackageFile.toExternalForm() //$NON-NLS-1$
-                    + " - " + e.getLocalizedMessage()); //$NON-NLS-1$
-        }
-        catch (IOException e)
-        {
-            CheckstyleLog.log(e, "unable to read " + aPackageFile.toExternalForm()); //$NON-NLS-1$
-        }
-    }
     void around(): projectClassLoader_handlePathHandle() {
         try
         {
@@ -312,33 +354,8 @@ public privileged aspect BuilderHandler
         return result;
     }
 
-    List<Object> around() throws CheckstylePluginException: 
-            packageNamesLoader_getPackageNamesHandle() {
-        List<Object> result = null;
-        try
-        {
-            result = proceed();
-        }
-        catch (ParserConfigurationException e)
-        {
-            CheckstylePluginException.rethrow(e,
-                    "unable to parse " + PackageNamesLoader.DEFAULT_PACKAGES); //$NON-NLS-1$
-        }
-        catch (SAXException e)
-        {
-            CheckstylePluginException.rethrow(e,
-                    "unable to parse " + PackageNamesLoader.DEFAULT_PACKAGES + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        catch (IOException e)
-        {
-            CheckstylePluginException.rethrow(e,
-                    "unable to parse " + PackageNamesLoader.DEFAULT_PACKAGES); //$NON-NLS-1$
-        }
-        return result;
-    }
-
     Object around() throws CoreException : runCheckstyleOnFilesJob_runInWorkspaceHandle() ||
-                                           checkstyleBuilder_handleBuildSelectionHandler() {
+              checkstyleBuilder_handleBuildSelectionHandler() {
         try
         {
             proceed();
@@ -353,7 +370,7 @@ public privileged aspect BuilderHandler
     }
 
     InputStream around(CheckstyleConfigurationFile configFileData, InputStream in): 
-            checkerFactory_internalCreateCheckerHandler() && args(configFileData,in) {
+        checkerFactory_internalCreateCheckerHandler() && args(configFileData,in) {
         try
         {
             in = proceed(configFileData, in);
