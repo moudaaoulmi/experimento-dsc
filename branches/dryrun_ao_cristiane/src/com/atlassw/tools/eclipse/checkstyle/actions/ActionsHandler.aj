@@ -44,7 +44,7 @@ public privileged aspect ActionsHandler
     }
 
     IStatus around() : ConfigureProjectFromBluePrintActionHandle_runInWorkspaceHandle(){
-        IStatus result = null;
+        IStatus result = Status.OK_STATUS;
         try
         {
             result = proceed();
