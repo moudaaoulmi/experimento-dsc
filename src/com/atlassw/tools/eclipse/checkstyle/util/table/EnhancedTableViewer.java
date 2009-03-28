@@ -256,7 +256,7 @@ public class EnhancedTableViewer extends TableViewer
             return;
         }
         
-        mSortedColumnIndex = settings.getInt(TAG_COLUMN_INDEX);
+        internalRestoreStateGetInt(settings);
         
         internalRestoreState(settings);
 
@@ -284,6 +284,11 @@ public class EnhancedTableViewer extends TableViewer
         this.getTable().select(settings.getInt(TAG_CURRENT_SELECTION));
 
         resort();
+    }
+
+    private void internalRestoreStateGetInt(IDialogSettings settings)
+    {
+        mSortedColumnIndex = settings.getInt(TAG_COLUMN_INDEX);
     }
 
 
