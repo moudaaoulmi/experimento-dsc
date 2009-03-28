@@ -72,8 +72,7 @@ public privileged aspect ConfigHandle
         withincode(* GlobalCheckConfigurationWorkingSet.removeCheckConfiguration(..)) ;
 
     pointcut ConfigurationReaderHandle_getAdditionalConfigDataHandler(): 
-        call(* Integer.parseInt(..)) &&
-        withincode (* ConfigurationReader.getAdditionalConfigData(..)) ;
+        execution (int ConfigurationReader.internalGetAdditionalConfigData(String,int)) ;
 
     pointcut ConfigurationReaderHandle_startElementHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.startElementHandle(..)) ;
@@ -88,7 +87,7 @@ public privileged aspect ConfigHandle
         execution (* CheckConfigurationFactory.CheckConfigurationsFileHandler.endElement(..));
 
     pointcut RetrowException_resolveEntityHandleHandle(): 
-        execution (* ConfigurationReader.ConfigurationHandler.resolveEntityHandle(..)) ;
+        execution (* ConfigurationReader.ConfigurationHandler.resolveEntity(..)) ;
 
     pointcut RetrowException_exportConfigurationHandle(): 
         execution (* CheckConfigurationFactory.internalExportConfiguration(..)) ;
@@ -117,18 +116,19 @@ public privileged aspect ConfigHandle
     // ---------------------------
     // Advice's
     // ---------------------------
-    void around(InputStream in, Object result) throws CheckstylePluginException:
+    List around(InputStream in, List result) throws CheckstylePluginException:
                 CheckConfigurationWorkingCopy_internalGetModules() &&
                 args(in, result){
         
         try
         {
-            proceed(in, result);
+            result = proceed(in, result);
         }
         finally
         {
             IOUtils.closeQuietly(in);
         }
+        return result;
     }
 
     void around(String location, String oldLocation) throws CheckstylePluginException: 
@@ -159,9 +159,9 @@ public privileged aspect ConfigHandle
         }
     }
 
-    Object around(): CheckstyleLogMessage_removeCheckConfigurationHandle() || 
-                     CheckstyleLogMessage_refreshHandle() {
-        Object result = null;
+    boolean around(): CheckstyleLogMessage_removeCheckConfigurationHandle()
+    {
+        boolean result = true;
         try
         {
             result = proceed();
@@ -172,18 +172,30 @@ public privileged aspect ConfigHandle
         }
         return result;
     }
-
-    int around(): ConfigurationReaderHandle_getAdditionalConfigDataHandler() {
-        int result = 0;
+    
+    void around(): CheckstyleLogMessage_refreshHandle() {
         try
         {
-            result = proceed();
+            proceed();
+        }
+        catch (CheckstylePluginException e)
+        {
+            CheckstyleLog.log(e);
+        }
+    }
+
+    int around(String tabWidthProp,int tabWidth): 
+            ConfigurationReaderHandle_getAdditionalConfigDataHandler() &&
+            args(tabWidthProp, tabWidth){
+        try
+        {
+            tabWidth = proceed(tabWidthProp, tabWidth);
         }
         catch (Exception se)
         {
             // ignore
         }
-        return result;
+        return tabWidth;
     }
 
     void around(String value, Module module): 
@@ -223,11 +235,13 @@ public privileged aspect ConfigHandle
         }
     }
 
-    InputSource around() throws SAXException: RetrowException_resolveEntityHandleHandle(){
+    InputSource around(String publicId, String systemId) throws SAXException: 
+        RetrowException_resolveEntityHandleHandle() &&
+        args(publicId, systemId){
         InputSource result = null;
         try
         {
-            result = proceed();
+            result = proceed(publicId, systemId);
         }
         catch (IOException e)
         {

@@ -154,11 +154,17 @@ public final class ConfigurationReader
 
                 String tabWidthProp = prop.getValue() != null ? prop.getValue() : prop
                         .getMetaData().getDefaultValue();
-                tabWidth = Integer.parseInt(tabWidthProp);
+                tabWidth = internalGetAdditionalConfigData(tabWidthProp,tabWidth);
             }
         }
 
         return new AdditionalConfigData(tabWidth, messages);
+    }
+
+    private static int internalGetAdditionalConfigData(String tabWidthProp,int tabWidth)
+    {
+        tabWidth = Integer.parseInt(tabWidthProp);
+        return tabWidth;
     }
 
 //    private static int getAdditionalConfigDataHandle(int tabWidth, String tabWidthProp)
@@ -207,18 +213,23 @@ public final class ConfigurationReader
             // DefaultHeader.resolveEntity():
             // sometimes it throws SAX- and IO- exceptions
             // sometime SAX only :(
-            return resolveEntityHandle(publicId, systemId);
-        }
-
-        private InputSource resolveEntityHandle(String publicId, String systemId)
-        throws SAXException
-        {
+            //return resolveEntityHandle(publicId, systemId);
             if (false)
             {
                 throw new IOException(""); //$NON-NLS-1$
             }
             return super.resolveEntity(publicId, systemId);
         }
+
+        /*private InputSource resolveEntityHandle(String publicId, String systemId)
+                throws SAXException
+        {
+            if (false)
+            {
+                throw new IOException(""); //$NON-NLS-1$
+            }
+            return super.resolveEntity(publicId, systemId);
+        }*/
 
         /**
          * {@inheritDoc}

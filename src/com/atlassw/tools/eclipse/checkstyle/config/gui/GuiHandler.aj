@@ -34,14 +34,14 @@ public privileged aspect GuiHandler
     declare soft: CheckstylePluginException:
                     CheckConfigurationPropertiesDialog_widgetSelectedHandler()|| 
                     CheckConfigurationPropertiesDialog_okPressedHandler() || 
-                    CheckConfigurationPropertiesDialog_setUniqueNameHandler() ||
+                    /*CheckConfigurationPropertiesDialog_setUniqueNameHandler() ||*/
                     CheckConfigurationPropertiesDialog_createDialogAreaHandler() ||
                     CheckConfigurationWorkingSetEditor_internalCheckConfigHandler() ||
                     CheckConfigurationWorkingSetEditor_internalConfigureCheckConfigHandler() ||
                     CheckConfigurationFactory_exportCheckstyleCheckConfigHandler() ||
                     ResolvablePropertiesDialog_findPropertyItemsHandler() ||
-                    RuleConfigurationEditDialog_okPressedHandler() ||
-                    RuleConfigurationEditDialog_internalOkPressedHandler();
+                    RuleConfigurationEditDialog_okPressedHandler() /*||
+                    RuleConfigurationEditDialog_internalOkPressedHandler()*/;
 
     declare soft: Exception: CheckConfigurationPropertiesDialog_createConfigurationEditorHandler();
 
@@ -80,8 +80,9 @@ public privileged aspect GuiHandler
     pointcut CheckConfigurationPropertiesDialog_createConfigurationEditorHandler():
         execution(* CheckConfigurationPropertiesDialog.createConfigurationEditor(..));
 
-    pointcut CheckConfigurationPropertiesDialog_setUniqueNameHandler():
-        execution(* CheckConfigurationPropertiesDialog.internalSetUniqueName(..));
+    /*TODO: romulo
+     * pointcut CheckConfigurationPropertiesDialog_setUniqueNameHandler():
+        execution(* CheckConfigurationPropertiesDialog.internalSetUniqueName(..));*/
 
     pointcut CheckConfigurationWorkingSetEditor_internalCheckConfigHandler():
         execution(* CheckConfigurationWorkingSetEditor.addCheckConfig(..)) ||
@@ -98,26 +99,26 @@ public privileged aspect GuiHandler
         execution(* ResolvablePropertiesDialog.Controller.findPropertyItems(..));
 
     pointcut RuleConfigurationEditDialog_okPressedHandler():
-        call(* ComboViewer.getSelection(..)) &&
+        call(* intrenalOkPressesGetSelection(..)) &&
         withincode(* RuleConfigurationEditDialog.okPressed(..));
 
-    pointcut RuleConfigurationEditDialog_internalOkPressedHandler():
-        execution(* RuleConfigurationEditDialog.internalOkPressed(..) );
+    /*TODO: romulo
+     * pointcut RuleConfigurationEditDialog_internalOkPressedHandler():
+        execution(* RuleConfigurationEditDialog.internalOkPressed(..) );*/
 
     // ---------------------------
     // Advice's
     // ---------------------------
     Object around(): CheckConfigurationConfigureDialog_initializeHandler(){
-        Object result = null;
+        CheckConfigurationConfigureDialog cCCD = (CheckConfigurationConfigureDialog) thisJoinPoint.getThis();
+        Object result = cCCD.mModules;
         try
         {
             result = proceed();
         }
         catch (CheckstylePluginException e)
         {
-            CheckConfigurationConfigureDialog cCCD = (CheckConfigurationConfigureDialog) thisJoinPoint
-                    .getThis();
-            cCCD.mModules = new ArrayList();
+            result = new ArrayList();
             CheckstyleLog.errorDialog(cCCD.getShell(), e, true);
         }
         return result;
@@ -165,17 +166,18 @@ public privileged aspect GuiHandler
         }
     }
 
-    IStructuredSelection around(): RuleConfigurationEditDialog_okPressedHandler(){
-        IStructuredSelection result = null;
+    SeverityLevel around(SeverityLevel severity): 
+            RuleConfigurationEditDialog_okPressedHandler() &&
+            args(severity){
         try
         {
-            result = proceed();
+            severity = proceed(severity);
         }
         catch (IllegalArgumentException e)
         {
             CheckstyleLog.log(e);
         }
-        return result;
+        return severity;
     }
 
     void around(): CheckConfigurationPropertiesDialog_createDialogAreaHandler(){
@@ -216,7 +218,7 @@ public privileged aspect GuiHandler
         }
     }
 
-    void around(CheckConfigurationWorkingCopy config, String checkConfigName, String uniqueName,
+    /*void around(CheckConfigurationWorkingCopy config, String checkConfigName, String uniqueName,
             int counter):
                 CheckConfigurationPropertiesDialog_setUniqueNameHandler() && 
                 args(config, checkConfigName, uniqueName, counter){
@@ -229,7 +231,7 @@ public privileged aspect GuiHandler
             uniqueName = checkConfigName + " (" + counter + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             counter++;
         }
-    }
+    }*/
 
     void around(CheckConfigurationWorkingCopy config): 
         CheckConfigurationWorkingSetEditor_internalConfigureCheckConfigHandler() && 
@@ -248,7 +250,7 @@ public privileged aspect GuiHandler
         }
     }
 
-    void around(IConfigPropertyWidget widget, ConfigProperty property, SeverityLevel severity, 
+    /*void around(IConfigPropertyWidget widget, ConfigProperty property, SeverityLevel severity, 
             String comment, String customMessage, String id):
         RuleConfigurationEditDialog_internalOkPressedHandler()
         && args (widget, property, severity, comment, customMessage, id){
@@ -264,6 +266,6 @@ public privileged aspect GuiHandler
             rC.setErrorMessage(message);
             // return;
         }
-    }
+    }*/
 
 }

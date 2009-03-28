@@ -393,8 +393,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         //
         SeverityLevel severity = mRule.getSeverity();
 
-        severity = (SeverityLevel) ((IStructuredSelection) mSeverityCombo.getSelection())
-                .getFirstElement();
+        severity = intrenalOkPressesGetSelection(severity);
 
         // Get the comment.
         String comment = StringUtils.trimToNull(mCommentText.getText());
@@ -404,16 +403,57 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
 
         // Get the custom message
         String customMessage = StringUtils.trimToNull(mCustomMessageText.getText());
-        IConfigPropertyWidget widget = null;
-        ConfigProperty property = null;
         //
         // Build a new collection of configuration properties.
         //
         // Note: if the rule does not have any configuration properties then
         // skip over the populating of the config property hash map.
         //
-        internalOkPressed(widget, property, severity, comment, customMessage, id);
+        //internalOkPressed(widget, property, severity, comment, customMessage, id);
+        
+        //TODO - cenario
+        if (mConfigPropertyWidgets != null)
+        {
+            for (int i = 0; i < mConfigPropertyWidgets.length; i++)
+            {
+                IConfigPropertyWidget widget = mConfigPropertyWidgets[i];
+                ConfigProperty property = widget.getConfigProperty();
 
+                try
+                {
+                    widget.validate();
+                }
+                catch (CheckstylePluginException e)
+                {
+                    String message = NLS.bind(
+                            Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue, property
+                                    .getMetaData().getName());
+                    this.setErrorMessage(message);
+                    return;
+                }
+                property.setValue(widget.getValue());
+            }
+        }
+
+        //
+        // If we made it this far then all of the user input validated and we
+        // can
+        // update the final rule with the values the user entered.
+        //
+        mRule.setSeverity(severity);
+        mRule.setComment(comment);
+        mRule.setId(id);
+        mRule.setCustomMessage(customMessage);
+
+        super.okPressed();
+
+    }
+
+    private SeverityLevel intrenalOkPressesGetSelection(SeverityLevel severity)
+    {
+        severity = (SeverityLevel) ((IStructuredSelection) mSeverityCombo.getSelection())
+                .getFirstElement();
+        return severity;
     }
 
     //
@@ -422,7 +462,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
     // update the final rule with the values the user entered.
     //
 
-    private void internalOkPressed(IConfigPropertyWidget widget, ConfigProperty property, SeverityLevel severity, 
+    /*private void internalOkPressed(IConfigPropertyWidget widget, ConfigProperty property, SeverityLevel severity, 
             String comment, String customMessage, String id)
     {
         if (mConfigPropertyWidgets != null)
@@ -441,7 +481,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         mRule.setCustomMessage(customMessage);
 
         super.okPressed();
-    }
+    }*/
 
     private void createConfigPropertyEntries(Composite parent)
     {
