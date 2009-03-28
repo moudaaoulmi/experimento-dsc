@@ -10,13 +10,17 @@ public privileged aspect TableHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
+    //Extraiu pq não consegui diferenciar os joinpoints e quando sem extrair
+    //estava saindo afetando todos os getInt do metodo original.
     pointcut EnhancedTableViewer_restoreStateHandler(): 
         call(* IDialogSettings.getInt(String)) &&
-        withincode(* EnhancedTableViewer.restoreState(..));
+        withincode(* EnhancedTableViewer.internalRestoreStateGetInt(..));
 
-    //Extraiu pq não consegui diferenciar os joinpoints
+    //Extraiu pq não consegui diferenciar os joinpoints e quando sem extrair
+    //estava saindo afetando todos os getInt do metodo original.
     pointcut EnhancedTableViewer_internalRestoreStateHandler(): 
-        execution(* EnhancedTableViewer.internalRestoreState(..)) ;
+        call(* IDialogSettings.getInt(String)) &&
+        withincode(* EnhancedTableViewer.internalRestoreState(..));
 
     pointcut EnhancedTableViewer_internalRestoreState1Handler(): 
         execution(* EnhancedTableViewer.internalRestoreState1(..)) ;
@@ -29,29 +33,29 @@ public privileged aspect TableHandler
     // Advice's
     // ---------------------------
     int around() : EnhancedTableViewer_restoreStateHandler() {
-        int result = 0;
+        EnhancedTableViewer obj = (EnhancedTableViewer) thisJoinPoint.getThis();
         try
         {
-            result = proceed();
+            obj.mSortedColumnIndex = proceed();
         }
         catch (NumberFormatException e)
         {
-            EnhancedTableViewer obj = (EnhancedTableViewer) thisJoinPoint.getThis();
             obj.mSortedColumnIndex = 0;
         }
-        return result;
+        return obj.mSortedColumnIndex;
     }
 
-    void around() : EnhancedTableViewer_internalRestoreStateHandler() {
+    int around() : EnhancedTableViewer_internalRestoreStateHandler() {
+        EnhancedTableViewer obj = (EnhancedTableViewer) thisJoinPoint.getThis();
         try
         {
-            proceed();
+            obj.mSortedColumnIndex = proceed();
         }
         catch (NumberFormatException e)
         {
-            EnhancedTableViewer obj = (EnhancedTableViewer) thisJoinPoint.getThis();
             obj.mSortedColumnIndex = EnhancedTableViewer.DIRECTION_FORWARD;
         }
+        return obj.mSortedColumnIndex;
     }
 
     boolean around(IDialogSettings settings, TableLayout layout, boolean allColumnsHaveStoredData,
