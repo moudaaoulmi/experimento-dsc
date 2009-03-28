@@ -286,7 +286,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
 
             public void widgetSelected(SelectionEvent e)
             {
-                getEditedWorkingCopyInternal(CheckConfigurationPropertiesDialog.this);
+                getEditedWorkingCopyInternal();
             }
 
             public void widgetDefaultSelected(SelectionEvent e)
@@ -303,10 +303,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         return composite;
     }
     
-    private static void getEditedWorkingCopyInternal(CheckConfigurationPropertiesDialog object ) {
-        object.mConfigurationEditor.getEditedWorkingCopy();
-        ResolvablePropertiesDialog dialog = new ResolvablePropertiesDialog(object.getShell(),
-                object.mCheckConfig);
+    private void getEditedWorkingCopyInternal() {
+        mConfigurationEditor.getEditedWorkingCopy();
+        ResolvablePropertiesDialog dialog = new ResolvablePropertiesDialog(getShell(), mCheckConfig);
         dialog.open();
     }
 
@@ -467,14 +466,23 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         int counter = 2;
         while (true)
         {
-            internalSetUniqueName(config, checkConfigName, uniqueName, counter);
-            break;
+            //TODO: analisar!!!
+            try
+            {
+                config.setName(uniqueName);
+                break;
+            }
+            catch (CheckstylePluginException e)
+            {
+                uniqueName = checkConfigName + " (" + counter + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                counter++;
+            }
         }
     }
 
-    private void internalSetUniqueName(CheckConfigurationWorkingCopy config,
+    /*private void internalSetUniqueName(CheckConfigurationWorkingCopy config,
             String checkConfigName, String uniqueName, int counter)
     {
         config.setName(uniqueName);
-    }
+    }*/
 }

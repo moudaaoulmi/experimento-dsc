@@ -268,16 +268,17 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
 
         InputStream in = null;
 
-        internalGetModules(in, result);
+        result = internalGetModules(in, result);
 
         return result;
     }
 
-    private void internalGetModules(InputStream in, List result) 
-    throws CheckstylePluginException
+    private List internalGetModules(InputStream in, List result) 
+                throws CheckstylePluginException
     {
         in = getCheckstyleConfiguration().getCheckConfigFileStream();
         result = ConfigurationReader.read(in);
+        return result;
     }
 
     /**
