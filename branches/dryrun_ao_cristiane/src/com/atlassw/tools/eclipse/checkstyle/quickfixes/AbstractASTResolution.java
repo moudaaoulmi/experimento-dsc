@@ -40,15 +40,18 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 /**
@@ -110,6 +113,12 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
 
         IPath path = compilationUnit.getPath();
 
+        internalRun(marker, compilationUnit, bufferManager, path);
+    }
+
+    private void internalRun(IMarker marker, ICompilationUnit compilationUnit,
+            ITextFileBufferManager bufferManager, IPath path)
+    {
         IProgressMonitor monitor = new NullProgressMonitor();
 
         // reimplemented according to this article
@@ -147,7 +156,7 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
 
         // rewrite all recorded changes to the document
         TextEdit edit = ast
-        .rewrite(document, compilationUnit.getJavaProject().getOptions(true));
+                .rewrite(document, compilationUnit.getJavaProject().getOptions(true));
         edit.apply(document);
 
         // commit changes to underlying file
@@ -155,20 +164,8 @@ public abstract class AbstractASTResolution implements ICheckstyleMarkerResoluti
         {
             textFileBuffer.commit(monitor, false);
         }
-
-        if (bufferManager != null)
-        {
-            runInternal(bufferManager, path);
-            // TODO - nao consegui linkar com call...
-            //bufferManager.disconnect(path, null);
-        }
     }
-
-    private void runInternal(ITextFileBufferManager bufferManager, IPath path)
-    {
-        bufferManager.disconnect(path, null);
-    }
-
+    
     /**
      * Template method to be implemented by concrete quickfix implementations.
      * These must provide their fixing modification through an AST visitor, more
