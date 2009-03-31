@@ -234,13 +234,6 @@ public abstract class ConfigurationType implements IConfigurationType
         return getBytesFromURLConnection(connection);
     }
 
-//    private byte[] internalGetAdditionPropertiesBundleBytes(String propsLocation)
-//    {
-//        URL propertyFileURL = new URL(propsLocation);
-//        URLConnection connection = propertyFileURL.openConnection();
-//        return getBytesFromURLConnection(connection);
-//    }
-
     /**
      * Gets the property resolver for this configuration type used to expand
      * property values within the checkstyle configuration.
@@ -277,15 +270,16 @@ public abstract class ConfigurationType implements IConfigurationType
 
         InputStream in = null;
 
-        internalGetBytesFromURLConnection(connection, in, configurationFileData);
+        configurationFileData = internalGetBytesFromURLConnection(connection, in, configurationFileData);
         return configurationFileData;
     }
 
-    private void internalGetBytesFromURLConnection(URLConnection connection, InputStream in,
+    private byte[] internalGetBytesFromURLConnection(URLConnection connection, InputStream in,
             byte[] configurationFileData) throws IOException
     {
         in = connection.getInputStream();
         configurationFileData = IOUtils.toByteArray(in);
+        return configurationFileData;
     }
 
     /**

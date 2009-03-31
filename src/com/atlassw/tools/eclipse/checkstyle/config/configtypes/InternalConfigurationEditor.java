@@ -252,9 +252,4 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
 
     }
 
-    private void internalWidgetSelected()
-    {
- 
-
-    }
 }
