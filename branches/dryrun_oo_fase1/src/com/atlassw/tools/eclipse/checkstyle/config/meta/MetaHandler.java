@@ -4,9 +4,11 @@ package com.atlassw.tools.eclipse.checkstyle.config.meta;
 import org.xml.sax.SAXException;
 
 import com.atlassw.tools.eclipse.checkstyle.config.XMLTags;
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
+@ExceptionHandler
 public class MetaHandler extends GeneralException
 {
     public void metadataFactoryCreateGenericMetadata(String parent)

@@ -4,10 +4,12 @@ package com.atlassw.tools.eclipse.checkstyle.config;
 import org.xml.sax.SAXException;
 
 import com.atlassw.tools.eclipse.checkstyle.builder.PackageObjectFactory;
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
+@ExceptionHandler
 public class ConfigHandler extends GeneralException
 {
      

@@ -4,6 +4,9 @@ package org.eclipse.osgi.framework.internal.core;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
+
+@ExceptionHandler
 public class CoreHandler
 {
     public void messageResourceBundlePut(Exception e, String msg)

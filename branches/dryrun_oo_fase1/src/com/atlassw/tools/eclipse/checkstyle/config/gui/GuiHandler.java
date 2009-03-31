@@ -2,9 +2,12 @@ package com.atlassw.tools.eclipse.checkstyle.config.gui;
 
 import org.eclipse.swt.widgets.Shell;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
+
+@ExceptionHandler
 public class GuiHandler
 {
 
