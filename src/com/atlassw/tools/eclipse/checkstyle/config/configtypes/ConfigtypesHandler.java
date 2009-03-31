@@ -20,10 +20,12 @@ import com.atlassw.tools.eclipse.checkstyle.config.GlobalCheckConfigurationWorki
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropertiesDialog;
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.LocalCheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
+@ExceptionHandler
 public class ConfigtypesHandler extends GeneralException
 {
 

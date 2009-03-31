@@ -8,9 +8,11 @@ import org.eclipse.osgi.util.NLS;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
+@ExceptionHandler
 public class MigrationHandler extends GeneralException
 {
 

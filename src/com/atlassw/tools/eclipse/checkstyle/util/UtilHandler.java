@@ -8,8 +8,10 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 
+@ExceptionHandler
 public class UtilHandler extends GeneralException{
     
     private static DocumentBuilderFactory sDocBuilderFactory = DocumentBuilderFactory.newInstance();
