@@ -48,6 +48,7 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWo
 import org.eclipse.swt.events.SelectionListener;
 import org.osgi.service.prefs.Preferences;
 
+@ExceptionHandler
 public aspect GeneralExceptionHandler
 {
     // ---------------------------
