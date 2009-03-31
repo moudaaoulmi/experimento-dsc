@@ -3,7 +3,9 @@ package com.atlassw.tools.eclipse.checkstyle.nature;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 
+@ExceptionHandler
 public aspect NatureHandler
 {
     // ---------------------------

@@ -17,6 +17,7 @@ import org.xml.sax.Attributes;
 import org.eclipse.osgi.util.NLS;
 import org.xml.sax.InputSource;
 
+@ExceptionHandler
 public privileged aspect MetaHandler
 {
     // ---------------------------

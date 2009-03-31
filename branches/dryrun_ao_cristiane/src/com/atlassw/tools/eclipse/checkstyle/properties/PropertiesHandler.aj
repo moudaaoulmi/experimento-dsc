@@ -20,6 +20,7 @@ import org.eclipse.swt.events.SelectionEvent;
 /**
  * @author Cristiane Queiroz
  */
+@ExceptionHandler
 public privileged aspect PropertiesHandler
 {
     // ---------------------------

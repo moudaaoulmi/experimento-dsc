@@ -9,6 +9,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+@ExceptionHandler
 public privileged aspect ProjectconfigHandler
 {
 
