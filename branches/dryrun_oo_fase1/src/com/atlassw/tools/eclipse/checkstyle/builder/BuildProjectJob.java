@@ -113,7 +113,7 @@ public class BuildProjectJob extends Job
         }
         catch (CoreException e)
         {
-           status = builderHandler.buildProjectJob_runHandler(e);
+           status = builderHandler.buildProjectJob_runHandler(e, status);
         }
         finally
         {
