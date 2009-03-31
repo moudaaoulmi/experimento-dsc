@@ -1,9 +1,11 @@
 package com.atlassw.tools.eclipse.checkstyle.quickfixes.coding;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import  java.lang.reflect.InvocationTargetException;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 
+@ExceptionHandler
 public aspect CodingHandler
 {
     // ---------------------------

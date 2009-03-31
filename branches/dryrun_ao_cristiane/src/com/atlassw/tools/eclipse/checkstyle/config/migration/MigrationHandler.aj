@@ -4,12 +4,14 @@ package com.atlassw.tools.eclipse.checkstyle.config.migration;
 import org.xml.sax.SAXException;
 
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import java.text.DateFormat;
 import java.util.Date;
 import org.eclipse.osgi.util.NLS;
 
+@ExceptionHandler
 public aspect MigrationHandler
 {
     // ---------------------------

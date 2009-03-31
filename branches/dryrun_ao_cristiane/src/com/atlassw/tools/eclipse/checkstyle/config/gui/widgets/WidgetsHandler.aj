@@ -6,8 +6,10 @@ import java.util.regex.PatternSyntaxException;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Text;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
+@ExceptionHandler
 public aspect WidgetsHandler
 {
     // ---------------------------

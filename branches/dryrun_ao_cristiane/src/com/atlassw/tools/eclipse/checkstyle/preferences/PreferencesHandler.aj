@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.duplicates.DuplicatedCodeAction;
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
@@ -13,6 +14,7 @@ import org.eclipse.osgi.util.NLS;
 import org.osgi.service.prefs.BackingStoreException;
 import org.eclipse.swt.widgets.Shell;
 
+@ExceptionHandler
 public aspect PreferencesHandler
 {
     // ---------------------------
