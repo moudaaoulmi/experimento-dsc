@@ -21,6 +21,7 @@
 package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -29,6 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -38,6 +40,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.osgi.util.NLS;
 
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
@@ -91,18 +94,18 @@ public class RemoteConfigurationType extends ConfigurationType
             String currentRedirects = System.getProperty("http.maxRedirects"); //$NON-NLS-1$
 
             Authenticator oldAuthenticator = RemoteConfigAuthenticator.getDefault();
-            internalGetCheckstyleConfiguration(checkConfiguration, useCacheFile, data,
-                    currentRedirects, oldAuthenticator);
-
+            data = internalGetCheckstyleConfiguration(data, currentRedirects, oldAuthenticator,
+                    checkConfiguration, useCacheFile);
         }
         return data;
     }
 
-    private void internalGetCheckstyleConfiguration(ICheckConfiguration checkConfiguration,
-            boolean useCacheFile, CheckstyleConfigurationFile data, String currentRedirects,
-            Authenticator oldAuthenticator) throws CheckstylePluginException
+    private CheckstyleConfigurationFile internalGetCheckstyleConfiguration(
+            CheckstyleConfigurationFile data, String currentRedirects,
+            Authenticator oldAuthenticator, ICheckConfiguration checkConfiguration,
+            boolean useCacheFile )
+        throws CheckstylePluginException
     {
-
         // resolve the true configuration file URL
         data.setResolvedConfigFileURL(resolveLocation(checkConfiguration));
 
@@ -110,9 +113,33 @@ public class RemoteConfigurationType extends ConfigurationType
 
         boolean originalFileSuccess = false;
         byte[] configurationFileData = null;
+        //TODO nao pode refatorar.. tem 2 escritas
+        try
+        {
 
-        secInternalGetCheckstyleConfiguration(data, useCacheFile, originalFileSuccess,
-                configurationFileData, checkConfiguration);
+            System.setProperty("http.maxRedirects", "3"); //$NON-NLS-1$ //$NON-NLS-2$
+
+            URLConnection connection = data.getResolvedConfigFileURL().openConnection();
+
+            // get the configuration file data
+            configurationFileData = getBytesFromURLConnection(connection);
+
+            // get last modification timestamp
+            data.setModificationStamp(connection.getLastModified());
+
+            originalFileSuccess = true;
+        }
+        catch (IOException e)
+        {
+            if (useCacheFile)
+            {
+                configurationFileData = getBytesFromCacheFile(checkConfiguration);
+            }
+            else
+            {
+                throw e;
+            }
+        }
 
         data.setCheckConfigFileBytes(configurationFileData);
 
@@ -140,24 +167,7 @@ public class RemoteConfigurationType extends ConfigurationType
             writeToCacheFile(checkConfiguration, configurationFileData, additionalPropertiesBytes);
         }
 
-    }
-
-    private void secInternalGetCheckstyleConfiguration(CheckstyleConfigurationFile data,
-            boolean useCacheFile, boolean originalFileSuccess, byte[] configurationFileData,
-            ICheckConfiguration checkConfiguration) throws IOException
-    {
-        System.setProperty("http.maxRedirects", "3"); //$NON-NLS-1$ //$NON-NLS-2$
-
-        URLConnection connection = data.getResolvedConfigFileURL().openConnection();
-
-        // get the configuration file data
-        configurationFileData = getBytesFromURLConnection(connection);
-
-        // get last modification timestamp
-        data.setModificationStamp(connection.getLastModified());
-
-        originalFileSuccess = true;
-
+        return data;
     }
 
     /**
@@ -251,7 +261,6 @@ public class RemoteConfigurationType extends ConfigurationType
         return getBytesFromURLConnection(connection);
     }
 
-
     private void writeToCacheFile(ICheckConfiguration checkConfig, byte[] configFileBytes,
             byte[] bundleBytes)
     {
@@ -283,11 +292,11 @@ public class RemoteConfigurationType extends ConfigurationType
 
         byte[] configurationFileData = null;
         InputStream in = null;
-        internalGetBytesFromURLConnection(connection, configurationFileData, in);
+        configurationFileData = internalGetBytesFromURLConnection(connection, configurationFileData, in);
         return configurationFileData;
     }
 
-    private void internalGetBytesFromURLConnection(URLConnection connection,
+    private byte[] internalGetBytesFromURLConnection(URLConnection connection,
             byte[] configurationFileData, InputStream in) throws IOException
     {
         if (connection instanceof HttpURLConnection)
@@ -317,6 +326,7 @@ public class RemoteConfigurationType extends ConfigurationType
 
         in = connection.getInputStream();
         configurationFileData = IOUtils.toByteArray(in);
+        return configurationFileData;
 
     }
 
@@ -363,7 +373,6 @@ public class RemoteConfigurationType extends ConfigurationType
                 if (Authenticator.class.equals(fields[i].getType()))
                 {
                     fields[i].setAccessible(true);
-                    //internalGetDefault(currentDefault, i, fields);
                     currentDefault = (Authenticator) fields[i].get(Authenticator.class);
                     break;
                 }

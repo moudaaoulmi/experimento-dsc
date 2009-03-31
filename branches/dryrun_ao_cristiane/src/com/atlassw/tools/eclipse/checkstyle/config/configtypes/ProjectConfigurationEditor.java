@@ -277,7 +277,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
     {
 
         IFile file = null;
-        secInternalEnsureFileExists(file, location);
+        file = secInternalEnsureFileExists(location);
         if (!file.exists() && file.getLocation() != null)
         {
             boolean confirm = MessageDialog.openQuestion(mBtnBrowse.getShell(),
@@ -298,10 +298,11 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         return true;
     }
 
-    private void secInternalEnsureFileExists(IFile file, String location)
+    private IFile secInternalEnsureFileExists(String location)
         throws CheckstylePluginException
     {
-        file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(location));
+        return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(location));
+        
     }
 
     private void internalEnsureFileExists(IFile file, OutputStream out)
