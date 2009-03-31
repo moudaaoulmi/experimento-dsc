@@ -10,6 +10,7 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
+@ExceptionHandler
 public privileged aspect ActionsHandler
 {
     // ---------------------------

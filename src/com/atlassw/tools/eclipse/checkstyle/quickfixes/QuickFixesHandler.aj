@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.ui.IEditorPart;
 
+@ExceptionHandler
 public privileged aspect QuickFixesHandler {
     
     declare soft : BadLocationException : abstractASTResolution_getLineInformationOfOffsetHandler();

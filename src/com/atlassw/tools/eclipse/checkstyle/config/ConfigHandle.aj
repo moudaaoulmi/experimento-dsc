@@ -24,6 +24,7 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+@ExceptionHandler
 public privileged aspect ConfigHandle
 {
     // ---------------------------

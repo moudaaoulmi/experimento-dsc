@@ -21,6 +21,7 @@ import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 import org.eclipse.swt.events.SelectionListener;
 
+@ExceptionHandler
 public privileged aspect GuiHandler
 {
 

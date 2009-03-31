@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import org.eclipse.osgi.framework.internal.core.MessageResourceBundle.*;
 
+@ExceptionHandler
 public privileged aspect CoreHandler
 {
     declare soft: Exception: Core_putHandle() ||
