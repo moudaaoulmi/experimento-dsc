@@ -4,7 +4,9 @@ import java.lang.Integer;
 import java.lang.NumberFormatException;
 import java.lang.IllegalArgumentException;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 
+@ExceptionHandler
 public aspect UtilHandler
 {
     // ---------------------------

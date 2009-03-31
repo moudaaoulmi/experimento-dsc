@@ -3,6 +3,7 @@ package com.atlassw.tools.eclipse.checkstyle.duplicates;
 
 
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -23,6 +24,7 @@ import org.eclipse.core.runtime.Status;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+@ExceptionHandler
 public privileged aspect DuplicatedHandler
 {
 

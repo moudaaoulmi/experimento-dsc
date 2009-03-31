@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.puppycrawl.tools.checkstyle.Checker;
@@ -25,6 +26,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 
+@ExceptionHandler
 public privileged aspect BuilderHandler
 {
     // ---------------------------

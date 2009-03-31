@@ -16,6 +16,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jface.dialogs.IDialogSettings;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
+
+@ExceptionHandler
 public privileged aspect UtilHandler
 {
     // ---------------------------
