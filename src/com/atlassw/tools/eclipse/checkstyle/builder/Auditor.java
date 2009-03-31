@@ -141,10 +141,11 @@ public class Auditor
      * @param project the project is needed to build the correct classpath for
      *            the checker
      * @param monitor the progress monitor
+     * @throws CheckstylePluginException 
      * @throws CheckstylePluginException error processing the audit
      */
-    public void runAudit(IProject project, IProgressMonitor monitor)
-        throws CheckstylePluginException
+    public void runAudit(IProject project, IProgressMonitor monitor) throws CheckstylePluginException
+        
     {
 
         // System.out.println("----> Auditing: " + mFiles.size());

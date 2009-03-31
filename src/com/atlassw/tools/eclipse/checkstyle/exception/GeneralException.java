@@ -19,10 +19,9 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public class GeneralException
 {
 
-    public Object checkstyleLog(Exception e)
+    public void checkstyleLog(Exception e)
     {
         CheckstyleLog.log(e);
-        return null;
     }
 
     public void checkstyleLog_E_MSG(Exception e, String msg)

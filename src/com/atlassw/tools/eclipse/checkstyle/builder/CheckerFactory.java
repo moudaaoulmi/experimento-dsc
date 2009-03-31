@@ -71,6 +71,8 @@ public final class CheckerFactory
 
     /** the shared classloader for the checkers. */
     private static ProjectClassLoader sSharedClassLoader;
+    
+    private static BuilderHandler builderHandler = new BuilderHandler();
 
     //
     // static initializer
@@ -145,7 +147,7 @@ public final class CheckerFactory
             }
             finally
             {
-                IOUtils.closeQuietly(in);
+                builderHandler.buildProjectJob_createCheckerHandler(in);
             }
 
             // store checker in cache

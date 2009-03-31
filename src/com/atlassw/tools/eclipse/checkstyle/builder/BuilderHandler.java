@@ -1,6 +1,9 @@
 
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
+import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -18,9 +21,8 @@ import com.puppycrawl.tools.checkstyle.api.Filter;
 @ExceptionHandler
 public class BuilderHandler extends GeneralException
 {
-    public IStatus buildProjectJob_runHandler(CoreException e)
+    public IStatus buildProjectJob_runHandler(CoreException e, IStatus status)
     {
-        IStatus status;
         status = e.getStatus();
         return status;
     }
@@ -70,5 +72,9 @@ public class BuilderHandler extends GeneralException
         throws CheckstyleException
     {
         throw new CheckstyleException("Unable to find class for " + aClassName, e);
+    }
+    
+    public void buildProjectJob_createCheckerHandler(InputStream in){
+        IOUtils.closeQuietly(in);
     }
 }
