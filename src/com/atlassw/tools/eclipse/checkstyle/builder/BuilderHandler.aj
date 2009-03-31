@@ -1,4 +1,3 @@
-
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.io.IOException;
@@ -59,7 +58,6 @@ public privileged aspect BuilderHandler
 
     declare soft: CheckstyleException: packageObjectFactory_createModuleHandle()||  
                                        packageObjectFactory_doMakeObjectHandle()||  
-                                       packageObjectFactory_internalDoMakeObjectHandle()||
                                        auditor_runAuditHandle();
 
     declare soft: CheckstylePluginException: runCheckstyleOnFilesJob_runInWorkspaceHandle();
@@ -67,7 +65,6 @@ public privileged aspect BuilderHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
-
     pointcut buildProjectJob_runHandler():
         execution (* BuildProjectJob.run(..)) ;
 
@@ -91,8 +88,7 @@ public privileged aspect BuilderHandler
 
     pointcut PackageNamesLoader_internalgetPackageNames():
         execution(* PackageNamesLoader.internalGetPackageNames(..));
-//ate aqui
-    // caso esquisito esse, que só continua o método se cair na exceção
+
     pointcut packageObjectFactory_createObjectHandle(): 
         execution (* PackageObjectFactory.createObject(..)) ;
 
@@ -101,10 +97,6 @@ public privileged aspect BuilderHandler
 
     pointcut packageObjectFactory_doMakeObjectHandle(): 
         execution(* PackageObjectFactory.doMakeObject(..)) ;
-
-    pointcut packageObjectFactory_internalDoMakeObjectHandle():
-        call(* PackageObjectFactory.createObject(..)) &&
-        withincode(* PackageObjectFactory.internalDoMakeObject(..)) ;
 
     pointcut projectClassLoader_handlePathHandle(): 
         execution (* ProjectClassLoader.handlePath(..)) ;
@@ -179,7 +171,7 @@ public privileged aspect BuilderHandler
 
     void around(IProject project, IProgressMonitor monitor, Checker checker,
             AuditListener listener, Filter runtimeExceptionFilter, ClassLoader contextClassloader)
-            throws CheckstylePluginException: auditor_runAuditHandle() &&
+        throws CheckstylePluginException: auditor_runAuditHandle() &&
             args(project, monitor, checker, listener, runtimeExceptionFilter, contextClassloader)
         {
         try
@@ -332,24 +324,24 @@ public privileged aspect BuilderHandler
         {
             result = proceed(aName);
         }
-        catch (CheckstyleException e)
+        catch (CheckstyleException ex)
         {
             PackageObjectFactory pOF = (PackageObjectFactory) thisJoinPoint.getThis();
-            pOF.internalDoMakeObject(aName);
-        }
-        return result;
-    }
+            for (int i = 0; i < pOF.mPackages.size(); i++)
+            {
+                final String packageName = (String) pOF.mPackages.get(i);
+                final String className = packageName + aName;
+                try
+                {
+                    return pOF.createObject(className);
+                }
+                catch (CheckstyleException e)
+                {
+                    ; // keep looking
+                }
+            }
 
-    Object around() throws CheckstyleException: 
-        packageObjectFactory_internalDoMakeObjectHandle() {
-        Object result = null;
-        try
-        {
-            result = proceed();
-        }
-        catch (CheckstyleException e)
-        {
-            ; // Keep looking
+            throw new CheckstyleException("Unable to instantiate " + aName); //$NON-NLS-1$
         }
         return result;
     }

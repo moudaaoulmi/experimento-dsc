@@ -79,19 +79,6 @@ class PackageObjectFactory implements ModuleFactory
         return createObject(aName);
     }
 
-    private Object internalDoMakeObject(String aName) throws CheckstyleException
-    {
-        // now try packages
-        for (int i = 0; i < mPackages.size(); i++)
-        {
-            final String packageName = (String) mPackages.get(i);
-            final String className = packageName + aName;
-            return createObject(className);
-        }
-
-        throw new CheckstyleException("Unable to instantiate " + aName); //$NON-NLS-1$
-
-    }
 
     /**
      * Creates a new instance of a named class.
