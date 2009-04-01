@@ -46,13 +46,8 @@ class FollowURLTool extends AbstractTool {
 		}
 	}
 
-	/**
-	 * 
-	 * Nao pode ser aspectizado porque existe o acesso a 
-	 * uma variavel privada
-	 * 
-	 * 
-	 */
+	
+	 
 	public void mouseUp(MouseEvent e, int x, int y) {
 		Figure figure = getActiveDrawing().findFigureInside(x, y);
 		if (figure == null) {
@@ -65,11 +60,11 @@ class FollowURLTool extends AbstractTool {
 		}
 		URL url = null;
 		
-		try {
+		//try {
 			url = new URL(fApplet.getDocumentBase(), urlstring);
-		} catch (MalformedURLException e1) {
-			fApplet.showStatus(e1.toString());
-		}
+//		} catch (MalformedURLException e1) {
+//			fApplet.showStatus(e1.toString());
+//		}
 		fApplet.getAppletContext().showDocument(url);
 	}
 

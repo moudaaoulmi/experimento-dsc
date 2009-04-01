@@ -987,16 +987,16 @@ public class StandardDrawingView
 		 * currently active tool.
 		 */
 		public void mousePressed(MouseEvent e) {
-			try {
+			//try {
 				requestFocus(); // JDK1.1
 				Point p = constrainPoint(new Point(e.getX(), e.getY()));
 				setLastClick(new Point(e.getX(), e.getY()));
 				tool().mouseDown(e, p.x, p.y);
 				checkDamage();
-			}
-			catch (Throwable t) {
-				handleMouseEventException(t);
-			}
+//			}
+//			catch (Throwable t) {
+//				handleMouseEventException(t);
+//			}
 			
 		}
 
@@ -1005,14 +1005,14 @@ public class StandardDrawingView
 		 * currently active tool.
 		 */
 		public void mouseReleased(MouseEvent e) {
-			try {
+			//try {
 				Point p = constrainPoint(new Point(e.getX(), e.getY()));
 				tool().mouseUp(e, p.x, p.y);
 				checkDamage();
-			}
-			catch (Throwable t) {
-				handleMouseEventException(t);
-			}
+//			}
+//			catch (Throwable t) {
+//				handleMouseEventException(t);
+//			}
 		}
 	}
 
@@ -1022,14 +1022,14 @@ public class StandardDrawingView
 		 * currently active tool.
 		 */
 		public void mouseDragged(MouseEvent e) {
-			try {
+			//try {
 				Point p = constrainPoint(new Point(e.getX(), e.getY()));
 				tool().mouseDrag(e, p.x, p.y);
 				checkDamage();
-			}
-			catch (Throwable t) {
-				handleMouseEventException(t);
-			}
+//			}
+//			catch (Throwable t) {
+//				handleMouseEventException(t);
+//			}
 		}
 
 		/**
@@ -1037,12 +1037,12 @@ public class StandardDrawingView
 		 * currently active tool.
 		 */
 		public void mouseMoved(MouseEvent e) {
-			try {
-				tool().mouseMove(e, e.getX(), e.getY());
-			}
-			catch (Throwable t) {
-				handleMouseEventException(t);
-			}
+			//try {
+				tool().mouseMove(e, e.getX(),e.getY());
+//			}
+//			catch (Throwable t) {
+//				handleMouseEventException(t);
+//			}
 		}
 	}
 

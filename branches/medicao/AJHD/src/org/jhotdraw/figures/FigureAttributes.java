@@ -79,14 +79,14 @@ public  class   FigureAttributes
 	 * Clones the attributes.
 	 */
    public Object clone() {
-		try {
+		//try {
 			FigureAttributes a = (FigureAttributes) super.clone();
 			a.fMap = CollectionsFactory.current().createMap(fMap);
 			return a;
-		}
-		catch (CloneNotSupportedException e) {
-			throw new InternalError();
-		}
+//		}
+//		catch (CloneNotSupportedException e) {
+//			throw new InternalError();
+//		}
 	}
 
 	/**

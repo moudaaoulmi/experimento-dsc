@@ -126,23 +126,18 @@ public class ETSLADisposalStrategy implements ResourceDisposabilityStrategy {
 
 	private void stopDisposingPartOne(long millis) {
 		/** 
-		 * REFATORAR DANDO ERRO, VARIAVEL PRIVATE.
-		 * VERSÌO QUE DEVERIA FICAR COM A REFATORA‚ÌO
-		 * 
-		disposalThread.interruptDisposalPending = true;
-		disposalThread.join(millis);
-		*/
 		
-		try {
+		
+		try {*/
 			disposalThread.interruptDisposalPending = true;
 			disposalThread.join(millis);
-		}
+		/**}
 		catch (InterruptedException ex) {
 			// ignore
 		}
 		finally {
 			disposingActive = false;
-		}
+		}*/
 	}
 
 	/**

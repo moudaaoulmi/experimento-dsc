@@ -40,12 +40,12 @@ public  class NumberTextFigure extends TextFigure {
 	 */
 	public int getValue() {
 		int value = 0;
-		try {
+		//try {
 			value = Integer.parseInt(getText());
-		}
-		catch (NumberFormatException e) {
-			value = 0;
-		}
+		//}
+//		catch (NumberFormatException e) {
+//			value = 0;
+//		}
 		return value;
 	}
 
