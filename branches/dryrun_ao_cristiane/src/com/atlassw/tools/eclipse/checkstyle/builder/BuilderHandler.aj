@@ -1,3 +1,4 @@
+
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.io.IOException;
@@ -158,8 +159,9 @@ public privileged aspect BuilderHandler
         }
     }
 
-    List around() throws CheckstylePluginException: PackageNamesLoader_getPackageNames() {
-        List result = null;
+    Object around() throws CheckstylePluginException: PackageNamesLoader_getPackageNames() ||
+        auditor_runAuditHandle(){
+        Object result = null;
         try
         {
             result = proceed();
@@ -198,10 +200,6 @@ public privileged aspect BuilderHandler
         try
         {
             proceed();
-        }
-        catch (IOException e)
-        {
-            CheckstylePluginException.rethrow(e);
         }
         catch (CoreException e)
         {
@@ -364,7 +362,8 @@ public privileged aspect BuilderHandler
     }
 
     InputStream around(CheckstyleConfigurationFile configFileData, InputStream in): 
-        checkerFactory_internalCreateCheckerHandler() && args(configFileData,in) {
+        checkerFactory_internalCreateCheckerHandler() && 
+        args(configFileData,in) {
         try
         {
             in = proceed(configFileData, in);
