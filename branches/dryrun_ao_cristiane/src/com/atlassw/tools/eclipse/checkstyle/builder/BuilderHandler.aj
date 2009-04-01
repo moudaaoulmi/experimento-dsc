@@ -5,10 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.io.IOUtils;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -21,7 +19,6 @@ import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Filter;
@@ -33,18 +30,15 @@ public privileged aspect BuilderHandler
     // ---------------------------
     // Declare soft's
     // ---------------------------
-    declare soft: CoreException: buildProjectJob_runHandler() ||
-                                 auditor_runAuditHandle();
+    declare soft: CoreException: buildProjectJob_runHandler();
 
     declare soft: CheckstylePluginException: checkstyleBuilder_buildHandler()|| 
-                  checkstyleBuilder_handleBuildSelectionHandler();
+                                             checkstyleBuilder_handleBuildSelectionHandler();
 
     declare soft: BadLocationException: auditor_calculateMarkerOffsetHandle();
 
-    declare soft: IOException: PackageNamesLoader_getPackageNames() ||
-                  PackageNamesLoader_internalgetPackageNames2()||
-                  auditor_runAuditHandle() ||
-                  PackageNamesLoader_internalgetPackageNames();
+    declare soft: IOException: PackageNamesLoader_internalgetPackageNames2()||
+                               PackageNamesLoader_internalgetPackageNames();
 
     declare soft: ParserConfigurationException: PackageNamesLoader_internalgetPackageNames();
 
@@ -60,8 +54,7 @@ public privileged aspect BuilderHandler
     declare soft: MalformedURLException: projectClassLoader_handlePathHandle();
 
     declare soft: CheckstyleException: packageObjectFactory_createModuleHandle()||  
-                                       packageObjectFactory_doMakeObjectHandle()||  
-                                       auditor_runAuditHandle();
+                                       packageObjectFactory_doMakeObjectHandle();
 
     declare soft: CheckstylePluginException: runCheckstyleOnFilesJob_runInWorkspaceHandle();
 
@@ -79,12 +72,6 @@ public privileged aspect BuilderHandler
 
     pointcut auditor_calculateMarkerOffsetHandle(): 
         execution (* Auditor.CheckstyleAuditListener.calculateMarkerOffset(..)) ;
-
-    pointcut auditor_runAuditHandle(): 
-        execution (* Auditor.internalRunAudit(..)) ;
-
-    pointcut PackageNamesLoader_getPackageNames():
-        execution(* PackageNamesLoader.getPackageNames(..));
 
     pointcut PackageNamesLoader_internalgetPackageNames2():
         execution(* PackageNamesLoader.internalgetPackageNames2(..));
@@ -113,6 +100,20 @@ public privileged aspect BuilderHandler
     // ---------------------------
     // Advice's
     // ---------------------------
+    InputStream around(CheckstyleConfigurationFile configFileData, InputStream in): 
+        checkerFactory_internalCreateCheckerHandler() && 
+        args(configFileData,in) {
+        try
+        {
+            in = proceed(configFileData, in);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
+        }
+        return in;
+    }
+
     PackageNamesLoader around() throws CheckstylePluginException: PackageNamesLoader_internalgetPackageNames(){
         PackageNamesLoader result = null;
         try
@@ -156,58 +157,6 @@ public privileged aspect BuilderHandler
         finally
         {
             IOUtils.closeQuietly(iStream);
-        }
-    }
-
-    Object around() throws CheckstylePluginException: PackageNamesLoader_getPackageNames() ||
-        auditor_runAuditHandle(){
-        Object result = null;
-        try
-        {
-            result = proceed();
-        }
-        catch (IOException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        return result;
-    }
-
-    void around(IProject project, IProgressMonitor monitor, Checker checker,
-            AuditListener listener, Filter runtimeExceptionFilter, ClassLoader contextClassloader)
-        throws CheckstylePluginException: auditor_runAuditHandle() &&
-            args(project, monitor, checker, listener, runtimeExceptionFilter, contextClassloader)
-        {
-        try
-        {
-            proceed(project, monitor, checker, listener, runtimeExceptionFilter, contextClassloader);
-        }
-        finally
-        {
-            monitor.done();
-            // Cleanup listener and filter
-            if (checker != null)
-            {
-                checker.removeListener(listener);
-                checker.removeFilter(runtimeExceptionFilter);
-            }
-            // restore the original classloader
-            Thread.currentThread().setContextClassLoader(contextClassloader);
-        }
-    }
-
-    void around() throws CheckstylePluginException: auditor_runAuditHandle(){
-        try
-        {
-            proceed();
-        }
-        catch (CoreException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        catch (CheckstyleException e)
-        {
-            CheckstylePluginException.rethrow(e);
         }
     }
 
@@ -359,20 +308,6 @@ public privileged aspect BuilderHandler
             throw new CoreException(status);
         }
         return null;
-    }
-
-    InputStream around(CheckstyleConfigurationFile configFileData, InputStream in): 
-        checkerFactory_internalCreateCheckerHandler() && 
-        args(configFileData,in) {
-        try
-        {
-            in = proceed(configFileData, in);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-        }
-        return in;
     }
 
 }
