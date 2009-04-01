@@ -155,7 +155,6 @@ public class DuplicatedCodeView extends ViewPart
                 }
                 catch (CoreException e)
                 {
-                    //return new Object[0];
                    return duplicatesHandler.getChildrenHandler();
                     
                 }
@@ -171,7 +170,6 @@ public class DuplicatedCodeView extends ViewPart
                 }
                 catch (CoreException e)
                 {
-                    //return new Object[0];
                    return duplicatesHandler.getChildrenHandler();
                 }
             }
@@ -227,8 +225,7 @@ public class DuplicatedCodeView extends ViewPart
             }
             catch (CoreException e)
             {
-                //return false;
-                duplicatesHandler.selectHandler();
+                return duplicatesHandler.selectHandler();
             }
             return true;
         }
@@ -346,7 +343,7 @@ public class DuplicatedCodeView extends ViewPart
                             {
                                 duplicatesHandler.checkstyleLog_E_MSG(e, NLS.bind(ErrorMessages.errorWhileBuildingProject,
                                                 project.getName()));
-                                duplicatesHandler.newStatus(e, NLS.bind(ErrorMessages.errorWhileBuildingProject, 
+                                return duplicatesHandler.newStatus(e, NLS.bind(ErrorMessages.errorWhileBuildingProject, 
                                                 project.getName()));
                             }
                         }

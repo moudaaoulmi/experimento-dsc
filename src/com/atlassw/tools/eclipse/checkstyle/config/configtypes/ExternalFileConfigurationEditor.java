@@ -228,7 +228,6 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         }
         catch (CheckstylePluginException e)
         {
-            //XXX Modificado mais do que só refatorado
             configtypesHandler.workingCopyHandler(e, mWorkingCopy, mLocation.getText(),  ensureFileExists(mLocation.getText()));
         }
 

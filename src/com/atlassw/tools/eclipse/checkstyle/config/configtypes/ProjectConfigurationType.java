@@ -92,7 +92,7 @@ public class ProjectConfigurationType extends ConfigurationType
             }
             catch (CheckstylePluginException e)
             {
-                isConfigurable =  (Boolean)configtypesHandle.checkstyleLog(e);
+                configtypesHandle.externalFileConfigurationType_isConfigurable(e,isConfigurable);
             }
 
         }

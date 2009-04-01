@@ -302,10 +302,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
                 }
                 catch (CheckstylePluginException ex)
                 {
-                    
+                    //metodo da super-classe (TitleAreaDialog)
                     setErrorMessage(ex.getLocalizedMessage());
-                    //guiHandler.widgetSelectedHandler(ex, this);
-                    
                 }
             }
 
@@ -500,6 +498,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
             }
             catch (CheckstylePluginException e)
             {
+                //caso onde teria que retornar as 2 variaveis atualizadas.
                 uniqueName = checkConfigName + " (" + counter + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                 counter++;
             }

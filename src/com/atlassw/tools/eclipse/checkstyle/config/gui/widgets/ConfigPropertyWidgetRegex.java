@@ -94,6 +94,8 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase
     private Color mGreenColor;
 
     private Color mTextBgColor;
+    
+    private WidgetsHandler widgetsHandler = new WidgetsHandler();
 
     // =================================================
     // Constructors & finalizer.
@@ -221,7 +223,7 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase
         }
         catch (PatternSyntaxException e)
         {
-            CheckstylePluginException.rethrow(e, e.getLocalizedMessage());
+            widgetsHandler.configPropertyWidgetsRegex_validateHandler(e);
         }
     }
 
@@ -249,7 +251,7 @@ public class ConfigPropertyWidgetRegex extends ConfigPropertyWidgetAbstractBase
         }
         catch (PatternSyntaxException e)
         {
-            mTextWidget.setBackground(mRedColor);
+            widgetsHandler.configPropertyWidgetsRegex_testRegexHandler(mTextWidget, mRedColor);
         }
     }
 

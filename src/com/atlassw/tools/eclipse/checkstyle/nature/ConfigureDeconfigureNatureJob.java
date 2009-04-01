@@ -53,6 +53,8 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob
 
     /** the monitor. */
     private IProgressMonitor mMonitor;
+    
+    private NatureHandler natureHandler = new NatureHandler();
 
     /**
      * Construktor for this operation.
@@ -92,7 +94,7 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob
         }
         finally
         {
-            monitor.done();
+            natureHandler.configureDeconfigureNatureJob_runInWorkspaceHandler(monitor);
         }
         return status;
     }

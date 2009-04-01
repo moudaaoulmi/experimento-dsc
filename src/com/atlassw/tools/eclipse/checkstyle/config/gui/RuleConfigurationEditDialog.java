@@ -247,7 +247,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 }
                 catch (BackingStoreException e1)
                 {
-                    // CheckstyleLog.log(e1);
                     generalException.checkstyleLog(e1);
                 }
             }
@@ -284,7 +283,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 }
                 catch (BackingStoreException e1)
                 {
-                    // CheckstyleLog.log(e1);
                     generalException.checkstyleLog(e1);
                 }
             }
@@ -446,12 +444,6 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
                 }
                 catch (CheckstylePluginException e)
                 {
-                    /*
-                     * String message = NLS.bind(
-                     * Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue
-                     * , property .getMetaData().getName());
-                     * this.setErrorMessage(message); return;
-                     */
                     generalException.setErrorMessage(this, NLS.bind(
                             Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue, property
                                     .getMetaData().getName()));

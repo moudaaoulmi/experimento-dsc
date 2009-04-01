@@ -135,8 +135,7 @@ public class ExternalFileConfigurationType extends ConfigurationType
             }
             catch (CheckstylePluginException e)
             {
-                //XXX diferente extração
-                isConfigurable = (Boolean) configtypesHandle.checkstyleLog(e);
+                isConfigurable = configtypesHandle.externalFileConfigurationType_isConfigurable(e, isConfigurable);
             }
 
             // The configuration can be changed when the external configuration
