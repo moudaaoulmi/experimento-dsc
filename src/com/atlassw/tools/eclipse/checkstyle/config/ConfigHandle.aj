@@ -117,10 +117,28 @@ public privileged aspect ConfigHandle
     // ---------------------------
     // Advice's
     // ---------------------------
+    void around(Object modules, OutputStream out, ByteArrayOutputStream byteOut)
+        throws CheckstylePluginException: RetrowException_setModulesHandle() &&
+        args(modules, out, byteOut){
+        try
+        {
+            proceed(modules, out, byteOut);
+        }
+        catch (IOException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(byteOut);
+            IOUtils.closeQuietly(out);
+        }
+
+    }
+
     List around(InputStream in, List result) throws CheckstylePluginException:
                 CheckConfigurationWorkingCopy_internalGetModules() &&
                 args(in, result){
-        
         try
         {
             result = proceed(in, result);
@@ -160,8 +178,10 @@ public privileged aspect ConfigHandle
         }
     }
 
-    boolean around(): CheckstyleLogMessage_removeCheckConfigurationHandle()
-    {
+    // esses dois nao podem ser reusados pq o com o retorno boolean está
+    // utilizando valores iniciais diferentes do valor default.
+    boolean around(): CheckstyleLogMessage_removeCheckConfigurationHandle() ||
+        CheckstyleLogMessage_refreshHandle() {
         boolean result = true;
         try
         {
@@ -173,7 +193,7 @@ public privileged aspect ConfigHandle
         }
         return result;
     }
-    
+
     void around(): CheckstyleLogMessage_refreshHandle() {
         try
         {
@@ -185,7 +205,7 @@ public privileged aspect ConfigHandle
         }
     }
 
-    int around(String tabWidthProp,int tabWidth): 
+    int around(String tabWidthProp, int tabWidth): 
             ConfigurationReaderHandle_getAdditionalConfigDataHandler() &&
             args(tabWidthProp, tabWidth){
         try
@@ -270,26 +290,8 @@ public privileged aspect ConfigHandle
         }
     }
 
-    void around(Object modules, OutputStream out, ByteArrayOutputStream byteOut)
-        throws CheckstylePluginException: RetrowException_setModulesHandle() &&
-        args(modules, out, byteOut){
-        try
-        {
-            proceed(modules, out, byteOut);
-        }
-        catch (IOException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(byteOut);
-            IOUtils.closeQuietly(out);
-        }
-
-    }
-
-    void around(InputStream inStream) throws CheckstylePluginException: RetrowException_loadFromPersistenceHandle() 
+    void around(InputStream inStream) throws CheckstylePluginException: 
+        RetrowException_loadFromPersistenceHandle() 
         && args(inStream){
         try
         {
@@ -305,7 +307,8 @@ public privileged aspect ConfigHandle
         }
     }
 
-    void around(InputStream inStream, InputStream defaultConfigStream) throws CheckstylePluginException: 
+    void around(InputStream inStream, InputStream defaultConfigStream)
+        throws CheckstylePluginException: 
         RetrowException_migrateHandle()  && 
         args(inStream, defaultConfigStream){
         try
