@@ -162,7 +162,6 @@ public aspect GeneralExceptionHandler
      * está no codigo original. pointcut CheckstylePlugin_startHandle():
      * execution( CheckstylePlugin.start(..));
      */
-
     pointcut auditor_addErrorHandle(): 
         execution (* Auditor.CheckstyleAuditListener.addError(..)) ;
 
@@ -244,6 +243,7 @@ public aspect GeneralExceptionHandler
     
     pointcut CustomLibrariesClassLoader_get():
         execution(* CustomLibrariesClassLoader.get(..));
+    
     // ---------------------------
     // Advice's
     // ---------------------------
