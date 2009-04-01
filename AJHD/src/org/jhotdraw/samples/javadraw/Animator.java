@@ -40,7 +40,8 @@ public class Animator extends Thread {
 		fIsRunning = false;
 	}
 
-	public void run() {
+	/** Extract Method para o caso BREAK */
+	public void extracaoBreak(){
 		while (fIsRunning) {
 			long tm = System.currentTimeMillis();
 			fView.freezeView();
@@ -50,15 +51,17 @@ public class Animator extends Thread {
 
 			// Delay for a while
 
-			// TODO CASO NÃO ACONSELHÁVEL.
-			// uma das solucoes pensadas foi passar um flag pro aspecto e qnd
-			// voltasse verificaria o valor do flag pra dar um break ou nao.
-			try {
+			// TODO 
+			//try {
 				tm += DELAY;
 				Thread.sleep(Math.max(0, tm - System.currentTimeMillis()));
-			} catch (InterruptedException e) {
-				break;
-			}
+//			} catch (InterruptedException e) {
+//				break;
+//			}
 		}
+	}
+	/** MŽtodo que tinha originalmente o BREAK */
+	public void run() {
+		extracaoBreak();
 	}
 }

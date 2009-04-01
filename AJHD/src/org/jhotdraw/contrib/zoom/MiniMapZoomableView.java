@@ -29,19 +29,20 @@ public class MiniMapZoomableView extends MiniMapView {
 	public MiniMapZoomableView(DrawingView newMappedDrawingView, JScrollPane subject) {
 		super(newMappedDrawingView, subject);
 	}
- 
+
 // Overridden
 	public AffineTransform getInverseSubjectTransform() {
 		double subjectsScale = ((ZoomDrawingView)getMappedComponent()).getScale();
 
 		AffineTransform at = null;
-		try {
-			at = AffineTransform.getScaleInstance(subjectsScale, subjectsScale).createInverse();   // undo the zoom of the zoomable drawing view
-		}
-		catch (NoninvertibleTransformException nte) {
-			// all scale-only transforms should be invertable
-		}
+		at = internalInverseSubjectTransForm(subjectsScale, at);
 
 		return at;
+	}
+
+	private AffineTransform internalInverseSubjectTransForm(
+			double subjectsScale, AffineTransform at) {
+			at = AffineTransform.getScaleInstance(subjectsScale, subjectsScale).createInverse();   // undo the zoom of the zoomable drawing view		
+			return at;
 	}
 }

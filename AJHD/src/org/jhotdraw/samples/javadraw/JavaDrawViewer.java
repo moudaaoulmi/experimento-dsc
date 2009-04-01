@@ -14,7 +14,6 @@ package org.jhotdraw.samples.javadraw;
 import org.jhotdraw.framework.*;
 import org.jhotdraw.standard.*;
 import org.jhotdraw.util.*;
-
 import javax.swing.JApplet;
 import java.awt.*;
 import java.io.*;
@@ -55,26 +54,26 @@ public class JavaDrawViewer extends JApplet implements DrawingEditor {
 	private void loadDrawing(String filename) {
 		URL url = null;
 		
-			try {
+			//try {
 				url = new URL(getCodeBase(), filename);
-			} catch (MalformedURLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+//			} catch (MalformedURLException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
 		
 		
 		
 		InputStream stream = null;
 		StorableInput reader = new StorableInput(stream);
 		
-		try {
+		//try {
 			stream = url.openStream();
 			fDrawing = (Drawing) reader.readStorable();
-		} catch (IOException e) {
-			fDrawing = createDrawing();
-			System.err.println("Error when Loading: " + e);
-			showStatus("Error when Loading: " + e);
-		}
+//		} catch (IOException e) {
+//			fDrawing = createDrawing();
+//			System.err.println("Error when Loading: " + e);
+//			showStatus("Error when Loading: " + e);
+//		}
 		
 	}
 

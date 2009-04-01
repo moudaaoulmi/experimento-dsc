@@ -4,44 +4,43 @@ import org.jhotdraw.framework.Drawing;
 import org.jhotdraw.framework.JHotDrawRuntimeException;
 import java.awt.Image;
 import java.io.IOException;
-import javax.jdo.PersistenceManager;
 
 public privileged aspect  UtilHandler{
 
 	// ---------------------------
 	// Declare soft's
 	// ---------------------------
-	declare soft: ClassNotFoundException: isJDK12Handler() ||
-  										  createCollectionsFactoryHandler() ||
-  										  restoreHandler() ||
-  										  makeInstanceHandler();
+	declare soft: ClassNotFoundException: CollectionsFactory_isJDK12Handler() ||
+										  CollectionsFactory_createCollectionsFactoryHandler() ||
+										  SerializationStorageFormat_restoreHandler() ||
+  										  StorableInput_makeInstanceHandler();
 
-	declare soft: InstantiationException: createCollectionsFactoryHandler() ||
-										  makeInstanceHandler();
+	declare soft: InstantiationException: CollectionsFactory_createCollectionsFactoryHandler() ||
+										  StorableInput_makeInstanceHandler();
 
-	declare soft: IllegalAccessException: createCollectionsFactoryHandler() ||
-										  makeInstanceHandler();
+	declare soft: IllegalAccessException: CollectionsFactory_createCollectionsFactoryHandler() ||
+										  StorableInput_makeInstanceHandler();
 
-	declare soft: Exception: loadImageResourceHandler();
+	declare soft: Exception: Iconkit_loadImageResourceHandler();
 
 
 
-	declare soft: NoSuchMethodError: makeInstanceHandler();
+	declare soft: NoSuchMethodError: StorableInput_makeInstanceHandler();
 	
-	declare soft: IOException: readVersionFromFileHandler() ||
-				  mainHandler();
+	declare soft: IOException: VersionManagement_readVersionFromFileHandler() ||
+				  JDOStorageFormat_mainHandler();
 
 	// ---------------------------
 	// Pointcut's
 	// ---------------------------
-	pointcut isJDK12Handler(): 
-		execution (* CollectionsFactory.isJDK12(..));
+	pointcut CollectionsFactory_isJDK12Handler(): 
+		execution (boolean CollectionsFactory.isJDK12(..));
 
-	pointcut createCollectionsFactoryHandler(): 
-		execution(* CollectionsFactory.createCollectionsFactory(..));
+	pointcut CollectionsFactory_createCollectionsFactoryHandler(): 
+		execution(CollectionsFactory CollectionsFactory.createCollectionsFactory(..));
 
-	pointcut loadImageResourceHandler():
-		execution(* Iconkit.loadImageResource(..));
+	pointcut Iconkit_loadImageResourceHandler():
+		execution(Image Iconkit.loadImageResource(..));
 
 	/**
 	pointcut storeInternalHandler():
@@ -50,23 +49,23 @@ public privileged aspect  UtilHandler{
 	 pointcut restoreInternalHandler():
 		execution(* JDOStorageFormat.restoreInternal(..)); */
 
-	pointcut restoreHandler():
-		execution(* SerializationStorageFormat.restore(..)); 
+	pointcut SerializationStorageFormat_restoreHandler():
+		execution(Drawing SerializationStorageFormat.restore(..)); 
 
-	pointcut makeInstanceHandler():
-		execution(* StorableInput.makeInstance(..));
+	pointcut StorableInput_makeInstanceHandler():
+		execution(Object StorableInput.makeInstance(..));
 
-	pointcut readVersionFromFileHandler():
-		execution(* VersionManagement.readVersionFromFile(..));
+	pointcut VersionManagement_readVersionFromFileHandler():
+		execution(String VersionManagement.readVersionFromFile(..));
 
-	pointcut mainHandler():
-		execution(* JDOStorageFormat.main(..));
+	pointcut JDOStorageFormat_mainHandler():
+		execution(void JDOStorageFormat.main(..));
 
 	// ---------------------------
 	// Advice's
 	// ---------------------------
 
-	boolean around(): isJDK12Handler(){
+	boolean around(): CollectionsFactory_isJDK12Handler(){
 
 		boolean result = false;
 		try {
@@ -77,7 +76,7 @@ public privileged aspect  UtilHandler{
 		return result;
 	}
 
-	CollectionsFactory around(): createCollectionsFactoryHandler(){
+	CollectionsFactory around(): CollectionsFactory_createCollectionsFactoryHandler(){
 		CollectionsFactory result = null;
 		try {
 			result = proceed();
@@ -92,7 +91,7 @@ public privileged aspect  UtilHandler{
 	}
 
 
-	Image around(): loadImageResourceHandler(){
+	Image around(): Iconkit_loadImageResourceHandler(){
 		Image result = null;
 		try {
 			result = proceed();
@@ -147,7 +146,7 @@ public privileged aspect  UtilHandler{
 
 
 	Drawing around(String fileName) throws IOException:
-		restoreHandler() &&
+		SerializationStorageFormat_restoreHandler() &&
 		args(fileName){
 
 		Drawing result = null;
@@ -161,7 +160,7 @@ public privileged aspect  UtilHandler{
 	}
 
 	Object around(String className) throws IOException: 
-		makeInstanceHandler() &&
+		StorableInput_makeInstanceHandler() &&
 		args(className){
 
 		Object result = null;
@@ -180,8 +179,8 @@ public privileged aspect  UtilHandler{
 		return result;
 	}
 	
-	Object around(): readVersionFromFileHandler() ||
-	mainHandler(){
+	Object around(): VersionManagement_readVersionFromFileHandler() ||
+	JDOStorageFormat_mainHandler(){
 		Object result = null;
 		try {
 			result = proceed();

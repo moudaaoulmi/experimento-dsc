@@ -9,35 +9,43 @@ import org.aspectj.lang.SoftException;
 public privileged aspect StandardHandler {
 	
 	// Declare Soft
-	declare soft : IOException : internalClone2Hander() || internalCloneHandler() || internalGetDataHandler();
-	declare soft : ClassNotFoundException:	internalClone2Hander();
-	declare soft : CloneNotSupportedException  :cloneHandler();
-	declare soft : Exception: internaldrawXORRectHandler();
-	declare soft : InterruptedException :  internalLockHandler();
-	//declare soft : Throwable : StandardDrawingView_DrawingViewMouseListener_mousePressed();
-	declare soft : Exception: internalToolButtonHandler();
+	declare soft : IOException : AbstractFigure_internalClone2Hander() || AbstractFigure_internalCloneHandler() || StandardFigureSelection_internalGetDataHandler();
+	declare soft : ClassNotFoundException:	AbstractFigure_internalClone2Hander();
+	declare soft : CloneNotSupportedException  :AbstractLocator_cloneHandler();
+	declare soft : Exception: SelectAreaTracker_internaldrawXORRectHandler() || ToolButton_internalToolButtonHandler();
+	declare soft : InterruptedException :  StandardDrawing_internalLockHandler();
+	declare soft : Throwable : StandardDrawingView_DrawingViewMouseListener_mousePressedHandler() || 
+				   StandardDrawingView_DrawingViewMouseListener_mouseReleasedHandler() ||
+				   StandardDrawingView_DrawingViewMouseMotionListener_mouseDraggedHanlder() || 
+				   StandardDrawingView_DrawingViewMouseMotionListener_mouseMovedHandler();
 	
 	
 	//Pointcuts
-	pointcut internalClone2Hander(): execution( private Object AbstractFigure.internalClone2(..));
+	pointcut AbstractFigure_internalClone2Hander(): execution( Object AbstractFigure.internalClone2(..));
 
-	pointcut internalCloneHandler(): execution( private void AbstractFigure.internalClone(..));
+	pointcut AbstractFigure_internalCloneHandler(): execution( void AbstractFigure.internalClone(..));
 
-	pointcut cloneHandler(): execution (public Object AbstractLocator.clone());
+	pointcut AbstractLocator_cloneHandler(): execution ( Object AbstractLocator.clone());
 
-	pointcut internaldrawXORRectHandler(): execution(private void SelectAreaTracker.internaldrawXORRect(..));
+	pointcut SelectAreaTracker_internaldrawXORRectHandler(): execution( void SelectAreaTracker.internaldrawXORRect(..));
 
-	pointcut internalLockHandler() : execution(private void StandardDrawing.internalLock(..));
+	pointcut StandardDrawing_internalLockHandler() : execution( void StandardDrawing.internalLock(..));
 	
-	//pointcut StandardDrawingView_DrawingViewMouseListener_mousePressed(): execution(public void mousePressed(..));
+	pointcut StandardDrawingView_DrawingViewMouseListener_mousePressedHandler(): execution ( void StandardDrawingView.DrawingViewMouseListener.mousePressed(..)); 
 	
-	pointcut internalGetDataHandler(): execution(private void StandardFigureSelection.internalGetData(..));
+	pointcut StandardDrawingView_DrawingViewMouseListener_mouseReleasedHandler(): execution ( void StandardDrawingView.DrawingViewMouseListener.mouseReleased(..));
 	
-	pointcut internalToolButtonHandler(): execution(private void ToolButton.internalToolButton(..));
+	pointcut StandardDrawingView_DrawingViewMouseMotionListener_mouseDraggedHanlder(): execution ( void StandardDrawingView.DrawingViewMouseMotionListener.mouseDragged(..));
+	
+	pointcut StandardDrawingView_DrawingViewMouseMotionListener_mouseMovedHandler(): execution ( void StandardDrawingView.DrawingViewMouseMotionListener.mouseMoved(..));
+	
+	pointcut StandardFigureSelection_internalGetDataHandler(): execution( void StandardFigureSelection.internalGetData(..));
+	
+	pointcut ToolButton_internalToolButtonHandler(): execution( void ToolButton.internalToolButton(..));
 
 	
 
-	Object around(Object clone, InputStream input):  internalClone2Hander() && args(clone,input){
+	Object around(Object clone, InputStream input):  AbstractFigure_internalClone2Hander() && args(clone,input){
 		try {
 			return proceed(clone, input);
 		} catch (IOException e) {
@@ -48,7 +56,7 @@ public privileged aspect StandardHandler {
 		return clone;
 	}
 
-	void around():  internalCloneHandler(){
+	void around():  AbstractFigure_internalCloneHandler(){
 		try {
 			proceed();
 		} catch (IOException e) {
@@ -56,7 +64,7 @@ public privileged aspect StandardHandler {
 		}
 	}
 
-	Object around() throws InternalError:  cloneHandler(){
+	Object around() throws InternalError:  AbstractLocator_cloneHandler(){
 		try {
 			return proceed();
 		} catch (CloneNotSupportedException e) {
@@ -64,7 +72,7 @@ public privileged aspect StandardHandler {
 		}
 	}
 
-	void around(Rectangle r, Graphics g) : internaldrawXORRectHandler() && args(r,g) {
+	void around(Rectangle r, Graphics g) : SelectAreaTracker_internaldrawXORRectHandler() && args(r,g) {
 		try {
 			proceed(r, g);
 		} finally {
@@ -72,7 +80,7 @@ public privileged aspect StandardHandler {
 		}
 	}
 
-	void around() : internalLockHandler()  || internalToolButtonHandler(){
+	void around() : StandardDrawing_internalLockHandler()  || ToolButton_internalToolButtonHandler(){
 		try {
 			proceed();
 		} catch (InterruptedException e) {
@@ -81,7 +89,7 @@ public privileged aspect StandardHandler {
 	}
 	
 	/** REUSE ______
-	void around(): internalToolButtonHandler(){
+	void around(): ToolButton_internalToolButtonHandler(){
 		try{
 			proceed();
 		}catch (Exception e) {
@@ -89,15 +97,21 @@ public privileged aspect StandardHandler {
 		}
 	}*/
 	
-//	void around(StandardDrawingView d) : StandardDrawingView_DrawingViewMouseListener_mousePressed()&& this(d){
-//		try{
-//			proceed(d);
-//		}catch(Throwable e){
-//			//standardDrawingView.handleMouseEventException(e); 			
-//		}
-//	}
+	void around() : StandardDrawingView_DrawingViewMouseListener_mousePressedHandler() || 
+					StandardDrawingView_DrawingViewMouseListener_mouseReleasedHandler() ||
+					StandardDrawingView_DrawingViewMouseMotionListener_mouseDraggedHanlder() || 
+					StandardDrawingView_DrawingViewMouseMotionListener_mouseMovedHandler() {
+		
+		StandardDrawingView obj = (StandardDrawingView) thisJoinPoint.getThis();
+		
+		try{
+			proceed();
+		}catch(Throwable e){
+			obj.handleMouseEventException(e);
+		}
+	}
 	
-	void around() : internalGetDataHandler(){
+	void around() : StandardFigureSelection_internalGetDataHandler(){
 		try{
 			proceed();
 		}catch (IOException e) {

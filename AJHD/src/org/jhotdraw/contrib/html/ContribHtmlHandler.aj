@@ -6,7 +6,7 @@ import org.aspectj.lang.SoftException;
 
 public privileged aspect ContribHtmlHandler {
 	
-	/** declare soft: InterruptedException: joinHandler();*/
+	declare soft: InterruptedException: joinHandler();
 	declare soft: ClassNotFoundException: readPartOneHandler();
 	declare soft: ResourceManagerNotSetException: initManagerPartOneHandler();
     declare soft: HTMLTextAreaFigure.InvalidAttributeMarker: substituteEntityKeywordsPartOneHandler(); 
@@ -15,10 +15,10 @@ public privileged aspect ContribHtmlHandler {
 	
 	
 	/** Rever refatoracao ver se nao ta conseguindo ver a classe DisposalThread que 
-	 * é uma classe LOCAL 
+	 * é uma classe LOCAL */
 	pointcut joinHandler(): 
 		call(* *.join(..)) && 
-		withincode(* ETSLADisposalStrategy.stopDisposingPartOne(..)); */
+		withincode(* ETSLADisposalStrategy.stopDisposingPartOne(..)); 
 	
 	pointcut readPartOneHandler(): execution(* ContentProducerRegistry.readPartOne(..) );
 	pointcut initManagerPartOneHandler():call (*  DisposableResourceManager.startDisposing(..)) &&
@@ -34,16 +34,18 @@ public privileged aspect ContribHtmlHandler {
 	/**
 	 * cenário em que eu não consigo modificar o valor da variável OBJ porque é privada da classe 
 	 * ETSLADisposalStrategy, e não tem método setVariável() pra eu alterar o seu valor
-	 *
+	 */
 	 void around(): joinHandler() {
-			// = (ETSLADisposalStrategy) thisJoinPoint.getThis();
+		 ETSLADisposalStrategy obj	 = (ETSLADisposalStrategy) thisJoinPoint.getThis();
 			try {
 				proceed();
 			}
 			catch (InterruptedException ex) {
 				// ignore
+			}finally {
+				obj.disposingActive = false;
 			}
-		} */
+		} 
 	
 	 
 	 

@@ -3,19 +3,33 @@ package org.jhotdraw.figures;
 
 public privileged aspect FiguresHandler {
 	
-	pointcut cloneHandler() : execution(public Object FigureAttributes.clone());
+	declare soft : CloneNotSupportedException : FigureAttributes_cloneHandler();
+	//declare soft : NumberFormatException : NumberTextFigure_getValueHandler();
 	
-
-    declare soft : CloneNotSupportedException : cloneHandler();
+	
+	pointcut FigureAttributes_cloneHandler() : execution(Object FigureAttributes.clone(..));
+	pointcut NumberTextFigure_getValueHandler() : execution(int NumberTextFigure.getValue(..));
+	
     
-    
-    Object around() throws InternalError : cloneHandler() {
+    Object around() throws InternalError : FigureAttributes_cloneHandler() {
     	try {
 			return proceed();
 		}
 		catch (CloneNotSupportedException e) {
 			throw new InternalError();
 		}
+    }
+    
+    int around()  : NumberTextFigure_getValueHandler() {
+    	 int value = 0;
+    	
+    	try {
+			value = proceed();
+		}
+    	catch (NumberFormatException e) {
+			value = 0;
+		}
+		return value;
     }
 
 }
