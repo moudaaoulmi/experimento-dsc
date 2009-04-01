@@ -116,6 +116,25 @@ public privileged aspect ConfigHandle
     // ---------------------------
     // Advice's
     // ---------------------------
+    void around(ICheckConfiguration config, File file, InputStream in, OutputStream out)
+    throws CheckstylePluginException: RetrowException_exportConfigurationHandle()
+    && args(config, file, in, out)
+{
+    try
+    {
+        proceed(config, file, in, out);
+    }
+    catch (Exception e)
+    {
+        CheckstylePluginException.rethrow(e);
+    }
+    finally
+    {
+        IOUtils.closeQuietly(in);
+        IOUtils.closeQuietly(out);
+    }
+}
+    
     void around(Object modules, OutputStream out, ByteArrayOutputStream byteOut)
         throws CheckstylePluginException: RetrowException_setModulesHandle() &&
         args(modules, out, byteOut){
@@ -270,24 +289,7 @@ public privileged aspect ConfigHandle
         return result;
     }
 
-    void around(ICheckConfiguration config, File file, InputStream in, OutputStream out)
-        throws CheckstylePluginException: RetrowException_exportConfigurationHandle()
-        && args(config, file, in, out)
-    {
-        try
-        {
-            proceed(config, file, in, out);
-        }
-        catch (Exception e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(out);
-        }
-    }
+
 
     void around(InputStream inStream) throws CheckstylePluginException: 
         RetrowException_loadFromPersistenceHandle() 
