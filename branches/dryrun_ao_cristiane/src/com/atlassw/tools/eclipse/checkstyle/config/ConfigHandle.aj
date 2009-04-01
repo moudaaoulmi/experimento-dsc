@@ -22,7 +22,6 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 import org.apache.commons.io.IOUtils;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import java.io.ByteArrayOutputStream;
-import java.util.List;
 
 @ExceptionHandler
 public privileged aspect ConfigHandle
@@ -136,7 +135,7 @@ public privileged aspect ConfigHandle
 
     }
 
-    List around(InputStream in, List result) throws CheckstylePluginException:
+    Object around(InputStream in, Object result) throws CheckstylePluginException:
                 CheckConfigurationWorkingCopy_internalGetModules() &&
                 args(in, result){
         try
@@ -180,8 +179,8 @@ public privileged aspect ConfigHandle
 
     // esses dois nao podem ser reusados pq o com o retorno boolean está
     // utilizando valores iniciais diferentes do valor default.
-    boolean around(): CheckstyleLogMessage_removeCheckConfigurationHandle() ||
-        CheckstyleLogMessage_refreshHandle() {
+    boolean around(): CheckstyleLogMessage_removeCheckConfigurationHandle()
+        {
         boolean result = true;
         try
         {
