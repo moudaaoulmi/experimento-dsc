@@ -61,6 +61,8 @@ public final class ConfigurationReader
 
     /** Map containing the public - internal DTD mapping. */
     private static final Map PUBLIC2INTERNAL_DTD_MAP = new HashMap();
+    
+    private static ConfigHandler configHandler = new ConfigHandler();
 
     static
     {
@@ -177,7 +179,7 @@ public final class ConfigurationReader
                 }
                 catch (Exception e)
                 {
-                    // ignore
+                    configHandler.configurationReader_getAdditionalConfigDataHandler();
                 }
             }
         }

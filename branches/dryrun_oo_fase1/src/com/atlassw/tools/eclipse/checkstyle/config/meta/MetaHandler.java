@@ -11,10 +11,10 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 @ExceptionHandler
 public class MetaHandler extends GeneralException
 {
-    public void metadataFactoryCreateGenericMetadata(String parent)
+    public String metadataFactoryCreateGenericMetadata(String parent)
     {
         // Ok we tried... default to TreeWalker
-        parent = XMLTags.TREEWALKER_MODULE;
+        return parent = XMLTags.TREEWALKER_MODULE;
     }
 
     public void metadataFactoryDoInitializationHandler(ClassLoader contextClassLoader)
@@ -27,10 +27,10 @@ public class MetaHandler extends GeneralException
         throw new SAXException(msg, e);
     }
 
-    public void metadataInternalFactorystartElement(Exception e, int priority)
+    public int metadataInternalFactorystartElement(Exception e, int priority)
     {
         CheckstyleLog.log(e);
-        priority = Integer.MAX_VALUE;
+        return priority = Integer.MAX_VALUE;
     }
 
     public String metadataFactoryLocalize(String localizationCandidate)

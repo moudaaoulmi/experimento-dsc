@@ -23,6 +23,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationPropert
 import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.LocalCheckConfigurationWorkingSet;
+import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 @ExceptionHandler
@@ -124,7 +125,6 @@ public class ConfigtypesHandler extends GeneralException
             ICheckConfiguration checkConfiguration, boolean useCacheFile,
             byte[] configurationFileData, IOException e, byte[] configuration) throws IOException
     {
-        //XXX Não dá por conta do código dentor do método que ele usa.
         if (useCacheFile)
         {
             configurationFileData = configuration;
@@ -136,4 +136,9 @@ public class ConfigtypesHandler extends GeneralException
         return configurationFileData;
     }
 
+    public boolean externalFileConfigurationType_isConfigurable(CheckstylePluginException e, 
+            boolean isConfigurable){
+        CheckstyleLog.log(e);
+        return isConfigurable = false;
+    }
 }

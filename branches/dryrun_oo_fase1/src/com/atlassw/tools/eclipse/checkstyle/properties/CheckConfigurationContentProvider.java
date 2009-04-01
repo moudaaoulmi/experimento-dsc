@@ -30,7 +30,6 @@ import org.eclipse.jface.viewers.Viewer;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWorkingCopy;
-
 /**
  * Content provider implementation that provides check configurations.
  * 

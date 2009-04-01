@@ -86,9 +86,9 @@ public class GeneralException
        throw new InternalError();
     }
     
-    public void returnDefault(Object result)
+    public Object returnDefault(Object result)
     {
-        result = null;
+        return result = null;
     }
 
 }

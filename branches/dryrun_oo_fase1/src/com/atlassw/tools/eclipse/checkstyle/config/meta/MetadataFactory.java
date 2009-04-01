@@ -202,7 +202,7 @@ public final class MetadataFactory
         }
         catch (Exception e)
         {
-            metaHandler.metadataFactoryCreateGenericMetadata(parent);
+            parent = metaHandler.metadataFactoryCreateGenericMetadata(parent);
 
         }
 
@@ -444,7 +444,7 @@ public final class MetadataFactory
             }
             catch (IOException e)
             {
-                //TODO - Necessita de um return, pq nao fica explicito que é um throw
+                //Necessita de um return, pq nao fica explicito que é um throw
                 metaHandler.throwSAXException_Msg("" + e, e);
                 return null;
             }
@@ -480,7 +480,7 @@ public final class MetadataFactory
                         }
                         catch (Exception e)
                         {
-                            metaHandler.metadataInternalFactorystartElement(e, priority);
+                            priority = metaHandler.metadataInternalFactorystartElement(e, priority);
                         }
 
                         // Create the groups
@@ -656,7 +656,7 @@ public final class MetadataFactory
                 }
                 catch (MissingResourceException e)
                 {
-                    metaHandler.metadataFactoryLocalize(localizationCandidate);
+                    return metaHandler.metadataFactoryLocalize(localizationCandidate);
                 }
             }
             return localizationCandidate;

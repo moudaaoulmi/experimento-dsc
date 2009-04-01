@@ -49,6 +49,7 @@ import org.eclipse.swt.widgets.Control;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.ConfigPropertyMetadata;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 /**
  * Configuration widget for selecting multiple values with check boxes.
@@ -80,6 +81,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
 
     private List mTokens;
 
+    private WidgetsHandler widgetsHandler = new WidgetsHandler();
     // =================================================
     // Constructors & finalizer.
     // =================================================
@@ -263,7 +265,7 @@ public class ConfigPropertyWidgetMultiCheck extends ConfigPropertyWidgetAbstract
                 }
                 catch (MissingResourceException e)
                 {
-                    translation = "" + element; //$NON-NLS-1$
+                    widgetsHandler.configPropertyWidgetsMultiCheck_getTextHandler(translation,element);
                 }
             }
             return translation;

@@ -32,4 +32,11 @@ public class ConfigHandler extends GeneralException
     public void restoreClassLoader(ClassLoader classloader){
         Thread.currentThread().setContextClassLoader(classloader);
     }
+    
+    public void checkConfigurationWorkingCopy_setModulesHandler(){
+        // NOOP - just ignore
+    }
+    public void configurationReader_getAdditionalConfigDataHandler(){
+        // ignore
+    }
 }

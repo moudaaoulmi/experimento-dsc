@@ -443,7 +443,6 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
                 }
                 catch (BackingStoreException e1)
                 {
-                    //CheckstyleLog.log(e1);
                     generalException.checkstyleLog(e1);
                 }
             }
