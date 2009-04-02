@@ -292,12 +292,12 @@ public class RemoteConfigurationType extends ConfigurationType
 
         byte[] configurationFileData = null;
         InputStream in = null;
-        configurationFileData = internalGetBytesFromURLConnection(connection, configurationFileData, in);
+        configurationFileData = internalGetBytesFromURLConnection(connection, in, configurationFileData);
         return configurationFileData;
     }
 
-    private byte[] internalGetBytesFromURLConnection(URLConnection connection,
-            byte[] configurationFileData, InputStream in) throws IOException
+    private byte[] internalGetBytesFromURLConnection(URLConnection connection, InputStream in,
+            byte[] configurationFileData ) throws IOException
     {
         if (connection instanceof HttpURLConnection)
         {
