@@ -1,6 +1,7 @@
 
 package com.atlassw.tools.eclipse.checkstyle.exception;
 
+import java.util.MissingResourceException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -87,7 +88,8 @@ public aspect GeneralExceptionHandler
                               ConfigurationType_getResolvedConfigurationFileURLHandler() ||
                               ConfigurationType_getCheckstyleConfigurationHandler() ||
                               FileMatchPattern_internalSetMatchPatternHandler() ||
-                              RetrowException_exportConfigurationHandle();
+                              RetrowException_exportConfigurationHandle() ||
+                              RetrowException_endElementHandle();
 
     declare soft: CoreException: ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
                                  checkstyleBuilder_buildProjectsHandleHandle() ||
@@ -106,8 +108,11 @@ public aspect GeneralExceptionHandler
                                              RemoteConfigurationType_secInternalGetBytesFromURLConnectionHandler() || 
                                              metadataFactory_refreshHandler() ||
                                              CheckFileOnOpenPartListener_isFileAffectedHandler() ||
-                                             CheckstyleLogMessage_refreshHandle();
-
+                                             CheckstyleLogMessage_refreshHandle() ||
+                                             checkConfigurationMigrator_endElementHandler() ||
+                                             checkConfigurationMigrator_startElementHandler() ||
+                                             ProjectConfigurationFactory_startElementHandler();
+    
     declare soft: BackingStoreException: internalCreateButtonBarHandler() || 
                                          internalWidgetSelectedHandler() || 
                                          PrefsInitializer_internalinitializeDefaultPreferencesHandler();
@@ -122,7 +127,9 @@ public aspect GeneralExceptionHandler
                                auditor_runAuditHandle() ||
                                CustomLibrariesClassLoader_get() ||
                                RetrowException_setModulesHandle() ||
-                               RemoteConfigurationType_internalGetCheckstyleConfigurationHandler();;
+                               RemoteConfigurationType_internalGetCheckstyleConfigurationHandler() ||
+                               RetrowException_resolveEntityHandleHandle() ||
+                               metadataFactory_resolveEntityHandler();
 
     declare soft: SAXException : checkConfigurationMigrator_migrateHandler() ||
                                  RetrowException_runHandle() ||
@@ -155,10 +162,19 @@ public aspect GeneralExceptionHandler
     declare soft: IllegalAccessException: RemoteConfigurationType_internalGetDefaultHandler();
 
     declare soft: TransformerConfigurationException: RetrowException_writeHandle();
-    
+
     // ---------------------------
     // Pointcut's
     // ---------------------------
+    pointcut metadataFactory_resolveEntityHandler() : 
+        execution(* MetadataFactory.MetaDataHandler.resolveEntity(..));
+    
+    pointcut RetrowException_resolveEntityHandleHandle(): 
+        execution (* ConfigurationReader.ConfigurationHandler.resolveEntity(..)) ;
+    
+    pointcut ProjectConfigurationFactory_startElementHandler(): 
+        execution(* ProjectConfigurationFactory.ProjectConfigFileHandler.startElement(..));
+
     pointcut internalRunHandler(): 
         call(* FileSetEditDialog.getFiles(..)) &&
         withincode(* FileSetEditDialog.internalRun(..));
@@ -318,9 +334,42 @@ public aspect GeneralExceptionHandler
 
     pointcut RetrowException_writeHandle(): 
         execution (* ConfigurationWriter.write(..)) ;
+
+    pointcut RetrowException_endElementHandle(): 
+        execution (* CheckConfigurationFactory.CheckConfigurationsFileHandler.endElement(..));
+
+    pointcut ProjectConfigurationFactory_endElementHandler(): 
+        execution(* ProjectConfigurationFactory.ProjectConfigFileHandler.endElement(..));
+
+    pointcut checkConfigurationMigrator_startElementHandler(): 
+        execution(* CheckConfigurationMigrator.OldConfigurationHandler.startElement(..));
+
+    pointcut checkConfigurationMigrator_endElementHandler() : 
+        execution(* CheckConfigurationMigrator.OldConfigurationHandler.endElement(..));
+
+    pointcut metadataFactory_getMetadataI18NBundleHandler() : 
+        execution(* MetadataFactory.getMetadataI18NBundle(..));
+    
+    pointcut ResourceBundlePropertyResolver_resolveHandle(): 
+        execution(* ResourceBundlePropertyResolver.resolve(..));
     // ---------------------------
     // Advice's
     // ---------------------------
+
+    Object around(): ResourceBundlePropertyResolver_resolveHandle() ||
+                     metadataFactory_getMetadataI18NBundleHandler(){
+        Object result = null;
+        try
+        {
+            result = proceed();
+        }
+        catch (MissingResourceException e)
+        {
+            // ignore
+        }
+        return result;
+    }
+    
     CheckstyleConfigurationFile around(CheckstyleConfigurationFile data, String currentRedirects,
             Authenticator oldAuthenticator, ICheckConfiguration checkConfiguration,
             boolean useCacheFile) throws CheckstylePluginException: 
@@ -717,4 +766,43 @@ public aspect GeneralExceptionHandler
         }
     }
 
+    void around() throws SAXException : RetrowException_endElementHandle() ||
+                                        ProjectConfigurationFactory_endElementHandler() {
+        try
+        {
+            proceed();
+        }
+        catch (Exception e)
+        {
+            throw new SAXException(e);
+        }
+    }
+    
+    Object around() throws SAXException: 
+        RetrowException_resolveEntityHandleHandle() ||
+        metadataFactory_resolveEntityHandler(){
+        Object result = null;
+        try
+        {
+            result = proceed();
+        }
+        catch (IOException e)
+        {
+            throw new SAXException("" + e, e);
+        }
+        return result;
+    }
+    
+    void around() throws SAXException : checkConfigurationMigrator_startElementHandler() || 
+                                        checkConfigurationMigrator_endElementHandler() ||
+                                        ProjectConfigurationFactory_startElementHandler(){
+        try
+        {
+            proceed();
+        }
+        catch (CheckstylePluginException e)
+        {
+            throw new SAXException(e);
+        }
+    }
 }
