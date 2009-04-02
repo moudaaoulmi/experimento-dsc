@@ -177,6 +177,5 @@ public privileged aspect MetaHandler
         {
             throw new SAXException(e.getLocalizedMessage(), e);
         }
-
     }
 }
