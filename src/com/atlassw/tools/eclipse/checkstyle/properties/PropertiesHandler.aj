@@ -9,14 +9,13 @@ import java.util.regex.PatternSyntaxException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.Messages;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import org.eclipse.swt.events.SelectionEvent;
-
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 /**
  * @author Cristiane Queiroz
  */
@@ -26,8 +25,7 @@ public privileged aspect PropertiesHandler
     // ---------------------------
     // Declare soft's
     // ---------------------------
-    declare soft : CoreException : CheckstylePropertyPage_setElementHandler() ||
-                                   FileSetEditDialog_runHandler();
+    declare soft : CoreException : CheckstylePropertyPage_setElementHandler();
 
     declare soft : IllegalAccessException : CheckstylePropertyPage_openFilterEditorHandler();
 
@@ -69,9 +67,6 @@ public privileged aspect PropertiesHandler
 
     pointcut ComplexFileSetsEditor_editFileSetHandler():
         execution(* ComplexFileSetsEditor.editFileSet(..));
-
-    pointcut FileSetEditDialog_runHandler(): 
-        execution(* FileSetEditDialog.internalRun(..));
 
     pointcut FileSetEditDialog_widgetSelectedHandler(): 
         execution(* FileSetEditDialog.Controller.internalWidgetSelected(..));
@@ -195,16 +190,6 @@ public privileged aspect PropertiesHandler
         }
     }
 
-    void around(): FileSetEditDialog_runHandler(){
-        try
-        {
-            proceed();
-        }
-        catch (CoreException e)
-        {
-            CheckstyleLog.log(e);
-        }
-    }
 
     void around(ICheckConfiguration config, IProject project) : 
             FileSetEditDialog_widgetSelectedHandler() &&
