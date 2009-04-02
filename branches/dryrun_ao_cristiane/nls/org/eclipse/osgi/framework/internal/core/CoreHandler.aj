@@ -9,11 +9,17 @@ import org.eclipse.osgi.framework.internal.core.MessageResourceBundle.*;
 @ExceptionHandler
 public privileged aspect CoreHandler
 {
+    // ---------------------------
+    // Declare soft's
+    // ---------------------------
     declare soft: Exception: Core_putHandle() ||
                              Core_internalComputeMissingMessagesHandler();
 
     declare soft: IOException: Core_internalLoadHandler();
 
+    // ---------------------------
+    // Pointcut's
+    // ---------------------------
     pointcut Core_putHandle(): 
         call(* Field.set(..)) &&
         withincode(* MessageResourceBundle.MessagesProperties.put(..));
@@ -24,6 +30,9 @@ public privileged aspect CoreHandler
     pointcut Core_internalLoadHandler(): 
         execution (* MessageResourceBundle.internalLoad(..));
 
+    // ---------------------------
+    // Advice's
+    // ---------------------------
     void around(): Core_putHandle() {
         try
         {
