@@ -6,7 +6,6 @@ import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.xml.sax.SAXException;
@@ -14,7 +13,6 @@ import org.xml.sax.InputSource;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
-import javax.xml.transform.TransformerConfigurationException;
 import java.io.InputStream;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 import org.apache.commons.io.IOUtils;
@@ -29,7 +27,6 @@ public privileged aspect ConfigHandle
     // Declare soft's
     // ---------------------------
     declare soft: Exception: CheckConfigurationWorkingCopy_setLocationHandle() 
-                            || RetrowException_endElementHandle()
                             || RetrowException_loadFromPersistenceHandle()
                             || RetrowException_migrateHandle()
                             || RetrowException_storeToPersistenceHandle();
@@ -39,8 +36,7 @@ public privileged aspect ConfigHandle
     declare soft: CheckstylePluginException: CheckstyleLogMessage_removeCheckConfigurationHandle()
                             || CheckConfigurationWorkingCopy_internalGetModules();
 
-    declare soft: IOException: ConfigurationReaderHandle_startElementHandleHandle()
-                            || RetrowException_resolveEntityHandleHandle();
+    declare soft: IOException: ConfigurationReaderHandle_startElementHandleHandle();
 
     // ---------------------------
     // Pointcut's
@@ -63,12 +59,6 @@ public privileged aspect ConfigHandle
     pointcut ConfigurationReaderHandle_startElementHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.startElementHandle(..)) ;
 
-    pointcut RetrowException_endElementHandle(): 
-        execution (* CheckConfigurationFactory.CheckConfigurationsFileHandler.endElement(..));
-
-    pointcut RetrowException_resolveEntityHandleHandle(): 
-        execution (* ConfigurationReader.ConfigurationHandler.resolveEntity(..)) ;
-
     pointcut RetrowException_loadFromPersistenceHandle(): 
         execution (* CheckConfigurationFactory.internalLoadFromPersistence(..)) ;
 
@@ -84,7 +74,6 @@ public privileged aspect ConfigHandle
     // ---------------------------
     // Advice's
     // ---------------------------
-  
     Object around(InputStream in, Object result) throws CheckstylePluginException:
                 CheckConfigurationWorkingCopy_internalGetModules() &&
                 args(in, result){
@@ -143,8 +132,6 @@ public privileged aspect ConfigHandle
         return result;
     }
 
-
-
     int around(String tabWidthProp, int tabWidth): 
             ConfigurationReaderHandle_getAdditionalConfigDataHandler() &&
             args(tabWidthProp, tabWidth){
@@ -170,32 +157,6 @@ public privileged aspect ConfigHandle
         {
             module.setSeverity(SeverityLevel.WARNING);
         }
-    }
-
-    void around() throws SAXException :RetrowException_endElementHandle(){
-        try
-        {
-            proceed();
-        }
-        catch (Exception e)
-        {
-            throw new SAXException(e);
-        }
-    }
-
-    InputSource around(String publicId, String systemId) throws SAXException: 
-        RetrowException_resolveEntityHandleHandle() &&
-        args(publicId, systemId){
-        InputSource result = null;
-        try
-        {
-            result = proceed(publicId, systemId);
-        }
-        catch (IOException e)
-        {
-            throw new SAXException("" + e, e);
-        }
-        return result;
     }
 
     void around(InputStream inStream) throws CheckstylePluginException: 
@@ -251,7 +212,4 @@ public privileged aspect ConfigHandle
             IOUtils.closeQuietly(out);
         }
     }
-
-
-
 }

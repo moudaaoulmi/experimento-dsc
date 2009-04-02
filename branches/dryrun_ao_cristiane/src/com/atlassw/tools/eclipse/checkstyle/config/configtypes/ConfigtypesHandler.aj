@@ -127,9 +127,6 @@ public privileged aspect ConfigtypesHandler
      pointcut RemoteConfigurationType_internalGetBytesFromURLConnectionHandler():
         execution(* RemoteConfigurationType.internalGetBytesFromURLConnection(..));
 
-    pointcut ResourceBundlePropertyResolver_resolveHandle(): 
-        execution(* ResourceBundlePropertyResolver.resolve(..));
-
     // ---------------------------
     // Advice's
     // ---------------------------
@@ -371,16 +368,4 @@ public privileged aspect ConfigtypesHandler
         }
     }
 
-    String around():ResourceBundlePropertyResolver_resolveHandle(){
-        String result = null;
-        try
-        {
-            result = proceed();
-        }
-        catch (MissingResourceException e)
-        {
-            // ignore
-        }
-        return result;
-    }
 }
