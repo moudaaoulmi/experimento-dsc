@@ -62,6 +62,8 @@ import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
+
 /**
  * Provides utility methods for XML manipulations.
  */
@@ -86,6 +88,8 @@ public final class XMLUtil
     private static TransformerFactory sTransformerFactory = TransformerFactory.newInstance();
 
     private static final int MAX_DOC_BUILDER_CACHE = 10;
+    
+    private static GeneralException generalException = new GeneralException();
 
     // =================================================
     // Instance member variables.
@@ -399,7 +403,7 @@ public final class XMLUtil
         }
         finally
         {
-            IOUtils.closeQuietly(in);
+            generalException.closeQuietlyInputStream(in);
         }
 
         StreamResult result = new StreamResult(out);
@@ -430,7 +434,6 @@ public final class XMLUtil
         catch (EmptyStackException e)
         {
            builder = utilHandler.getDocumentBuilderHandler();
-            //builder = createDocumentBuilder();
         }
 
         return builder;

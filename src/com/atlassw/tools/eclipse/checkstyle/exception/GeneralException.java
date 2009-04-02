@@ -68,10 +68,10 @@ public class GeneralException
         throw new SAXException(e);
     }
     
-    public Object warningDialogHandler(Shell shell, String msg, Exception e)
+    public boolean warningDialogHandler(Shell shell, String msg, Exception e)
     {
         CheckstyleLog.warningDialog(shell, msg, e);
-        return null;
+        return false;
     }
     
     public void setErrorMessage(TitleAreaDialog titleAreaDialog,
@@ -86,9 +86,14 @@ public class GeneralException
        throw new InternalError();
     }
     
-    public Object returnDefault(Object result)
+    public int returnDefault(int result)
     {
-        return result = null;
+        return result = 0;
+    }
+    
+    public boolean returnDefault(boolean result)
+    {
+        return result = false;
     }
 
 }

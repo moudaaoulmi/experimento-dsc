@@ -88,7 +88,7 @@ public class FixCheckstyleMarkersJob extends UIJob
         }
         catch (CoreException e)
         {
-            generalException.newStatus(e, e.getMessage());
+            return generalException.newStatus(e, e.getMessage());
         }
 
         return Status.OK_STATUS;

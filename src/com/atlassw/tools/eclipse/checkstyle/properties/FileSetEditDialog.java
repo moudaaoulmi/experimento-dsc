@@ -430,7 +430,6 @@ public class FileSetEditDialog extends TitleAreaDialog
                 }
                 catch (CoreException e)
                 {
-                    //CheckstyleLog.log(e);
                     generalException.checkstyleLog(e);
                 }
 
