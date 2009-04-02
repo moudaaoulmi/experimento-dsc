@@ -14,14 +14,13 @@ import org.xml.sax.InputSource;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.File;
 import javax.xml.transform.TransformerConfigurationException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 import org.apache.commons.io.IOUtils;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import java.io.ByteArrayOutputStream;
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 
 @ExceptionHandler
 public privileged aspect ConfigHandle
@@ -33,7 +32,6 @@ public privileged aspect ConfigHandle
 
     declare soft: Exception: CheckConfigurationWorkingCopy_setLocationHandle() 
                             || RetrowException_endElementHandle()
-                            || RetrowException_exportConfigurationHandle()
                             || RetrowException_loadFromPersistenceHandle()
                             || RetrowException_migrateHandle()
                             || RetrowException_storeToPersistenceHandle();
@@ -45,8 +43,7 @@ public privileged aspect ConfigHandle
                             || CheckConfigurationWorkingCopy_internalGetModules();
 
     declare soft: IOException: ConfigurationReaderHandle_startElementHandleHandle()
-                            || RetrowException_resolveEntityHandleHandle()
-                            || RetrowException_setModulesHandle();
+                            || RetrowException_resolveEntityHandleHandle();
 
     declare soft: SAXException: RetrowException_writeHandle();
 
@@ -89,9 +86,6 @@ public privileged aspect ConfigHandle
     pointcut RetrowException_resolveEntityHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.resolveEntity(..)) ;
 
-    pointcut RetrowException_exportConfigurationHandle(): 
-        execution (* CheckConfigurationFactory.internalExportConfiguration(..)) ;
-
     pointcut RetrowException_loadFromPersistenceHandle(): 
         execution (* CheckConfigurationFactory.internalLoadFromPersistence(..)) ;
 
@@ -100,9 +94,6 @@ public privileged aspect ConfigHandle
 
     pointcut RetrowException_getUnresolvedPropertiesIterationHandle(): 
         execution (* CheckConfigurationTester.getUnresolvedPropertiesIteration(..));
-
-    pointcut RetrowException_setModulesHandle(): 
-        execution (* CheckConfigurationWorkingCopy.internalSetModules(..)) ;
 
     pointcut RetrowException_writeHandle(): 
         execution (* ConfigurationWriter.write(..)) ;
@@ -116,44 +107,7 @@ public privileged aspect ConfigHandle
     // ---------------------------
     // Advice's
     // ---------------------------
-    void around(ICheckConfiguration config, File file, InputStream in, OutputStream out)
-    throws CheckstylePluginException: RetrowException_exportConfigurationHandle()
-    && args(config, file, in, out)
-{
-    try
-    {
-        proceed(config, file, in, out);
-    }
-    catch (Exception e)
-    {
-        CheckstylePluginException.rethrow(e);
-    }
-    finally
-    {
-        IOUtils.closeQuietly(in);
-        IOUtils.closeQuietly(out);
-    }
-}
-    
-    void around(Object modules, OutputStream out, ByteArrayOutputStream byteOut)
-        throws CheckstylePluginException: RetrowException_setModulesHandle() &&
-        args(modules, out, byteOut){
-        try
-        {
-            proceed(modules, out, byteOut);
-        }
-        catch (IOException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(byteOut);
-            IOUtils.closeQuietly(out);
-        }
-
-    }
-
+  
     Object around(InputStream in, Object result) throws CheckstylePluginException:
                 CheckConfigurationWorkingCopy_internalGetModules() &&
                 args(in, result){
@@ -288,8 +242,6 @@ public privileged aspect ConfigHandle
         }
         return result;
     }
-
-
 
     void around(InputStream inStream) throws CheckstylePluginException: 
         RetrowException_loadFromPersistenceHandle() 
