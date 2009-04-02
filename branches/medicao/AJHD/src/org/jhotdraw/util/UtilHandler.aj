@@ -5,6 +5,7 @@ import org.jhotdraw.framework.JHotDrawRuntimeException;
 import java.awt.Image;
 import java.io.IOException;
 
+@ExceptionHandler
 public privileged aspect  UtilHandler{
 
 	// ---------------------------
