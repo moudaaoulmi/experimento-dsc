@@ -1,8 +1,6 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config.migration;
 
-import org.xml.sax.SAXException;
-
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
@@ -15,28 +13,19 @@ import org.eclipse.osgi.util.NLS;
 public aspect MigrationHandler
 {
     // ---------------------------
-    // Declare Soft's
+    // Declare Soft
     // ---------------------------
-    declare soft: CheckstylePluginException : checkConfigurationMigrator_endElementHandler() || 
-                                              checkConfigurationMigrator_internalStartElementHandler() || 
-                                              checkConfigurationMigrator_startElementHandler();
+    declare soft: CheckstylePluginException : checkConfigurationMigrator_internalStartElementHandler();
 
     // ---------------------------
-    // Pointcut's
+    // Pointcut
     // ---------------------------
-    pointcut checkConfigurationMigrator_endElementHandler() : 
-        execution(* CheckConfigurationMigrator.OldConfigurationHandler.endElement(..));
-
     pointcut checkConfigurationMigrator_internalStartElementHandler() : 
         execution(* CheckConfigurationMigrator.OldConfigurationHandler.internalStartElement(..));
 
-    pointcut checkConfigurationMigrator_startElementHandler(): 
-        execution(* CheckConfigurationMigrator.OldConfigurationHandler.startElement(..));
-
     // ---------------------------
-    // Advice's
+    // Advice
     // ---------------------------
-    
     void around(String name) throws CheckstylePluginException : 
             checkConfigurationMigrator_internalStartElementHandler() 
             && args(name){
@@ -56,18 +45,6 @@ public aspect MigrationHandler
                             .getDateTimeInstance(DateFormat.FULL, DateFormat.FULL).format(
                                     new Date()));
             current.setName(name + nameAddition);
-        }
-    }
-
-    void around() throws SAXException : checkConfigurationMigrator_startElementHandler() || 
-                                        checkConfigurationMigrator_endElementHandler() {
-        try
-        {
-            proceed();
-        }
-        catch (CheckstylePluginException e)
-        {
-            throw new SAXException(e);
         }
     }
 }

@@ -34,8 +34,7 @@ public privileged aspect MetaHandler
 
     declare soft: ParserConfigurationException : metadataFactory_internalDoInitializationHandler();
 
-    declare soft: IOException : metadataFactory_internalDoInitializationHandler() || 
-                                metadataFactory_resolveEntityHandler();
+    declare soft: IOException : metadataFactory_internalDoInitializationHandler();
 
     declare soft: ClassNotFoundException: metadataFactory_startElementHandler();
 
@@ -51,12 +50,6 @@ public privileged aspect MetaHandler
 
     pointcut metadataFactory_internalDoInitializationHandler() : 
         execution(* MetadataFactory.internalDoInitialization(..));
-
-    pointcut metadataFactory_getMetadataI18NBundleHandler() : 
-        execution(* MetadataFactory.getMetadataI18NBundle(..));
-
-    pointcut metadataFactory_resolveEntityHandler() : 
-        execution(* MetadataFactory.MetaDataHandler.resolveEntity(..));
 
     pointcut metadataFactory_internalStartElementHandler() : 
         execution(* MetadataFactory.MetaDataHandler.internalStartElement(..));
@@ -119,27 +112,6 @@ public privileged aspect MetaHandler
         }
     }
 
-    ResourceBundle around() : metadataFactory_getMetadataI18NBundleHandler(){
-        try
-        {
-            return proceed();
-        }
-        catch (MissingResourceException e)
-        {
-            return null;
-        }
-    }
-
-    InputSource around() throws SAXException : metadataFactory_resolveEntityHandler(){
-        try
-        {
-            return proceed();
-        }
-        catch (IOException e)
-        {
-            throw new SAXException("" + e, e); //$NON-NLS-1$
-        }
-    }
 
     int around(Attributes attributes, int priority): 
             metadataFactory_internalStartElementHandler() && 
