@@ -264,7 +264,7 @@ public class EnhancedTableViewer extends TableViewer
         }
         catch (NumberFormatException e)
         {
-            tableHandler.returnDefault(mSortedColumnIndex);
+            mSortedColumnIndex = tableHandler.returnDefault(mSortedColumnIndex);
         }
         try
         {
@@ -272,7 +272,7 @@ public class EnhancedTableViewer extends TableViewer
         }
         catch (NumberFormatException e)
         {
-            tableHandler.restoreState2Handler(mSortDirection, DIRECTION_FORWARD);
+            mSortDirection = tableHandler.restoreState2Handler(mSortDirection, DIRECTION_FORWARD);
             
         }
 
@@ -292,7 +292,7 @@ public class EnhancedTableViewer extends TableViewer
             }
             catch (NumberFormatException e)
             {
-                tableHandler.returnDefault(allColumnsHaveStoredData);
+                allColumnsHaveStoredData = tableHandler.returnDefault(allColumnsHaveStoredData);
             }
         }
 

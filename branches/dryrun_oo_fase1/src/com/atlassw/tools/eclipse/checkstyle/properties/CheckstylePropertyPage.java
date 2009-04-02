@@ -462,7 +462,7 @@ public class CheckstylePropertyPage extends PropertyPage
                 }
                 catch (CheckstylePluginException e)
                 {
-                    generalException.warningDialogHandler(getShell(), NLS.bind(
+                    return generalException.warningDialogHandler(getShell(), NLS.bind(
                             ErrorMessages.errorCannotResolveCheckLocation, checkConfig
                             .getLocation(), checkConfig.getName()), e);
                 }

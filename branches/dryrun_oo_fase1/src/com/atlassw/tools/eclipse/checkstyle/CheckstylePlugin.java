@@ -181,7 +181,6 @@ public class CheckstylePlugin extends AbstractUIPlugin
         }
         catch (Exception ioe)
         {
-            //CheckstyleLog.log(ioe);
             checkStyleHandler.checkstyleLog(ioe);
         }
 

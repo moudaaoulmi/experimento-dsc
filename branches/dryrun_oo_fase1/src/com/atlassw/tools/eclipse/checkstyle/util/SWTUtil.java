@@ -202,7 +202,7 @@ public final class SWTUtil
                 }
                 catch (NumberFormatException ex)
                 {
-                    utilHandler.returnDefault(doit);
+                    doit = utilHandler.returnDefault(doit);
                 }
             }
 
@@ -341,7 +341,6 @@ public final class SWTUtil
                 catch (Exception e1)
                 {
                     initialSize = utilHandler.shellActivatedHandler();
-                    //initialSize = new Point(0, 0);
                 }
                 Shell shell = (Shell) e.getSource();
                 
@@ -364,7 +363,6 @@ public final class SWTUtil
                     catch (NumberFormatException ex)
                     {
                         mNewBounds = utilHandler.shellActivatedHandler2(shell);
-                        //mNewBounds = shell.getBounds();
                     }
 
                     shell.removeControlListener(this);
