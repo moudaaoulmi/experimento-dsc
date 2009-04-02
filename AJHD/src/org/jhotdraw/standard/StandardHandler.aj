@@ -4,10 +4,10 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
-import org.aspectj.lang.SoftException;
-import org.jhotdraw.ExceptionHandler;
 
-@ExceptionHandler
+import org.aspectj.lang.SoftException;
+
+@org.jhotdraw.Exception.ExceptionHandler
 public privileged aspect StandardHandler {
 	
 	// Declare Soft

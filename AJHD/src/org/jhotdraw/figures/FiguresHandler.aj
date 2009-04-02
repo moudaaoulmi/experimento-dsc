@@ -1,6 +1,6 @@
 package org.jhotdraw.figures;
 
-import org.jhotdraw.ExceptionHandler;
+import org.jhotdraw.Exception.ExceptionHandler;
 
 
 @ExceptionHandler

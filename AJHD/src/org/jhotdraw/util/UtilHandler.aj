@@ -1,10 +1,11 @@
 package org.jhotdraw.util;
 
-import org.jhotdraw.ExceptionHandler;
-import org.jhotdraw.framework.Drawing;
-import org.jhotdraw.framework.JHotDrawRuntimeException;
 import java.awt.Image;
 import java.io.IOException;
+
+import org.jhotdraw.Exception.ExceptionHandler;
+import org.jhotdraw.framework.Drawing;
+import org.jhotdraw.framework.JHotDrawRuntimeException;
 
 @ExceptionHandler
 public privileged aspect  UtilHandler{
