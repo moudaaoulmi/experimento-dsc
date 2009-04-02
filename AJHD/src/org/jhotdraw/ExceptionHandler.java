@@ -1,4 +1,4 @@
-package org.jhotdraw.util;
+package org.jhotdraw;
 
 public @interface ExceptionHandler {
 

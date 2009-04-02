@@ -5,7 +5,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.io.InputStream;
 
+import org.jhotdraw.ExceptionHandler;
 
+
+@ExceptionHandler
 public privileged aspect JavadrawHandler {
 
 	// ---------------------------

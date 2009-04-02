@@ -5,7 +5,9 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
 import org.aspectj.lang.SoftException;
+import org.jhotdraw.ExceptionHandler;
 
+@ExceptionHandler
 public privileged aspect StandardHandler {
 	
 	// Declare Soft

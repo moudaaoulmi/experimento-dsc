@@ -1,12 +1,15 @@
 package org.jhotdraw.contrib;
 
-import java.awt.IllegalComponentStateException;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.beans.PropertyVetoException;
 import  javax.swing.*;
 
+import org.jhotdraw.ExceptionHandler;
+
+
+@ExceptionHandler
 public aspect ContribHandler {
 
 	declare soft:  PropertyVetoException: setSelectedHandler() || setSelectedHandler2() ;
