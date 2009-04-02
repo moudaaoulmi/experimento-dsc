@@ -40,12 +40,11 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
-
+import com.atlassw.tools.eclipse.checkstyle.quickfixes.ICheckstyleMarkerResolution;
 import com.atlassw.tools.eclipse.checkstyle.builder.PackageNamesLoader;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.XMLTags;
-import com.atlassw.tools.eclipse.checkstyle.quickfixes.ICheckstyleMarkerResolution;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.util.CustomLibrariesClassLoader;
 import com.atlassw.tools.eclipse.checkstyle.util.XMLUtil;
