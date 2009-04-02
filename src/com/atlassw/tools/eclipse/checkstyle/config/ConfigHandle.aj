@@ -18,7 +18,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import java.io.InputStream;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 import org.apache.commons.io.IOUtils;
-import com.puppycrawl.tools.checkstyle.PropertyResolver;
+
 import java.io.ByteArrayOutputStream;
 import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 
@@ -28,8 +28,6 @@ public privileged aspect ConfigHandle
     // ---------------------------
     // Declare soft's
     // ---------------------------
-    declare soft: CheckstyleException: RetrowException_getUnresolvedPropertiesIterationHandle();
-
     declare soft: Exception: CheckConfigurationWorkingCopy_setLocationHandle() 
                             || RetrowException_endElementHandle()
                             || RetrowException_loadFromPersistenceHandle()
@@ -38,18 +36,11 @@ public privileged aspect ConfigHandle
 
     declare soft: CoreException: CheckConfigurationWorkingCopy_setModulesIterationHandle();
 
-    declare soft: CheckstylePluginException: CheckstyleLogMessage_refreshHandle()
-                            || CheckstyleLogMessage_removeCheckConfigurationHandle()
+    declare soft: CheckstylePluginException: CheckstyleLogMessage_removeCheckConfigurationHandle()
                             || CheckConfigurationWorkingCopy_internalGetModules();
 
     declare soft: IOException: ConfigurationReaderHandle_startElementHandleHandle()
                             || RetrowException_resolveEntityHandleHandle();
-
-    declare soft: SAXException: RetrowException_writeHandle();
-
-    declare soft: CloneNotSupportedException: cloneHandle();
-
-    declare soft: TransformerConfigurationException: RetrowException_writeHandle();
 
     // ---------------------------
     // Pointcut's
@@ -61,8 +52,6 @@ public privileged aspect ConfigHandle
         call (* IResource.refreshLocal(..)) &&
         withincode (* CheckConfigurationWorkingCopy.internalSetModules(..)) ;
 
-    pointcut CheckstyleLogMessage_refreshHandle(): 
-        execution (* CheckConfigurationFactory.refresh(..)) ;
 
     pointcut CheckstyleLogMessage_removeCheckConfigurationHandle():
         call(* ProjectConfigurationFactory.isCheckConfigInUse(..)) &&
@@ -73,12 +62,6 @@ public privileged aspect ConfigHandle
 
     pointcut ConfigurationReaderHandle_startElementHandleHandle(): 
         execution (* ConfigurationReader.ConfigurationHandler.startElementHandle(..)) ;
-
-    pointcut cloneHandle(): 
-        execution (* CheckConfigurationWorkingCopy.clone(..)) || 
-        execution (* Module.clone(..)) || 
-        execution (* ConfigProperty.clone(..)) ||
-        execution (* ResolvableProperty.clone(..)) ;
 
     pointcut RetrowException_endElementHandle(): 
         execution (* CheckConfigurationFactory.CheckConfigurationsFileHandler.endElement(..));
@@ -91,12 +74,6 @@ public privileged aspect ConfigHandle
 
     pointcut RetrowException_migrateHandle(): 
         execution (* CheckConfigurationFactory.internalMigrate(..)) ;
-
-    pointcut RetrowException_getUnresolvedPropertiesIterationHandle(): 
-        execution (* CheckConfigurationTester.getUnresolvedPropertiesIteration(..));
-
-    pointcut RetrowException_writeHandle(): 
-        execution (* ConfigurationWriter.write(..)) ;
 
     pointcut RetrowException_storeToPersistenceHandle(): 
         execution (* GlobalCheckConfigurationWorkingSet.internalStoreToPersistence(..)) ;
@@ -166,16 +143,7 @@ public privileged aspect ConfigHandle
         return result;
     }
 
-    void around(): CheckstyleLogMessage_refreshHandle() {
-        try
-        {
-            proceed();
-        }
-        catch (CheckstylePluginException e)
-        {
-            CheckstyleLog.log(e);
-        }
-    }
+
 
     int around(String tabWidthProp, int tabWidth): 
             ConfigurationReaderHandle_getAdditionalConfigDataHandler() &&
@@ -202,19 +170,6 @@ public privileged aspect ConfigHandle
         {
             module.setSeverity(SeverityLevel.WARNING);
         }
-    }
-
-    Object around() throws InternalError: cloneHandle()  {
-        Object result = null;
-        try
-        {
-            result = proceed();
-        }
-        catch (CloneNotSupportedException e)
-        {
-            throw new InternalError(); // this should never happen
-        }
-        return result;
     }
 
     void around() throws SAXException :RetrowException_endElementHandle(){
@@ -279,28 +234,6 @@ public privileged aspect ConfigHandle
         }
     }
 
-    void around(CheckstyleConfigurationFile configFile, PropertyResolver resolver,
-            ClassLoader contextClassloader, InputStream in) throws CheckstylePluginException:
-            RetrowException_getUnresolvedPropertiesIterationHandle() &&
-            args(configFile, resolver, contextClassloader, in)
-    {
-        try
-        {
-            proceed(configFile, resolver, contextClassloader, in);
-        }
-        catch (CheckstyleException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-            // restore the original classloader
-            Thread.currentThread().setContextClassLoader(contextClassloader);
-        }
-
-    }
-
     void around(BufferedOutputStream out, ByteArrayOutputStream byteOut)
         throws CheckstylePluginException: RetrowException_storeToPersistenceHandle() &&
         args( out,  byteOut){
@@ -319,20 +252,6 @@ public privileged aspect ConfigHandle
         }
     }
 
-    void around() throws CheckstylePluginException: RetrowException_writeHandle() {
-        try
-        {
-            proceed();
-        }
-        catch (TransformerConfigurationException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        catch (SAXException e)
-        {
-            Exception ex = e.getException() != null ? e.getException() : e;
-            CheckstylePluginException.rethrow(ex);
-        }
-    }
+
 
 }
