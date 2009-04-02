@@ -9,6 +9,8 @@ import org.osgi.service.prefs.BackingStoreException;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jdt.core.JavaModelException;
+import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
@@ -33,18 +35,24 @@ import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ExternalFileConfi
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalConfigurationEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.migration.CheckConfigurationMigrator;
-
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationTester;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Authenticator;
+
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationReader;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
+
 import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.builder.ProjectClassLoader;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.PackageFilterEditor;
@@ -56,9 +64,16 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.AbstractFilter
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWorkingCopy;
+import java.net.UnknownHostException;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.SelectionListener;
 import org.osgi.service.prefs.Preferences;
 import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
+import java.io.FileNotFoundException;
+import com.atlassw.tools.eclipse.checkstyle.config.Module;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
+import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationWriter;
 
 @ExceptionHandler
 public aspect GeneralExceptionHandler
@@ -66,7 +81,6 @@ public aspect GeneralExceptionHandler
     // ---------------------------
     // Declare soft's
     // ---------------------------
-
     declare soft: Exception : ConfigurationType_internalStaticHandler() || 
                               saveFilters_internalHandler()||  
                               PluginFilters_internalHandler() ||
@@ -85,12 +99,14 @@ public aspect GeneralExceptionHandler
                                  auditor_addErrorHandle() ||
                                  RemoteConfigurationType_storeCredentialsHandler() ||
                                  auditor_runAuditHandle() ||
-                                 FileSetEditDialog_runHandler();
+                                 FileSetEditDialog_runHandler() ||
+                                 RemoteConfigurationType_removeCachedAuthInfoHandler();
 
     declare soft: CheckstylePluginException: internalSelectionChanged_2Handler() || 
                                              RemoteConfigurationType_secInternalGetBytesFromURLConnectionHandler() || 
                                              metadataFactory_refreshHandler() ||
-                                             CheckFileOnOpenPartListener_isFileAffectedHandler();
+                                             CheckFileOnOpenPartListener_isFileAffectedHandler() ||
+                                             CheckstyleLogMessage_refreshHandle();
 
     declare soft: BackingStoreException: internalCreateButtonBarHandler() || 
                                          internalWidgetSelectedHandler() || 
@@ -105,11 +121,13 @@ public aspect GeneralExceptionHandler
                                PackageNamesLoader_getPackageNames() ||
                                auditor_runAuditHandle() ||
                                CustomLibrariesClassLoader_get() ||
-                               RetrowException_setModulesHandle();
+                               RetrowException_setModulesHandle() ||
+                               RemoteConfigurationType_internalGetCheckstyleConfigurationHandler();;
 
     declare soft: SAXException : checkConfigurationMigrator_migrateHandler() ||
                                  RetrowException_runHandle() ||
-                                 ProjectConfigurationFactory_internalLoadFromPersistenceHandler();
+                                 ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
+                                 RetrowException_writeHandle();
 
     declare soft: ParserConfigurationException : checkConfigurationMigrator_migrateHandler() ||
                                                  RetrowException_runHandle() ||
@@ -124,10 +142,20 @@ public aspect GeneralExceptionHandler
                                                 FileMatchPattern_cloneFileSetHandler() || 
                                                 FileMatchPattern_cloneProjectHandler() || 
                                                 FileMatchPattern_cloneWorkingCopyHandler() ||
-                                                AbstractFilter_cloneHandler();
+                                                AbstractFilter_cloneHandler() ||
+                                                cloneHandle();
 
-    declare soft: CheckstyleException: auditor_runAuditHandle();
+    declare soft: CheckstyleException: auditor_runAuditHandle() ||
+                                       RetrowException_getUnresolvedPropertiesIterationHandle();
 
+    declare soft: UnknownHostException: RemoteConfigurationType_internalGetCheckstyleConfigurationHandler();
+
+    declare soft: FileNotFoundException: RemoteConfigurationType_internalGetCheckstyleConfigurationHandler();
+
+    declare soft: IllegalAccessException: RemoteConfigurationType_internalGetDefaultHandler();
+
+    declare soft: TransformerConfigurationException: RetrowException_writeHandle();
+    
     // ---------------------------
     // Pointcut's
     // ---------------------------
@@ -245,6 +273,12 @@ public aspect GeneralExceptionHandler
     pointcut AbstractFilter_cloneHandler(): 
         execution(* AbstractFilter.clone(..));
 
+    pointcut cloneHandle(): 
+        execution (* CheckConfigurationWorkingCopy.clone(..)) || 
+        execution (* Module.clone(..)) || 
+        execution (* ConfigProperty.clone(..)) ||
+        execution (* ResolvableProperty.clone(..)) ;
+
     pointcut auditor_runAuditHandle(): 
         execution (* Auditor.internalRunAudit(..)) ;
 
@@ -262,9 +296,58 @@ public aspect GeneralExceptionHandler
 
     pointcut FileSetEditDialog_runHandler(): 
         execution(* FileSetEditDialog.internalRun(..));
+
+    pointcut RemoteConfigurationType_internalGetCheckstyleConfigurationHandler():
+        execution (* RemoteConfigurationType.internalGetCheckstyleConfiguration(..));
+
+    pointcut RemoteConfigurationType_internalGetDefaultHandler() : 
+        execution(* RemoteConfigurationType.RemoteConfigAuthenticator.getDefault(..));
+
+    pointcut RuleConfigurationEditDialog_okPressedHandler():
+        call(* intrenalOkPressesGetSelection(..)) &&
+        withincode(* RuleConfigurationEditDialog.okPressed(..));
+
+    pointcut RetrowException_getUnresolvedPropertiesIterationHandle(): 
+        execution (* CheckConfigurationTester.getUnresolvedPropertiesIteration(..));
+
+    pointcut CheckstyleLogMessage_refreshHandle(): 
+        execution (* CheckConfigurationFactory.refresh(..)) ;
+
+    pointcut RemoteConfigurationType_removeCachedAuthInfoHandler():
+        execution(* RemoteConfigurationType.RemoteConfigAuthenticator.removeCachedAuthInfo(..));
+
+    pointcut RetrowException_writeHandle(): 
+        execution (* ConfigurationWriter.write(..)) ;
     // ---------------------------
     // Advice's
     // ---------------------------
+    CheckstyleConfigurationFile around(CheckstyleConfigurationFile data, String currentRedirects,
+            Authenticator oldAuthenticator, ICheckConfiguration checkConfiguration,
+            boolean useCacheFile) throws CheckstylePluginException: 
+            RemoteConfigurationType_internalGetCheckstyleConfigurationHandler() &&
+                args(data, currentRedirects, oldAuthenticator, checkConfiguration, useCacheFile){
+        CheckstyleConfigurationFile result = null;
+        try
+        {
+            result = proceed(data, currentRedirects, oldAuthenticator, checkConfiguration,
+                    useCacheFile);
+        }
+        finally
+        {
+            Authenticator.setDefault(oldAuthenticator);
+
+            if (currentRedirects != null)
+            {
+                System.setProperty("http.maxRedirects", currentRedirects); //$NON-NLS-1$
+            }
+            else
+            {
+                System.getProperties().remove("http.maxRedirects"); //$NON-NLS-1$
+            }
+        }
+        return result;
+    }
+
     void around(Object modules, OutputStream out, ByteArrayOutputStream byteOut)
         throws CheckstylePluginException: RetrowException_setModulesHandle() &&
     args(modules, out, byteOut){
@@ -299,17 +382,6 @@ public aspect GeneralExceptionHandler
             }
             // restore the original classloader
             Thread.currentThread().setContextClassLoader(contextClassloader);
-        }
-    }
-
-    void around() throws CheckstylePluginException: auditor_runAuditHandle(){
-        try
-        {
-            proceed();
-        }
-        catch (CheckstyleException e)
-        {
-            CheckstylePluginException.rethrow(e);
         }
     }
 
@@ -383,7 +455,8 @@ public aspect GeneralExceptionHandler
     Object around() throws CheckstylePluginException: checkstyleBuilder_buildProjectsHandleHandle()||
                                                       ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
                                                       ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
-                                                      auditor_runAuditHandle(){
+                                                      auditor_runAuditHandle() ||
+                                                      RemoteConfigurationType_removeCachedAuthInfoHandler(){
         Object result = null;
         try
         {
@@ -406,7 +479,8 @@ public aspect GeneralExceptionHandler
             auditor_runAuditHandle() ||
             PackageNamesLoader_getPackageNames() || 
             CustomLibrariesClassLoader_get() ||
-            RetrowException_setModulesHandle()
+            RetrowException_setModulesHandle() ||
+            RemoteConfigurationType_internalGetCheckstyleConfigurationHandler()
     {
         Object result = null;
         try
@@ -420,10 +494,31 @@ public aspect GeneralExceptionHandler
         return result;
     }
 
+    CheckstyleConfigurationFile around() throws CheckstylePluginException: 
+        RemoteConfigurationType_internalGetCheckstyleConfigurationHandler(){
+        CheckstyleConfigurationFile result = null;
+        try
+        {
+            result = proceed();
+        }
+        catch (UnknownHostException e)
+        {
+            CheckstylePluginException.rethrow(e, NLS.bind(
+                    ErrorMessages.RemoteConfigurationType_errorUnknownHost, e.getMessage()));
+        }
+        catch (FileNotFoundException e)
+        {
+            CheckstylePluginException.rethrow(e, NLS.bind(
+                    ErrorMessages.RemoteConfigurationType_errorFileNotFound, e.getMessage()));
+        }
+        return result;
+    }
+
     Object around(): RemoteConfigurationType_secInternalGetBytesFromURLConnectionHandler() || 
                    internalSelectionChanged_2Handler() || 
                    metadataFactory_refreshHandler() ||
-                   CheckFileOnOpenPartListener_isFileAffectedHandler()
+                   CheckFileOnOpenPartListener_isFileAffectedHandler() ||
+                   CheckstyleLogMessage_refreshHandle()
     {
         Object result = null;
         try
@@ -505,7 +600,8 @@ public aspect GeneralExceptionHandler
                       FileMatchPattern_cloneFileSetHandler() || 
                       FileMatchPattern_cloneProjectHandler() || 
                       FileMatchPattern_cloneWorkingCopyHandler() ||
-                      AbstractFilter_cloneHandler(){
+                      AbstractFilter_cloneHandler() ||
+                      cloneHandle(){
         try
         {
             return proceed();
@@ -516,9 +612,39 @@ public aspect GeneralExceptionHandler
         }
     }
 
-    Object around() throws CheckstylePluginException: RetrowException_runHandle() ||
-    ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
-    checkConfigurationMigrator_migrateHandler(){
+    void around() throws CheckstylePluginException: RetrowException_writeHandle() {
+        try
+        {
+            proceed();
+        }
+        catch (TransformerConfigurationException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+    }
+
+    Object around() throws CheckstylePluginException: 
+        RetrowException_runHandle() ||
+        ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
+        checkConfigurationMigrator_migrateHandler()
+    {
+        Object result = null;
+        try
+        {
+            result = proceed();
+        }
+        catch (ParserConfigurationException pe)
+        {
+            CheckstylePluginException.rethrow(pe);
+        }
+        return result;
+    }
+
+    Object around() throws CheckstylePluginException: 
+        RetrowException_runHandle() ||
+        ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
+        checkConfigurationMigrator_migrateHandler() ||
+        RetrowException_writeHandle(){
         Object result = null;
         try
         {
@@ -529,10 +655,66 @@ public aspect GeneralExceptionHandler
             Exception ex = se.getException() != null ? se.getException() : se;
             CheckstylePluginException.rethrow(ex);
         }
-        catch (ParserConfigurationException pe)
-        {
-            CheckstylePluginException.rethrow(pe);
-        }
         return result;
     }
+
+    Object around(Object obj): 
+        (RuleConfigurationEditDialog_okPressedHandler() ||
+        RemoteConfigurationType_internalGetDefaultHandler()) &&
+        args(obj){
+        try
+        {
+            obj = proceed(obj);
+        }
+        catch (IllegalArgumentException e)
+        {
+            CheckstyleLog.log(e);
+        }
+        return obj;
+    }
+
+    Authenticator around(): RemoteConfigurationType_internalGetDefaultHandler(){
+        Authenticator currentDefault = null;
+        try
+        {
+            currentDefault = proceed();
+        }
+        catch (IllegalArgumentException e)
+        {
+            CheckstyleLog.log(e);
+        }
+        return currentDefault;
+    }
+
+    void around(CheckstyleConfigurationFile configFile, PropertyResolver resolver,
+            ClassLoader contextClassloader, InputStream in) throws CheckstylePluginException:
+            RetrowException_getUnresolvedPropertiesIterationHandle() &&
+            args(configFile, resolver, contextClassloader, in){
+        try
+        {
+            proceed(configFile, resolver, contextClassloader, in);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
+            // restore the original classloader
+            Thread.currentThread().setContextClassLoader(contextClassloader);
+        }
+
+    }
+
+    void around() throws CheckstylePluginException:
+            RetrowException_getUnresolvedPropertiesIterationHandle() ||
+            auditor_runAuditHandle()
+    {
+        try
+        {
+            proceed();
+        }
+        catch (CheckstyleException e)
+        {
+            CheckstylePluginException.rethrow(e);
+        }
+    }
+
 }
