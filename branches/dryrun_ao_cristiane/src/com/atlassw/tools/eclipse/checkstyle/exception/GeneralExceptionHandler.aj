@@ -33,10 +33,16 @@ import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ExternalFileConfi
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalConfigurationEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.migration.CheckConfigurationMigrator;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationReader;
+import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
 import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
@@ -52,6 +58,7 @@ import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWorkingCopy;
 import org.eclipse.swt.events.SelectionListener;
 import org.osgi.service.prefs.Preferences;
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 
 @ExceptionHandler
 public aspect GeneralExceptionHandler
@@ -65,7 +72,8 @@ public aspect GeneralExceptionHandler
                               PluginFilters_internalHandler() ||
                               ConfigurationType_getResolvedConfigurationFileURLHandler() ||
                               ConfigurationType_getCheckstyleConfigurationHandler() ||
-                              FileMatchPattern_internalSetMatchPatternHandler();
+                              FileMatchPattern_internalSetMatchPatternHandler() ||
+                              RetrowException_exportConfigurationHandle();
 
     declare soft: CoreException: ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
                                  checkstyleBuilder_buildProjectsHandleHandle() ||
@@ -76,7 +84,8 @@ public aspect GeneralExceptionHandler
                                  internalRunHandler() ||
                                  auditor_addErrorHandle() ||
                                  RemoteConfigurationType_storeCredentialsHandler() ||
-                                 auditor_runAuditHandle();
+                                 auditor_runAuditHandle() ||
+                                 FileSetEditDialog_runHandler();
 
     declare soft: CheckstylePluginException: internalSelectionChanged_2Handler() || 
                                              RemoteConfigurationType_secInternalGetBytesFromURLConnectionHandler() || 
@@ -95,7 +104,8 @@ public aspect GeneralExceptionHandler
                                ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
                                PackageNamesLoader_getPackageNames() ||
                                auditor_runAuditHandle() ||
-                               CustomLibrariesClassLoader_get();
+                               CustomLibrariesClassLoader_get() ||
+                               RetrowException_setModulesHandle();
 
     declare soft: SAXException : checkConfigurationMigrator_migrateHandler() ||
                                  RetrowException_runHandle() ||
@@ -115,7 +125,7 @@ public aspect GeneralExceptionHandler
                                                 FileMatchPattern_cloneProjectHandler() || 
                                                 FileMatchPattern_cloneWorkingCopyHandler() ||
                                                 AbstractFilter_cloneHandler();
-    
+
     declare soft: CheckstyleException: auditor_runAuditHandle();
 
     // ---------------------------
@@ -234,19 +244,41 @@ public aspect GeneralExceptionHandler
 
     pointcut AbstractFilter_cloneHandler(): 
         execution(* AbstractFilter.clone(..));
-    
+
     pointcut auditor_runAuditHandle(): 
         execution (* Auditor.internalRunAudit(..)) ;
-    
+
     pointcut PackageNamesLoader_getPackageNames():
         execution(* PackageNamesLoader.getPackageNames(..));
-    
+
     pointcut CustomLibrariesClassLoader_get():
         execution(* CustomLibrariesClassLoader.get(..));
-    
+
+    pointcut RetrowException_setModulesHandle(): 
+        execution (* CheckConfigurationWorkingCopy.internalSetModules(..)) ;
+
+    pointcut RetrowException_exportConfigurationHandle(): 
+        execution (* CheckConfigurationFactory.internalExportConfiguration(..)) ;
+
+    pointcut FileSetEditDialog_runHandler(): 
+        execution(* FileSetEditDialog.internalRun(..));
     // ---------------------------
     // Advice's
     // ---------------------------
+    void around(Object modules, OutputStream out, ByteArrayOutputStream byteOut)
+        throws CheckstylePluginException: RetrowException_setModulesHandle() &&
+    args(modules, out, byteOut){
+        try
+        {
+            proceed(modules, out, byteOut);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(byteOut);
+            IOUtils.closeQuietly(out);
+        }
+    }
+
     void around(IProject project, IProgressMonitor monitor, Checker checker,
             AuditListener listener, Filter runtimeExceptionFilter, ClassLoader contextClassloader)
         throws CheckstylePluginException: auditor_runAuditHandle() &&
@@ -269,20 +301,18 @@ public aspect GeneralExceptionHandler
             Thread.currentThread().setContextClassLoader(contextClassloader);
         }
     }
+
     void around() throws CheckstylePluginException: auditor_runAuditHandle(){
         try
         {
             proceed();
-        }
-        catch (CoreException e)
-        {
-            CheckstylePluginException.rethrow(e);
         }
         catch (CheckstyleException e)
         {
             CheckstylePluginException.rethrow(e);
         }
     }
+
     void around(Object file, OutputStream out) throws CheckstylePluginException: 
         (   ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
             ExternalFileConfiguration_internalEnsureFileExistsHandler() ||
@@ -320,7 +350,8 @@ public aspect GeneralExceptionHandler
                      NonSrcDirsFilter_getSourceDirPathsHandler() ||
                      internalRunHandler() ||
                      auditor_addErrorHandle() ||
-                     RemoteConfigurationType_storeCredentialsHandler(){
+                     RemoteConfigurationType_storeCredentialsHandler() ||
+                     FileSetEditDialog_runHandler(){
         Object result = null;
         try
         {
@@ -351,7 +382,8 @@ public aspect GeneralExceptionHandler
 
     Object around() throws CheckstylePluginException: checkstyleBuilder_buildProjectsHandleHandle()||
                                                       ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
-                                                      ProjectConfigurationFactory_internalLoadFromPersistenceHandler(){
+                                                      ProjectConfigurationFactory_internalLoadFromPersistenceHandler() ||
+                                                      auditor_runAuditHandle(){
         Object result = null;
         try
         {
@@ -373,7 +405,9 @@ public aspect GeneralExceptionHandler
             checkConfigurationMigrator_ensureFileExistsHandler() ||
             auditor_runAuditHandle() ||
             PackageNamesLoader_getPackageNames() || 
-            CustomLibrariesClassLoader_get(){
+            CustomLibrariesClassLoader_get() ||
+            RetrowException_setModulesHandle()
+    {
         Object result = null;
         try
         {
@@ -389,7 +423,8 @@ public aspect GeneralExceptionHandler
     Object around(): RemoteConfigurationType_secInternalGetBytesFromURLConnectionHandler() || 
                    internalSelectionChanged_2Handler() || 
                    metadataFactory_refreshHandler() ||
-                   CheckFileOnOpenPartListener_isFileAffectedHandler(){
+                   CheckFileOnOpenPartListener_isFileAffectedHandler()
+    {
         Object result = null;
         try
         {
@@ -404,7 +439,8 @@ public aspect GeneralExceptionHandler
 
     void around(): internalCreateButtonBarHandler() || 
                    internalWidgetSelectedHandler() || 
-                   PrefsInitializer_internalinitializeDefaultPreferencesHandler() {
+                   PrefsInitializer_internalinitializeDefaultPreferencesHandler() 
+    {
         try
         {
             proceed();
@@ -420,7 +456,8 @@ public aspect GeneralExceptionHandler
     // se existissem, teria que acontecer uma precedencia entre os aspectos.
     void around(): ConfigurationType_internalStaticHandler() || 
                    saveFilters_internalHandler() ||
-                   PluginFilters_internalHandler(){
+                   PluginFilters_internalHandler()
+    {
         try
         {
             proceed();
@@ -431,14 +468,30 @@ public aspect GeneralExceptionHandler
         }
     }
 
-    Object around() throws CheckstylePluginException: ConfigurationType_getResolvedConfigurationFileURLHandler()||
-                                                      ConfigurationType_getCheckstyleConfigurationHandler(){
+    void around(ICheckConfiguration config, File file, InputStream in, OutputStream out)
+        throws CheckstylePluginException: RetrowException_exportConfigurationHandle()
+        && args(config, file, in, out)
+    {
+        try
+        {
+            proceed(config, file, in, out);
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
+        }
+    }
 
+    Object around() throws CheckstylePluginException: 
+            ConfigurationType_getResolvedConfigurationFileURLHandler()||
+            ConfigurationType_getCheckstyleConfigurationHandler() ||
+            RetrowException_exportConfigurationHandle() 
+    {
         Object result = null;
         try
         {
             result = proceed();
-
         }
         catch (Exception e)
         {
