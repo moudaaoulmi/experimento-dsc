@@ -28,7 +28,6 @@ public privileged aspect GuiHandler
     // ---------------------------
     // Declare soft's
     // ---------------------------
-
     declare soft: CheckstylePluginException: CheckConfigurationConfigureDialog_initializeHandler() ||
                                              CheckConfigurationConfigureDialog_ModuleHandler();
 
@@ -40,16 +39,14 @@ public privileged aspect GuiHandler
                     CheckConfigurationWorkingSetEditor_internalCheckConfigHandler() ||
                     CheckConfigurationWorkingSetEditor_internalConfigureCheckConfigHandler() ||
                     CheckConfigurationFactory_exportCheckstyleCheckConfigHandler() ||
-                    ResolvablePropertiesDialog_findPropertyItemsHandler() ||
-                    RuleConfigurationEditDialog_okPressedHandler() /*||
-                    RuleConfigurationEditDialog_internalOkPressedHandler()*/;
+                    ResolvablePropertiesDialog_findPropertyItemsHandler();
+                  
 
     declare soft: Exception: CheckConfigurationPropertiesDialog_createConfigurationEditorHandler();
 
     // ---------------------------
     // Pointcut's
     // ---------------------------
-
     pointcut CheckConfigurationConfigureDialog_initializeHandler(): 
         call(* CheckConfigurationWorkingCopy.getModules(..)) &&
         withincode(* CheckConfigurationConfigureDialog.initialize(..));
@@ -98,14 +95,6 @@ public privileged aspect GuiHandler
 
     pointcut ResolvablePropertiesDialog_findPropertyItemsHandler():
         execution(* ResolvablePropertiesDialog.Controller.findPropertyItems(..));
-
-    pointcut RuleConfigurationEditDialog_okPressedHandler():
-        call(* intrenalOkPressesGetSelection(..)) &&
-        withincode(* RuleConfigurationEditDialog.okPressed(..));
-
-    /*TODO: romulo
-     * pointcut RuleConfigurationEditDialog_internalOkPressedHandler():
-        execution(* RuleConfigurationEditDialog.internalOkPressed(..) );*/
 
     // ---------------------------
     // Advice's
@@ -167,20 +156,6 @@ public privileged aspect GuiHandler
         }
     }
 
-    SeverityLevel around(SeverityLevel severity): 
-            RuleConfigurationEditDialog_okPressedHandler() &&
-            args(severity){
-        try
-        {
-            severity = proceed(severity);
-        }
-        catch (IllegalArgumentException e)
-        {
-            CheckstyleLog.log(e);
-        }
-        return severity;
-    }
-
     void around(): CheckConfigurationPropertiesDialog_createDialogAreaHandler(){
         try
         {
@@ -219,21 +194,6 @@ public privileged aspect GuiHandler
         }
     }
 
-    /*void around(CheckConfigurationWorkingCopy config, String checkConfigName, String uniqueName,
-            int counter):
-                CheckConfigurationPropertiesDialog_setUniqueNameHandler() && 
-                args(config, checkConfigName, uniqueName, counter){
-        try
-        {
-            proceed(config, checkConfigName, uniqueName, counter);
-        }
-        catch (CheckstylePluginException e)
-        {
-            uniqueName = checkConfigName + " (" + counter + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-            counter++;
-        }
-    }*/
-
     void around(CheckConfigurationWorkingCopy config): 
         CheckConfigurationWorkingSetEditor_internalConfigureCheckConfigHandler() && 
         args(config) {
@@ -250,23 +210,4 @@ public privileged aspect GuiHandler
                             .getName()), e);
         }
     }
-
-    /*void around(IConfigPropertyWidget widget, ConfigProperty property, SeverityLevel severity, 
-            String comment, String customMessage, String id):
-        RuleConfigurationEditDialog_internalOkPressedHandler()
-        && args (widget, property, severity, comment, customMessage, id){
-        try
-        {
-            proceed(widget, property, severity, comment, customMessage, id);
-        }
-        catch (CheckstylePluginException e)
-        {
-            RuleConfigurationEditDialog rC = (RuleConfigurationEditDialog) thisJoinPoint.getThis();
-            String message = NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue,
-                    property.getMetaData().getName());
-            rC.setErrorMessage(message);
-            // return;
-        }
-    }*/
-
 }

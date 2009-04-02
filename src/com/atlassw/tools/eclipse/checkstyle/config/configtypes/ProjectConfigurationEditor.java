@@ -302,7 +302,6 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
         throws CheckstylePluginException
     {
         return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(location));
-        
     }
 
     private void internalEnsureFileExists(IFile file, OutputStream out)

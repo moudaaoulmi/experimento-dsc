@@ -4,7 +4,7 @@ package com.atlassw.tools.eclipse.checkstyle.config.configtypes;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
+
 import org.apache.commons.io.FileUtils;
 import java.net.URLConnection;
 import org.eclipse.core.resources.IFile;
@@ -19,7 +19,6 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfigurationWorkingSet
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.LocalCheckConfigurationWorkingSet;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
-import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
@@ -34,7 +33,7 @@ import java.lang.IllegalArgumentException;
 
 import java.net.MalformedURLException;
 import java.net.Authenticator;
-import java.net.UnknownHostException;
+
 
 import java.util.MissingResourceException;
 import org.eclipse.swt.events.SelectionListener;
@@ -46,12 +45,10 @@ public privileged aspect ConfigtypesHandler
     // ---------------------------
     // Declare soft's
     // ---------------------------
-
     declare soft: IOException : ConfigurationType_internalGetAdditionPropertiesBundleBytesHandler() ||
                                 RemoteConfigurationType_internalGetBytesFromCacheBundleFileHandler() ||
                                 RemoteConfigurationType_oneWriteToCacheFileHandler() ||
-                                RemoteConfigurationType_twoWriteToCacheFile() ||
-                                RemoteConfigurationType_internalGetCheckstyleConfigurationHandler();
+                                RemoteConfigurationType_twoWriteToCacheFile();
 
     declare soft: Exception : RemoteConfigurationType_internalGetBytesFromURLConnectionHandler();
 
@@ -67,20 +64,11 @@ public privileged aspect ConfigtypesHandler
                                              ProjectConfigurationType_internalIsConfigurableHandler() ||
                                              RemoteConfigurationEditor_internalCreateEditorControlHandler();
 
-    declare soft: CoreException: RemoteConfigurationType_removeCachedAuthInfoHandler();
-
     declare soft: MalformedURLException: RemoteConfigurationEditor_getEditedWorkingCopyHandler();
-
-    declare soft: UnknownHostException: RemoteConfigurationType_internalGetCheckstyleConfigurationHandler();
-
-    declare soft: FileNotFoundException: RemoteConfigurationType_internalGetCheckstyleConfigurationHandler();
-
-    declare soft: IllegalAccessException: RemoteConfigurationType_internalGetDefaultHandler();
 
     // ---------------------------
     // Pointcut's
     // ---------------------------
-
     pointcut ConfigurationType_internalGetAdditionPropertiesBundleBytesHandler():
             execution (* ConfigurationType.getAdditionPropertiesBundleBytes(..)) &&
             within (ConfigurationType);
@@ -126,9 +114,6 @@ public privileged aspect ConfigtypesHandler
     pointcut RemoteConfigurationEditor_getEditedWorkingCopyHandler():
         execution(* RemoteConfigurationEditor.getEditedWorkingCopy(..));
 
-    pointcut RemoteConfigurationType_internalGetCheckstyleConfigurationHandler():
-        execution (* RemoteConfigurationType.internalGetCheckstyleConfiguration(..));
-
     pointcut RemoteConfigurationType_internalGetBytesFromCacheBundleFileHandler():
         execution(* RemoteConfigurationType.getBytesFromCacheBundleFile(..));
 
@@ -139,13 +124,7 @@ public privileged aspect ConfigtypesHandler
         call(* FileUtils.writeByteArrayToFile(..)) &&
         withincode(* RemoteConfigurationType.writeToCacheFile(..));
 
-    pointcut RemoteConfigurationType_removeCachedAuthInfoHandler():
-        execution(* RemoteConfigurationType.RemoteConfigAuthenticator.removeCachedAuthInfo(..));
-
-    pointcut RemoteConfigurationType_internalGetDefaultHandler() : 
-        execution(* RemoteConfigurationType.RemoteConfigAuthenticator.getDefault(..));
-
-    pointcut RemoteConfigurationType_internalGetBytesFromURLConnectionHandler():
+     pointcut RemoteConfigurationType_internalGetBytesFromURLConnectionHandler():
         execution(* RemoteConfigurationType.internalGetBytesFromURLConnection(..));
 
     pointcut ResourceBundlePropertyResolver_resolveHandle(): 
@@ -154,53 +133,13 @@ public privileged aspect ConfigtypesHandler
     // ---------------------------
     // Advice's
     // ---------------------------
-
-    CheckstyleConfigurationFile around(CheckstyleConfigurationFile data, String currentRedirects,
-            Authenticator oldAuthenticator, ICheckConfiguration checkConfiguration, boolean useCacheFile )
-        throws CheckstylePluginException: 
-            RemoteConfigurationType_internalGetCheckstyleConfigurationHandler() &&
-                args(data, currentRedirects, oldAuthenticator, checkConfiguration, useCacheFile){
-        CheckstyleConfigurationFile result = null;
+    String around(String location) throws CheckstylePluginException: 
+            ExternalFileConfiguration_resolveDynamicLocationHandler() &&
+            args(location){
+        String result = location;
         try
         {
-            result = proceed(data, currentRedirects, oldAuthenticator, checkConfiguration, useCacheFile);
-        }
-        catch (UnknownHostException e)
-        {
-            CheckstylePluginException.rethrow(e, NLS.bind(
-                    ErrorMessages.RemoteConfigurationType_errorUnknownHost, e.getMessage()));
-        }
-        catch (FileNotFoundException e)
-        {
-            CheckstylePluginException.rethrow(e, NLS.bind(
-                    ErrorMessages.RemoteConfigurationType_errorFileNotFound, e.getMessage()));
-        }
-        catch (IOException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-        finally
-        {
-            Authenticator.setDefault(oldAuthenticator);
-
-            if (currentRedirects != null)
-            {
-                System.setProperty("http.maxRedirects", currentRedirects); //$NON-NLS-1$
-            }
-            else
-            {
-                System.getProperties().remove("http.maxRedirects"); //$NON-NLS-1$
-            }
-        }
-        return result;
-    }
-
-    String around() throws CheckstylePluginException: 
-            ExternalFileConfiguration_resolveDynamicLocationHandler(){
-        String result = null;
-        try
-        {
-            result = proceed();
+            result = proceed(location);
         }
         catch (CheckstyleException e)
         {
@@ -283,8 +222,9 @@ public privileged aspect ConfigtypesHandler
     }
 
     byte[] around(URLConnection connection, InputStream in, byte[] configurationFileData):
-            ConfigurationType_internalGetBytesFromURLConnectionHandler() &&
-            args(connection,in,configurationFileData)
+            (ConfigurationType_internalGetBytesFromURLConnectionHandler() ||
+            RemoteConfigurationType_internalGetBytesFromURLConnectionHandler()) &&
+            args(connection, in, configurationFileData)
             {
         byte[] result = null;
         try
@@ -297,19 +237,6 @@ public privileged aspect ConfigtypesHandler
         }
         return result;
     }
-
-    void around() throws CheckstylePluginException : RemoteConfigurationType_removeCachedAuthInfoHandler(){
-        try
-        {
-            proceed();
-
-        }
-        catch (CoreException e)
-        {
-            CheckstylePluginException.rethrow(e);
-        }
-    }
-
 
     Object around(Object checkConfiguration, boolean isConfigurable): 
         (ProjectConfigurationType_internalIsConfigurableHandler() ||
@@ -442,38 +369,6 @@ public privileged aspect ConfigtypesHandler
                     ErrorMessages.RemoteConfigurationType_msgRemoteCachingFailed, checkConfig
                             .getName(), checkConfig.getLocation()));
         }
-    }
-
-    byte[] around(URLConnection connection, byte[] configurationFileData, InputStream in)
-        throws IOException: RemoteConfigurationType_internalGetBytesFromURLConnectionHandler() &&
-        args(connection, configurationFileData, in){
-        byte[] result = null;
-        try
-        {
-            result = proceed(connection, configurationFileData, in);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-        }
-        return result;
-    }
-
-    Authenticator around(): RemoteConfigurationType_internalGetDefaultHandler(){
-        Authenticator currentDefault = null;
-        try
-        {
-            currentDefault = proceed();
-        }
-        catch (IllegalArgumentException e)
-        {
-            CheckstyleLog.log(e);
-        }
-        catch (IllegalAccessException e)
-        {
-            CheckstyleLog.log(e);
-        }
-        return currentDefault;
     }
 
     String around():ResourceBundlePropertyResolver_resolveHandle(){
