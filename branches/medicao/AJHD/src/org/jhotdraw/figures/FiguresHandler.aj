@@ -1,6 +1,9 @@
 package org.jhotdraw.figures;
 
+import org.jhotdraw.ExceptionHandler;
 
+
+@ExceptionHandler
 public privileged aspect FiguresHandler {
 	
 	declare soft : CloneNotSupportedException : FigureAttributes_cloneHandler();

@@ -1,8 +1,13 @@
 package org.jhotdraw.contrib.zoom;
 
+
+
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 
+import org.jhotdraw.ExceptionHandler;
+
+@ExceptionHandler
 public aspect ZoomHandler {
 	
 	// Declare Soft
