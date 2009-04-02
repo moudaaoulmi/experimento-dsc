@@ -5,7 +5,7 @@ package org.jhotdraw.contrib.zoom;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 
-import org.jhotdraw.ExceptionHandler;
+import org.jhotdraw.Exception.ExceptionHandler;
 
 @ExceptionHandler
 public aspect ZoomHandler {

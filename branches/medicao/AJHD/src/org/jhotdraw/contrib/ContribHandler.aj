@@ -1,12 +1,12 @@
 package org.jhotdraw.contrib;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
+import java.awt.IllegalComponentStateException;
 import java.awt.geom.NoninvertibleTransformException;
 import java.beans.PropertyVetoException;
-import  javax.swing.*;
 
-import org.jhotdraw.ExceptionHandler;
+import javax.swing.JInternalFrame;
+
+import org.jhotdraw.Exception.ExceptionHandler;
 
 
 @ExceptionHandler
