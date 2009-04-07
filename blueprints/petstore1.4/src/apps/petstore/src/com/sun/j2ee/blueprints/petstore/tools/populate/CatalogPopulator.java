@@ -73,21 +73,27 @@ public class CatalogPopulator {
   }
 
   public void dropTables(Connection connection) {
+  /** To Exception Handler refactoring */
+	 ToolPopulateHandler toolPopulateHandlere = new ToolPopulateHandler();  
+	  
     try {
       itemPopulator.dropTables(connection);
     } catch (PopulateException exception) {
-      // System.err.println(exception.getRootCause().getMessage());
+       toolPopulateHandlere.ignoreHandler();	
     }
+    
     try {
       productPopulator.dropTables(connection);
     } catch (PopulateException exception) {
-      // System.err.println(exception.getRootCause().getMessage());
+       toolPopulateHandlere.ignoreHandler();	
     }
+    
     try {
       categoryPopulator.dropTables(connection);
     } catch (PopulateException exception) {
-      // System.err.println(exception.getRootCause().getMessage());
+       toolPopulateHandlere.ignoreHandler();		
     }
+    
     return;
   }
 

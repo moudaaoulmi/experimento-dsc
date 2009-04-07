@@ -90,8 +90,11 @@ public class CategoryPopulator {
     try {
       categoryDetailsPopulator.dropTables(connection);
     } catch (PopulateException exception) {
-      // System.err.println(exception.getRootCause().getMessage());
-    }
+    /** To Exception Handler refactoring */
+   	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
+   	 toolPopulateHandler.ignoreHandler();
+   	}
+    
     PopulateUtils.executeSQLStatement(connection, sqlStatements, PopulateUtils.makeSQLStatementKey(PopulateUtils.DROP_OPERATION, "category"), null, null);
     return;
   }

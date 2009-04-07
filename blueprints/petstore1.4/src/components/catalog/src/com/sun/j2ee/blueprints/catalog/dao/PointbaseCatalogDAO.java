@@ -108,16 +108,20 @@ public class PointbaseCatalogDAO implements CatalogDAO {
       "          or lower(b.descn) like ? ",
       ") )"
   };
+  
+  /** Exception Handler Refactoring */
+  DaoHandler daoHanlder = new DaoHandler();
 
   // Helper methods
-
+  
   protected static DataSource getDataSource() throws CatalogDAOSysException {
       try {
           ServiceLocator sl = new ServiceLocator();
           return (DataSource) sl.getDataSource(JNDINames.CATALOG_DATASOURCE);
       } catch (ServiceLocatorException slx) {
-                throw new CatalogDAOSysException("NamingException while looking up DB context : " +
-                                       slx.getMessage());
+    	 DaoHandler.getDataSourceHandler(slx);
+//                throw new CatalogDAOSysException("NamingException while looking up DB context : " +
+//                                       slx.getMessage());
       }
   }
 
@@ -147,7 +151,8 @@ public class PointbaseCatalogDAO implements CatalogDAO {
         c.close();
         return ret;
       } catch (SQLException se) {
-        throw new CatalogDAOSysException("SQLException: " + se.getMessage());
+        daoHanlder.getCategoryHandler(exception);
+    	  //throw new CatalogDAOSysException("SQLException: " + se.getMessage());
       }
   }
 
@@ -183,8 +188,9 @@ public class PointbaseCatalogDAO implements CatalogDAO {
         c.close();
         return ret;
       } catch (SQLException se) {
-        se.printStackTrace(System.err);
-        throw new CatalogDAOSysException("SQLException: " + se.getMessage());
+    	  daoHanlder.getCategoriesHandler(se);
+//        se.printStackTrace(System.err);
+//        throw new CatalogDAOSysException("SQLException: " + se.getMessage());
       }
   }
 
@@ -212,7 +218,8 @@ public class PointbaseCatalogDAO implements CatalogDAO {
         c.close();
         return ret;
       } catch (SQLException se) {
-        throw new CatalogDAOSysException("SQLException: " + se.getMessage());
+        daoHanlder.getCategoryHandler(se);
+    	  //throw new CatalogDAOSysException("SQLException: " + se.getMessage());
       }
   }
 
@@ -249,7 +256,8 @@ public class PointbaseCatalogDAO implements CatalogDAO {
         c.close();
         return ret;
       } catch (SQLException se) {
-        throw new CatalogDAOSysException("SQLException: " + se.getMessage());
+        daoHanlder.getCategoryHandler(se);
+    	  //throw new CatalogDAOSysException("SQLException: " + se.getMessage());
       }
   }
 
@@ -290,7 +298,8 @@ public class PointbaseCatalogDAO implements CatalogDAO {
         c.close();
         return ret;
       } catch (SQLException se) {
-        throw new CatalogDAOSysException("SQLException: " + se.getMessage());
+        daoHanlder.getCategoryHandler(se);
+    	  //throw new CatalogDAOSysException("SQLException: " + se.getMessage());
       }
   }
 
@@ -338,7 +347,8 @@ public class PointbaseCatalogDAO implements CatalogDAO {
         c.close();
         return ret;
       } catch (SQLException se) {
-        throw new CatalogDAOSysException("SQLException: " + se.getMessage());
+       daoHanlder.getCategoryHandler(exception);
+    	  // throw new CatalogDAOSysException("SQLException: " + se.getMessage());
       }
   }
 
@@ -430,7 +440,8 @@ public class PointbaseCatalogDAO implements CatalogDAO {
         c.close();
         return ret;
       } catch (SQLException se) {
-        throw new CatalogDAOSysException("SQLException: " + se.getMessage());
+       daoHanlder.getCategoryHandler(se);
+    	  // throw new CatalogDAOSysException("SQLException: " + se.getMessage());
       }
   }
 }

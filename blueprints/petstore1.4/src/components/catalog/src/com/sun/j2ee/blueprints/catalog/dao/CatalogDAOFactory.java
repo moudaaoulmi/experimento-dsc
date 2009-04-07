@@ -51,16 +51,20 @@ public class CatalogDAOFactory {
      * deployment descriptor
      */
     public static CatalogDAO getDAO() throws CatalogDAOSysException {
-
+    	/** Exception Handler Refactoring */
+    	DaoHandler daoHandler = new DaoHandler();
+    	
         CatalogDAO catDao = null;
         try {
             InitialContext ic = new InitialContext();
             String className = (String) ic.lookup(JNDINames.CATALOG_DAO_CLASS);
             catDao = (CatalogDAO) Class.forName(className).newInstance();
         } catch (NamingException ne) {
-            throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:  NamingException while getting DAO type : \n" + ne.getMessage());
+        	daoHandler.getDAO1Handler(ne);
+           // throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:  NamingException while getting DAO type : \n" + ne.getMessage());
         } catch (Exception se) {
-            throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:  Exception while getting DAO type : \n" + se.getMessage());
+            daoHandler.getDAO2Handler(se);
+        	//throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:  Exception while getting DAO type : \n" + se.getMessage());
         }
         return catDao;
     }

@@ -39,9 +39,7 @@ package com.sun.j2ee.blueprints.petstore.tools.populate;
 
 import java.util.*;
 import java.sql.*;
-import javax.xml.parsers.*;
 import org.xml.sax.*;
-import org.xml.sax.helpers.*;
 
 
 public class ItemPopulator {
@@ -90,7 +88,11 @@ public class ItemPopulator {
   public void dropTables(Connection connection) throws PopulateException {
     try {
       itemDetailsPopulator.dropTables(connection);
-    } catch (PopulateException exception) {}
+    } catch (PopulateException exception) {
+	/** To Exception Handler refactoring */
+ 	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
+ 	 toolPopulateHandler.ignoreHandler();
+    }
     PopulateUtils.executeSQLStatement(connection, sqlStatements, PopulateUtils.makeSQLStatementKey(PopulateUtils.DROP_OPERATION, "item"), null, null);
     return;
   }

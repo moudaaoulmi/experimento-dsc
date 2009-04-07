@@ -93,13 +93,19 @@ public class CustomerPopulator {
         return false;
       }
     } catch (Exception e) {
-          return false;
+	 /** To Exception Handler refactoring */
+  	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
+  	 toolPopulateHandler.checkHandler();
+         // return false;
     }
     return true;
   }
 
   private CustomerLocal createCustomer(String id, AccountLocal account, ProfileLocal profile) throws PopulateException {
-    try {
+  /** To Exception Handler refactoring */
+   	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
+   	 
+	try {
       if (customerHome == null) {
         InitialContext context = new InitialContext();
         customerHome = (CustomerLocalHome) context.lookup(JNDI_CUSTOMER_HOME);
@@ -107,7 +113,10 @@ public class CustomerPopulator {
       try {
         CustomerLocal customer = customerHome.findByPrimaryKey(id);
         customer.remove();
-      } catch (Exception exception) {}
+      } catch (Exception exception) {
+	     toolPopulateHandler.ignoreHandler();
+    	  //ignore
+      }
       CustomerLocal customer = customerHome.create(id);
       if (account != null) {
         AccountLocal acct = customer.getAccount();
@@ -126,7 +135,8 @@ public class CustomerPopulator {
       }
       return customer;
     } catch (Exception exception) {
-      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+        toolPopulateHandler.createHandler(exception);
+    	//throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
     }
   }
 }
