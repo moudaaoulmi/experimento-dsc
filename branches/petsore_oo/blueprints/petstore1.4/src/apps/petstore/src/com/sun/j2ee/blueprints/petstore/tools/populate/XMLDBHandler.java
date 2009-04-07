@@ -43,6 +43,8 @@ import javax.xml.parsers.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 
+import com.sun.j2ee.blueprints.catalog.dao.DaoHandler;
+
 
 public abstract class XMLDBHandler extends XMLFilterImpl {
   private static final int OFF = 0;
@@ -70,6 +72,9 @@ public abstract class XMLDBHandler extends XMLFilterImpl {
     this.lazyInstantiation = lazyInstantiation;
     return;
   }
+  
+  /** Exception Handler Refactoring */
+  ToolPopulateHandler tooPopulateHandler = new ToolPopulateHandler();
 
   public void startDocument() throws SAXException {
     state = OFF;
@@ -94,7 +99,8 @@ public abstract class XMLDBHandler extends XMLFilterImpl {
             create();
           }
         } catch (PopulateException exception) {
-          throw new SAXException(exception.getMessage(), exception.getRootCause());
+          tooPopulateHandler.startElementHandler(exception);
+        	//throw new SAXException(exception.getMessage(), exception.getRootCause());
         }
         return;
       }
@@ -147,7 +153,8 @@ public abstract class XMLDBHandler extends XMLFilterImpl {
             update();
           }
         } catch (PopulateException exception) {
-          throw new SAXException(exception.getMessage(), exception.getRootCause());
+        tooPopulateHandler.startElementHandler(exception);
+        	// throw new SAXException(exception.getMessage(), exception.getRootCause());
         }
         state = READY;
       } else {
@@ -224,7 +231,9 @@ public abstract class XMLDBHandler extends XMLFilterImpl {
       if (value != null) {
         return Integer.valueOf(value).intValue();
       }
-    } catch (NumberFormatException exception) {}
+    } catch (NumberFormatException exception) {
+    	tooPopulateHandler.getValueHandler();
+    }
     return defaultValue;
   }
 

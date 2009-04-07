@@ -87,7 +87,9 @@ public class CreditCardPopulator {
       }
       return creditCardHome.create(cardNumber, cardType, expiryDate);
     } catch (Exception exception) {
-      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+    /** To Exception Handler refactoring */
+   	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
+   	 toolPopulateHandler.createHandler(exception);
     }
 
   }

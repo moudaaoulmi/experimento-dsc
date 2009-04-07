@@ -63,7 +63,7 @@ public class AddressPopulator {
     this.rootTag = rootTag;
     return;
   }
-
+  
   public XMLFilter setup(XMLReader reader) throws PopulateException {
     return new XMLDBHandler(reader, rootTag, XML_ADDRESS) {
 
@@ -100,7 +100,11 @@ public class AddressPopulator {
       address.setCountry(country);
       return address;
     } catch (Exception exception) {
-      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+    	
+	/** To Exception Handler refactoring */
+	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+	 toolPopulateHandler.createHandler(exception); 
+      //throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
     }
 
   }

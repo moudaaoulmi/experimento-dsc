@@ -85,7 +85,9 @@ public class GenericCatalogDAO implements CatalogDAO {
   private static final String XML_SEARCH_ITEMS = "SEARCH_ITEMS";
   private Map sqlStatements = new HashMap();
 
-
+  /** Exception Handler Refactoring */
+  DaoHandler daoHandler = new DaoHandler();
+  
   public GenericCatalogDAO() throws CatalogDAOSysException {
     try {
       InitialContext context = new InitialContext();
@@ -101,14 +103,15 @@ public class GenericCatalogDAO implements CatalogDAO {
         System.err.println("DAO SQL statements used: " + sqlStatements);
       }
     } catch (Exception exception) {
-      System.err.println(exception);
-      throw new CatalogDAOSysException(exception.getMessage());
+    	daoHandler.genericCatalogDAOHandler(exception);
+//      System.err.println(exception);
+//      throw new CatalogDAOSysException(exception.getMessage());
     }
     return;
   }
 
   private GenericCatalogDAO(String daoSQLFileName, String database) throws CatalogDAOSysException {
-    try {
+	  try {
       SAXParserFactory parserFactory = SAXParserFactory.newInstance();
       parserFactory.setValidating(true);
       parserFactory.setNamespaceAware(true);
@@ -118,9 +121,10 @@ public class GenericCatalogDAO implements CatalogDAO {
         System.err.println("DAO SQL statements used: " + sqlStatements);
       }
     } catch (Exception exception) {
-      exception.printStackTrace(System.err);
-      System.err.println(exception);
-      throw new CatalogDAOSysException(exception.getMessage());
+    	daoHandler.genericCatalogDAOHandler(exception);
+//      exception.printStackTrace(System.err);
+//      System.err.println(exception);
+//      throw new CatalogDAOSysException(exception.getMessage());
     }
     return;
   }
@@ -130,8 +134,9 @@ public class GenericCatalogDAO implements CatalogDAO {
       InitialContext context = new InitialContext();
       return (DataSource) context.lookup(JNDINames.CATALOG_DATASOURCE);
     } catch (NamingException exception) {
-      throw new CatalogDAOSysException("NamingException while looking up DB context : " +
-                                       exception.getMessage());
+    	DaoHandler.getDataSourceHandler(exception);
+//      throw new CatalogDAOSysException("NamingException while looking up DB context : " +
+//                                       exception.getMessage());
     }
   }
 
@@ -139,17 +144,23 @@ public class GenericCatalogDAO implements CatalogDAO {
     if (resultSet != null) {
       try {
         resultSet.close();
-      } catch (Exception exception) {}
+      } catch (Exception exception) {
+    	  DaoHandler.closeAllHandler(exception);
+      }
     }
     if (statement != null) {
       try {
         statement.close();
-      } catch (Exception exception) {}
+      } catch (Exception exception) {
+    	  DaoHandler.closeAllHandler(exception);
+      }
     }
     if (connection != null) {
       try {
         connection.close();
-      } catch (Exception exception) {}
+      } catch (Exception exception) {
+    	  DaoHandler.closeAllHandler(exception);
+      }
     }
     return;
   }
@@ -173,10 +184,12 @@ public class GenericCatalogDAO implements CatalogDAO {
       }
       return null;
     } catch (SQLException exception) {
-      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
+    	daoHandler.getCategoryHandler(exception);
+      //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
     } finally {
-      closeAll(connection, statement, resultSet);
-    }
+       daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
+      //closeAll(connection, statement, resultSet);
+      }
   }
 
   public Page getCategories(int start, int count, Locale locale) throws CatalogDAOSysException {
@@ -203,10 +216,12 @@ public class GenericCatalogDAO implements CatalogDAO {
       }
       return Page.EMPTY_PAGE;
     } catch (SQLException exception) {
-      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
-    } finally {
-      closeAll(connection, statement, resultSet);
-    }
+    	daoHandler.getCategoryHandler(exception);
+        //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
+      } finally {
+         daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
+        //closeAll(connection, statement, resultSet);
+        }
   }
 
   public Product getProduct(String productID, Locale locale) throws CatalogDAOSysException {
@@ -227,10 +242,12 @@ public class GenericCatalogDAO implements CatalogDAO {
       return null;
     }
     catch (SQLException exception) {
-      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
-    } finally {
-      closeAll(connection, statement, resultSet);
-    }
+    	daoHandler.getCategoryHandler(exception);
+        //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
+      } finally {
+         daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
+        //closeAll(connection, statement, resultSet);
+        }
   }
 
   public Page getProducts(String categoryID, int start, int count, Locale locale) throws CatalogDAOSysException {
@@ -257,10 +274,12 @@ public class GenericCatalogDAO implements CatalogDAO {
       }
       return Page.EMPTY_PAGE;
     } catch (SQLException exception) {
-      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
-    } finally {
-      closeAll(connection, statement, resultSet);
-    }
+    	daoHandler.getCategoryHandler(exception);
+        //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
+      } finally {
+         daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
+        //closeAll(connection, statement, resultSet);
+        }
   }
 
   public Item getItem(String itemID, Locale locale) throws CatalogDAOSysException {
@@ -293,10 +312,12 @@ public class GenericCatalogDAO implements CatalogDAO {
       }
       return null;
     } catch (SQLException exception) {
-      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
-    } finally {
-      closeAll(connection, statement, resultSet);
-    }
+    	daoHandler.getCategoryHandler(exception);
+        //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
+      } finally {
+         daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
+        //closeAll(connection, statement, resultSet);
+       }
   }
 
   public Page getItems(String productID, int start, int count, Locale locale) throws CatalogDAOSysException {
@@ -334,10 +355,12 @@ public class GenericCatalogDAO implements CatalogDAO {
       }
       return Page.EMPTY_PAGE;
     } catch (SQLException exception) {
-      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
-    } finally {
-      closeAll(connection, statement, resultSet);
-    }
+    	daoHandler.getCategoryHandler(exception);
+        //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
+      } finally {
+         daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
+        //closeAll(connection, statement, resultSet);
+        }
   }
 
   public Page searchItems(String searchQuery, int start, int count, Locale locale)
@@ -391,10 +414,12 @@ public class GenericCatalogDAO implements CatalogDAO {
         }
         return Page.EMPTY_PAGE;
       } catch (SQLException exception) {
-        throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
-      } finally {
-        closeAll(connection, statement, resultSet);
-      }
+    	  daoHandler.getCategoryHandler(exception);
+          //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
+        } finally {
+           daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
+          //closeAll(connection, statement, resultSet);
+          }
   }
 
   private PreparedStatement buildSQLStatement(Connection connection, Map sqlStatements, String sqlStatementKey,
@@ -533,7 +558,8 @@ public class GenericCatalogDAO implements CatalogDAO {
                   try {
                     fragment.parameterNumber = Integer.parseInt(value);
                   } catch (NumberFormatException exception) {
-                    //throw new SAXException(exception);
+                    daoHandler.parseIntHandler(exception);
+                	  //throw new SAXException(exception);
                   }
                 }
                 value = attrs.getValue(XML_OCCURRENCE);
@@ -590,7 +616,9 @@ public class GenericCatalogDAO implements CatalogDAO {
             throw exception;
           }
         });
-      } catch (ParsingDoneException exception) {} // Ignored
+      } catch (ParsingDoneException exception) {
+    	  daoHandler.loadSQLStatementsHandler(exception);
+      } // Ignored
       return;
   }
 
@@ -620,9 +648,10 @@ public class GenericCatalogDAO implements CatalogDAO {
         catalogDAO.printSQLStatement(catalogDAO.sqlStatements, XML_SEARCH_ITEMS, parameterValues);
                 System.exit(0);
       } catch (Exception exception) {
-                exception.printStackTrace(System.err);
-                System.err.println(exception);
-                System.exit(2);
+    	  DaoHandler.mainHandler(exception);
+//                exception.printStackTrace(System.err);
+//                System.err.println(exception);
+//                System.exit(2);
       }
         }
         System.err.println("Usage: " + GenericCatalogDAO.class.getName() + " [file-name] [databas-type]");

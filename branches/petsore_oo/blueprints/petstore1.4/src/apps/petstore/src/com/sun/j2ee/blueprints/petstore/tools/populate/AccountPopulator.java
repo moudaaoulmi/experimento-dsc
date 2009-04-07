@@ -64,7 +64,7 @@ public class AccountPopulator {
     creditCardPopulator = new CreditCardPopulator(rootTag);
     return;
   }
-
+  
   public XMLFilter setup(XMLReader reader) throws PopulateException {
     return new XMLDBHandler(creditCardPopulator.setup(contactInfoPopulator.setup(reader)), rootTag, XML_ACCOUNT) {
 
@@ -88,8 +88,13 @@ public class AccountPopulator {
         accountHome = (AccountLocalHome) context.lookup(JNDI_ACCOUNT_HOME);
       }
       return accountHome.create(AccountLocalHome.Active, contactInfo, creditCard);
+      
     } catch (Exception exception) {
-      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+    	
+    	/** To Exception Handler refactoring */
+    	ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+    	toolPopulateHandler.createHandler(exception);
+    	// throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
     }
   }
 

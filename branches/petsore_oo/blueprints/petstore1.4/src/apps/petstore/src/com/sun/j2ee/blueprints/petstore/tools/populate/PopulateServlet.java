@@ -73,7 +73,10 @@ public class PopulateServlet extends HttpServlet {
   private Map sqlStatements = new HashMap();
   private String populateDataPath;
 
-
+  /** Exception Handler */
+	ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+  
+  
   public void init(ServletConfig config) throws javax.servlet.ServletException {
     super.init(config);
     try {
@@ -96,7 +99,8 @@ public class PopulateServlet extends HttpServlet {
                         new InputSource(getResource(populateSQLPath)));
       //System.err.println("SQL statements used: " + sqlStatements);
     } catch (Exception exception) {	
-      throw new ServletException(exception);
+    	toolPopulateHandler.initHandler(exception);
+      //throw new ServletException(exception);
     }
     return;
   }
@@ -117,12 +121,13 @@ public class PopulateServlet extends HttpServlet {
     try {
       populate(forcefully != null && Boolean.valueOf(forcefully).booleanValue());
     } catch(PopulateException exception) {
-      System.err.println(exception.getRootCause().getMessage());
-      if (errorPageURL == null) {
-        throw new ServletException("Populate exception occured :" + exception.getMessage(), exception.getRootCause());
-      } else {
-        redirect(request, response, errorPageURL);
-      }
+   	 toolPopulateHandler.doPostHandler(exception, request, response, errorPageURL);
+//      System.err.println(exception.getRootCause().getMessage());
+//      if (errorPageURL == null) {
+//        throw new ServletException("Populate exception occured :" + exception.getMessage(), exception.getRootCause());
+//      } else {
+ //     redirect(request, response, errorPageURL);
+//      }
     }
     if (successPageURL != null) {
       redirect(request, response, successPageURL);
@@ -140,7 +145,8 @@ public class PopulateServlet extends HttpServlet {
       parserFactory.setNamespaceAware(true);
       reader = parserFactory.newSAXParser().getXMLReader();
     } catch (Exception exception) {
-      throw new PopulateException(exception);
+    	toolPopulateHandler.populateHandler(exception);
+      //throw new PopulateException(exception);
     }
     Connection connection = null;
     boolean alreadyPopulated = false;
@@ -152,7 +158,9 @@ public class PopulateServlet extends HttpServlet {
       if (!forcefully) {
         try {
           alreadyPopulated = catalogPopulator.check(connection) && customerPopulator.check() && userPopulator.check();
-        } catch (PopulateException exception) {}
+        } catch (PopulateException exception) {
+        	toolPopulateHandler.ignoreHandler();
+        }
         //System.err.println("Already populated: " + alreadyPopulated);
       }
       if (forcefully || !alreadyPopulated) {
@@ -163,15 +171,12 @@ public class PopulateServlet extends HttpServlet {
             .parse(new InputSource(getResource(populateDataPath)));
           //.parse(new InputSource(getServletConfig().getServletContext().getRealPath(populateDataPath)));
         } catch (Exception exception) {
-	    throw new PopulateException(exception);
+         toolPopulateHandler.populateHandler(exception);
+	    //throw new PopulateException(exception);
         }
       }
     } finally {
-      try {
-        if (connection != null) {
-          connection.close();
-        }
-      } catch (Exception exception) {}
+      toolPopulateHandler.populateFINALLYHandler(connection);
     }
     return forcefully || !alreadyPopulated;
   }
@@ -181,7 +186,8 @@ public class PopulateServlet extends HttpServlet {
       InitialContext context = new InitialContext();
       return ((DataSource) context.lookup(JNDINames.CATALOG_DATASOURCE)).getConnection();
     } catch (Exception exception) {
-      throw new PopulateException("Can't get catalog data source connection", exception);
+    	toolPopulateHandler.getConnectionHandler(exception);
+      //throw new PopulateException("Can't get catalog data source connection", exception);
     }
   }
 
@@ -202,8 +208,9 @@ public class PopulateServlet extends HttpServlet {
     try {
       url = new URL(path).toString();
     } catch (MalformedURLException exception) {
-      URL u = getServletContext().getResource(path);
-      url = u != null ? u.toString() : path;
+    	toolPopulateHandler.getResourceHandler(exception, path);
+//      URL u = getServletContext().getResource(path);
+//      url = u != null ? u.toString() : path;
     }
     //System.err.println("Made " + url + " from " + path);
     return url;
@@ -282,7 +289,9 @@ public class PopulateServlet extends HttpServlet {
         }
 
       });
-    } catch (ParsingDoneException exception) {} // Ignored
+    } catch (ParsingDoneException exception) {
+    	toolPopulateHandler.ignoreHandler();
+    } // Ignored
     return;
   }
 }

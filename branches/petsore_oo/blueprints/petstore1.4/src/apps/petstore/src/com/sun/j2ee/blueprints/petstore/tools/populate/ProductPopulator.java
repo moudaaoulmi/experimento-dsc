@@ -90,7 +90,11 @@ public class ProductPopulator {
   public void dropTables(Connection connection) throws PopulateException {
     try {
       productDetailsPopulator.dropTables(connection);
-    } catch (PopulateException exception) {}
+    } catch (PopulateException exception) {
+    	/** Exception Handler Refacotring */
+    	ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+    	toolPopulateHandler.dropTablesHandler(exception);
+    }
     PopulateUtils.executeSQLStatement(connection, sqlStatements, PopulateUtils.makeSQLStatementKey(PopulateUtils.DROP_OPERATION, "product"), null, null);
     return;
   }

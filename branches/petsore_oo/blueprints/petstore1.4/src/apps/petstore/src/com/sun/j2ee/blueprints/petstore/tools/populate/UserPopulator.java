@@ -44,6 +44,8 @@ import java.sql.*;
 import javax.xml.parsers.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
+
+import com.sun.j2ee.blueprints.catalog.dao.DaoHandler;
 import com.sun.j2ee.blueprints.signon.ejb.*;
 import com.sun.j2ee.blueprints.signon.user.ejb.*;
 
@@ -67,6 +69,9 @@ public class UserPopulator {
     this.rootTag = rootTag;
     return;
   }
+  
+  /** Exception Handler Refactoring */
+  ToolPopulateHandler tooPopulateHandler = new ToolPopulateHandler();
 
   public XMLFilter setup(XMLReader reader) throws PopulateException {
     return new XMLDBHandler(reader, rootTag, XML_USER) {
@@ -90,7 +95,8 @@ public class UserPopulator {
         return false;
       }
     } catch (Exception exception) {
-          return false;
+         tooPopulateHandler.checkHandler();
+    	//return false;
     }
     return true;
   }
@@ -105,11 +111,14 @@ public class UserPopulator {
       try {
         user = userHome.findByPrimaryKey(id);
         user.remove();
-      } catch (Exception exception) {}
+      } catch (Exception exception) {
+    	  tooPopulateHandler.createCustomerHandler();
+      }
       user = userHome.create(id, password);
       return user;
     } catch (Exception exception) {
-      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+    	tooPopulateHandler.createHandler(exception);
+      //throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
     }
   }
 
@@ -123,8 +132,9 @@ public class UserPopulator {
         userPopulator.setup(parserFactory.newSAXParser().getXMLReader()).parse(new InputSource(fileName));
         System.exit(0);
       } catch (Exception exception) {
-        System.err.println(exception.getMessage() + ": " + exception);
-        System.exit(2);
+    	  DaoHandler.mainHandler(exception);
+//        System.err.println(exception.getMessage() + ": " + exception);
+//        System.exit(2);
       }
     }
     System.err.println("Usage: " + UserPopulator.class.getName() + " [file-name]");
