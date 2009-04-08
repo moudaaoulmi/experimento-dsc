@@ -70,6 +70,7 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
 public abstract class PurchaseOrderEJB implements EntityBean {
 
+  EjbHandler ejbHandler = new EjbHandler(); 
   private EntityContext context = null;
 
   /**
@@ -233,7 +234,8 @@ public abstract class PurchaseOrderEJB implements EntityBean {
               addLineItem(lineItemloc);
           }
       } catch(ServiceLocatorException ne) {
-          throw new CreateException("ServiceLocator Ex while persisting PO CMR :" + ne.getMessage());
+//          throw new CreateException("ServiceLocator Ex while persisting PO CMR :" + ne.getMessage());
+    	  ejbHandler.ejbPostCreateHandler(ne);
       }
   }
 

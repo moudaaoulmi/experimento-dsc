@@ -59,7 +59,9 @@ import com.sun.j2ee.blueprints.util.tracer.Debug;
  *
  */
 public class CatalogEJB implements SessionBean {
-
+	
+	EjbHandler ejbHandler = new EjbHandler();
+	
     protected CatalogDAO dao;
 
     public void ejbCreate() {
@@ -67,8 +69,7 @@ public class CatalogEJB implements SessionBean {
             dao = CatalogDAOFactory.getDAO();
         }
         catch (CatalogDAOSysException se) {
-            Debug.println("Exception getting dao " + se);
-            throw new EJBException(se.getMessage());
+        	ejbHandler.createHandler(se);
         }
     }
 
@@ -87,7 +88,8 @@ public class CatalogEJB implements SessionBean {
             return dao.getCategory(categoryID, l);
         }
         catch (CatalogDAOSysException se) {
-            throw new EJBException(se.getMessage());
+        	return ejbHandler.getCategoryHandler(se);
+        	
         }
     }
 
@@ -96,7 +98,7 @@ public class CatalogEJB implements SessionBean {
             return dao.getCategories(start, count, l);
         }
         catch (CatalogDAOSysException se) {
-            throw new EJBException(se.getMessage());
+        	return ejbHandler.getCategoriesHandler(se);
         }
     }
 
@@ -106,7 +108,7 @@ public class CatalogEJB implements SessionBean {
             return dao.getProducts(categoryID, start, count, l);
         }
         catch (CatalogDAOSysException se) {
-            throw new EJBException(se.getMessage());
+        	return ejbHandler.getCategoriesHandler(se);
         }
     }
 
@@ -115,7 +117,7 @@ public class CatalogEJB implements SessionBean {
             return dao.getProduct(productID, l);
         }
         catch (CatalogDAOSysException se) {
-            throw new EJBException(se.getMessage());
+        	return ejbHandler.getProductHandler(se);
         }
     }
 
@@ -125,7 +127,7 @@ public class CatalogEJB implements SessionBean {
             return dao.getItems(productID, start, count, l);
         }
         catch (CatalogDAOSysException se) {
-            throw new EJBException(se.getMessage());
+        	return ejbHandler.getCategoriesHandler(se);
         }
     }
 
@@ -134,7 +136,7 @@ public class CatalogEJB implements SessionBean {
             return dao.getItem(itemID, l);
         }
         catch (CatalogDAOSysException se) {
-            throw new EJBException(se.getMessage());
+        	return ejbHandler.getItemHandler(se);
         }
     }
 
@@ -144,7 +146,7 @@ public class CatalogEJB implements SessionBean {
             return dao.searchItems(searchQuery, start, count, l);
         }
         catch (CatalogDAOSysException se) {
-            throw new EJBException(se.getMessage());
+        	return ejbHandler.getCategoriesHandler(se);
         }
     }
 }

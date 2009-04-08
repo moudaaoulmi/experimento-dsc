@@ -70,7 +70,8 @@ import com.sun.j2ee.blueprints.catalog.model.Item;
  * See the Fast Lane Reader pattern for more details.
  */
 public class CatalogHelper implements java.io.Serializable {
-
+	
+	ClientHandler clientHandler = new ClientHandler();
     private CatalogDAO dao;
 
     private boolean useFastLane = false;
@@ -182,7 +183,7 @@ public class CatalogHelper implements java.io.Serializable {
             return dao.searchItems(searchQuery, start, count,
                                    locale);
         } catch (CatalogDAOSysException se) {
-            throw new CatalogException(se.getMessage());
+        	return clientHandler.searchItemsFromDAOperformHandler(se);
         }
     }
 
@@ -211,7 +212,7 @@ public class CatalogHelper implements java.io.Serializable {
                 dao = CatalogDAOFactory.getDAO();
             return dao.getCategories(start, count, locale);
         } catch (CatalogDAOSysException se) {
-            throw new CatalogException(se.getMessage());
+        	return clientHandler.searchItemsFromDAOperformHandler(se); 
         }
     }
 
@@ -254,7 +255,7 @@ public class CatalogHelper implements java.io.Serializable {
                 dao = CatalogDAOFactory.getDAO();
             return dao.getProducts(categoryId, start, count, locale);
         } catch (CatalogDAOSysException se) {
-            throw new CatalogException(se.getMessage());
+        	return clientHandler.searchItemsFromDAOperformHandler(se);
         }
     }
 
@@ -290,7 +291,7 @@ public class CatalogHelper implements java.io.Serializable {
                 dao = CatalogDAOFactory.getDAO();
             return dao.getItems(productId, start, count, locale);
         } catch (CatalogDAOSysException se) {
-            throw new CatalogException(se.getMessage());
+        	return clientHandler.searchItemsFromDAOperformHandler(se);
         }
     }
 
@@ -322,7 +323,7 @@ public class CatalogHelper implements java.io.Serializable {
                 dao = CatalogDAOFactory.getDAO();
             return dao.getItem(itemId, locale);
         } catch (CatalogDAOSysException se) {
-            throw new CatalogException(se.getMessage());
+        	return clientHandler.getItemFromDAOHandler(se);
         }
     }
 
@@ -341,7 +342,7 @@ public class CatalogHelper implements java.io.Serializable {
             CatalogLocalHome home =(CatalogLocalHome)sl.getLocalHome(JNDINames.CATALOG_EJBHOME);
             return home.create();
         } catch (javax.ejb.CreateException cx) {
-                throw new CatalogException("CatalogHelper: failed to create CatalogLocal EJB: caught " + cx);
+       	return clientHandler.getCatalogEJB1Handler(cx);
         } catch (ServiceLocatorException slx) {
                 throw new CatalogException("CatalogHelper: failed to look up Catalog Home: caught " + slx);
         }

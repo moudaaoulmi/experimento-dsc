@@ -79,7 +79,8 @@ import com.sun.j2ee.blueprints.cart.model.CartItem;
 
 public final class CartHTMLAction extends HTMLActionSupport {
 
-    public Event perform(HttpServletRequest request)
+	ActionsHandler actionsHandler = new ActionsHandler();
+	public Event perform(HttpServletRequest request)
         throws HTMLActionException {
         // Extract attributes we will need
         String actionType= (String)request.getParameter("action");
@@ -112,7 +113,7 @@ public final class CartHTMLAction extends HTMLActionSupport {
                         quantity = new Integer(value);
                     }
                     catch (NumberFormatException nfe) {
-                        quantity = new Integer(0);
+                     quantity = actionsHandler.performHandler(quantity);
                     }
                     quantities.put(itemID, quantity);
                 }

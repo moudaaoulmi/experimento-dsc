@@ -86,7 +86,8 @@ import com.sun.j2ee.blueprints.petstore.controller.events.OrderEventResponse;
 import com.sun.j2ee.blueprints.petstore.controller.exceptions.ShoppingCartEmptyOrderException;
 
 public class OrderEJBAction extends EJBActionSupport {
-
+  
+  ActionsHandler actionsHandler = new ActionsHandler();
   public EventResponse perform(Event e) throws EventException {
     OrderEvent oe = (OrderEvent)e;
     PurchaseOrder purchaseOrder = new PurchaseOrder();
@@ -103,9 +104,9 @@ public class OrderEJBAction extends EJBActionSupport {
         (UniqueIdGeneratorLocalHome)sl.getLocalHome(JNDINames.UIDG_EJBHOME);
       uidgen = home.create();
     } catch (javax.ejb.CreateException cx) {
-      cx.printStackTrace();
+    	actionsHandler.perform3Handler(cx);
     } catch (ServiceLocatorException slx) {
-      slx.printStackTrace();
+    	actionsHandler.perform3Handler(slx);
     }
     orderIdString = uidgen.getUniqueId("1001");
     // get ther userId
@@ -153,14 +154,12 @@ public class OrderEJBAction extends EJBActionSupport {
       sender.sendAMessage(purchaseOrder.toXML());
 
     } catch (ServiceLocatorException sle) {
-      sle.printStackTrace();
-      // throw new AdminBDException(sle.getMessage());
+    	actionsHandler.perform3Handler(sle);
     } catch (XMLDocumentException xde) {
-      xde.printStackTrace();
-      System.err.println(xde.getRootCause().getMessage());
-      // throw new EventResponse    or whatever
+    	actionsHandler.perform4Handler(xde);
     }  catch (CreateException ce) {
       //throw new AdminBDException(ce.getMessage());
+    	
     }
 
     // empty the shopping cart

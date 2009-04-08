@@ -42,7 +42,8 @@ package com.sun.j2ee.blueprints.processmanager.transitions;
  */
 public class TransitionDelegateFactory {
 
-
+  TransitionsHandler transitionsHandler = new TransitionsHandler();	
+	
   public TransitionDelegateFactory() { }
 
   public TransitionDelegate getTransitionDelegate(String className) throws TransitionException {
@@ -50,7 +51,7 @@ public class TransitionDelegateFactory {
     try {
       td = (TransitionDelegate)Class.forName(className).newInstance();
     } catch(Exception e) {
-      throw new TransitionException(e);
+    	transitionsHandler.getTransitionDelegateHandler(e);
     }
     return td;
   }

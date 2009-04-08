@@ -56,6 +56,7 @@ import com.sun.j2ee.blueprints.lineitem.ejb.LineItem;
 
 
 public class PurchaseOrder {
+  static EjbHandler ejbHandler = new EjbHandler();	
   public static final boolean TRACE = false;
   public static final String DTD_PUBLIC_ID = "-//Sun Microsystems, Inc. - J2EE Blueprints Group//DTD PurchaseOrder 1.1//EN";
   public static final String DTD_SYSTEM_ID = "/com/sun/j2ee/blueprints/purchaseorder/rsrc/schemas/PurchaseOrder.dtd";
@@ -218,8 +219,9 @@ public class PurchaseOrder {
       }
       return stream.toString(XMLDocumentUtils.DEFAULT_ENCODING);
     } catch (Exception exception) {
-      throw new XMLDocumentException(exception);
+    	return ejbHandler.toXMLHandler(exception);
     }
+	
   }
 
   public static PurchaseOrder fromXML(Source source) throws XMLDocumentException {
@@ -241,8 +243,8 @@ public class PurchaseOrder {
     try {
       return fromXML(new StreamSource(new StringReader(buffer)), entityCatalogURL, validating);
     } catch (XMLDocumentException exception) {
-      System.err.println(exception.getRootCause().getMessage());
-      throw new XMLDocumentException(exception);
+    	return ejbHandler.fromXMLHandler(exception);
+    	
     }
   }
 
@@ -298,8 +300,7 @@ public class PurchaseOrder {
         child = XMLDocumentUtils.getNextSibling(child, XML_ORDERDATE, false);
         purchaseOrder.setOrderDate(purchaseOrder.dateFormat.parse(XMLDocumentUtils.getContentAsString(child, false)));
       } catch (Exception exception) {
-        purchaseOrder.setOrderDate(new Date());
-        System.err.println(XML_ORDERDATE + ": " + exception.getMessage() + " reset to current date.");
+          ejbHandler.fromDOMHandler(purchaseOrder, exception);      
       }
       child = XMLDocumentUtils.getNextSibling(child, XML_SHIPPINGINFO, false);
       purchaseOrder.shippingInfo = ContactInfo.fromDOM(XMLDocumentUtils.getFirstChild(child, ContactInfo.XML_CONTACTINFO, false));
@@ -340,17 +341,11 @@ public class PurchaseOrder {
         purchaseOrder.toXML(new StreamResult(System.out));
         System.exit(0);
       } catch (IOException exception) {
-        exception.printStackTrace(System.err);
-        System.err.println(exception);
-        System.exit(2);
+    	  ejbHandler.main1Handler(exception);
       } catch (XMLDocumentException exception) {
-        exception.printStackTrace(System.err);
-        System.err.println(exception.getRootCause());
-        System.exit(2);
+    	  ejbHandler.main2Handler(exception);
       } catch (Exception exception) {
-        exception.printStackTrace(System.err);
-        System.err.println(exception);
-        System.exit(2);
+    	  ejbHandler.main1Handler(exception);
       }
     }
     System.err.println("Usage: " + PurchaseOrder.class.getName() + " [file-name]");
