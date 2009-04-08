@@ -98,14 +98,6 @@ public class WindowMenu extends CommandMenu {
 
 	public void buildChildMenusPartOne(JInternalFrame frame) {
 		frame.setSelected(true);
-		
-		/** Refactored */
-		/*try {
-			frame.setSelected(true);
-		}
-		catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}*/
 	}
 
 	/* This JCheckBoxMenuItem descendant is used to track the child frame that corresponds

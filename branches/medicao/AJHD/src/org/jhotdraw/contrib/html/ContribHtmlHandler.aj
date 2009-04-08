@@ -1,55 +1,48 @@
 package org.jhotdraw.contrib.html;
 
-import org.aspectj.lang.SoftException;
 
-
-
+@ExceptionHandler
 public privileged aspect ContribHtmlHandler {
 	
-	declare soft: InterruptedException: joinHandler();
-	declare soft: ClassNotFoundException: readPartOneHandler();
-	declare soft: ResourceManagerNotSetException: initManagerPartOneHandler();
-    declare soft: HTMLTextAreaFigure.InvalidAttributeMarker: substituteEntityKeywordsPartOneHandler(); 
-    declare soft: Exception : getContentHandler(); /**|| runHandler();*/
+	// pointuts
 	
+	pointcut ETSLADisposalStrategy_stopDisposingPartOne(): execution(private void ETSLADisposalStrategy.stopDisposingPartOne(..)); 
+	pointcut ContentProducerRegistry_readPartOneHandler(): execution(private void ContentProducerRegistry.readPartOne(..) );
+	pointcut DisposalThread_internalRunHandler(): execution (private void DisposalThread.internalRun(..));
+	pointcut DisposalThread_internalWhileHandler(): execution (private void DisposalThread.internalWhile(..));
+	pointcut DisposableResourceManagerFactory_initManagerPartOneHandler(): execution(private static void DisposableResourceManagerFactory.initManagerPartOne());
+	pointcut HTMLTextAreaFigure_internalSubstituteEntityKeywordsPartOne(): execution(private int HTMLTextAreaFigure.internalSubstituteEntityKeywordsPartOne(..));	
+	pointcut ResourceContentProducer_getContentHandler(): execution(public Object ResourceContentProducer.getContent(..));
+	pointcut URLContentProducer_getContent(): execution(public Object URLContentProducer.getContent(..));
+		 
+	// intertypes
 	
-	
-	/** Rever refatoracao ver se nao ta conseguindo ver a classe DisposalThread que 
-	 * é uma classe LOCAL */
-	pointcut joinHandler(): 
-		call(* *.join(..)) && 
-		withincode(* ETSLADisposalStrategy.stopDisposingPartOne(..)); 
-	
-	pointcut readPartOneHandler(): execution(* ContentProducerRegistry.readPartOne(..) );
-	pointcut initManagerPartOneHandler():call (*  DisposableResourceManager.startDisposing(..)) &&
-    									 withincode(* DisposableResourceManagerFactory.initManagerPartOne());
-	pointcut substituteEntityKeywordsPartOneHandler(): execution(* HTMLTextAreaFigure.substituteEntityKeywordsPartOne(.., int));
-	
-	pointcut  getContentHandler():execution(* ResourceContentProducer.getContent(..)) ||
-								  execution(* URLContentProducer.getContent(..));
-	/** pointcut runHandler(): execution (* DisposalThread.run(..));*/
+	declare soft: InterruptedException: ETSLADisposalStrategy_stopDisposingPartOne();
+	declare soft: ClassNotFoundException: ContentProducerRegistry_readPartOneHandler();
+	declare soft: ResourceManagerNotSetException: DisposableResourceManagerFactory_initManagerPartOneHandler();
+    declare soft: HTMLTextAreaFigure.InvalidAttributeMarker: HTMLTextAreaFigure_internalSubstituteEntityKeywordsPartOne(); 
+    declare soft: Exception : ResourceContentProducer_getContentHandler()||URLContentProducer_getContent()|| DisposalThread_internalWhileHandler();
 	 
 	
-	 
-	/**
-	 * cenário em que eu não consigo modificar o valor da variável OBJ porque é privada da classe 
-	 * ETSLADisposalStrategy, e não tem método setVariável() pra eu alterar o seu valor
-	 */
-	 void around(): joinHandler() {
-		 ETSLADisposalStrategy obj	 = (ETSLADisposalStrategy) thisJoinPoint.getThis();
+    // advices
+    
+	 void around(): ETSLADisposalStrategy_stopDisposingPartOne() {
+		 ETSLADisposalStrategy objeto = (ETSLADisposalStrategy) thisJoinPoint.getThis();
 			try {
 				proceed();
 			}
 			catch (InterruptedException ex) {
 				// ignore
-			}finally {
-				obj.disposingActive = false;
+			}
+			finally {
+				
+				objeto.disposingActive = false;
 			}
 		} 
 	
 	 
 	 
-	 void around(): readPartOneHandler(){
+	 void around(): ContentProducerRegistry_readPartOneHandler(){
 			try {
 			    proceed();
 			}
@@ -62,7 +55,7 @@ public privileged aspect ContribHtmlHandler {
 		
 	
 	 
-	 void around(): initManagerPartOneHandler(){
+	 void around(): DisposableResourceManagerFactory_initManagerPartOneHandler(){
 			try {
 				proceed();
 			}
@@ -71,14 +64,14 @@ public privileged aspect ContribHtmlHandler {
 			}
 	}
 	 
-	 /**
-	  * Não tem como acessar essa classe da exceção e com Exception aí não funciona
-	  */
-	 int around(int chunkEnd): substituteEntityKeywordsPartOneHandler() && args(chunkEnd){
+	
+	 int around(String template, StringBuffer finalText, int startPos,
+				int chunkEnd): HTMLTextAreaFigure_internalSubstituteEntityKeywordsPartOne() && args(template, finalText, startPos,
+						chunkEnd){
 			try {
-				chunkEnd = proceed(chunkEnd);
+				return proceed(template, finalText, startPos,chunkEnd);
 			}
-			catch (SoftException ex) {
+			catch (HTMLTextAreaFigure.InvalidAttributeMarker ex) {
 				// invalid marker, ignore
 			}
 			return chunkEnd;
@@ -86,7 +79,7 @@ public privileged aspect ContribHtmlHandler {
 	
 	 
 	 
-	Object around() : getContentHandler() {
+	Object around() : ResourceContentProducer_getContentHandler()||URLContentProducer_getContent() {
 		Object obj = null;
 		try{
 			obj =  proceed();
@@ -98,18 +91,26 @@ public privileged aspect ContribHtmlHandler {
 		
 	}	
 	
-	/** 
-	 *  Não deu para refatorar
-	 * 
-	void around() : runHandler(){
+	// Tratamento do while
+	
+	void around(): DisposalThread_internalRunHandler(){
+		try{
+			proceed();
+		}catch (BreakException ex) {
+		   // nada
+	    }
+	}
+	
+	
+	void around() : DisposalThread_internalWhileHandler(){
 		try{
 			proceed();
 		}catch (Exception ex) {
 		// just exit
-		 break;
+		 //break;
+			throw new BreakException();
 	    }
 	}
-	*/
 	
 
 	

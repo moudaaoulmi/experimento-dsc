@@ -59,23 +59,13 @@ public class ResourceContentProducer extends AbstractContentProducer
 	 */
 	public Object getContent(ContentProducerContext context, String ctxAttrName, Object ctxAttrValue) {
 		
-		/** Refactored */
-		//try {
-			// if we have our own resource then use it
-			// otherwise use the one supplied
 			String resourceName = (getResourceName() != null) ? getResourceName() : (String)ctxAttrValue;
-
 			InputStream reader = this.getClass().getResourceAsStream(resourceName);
 			int available = reader.available();
 			byte contents[] = new byte[available];
 			reader.read(contents, 0, available);
 			reader.close();
-			return new String(contents);
-		/*}
-		catch (Exception ex) {
-			ex.printStackTrace();
-			return ex.toString();
-		}*/
+			return new String(contents);	
 	}
 
 	/**

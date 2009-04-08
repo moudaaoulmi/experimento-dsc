@@ -3,6 +3,7 @@ package org.jhotdraw.application;
 import java.io.IOException;
 
 import org.jhotdraw.applet.DrawApplet;
+import org.jhotdraw.Exception.ExceptionHandler;
 import org.jhotdraw.framework.Drawing;
 import org.jhotdraw.framework.DrawingView;
 
@@ -15,6 +16,7 @@ import javax.swing.UIManager;
 
 import org.jhotdraw.framework.*;
 
+@ExceptionHandler
 public aspect ApplicationHandler {
 	
 	declare soft: InterruptedException :DrawApplication_internalOpen();

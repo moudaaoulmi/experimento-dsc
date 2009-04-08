@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 
+import org.jhotdraw.Exception.ExceptionHandler;
 
 
 
+@ExceptionHandler
 public aspect DndHandler {
 
 	declare soft: IOException :DNDHelper_processReceivedData();
