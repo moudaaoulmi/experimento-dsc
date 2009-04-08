@@ -298,10 +298,8 @@ public class ContentProducerRegistry implements Serializable, Storable {
 
 	}
 
-	/** REFACTORED */
-	private void readPartOne(String prodClass, ContentProducer producer) {
-			
-		registerContentProducer(Class.forName(prodClass), producer);
-		
+	
+	private void readPartOne(String prodClass, ContentProducer producer) {			
+		registerContentProducer(Class.forName(prodClass), producer);		
 	}
 }

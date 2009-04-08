@@ -1,22 +1,29 @@
 package org.jhotdraw.applet;
 
 import java.io.IOException;
-import java.net.URL;
 
-
+@ExceptionHandler
 public privileged aspect AppletHandler {
 	
-	declare soft: IOException : DrawApplet_readFromStorableInput() || DrawApplet_readFromObjectInput() || DrawApplet_showHelp();
+	
+	// Pointcuts
+	
+	pointcut DrawApplet_readFromStorableInputHandler(): execution (private void DrawApplet.readFromStorableInput(..)) ;
+
+	pointcut DrawApplet_readFromObjectInput(): execution (private void  DrawApplet.readFromObjectInput(..)) ;
+	
+	pointcut DrawApplet_showHelp(): execution (protected void DrawApplet.showHelp(..)) ;
+	
+	// intetypes
+	
+	declare soft: IOException : DrawApplet_readFromStorableInputHandler() || DrawApplet_readFromObjectInput() || DrawApplet_showHelp();
 	
 	declare soft: ClassNotFoundException : DrawApplet_readFromObjectInput();
 	
-	pointcut DrawApplet_readFromStorableInput(): execution (* DrawApplet.readFromStorableInput(..)) ;
-
-	pointcut DrawApplet_readFromObjectInput(): execution (* DrawApplet.readFromObjectInput(..)) ;
 	
-	pointcut DrawApplet_showHelp(): execution (* DrawApplet.showHelp(..)) ;
+	// advices
 	
-	void around(): DrawApplet_readFromStorableInput() || DrawApplet_readFromObjectInput(){
+	void around(): DrawApplet_readFromStorableInputHandler() || DrawApplet_readFromObjectInput(){
 		DrawApplet drawApplet = null;
 		try {
 			proceed();
@@ -28,13 +35,11 @@ public privileged aspect AppletHandler {
 		}
 	}
 	
-	void around(): DrawApplet_readFromStorableInput(){
+	void around(): DrawApplet_readFromStorableInputHandler(){
 		DrawApplet drawApplet = null;
 		try {
 			proceed();
 		}
-		//@AJHD added
-		//catch the soft exception instead of the IO one, and get the wrapped one for report
 		catch (org.aspectj.lang.SoftException e) {
 			drawApplet = (DrawApplet) thisJoinPoint.getThis();
 			drawApplet.showStatus("Error: " + e.getWrappedThrowable());

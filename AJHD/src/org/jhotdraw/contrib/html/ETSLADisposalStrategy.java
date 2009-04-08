@@ -124,20 +124,9 @@ public class ETSLADisposalStrategy implements ResourceDisposabilityStrategy {
 		stopDisposingPartOne(millis);
 	}
 
-	private void stopDisposingPartOne(long millis) {
-		/** 
-		
-		
-		try {*/
+	private void stopDisposingPartOne(long millis) {		
 			disposalThread.interruptDisposalPending = true;
 			disposalThread.join(millis);
-		/**}
-		catch (InterruptedException ex) {
-			// ignore
-		}
-		finally {
-			disposingActive = false;
-		}*/
 	}
 
 	/**
@@ -229,19 +218,21 @@ class DisposalThread extends Thread {
 	 */
 	public void run() {
 		interruptDisposalPending = false;
+		internalRun();
+		interruptDisposalPending = false;
+	}
+
+	private void internalRun() {
 		while (!interruptDisposalPending) {
-			
-			/** fazer a refatoracao! */
-			try {
-				sleep(periodicity);
-			}
-			catch (Exception ex) {
-				// just exit
-				break;
-			}
+			internalWhile();
 			strategy.dispose();
 		}
-		interruptDisposalPending = false;
+	}
+    
+	// Metodo vai lancar BreakException
+	
+	private void internalWhile() {
+			sleep(periodicity);
 	}
 
 	/**
