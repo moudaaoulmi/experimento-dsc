@@ -81,7 +81,8 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
  */
 public class PetstoreComponentManager extends DefaultComponentManager implements HttpSessionListener {
 
-    private ServiceLocator serviceLocator;
+	WebHandler webHandler = new WebHandler();
+	private ServiceLocator serviceLocator;
 
     public PetstoreComponentManager () {
             serviceLocator = ServiceLocator.getInstance();
@@ -114,9 +115,10 @@ public class PetstoreComponentManager extends DefaultComponentManager implements
             //scf.setUserId(userId);
             return scf.getCustomer();
         } catch (FinderException e) {
-            System.err.println("PetstoreComponentManager finder error: " + e);
+        	webHandler.getCustomer1Handler(e);
         } catch (Exception e) {
-                System.err.println("PetstoreComponentManager error: " + e);
+//                System.err.println("PetstoreComponentManager error: " + e);
+        	webHandler.getCustomer2Handler(e);
         }
         return null;
     }
@@ -130,9 +132,9 @@ public class PetstoreComponentManager extends DefaultComponentManager implements
                 scEjb = scEjbHome.create();
                 session.setAttribute(PetstoreKeys.EJB_CONTROLLER, scEjb);
             } catch (CreateException ce) {
-                throw new GeneralFailureException(ce.getMessage());
+            	webHandler.getShoppingControllerHandler(ce);
             } catch (ServiceLocatorException ne) {
-                 throw new GeneralFailureException(ne.getMessage());
+            	webHandler.getShoppingControllerHandler(ne);
             }
         }
         return scEjb;

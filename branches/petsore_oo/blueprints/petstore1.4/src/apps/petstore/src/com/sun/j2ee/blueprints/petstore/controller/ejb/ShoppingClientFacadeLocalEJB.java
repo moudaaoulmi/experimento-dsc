@@ -74,7 +74,8 @@ import com.sun.j2ee.blueprints.petstore.util.JNDINames;
  */
 public class ShoppingClientFacadeLocalEJB implements SessionBean {
 
-    private SessionContext sc = null;
+    EjbHandler ejbHandler = new EjbHandler();
+	private SessionContext sc = null;
 
     private ShoppingCartLocal cart = null;
     private CustomerLocal customer = null;
@@ -110,7 +111,7 @@ public class ShoppingClientFacadeLocalEJB implements SessionBean {
                 CustomerLocalHome home =(CustomerLocalHome)sl.getLocalHome(JNDINames.CUSTOMER_EJBHOME);
                 customer = home.findByPrimaryKey(userId);
             } catch (ServiceLocatorException slx) {
-                throw new GeneralFailureException("ShoppingClientFacade: failed to look up name of customer: caught " + slx);
+                  ejbHandler.getCustomerHandler(slx)	;	
             }
         return customer;
     }
@@ -122,9 +123,9 @@ public class ShoppingClientFacadeLocalEJB implements SessionBean {
                 customer = home.create(userId);
                 this.userId = userId;
             } catch (javax.ejb.CreateException ce) {
-                throw new GeneralFailureException("ShoppingClientFacade: failed to create customer: caught " + ce);
+            	ejbHandler.createCustomerHandler(ce);
             } catch (ServiceLocatorException slx) {
-                throw new GeneralFailureException("ShoppingClientFacade: failed to look up name of customer: caught " + slx);
+            	ejbHandler.getCustomerHandler(slx)	;
             }
         return customer;
     }
@@ -136,9 +137,9 @@ public class ShoppingClientFacadeLocalEJB implements SessionBean {
                 ShoppingCartLocalHome home =(ShoppingCartLocalHome)sl.getLocalHome(JNDINames.SHOPPING_CART_EJBHOME);
                 cart = home.create();
             } catch (javax.ejb.CreateException cx) {
-                throw new GeneralFailureException("ShoppingClientFacade: failed to create cart: caught " + cx);
+            	  ejbHandler.getShoppingCart1Handler( cx);
             } catch (ServiceLocatorException slx) {
-                throw new GeneralFailureException("ShoppingClientFacade: failed to look up name of cart: caught " + slx);
+            	ejbHandler.getShoppingCart2Handler(slx);           
             }
         }
         return cart;

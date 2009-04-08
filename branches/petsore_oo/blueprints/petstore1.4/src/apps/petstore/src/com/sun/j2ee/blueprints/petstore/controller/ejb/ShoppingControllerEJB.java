@@ -68,7 +68,8 @@ import com.sun.j2ee.blueprints.petstore.util.JNDINames;
  */
 public class ShoppingControllerEJB extends EJBControllerLocalEJB {
 
-    private ShoppingClientFacadeLocal clientFacade = null;
+    EjbHandler ejbHandler = new EjbHandler();
+	private ShoppingClientFacadeLocal clientFacade = null;
 
     public void ejbCreate() {
         sm = new StateMachine(this, sc);
@@ -83,9 +84,9 @@ public class ShoppingControllerEJB extends EJBControllerLocalEJB {
                     (ShoppingClientFacadeLocalHome)sl.getLocalHome(JNDINames.SHOPPING_CLIENT_FACADE_EJBHOME);
                 clientFacade = home.create();
             } catch (javax.ejb.CreateException cx) {
-                throw new GeneralFailureException("ShoppingControllerEJB: Failed to Create ShoppingClientFacade: caught " + cx);
+            	  ejbHandler.shoppingClientFacadeLocal1Handler(cx);
             } catch (ServiceLocatorException slx) {
-                throw new GeneralFailureException("ShoppingControllerEJB: Failed to Create ShoppingClientFacade: caught " + slx);
+            	ejbHandler.shoppingClientFacadeLocal1Handler(slx);
             }
         }
         return clientFacade;

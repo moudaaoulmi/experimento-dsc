@@ -66,7 +66,8 @@ import com.sun.j2ee.blueprints.cart.model.CartItem;
  *
  */
 public class ShoppingWebController implements WebController {
-
+	
+	WebHandler webHandler = new WebHandler();
     public ShoppingWebController() {
     }
 
@@ -108,7 +109,7 @@ public class ShoppingWebController implements WebController {
             scEjb.remove();
         } catch(RemoveException re){
             // ignore, after all its only a remove() call!
-            Debug.print(re);
+        	webHandler.destroyHandler(re);
         }
     }
 

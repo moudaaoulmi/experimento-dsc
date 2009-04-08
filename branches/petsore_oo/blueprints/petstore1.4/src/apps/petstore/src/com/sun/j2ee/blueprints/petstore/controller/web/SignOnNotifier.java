@@ -80,6 +80,8 @@ public class SignOnNotifier
    implements java.io.Serializable, HttpSessionAttributeListener {
 
 
+	WebHandler webHandler = new WebHandler();
+	
     public SignOnNotifier() { }
 
 
@@ -128,7 +130,8 @@ public class SignOnNotifier
               try {
                   wc.handleEvent(soe, session);
               } catch (EventException e) {
-                  System.err.println("SignOnNotifier Error handling event " + e);
+//                  System.err.println("SignOnNotifier Error handling event " + e);
+            	  	webHandler.processEventHandler(e);	
               }
               CustomerLocal customer =  sl.getCustomer(session);
               // ensure the customer object is put in the session

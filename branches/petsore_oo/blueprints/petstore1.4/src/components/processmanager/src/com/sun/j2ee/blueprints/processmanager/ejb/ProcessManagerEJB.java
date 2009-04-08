@@ -54,6 +54,7 @@ import com.sun.j2ee.blueprints.processmanager.manager.ejb.ManagerLocalHome;
 
 public class ProcessManagerEJB implements SessionBean {
 
+	EjbHandler ejbHandler = new EjbHandler();
     private static final String MANAGER_HOME_ENV_NAME = "java:comp/env/ejb/Manager";
 
     private ManagerLocalHome mlh;
@@ -95,7 +96,7 @@ public class ProcessManagerEJB implements SessionBean {
          ic = new InitialContext();
          mlh = (ManagerLocalHome) ic.lookup(MANAGER_HOME_ENV_NAME);
       } catch (NamingException ne) {
-         throw new EJBException("Got naming exception! " + ne.getMessage());
+    	  ejbHandler.ejbCreateHandler(ne);
       }
     }
 

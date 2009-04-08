@@ -75,7 +75,8 @@ import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
 
 public class CreateUserEJBAction extends EJBActionSupport {
 
-  public EventResponse perform(Event e) throws EventException {
+	ActionsHandler actionsHandler = new ActionsHandler();
+	public EventResponse perform(Event e) throws EventException {
       CreateUserEvent cue = (CreateUserEvent)e;
 
          SignOnLocal signOn = null;
@@ -86,9 +87,9 @@ public class CreateUserEJBAction extends EJBActionSupport {
             SignOnLocalHome home =(SignOnLocalHome)sl.getLocalHome(JNDINames.SIGN_ON_EJBHOME);
             signOn = home.create();
          } catch (ServiceLocatorException  slx) {
-             throw new DuplicateAccountException("Failed to Create SignOn EJB: caught " + slx);
+        	 actionsHandler.perform1Handler(slx);
          } catch (CreateException cx) {
-             throw new DuplicateAccountException("Failed to Create SignOn EJB: caught " + cx);
+        	 actionsHandler.perform1Handler(cx);
          }
         try {
              signOn.createUser(userName, password);
@@ -97,7 +98,7 @@ public class CreateUserEJBAction extends EJBActionSupport {
              scf = (ShoppingClientFacadeLocal)machine.getAttribute(PetstoreKeys.SHOPPING_CLIENT_FACADE);
              scf.setUserId(userName);
         } catch (CreateException ce) {
-            throw new DuplicateAccountException("Bad UserName or password");
+        	actionsHandler.perform2Handler();
         }
         return null;
   }

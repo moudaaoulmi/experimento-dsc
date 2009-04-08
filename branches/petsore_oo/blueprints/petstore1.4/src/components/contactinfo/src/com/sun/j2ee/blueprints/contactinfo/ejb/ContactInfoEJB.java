@@ -51,6 +51,7 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
 public abstract class ContactInfoEJB implements javax.ejb.EntityBean {
 
+  EjbHandler ejbHandler = new EjbHandler();
   private EntityContext context = null;
 
   // getters and setters for CMP fields
@@ -86,7 +87,8 @@ public abstract class ContactInfoEJB implements javax.ejb.EntityBean {
       AddressLocal address = adh.create();
       setAddress(address);
     } catch (ServiceLocatorException ne) {
-      throw new CreateException("ContactInfoEJB error: ServiceLocator exception looking up address");
+//      throw new CreateException("ContactInfoEJB error: ServiceLocator exception looking up address");
+    	ejbHandler.postCreateHandler();
     }
   }
 
@@ -122,7 +124,8 @@ public abstract class ContactInfoEJB implements javax.ejb.EntityBean {
       AddressLocal address = adh.create(contactInfo.getAddress());
       setAddress(address);
     } catch (ServiceLocatorException ne) {
-      throw new CreateException("ContactInfoEJB error: ServiceLocator exception looking up address");
+//      throw new CreateException("ContactInfoEJB error: ServiceLocator exception looking up address");
+    	ejbHandler.postCreateHandler();
     }
   }
 
