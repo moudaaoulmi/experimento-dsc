@@ -44,6 +44,7 @@ import javax.jms.*;
  */
 public class QueueHelper implements java.io.Serializable {
 
+	TransitionsHandler transitionsHandler = new TransitionsHandler();
     private Queue q;
     private QueueConnectionFactory qFactory;
 
@@ -74,13 +75,9 @@ public class QueueHelper implements java.io.Serializable {
             jmsMsg.setText(xmlMessage);
             qSender.send(jmsMsg);
         } finally {
-            try {
-                if(qConnect != null) {
-                    qConnect.close();
-                }
-            } catch(Exception e) {
-            System.err.println("OPC.QueueHelper GOT EXCEPTION closing connection" + e);
-          }
+
+        	transitionsHandler.sendMessageHandler(qConnect);
+        	
         }
     }
 }

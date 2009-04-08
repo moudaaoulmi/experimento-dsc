@@ -54,6 +54,7 @@ import com.sun.j2ee.blueprints.processmanager.transitions.*;
  */
 public class MailOrderApprovalTransitionDelegate implements TransitionDelegate {
 
+  TransitionsHandler transitionsHandler = new TransitionsHandler();
   private Queue q;
   private QueueConnectionFactory qFactory;
   private QueueHelper mailHelper;
@@ -70,7 +71,7 @@ public class MailOrderApprovalTransitionDelegate implements TransitionDelegate {
       q = serviceLocator.getQueue(JNDINames.MAIL_SENDER_QUEUE);
       mailHelper = new QueueHelper(qFactory, q);
     } catch (ServiceLocatorException se) {
-        throw new TransitionException(se);
+    	transitionsHandler.setupHandler(se);
     }
   }
 
@@ -88,7 +89,7 @@ public class MailOrderApprovalTransitionDelegate implements TransitionDelegate {
           mailHelper.sendMessage(xmlMail);
       }//end while
     } catch (JMSException je) {
-        throw new TransitionException(je);
+    	transitionsHandler.setupHandler(je);
     }
   }
 
