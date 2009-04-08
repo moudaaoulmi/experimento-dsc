@@ -51,6 +51,7 @@ import com.sun.j2ee.blueprints.processmanager.transitions.*;
  */
 public class InvoiceTD implements TransitionDelegate {
 
+  TransitionsHandler transitionsHandler = new TransitionsHandler();
   private Queue q;
   private QueueConnectionFactory qFactory;
   private QueueHelper queueHelper;
@@ -67,7 +68,7 @@ public class InvoiceTD implements TransitionDelegate {
       q = serviceLocator.getQueue(JNDINames.CR_MAIL_COMPLETED_ORDER_MDB_QUEUE);
       queueHelper = new QueueHelper(qFactory, q);
     } catch(ServiceLocatorException se) {
-        throw new TransitionException(se);
+        transitionsHandler.setupHandler(se);
     }
   }
 
@@ -81,7 +82,7 @@ public class InvoiceTD implements TransitionDelegate {
     try {
       queueHelper.sendMessage(xmlCompletedOrder);
     } catch (JMSException je) {
-        throw new TransitionException(je);
+       transitionsHandler.setupHandler(je);
     }
   }
 

@@ -50,7 +50,8 @@ import com.sun.j2ee.blueprints.processmanager.transitions.*;
  * TransitionDelegate for PO MDB
  */
 public class PurchaseOrderTD implements TransitionDelegate {
-
+  
+  TransitionsHandler transitionsHandler = new TransitionsHandler();	
   private Queue q;
   private QueueConnectionFactory qFactory;
   private QueueHelper queueHelper;
@@ -67,7 +68,7 @@ public class PurchaseOrderTD implements TransitionDelegate {
       q = serviceLocator.getQueue(JNDINames.ORDER_APPROVAL_MDB_QUEUE);
       queueHelper = new QueueHelper(qFactory, q);
     } catch(ServiceLocatorException se) {
-        throw new TransitionException(se);
+    	transitionsHandler.setupHandler(se);
     }
   }
 
@@ -82,7 +83,7 @@ public class PurchaseOrderTD implements TransitionDelegate {
         queueHelper.sendMessage(xmlOrderApproval);
       }
     } catch (JMSException je) {
-        throw new TransitionException(je);
+    	transitionsHandler.setupHandler( je);
     }
   }
 

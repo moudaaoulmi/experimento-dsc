@@ -54,6 +54,7 @@ import com.sun.j2ee.blueprints.processmanager.transitions.*;
  */
 public class OrderApprovalTD implements TransitionDelegate {
 
+  TransitionsHandler transitionsHandler = new TransitionsHandler();
   private QueueConnectionFactory qFactory;
   private Queue mailQueue;
   private Queue supplierPoQueue;
@@ -72,7 +73,7 @@ public class OrderApprovalTD implements TransitionDelegate {
       mailQueueHelper     = new QueueHelper(qFactory, mailQueue);
       supplierQueueHelper = new QueueHelper(qFactory, supplierPoQueue);
     } catch(ServiceLocatorException se) {
-        throw new TransitionException(se);
+    	transitionsHandler.setupHandler(se);
     }
   }
 
@@ -98,7 +99,8 @@ public class OrderApprovalTD implements TransitionDelegate {
        //send the list of valid order approval/deny to customer relations
        sendMail(xmlMailOrderApprovals);
      } catch(JMSException je) {
-        throw new TransitionException(je);
+//        throw new TransitionException(je);
+    	 transitionsHandler.setupHandler(je);
     }
 
   }
