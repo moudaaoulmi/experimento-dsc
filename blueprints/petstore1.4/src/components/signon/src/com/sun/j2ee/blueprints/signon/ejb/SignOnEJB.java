@@ -57,12 +57,8 @@ public class SignOnEJB implements SessionBean {
     private UserLocalHome ulh = null;
 
     public void ejbCreate() throws CreateException {
-      try {
-        ic = new InitialContext();
-        ulh = (UserLocalHome) ic.lookup(USER_HOME_ENV_NAME);
-      } catch (NamingException ne) {
-         throw new EJBException("SignOnEJB Got naming exception! " + ne.getMessage());
-      }
+       ic = new InitialContext();
+       ulh = (UserLocalHome) ic.lookup(USER_HOME_ENV_NAME);
     }
 
     /**

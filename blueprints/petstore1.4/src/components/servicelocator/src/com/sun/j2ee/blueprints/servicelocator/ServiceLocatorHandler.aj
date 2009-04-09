@@ -4,7 +4,6 @@
 package com.sun.j2ee.blueprints.servicelocator;
 
 import javax.naming.NamingException;
-
 import org.aspectj.lang.SoftException;
 
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
@@ -14,6 +13,25 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
  */
 public aspect ServiceLocatorHandler {
 	
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
+	declare soft : NamingException : ServiceLocatorEjbHandler() ||
+		ServiceLocatorWebHandler() || 
+		getLocalHomeHandler() ||
+		getRemoteHomeHandler() || 
+		getQueueConnectionFactoryHandler() ||
+		getQueueHandler() ||
+		getTopicConnectionFactoryHandler() || 
+		getTopicHandler() ||
+		getDataSourceHandler() ||
+		getUrlHandler() ||
+		getBooleanHandler() || 
+		getStringHandler();
+	
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** ServiceLocator ***/
 	pointcut ServiceLocatorEjbHandler() : 
 		execution(com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator.new()) ;
@@ -42,37 +60,31 @@ public aspect ServiceLocatorHandler {
 		execution(public boolean com.sun.j2ee.blueprints.servicelocator.*.ServiceLocator.getBoolean(String));
 	pointcut getStringHandler() : 
 		execution(public String com.sun.j2ee.blueprints.servicelocator.*.ServiceLocator.getString(String));
-	
-	
-	
-	declare soft : NamingException : ServiceLocatorEjbHandler() ||
-		ServiceLocatorWebHandler() || 
+
+	// ---------------------------
+    // Advice's
+    // ---------------------------			
+	Object around() throws ServiceLocatorException : 
+		ServiceLocatorEjbHandler() ||
 		getLocalHomeHandler() ||
-		getRemoteHomeHandler() || 
+		getRemoteHomeHandler() ||
 		getQueueConnectionFactoryHandler() ||
 		getQueueHandler() ||
-		getTopicConnectionFactoryHandler() || 
+		getTopicConnectionFactoryHandler() ||
 		getTopicHandler() ||
 		getDataSourceHandler() ||
 		getUrlHandler() ||
-		getBooleanHandler() || 
-		getStringHandler();
-		
-
-				
-	after() throwing(Exception e) throws ServiceLocatorException : 
-		ServiceLocatorEjbHandler() || 
-		getLocalHomeHandler() || 
-		getRemoteHomeHandler() || 
-		getQueueConnectionFactoryHandler() || 
-		getQueueHandler() ||
-		getTopicConnectionFactoryHandler() || 
-		getTopicHandler() ||
-		getDataSourceHandler() ||
-		getUrlHandler() ||
-		getBooleanHandler() || 
-		getStringHandler() {	
-		throw new ServiceLocatorException(e);
+		getBooleanHandler() ||
+		getStringHandler(){
+		Object result = null;
+		try{
+			result = proceed();
+		} catch (NamingException ne) {
+            throw new ServiceLocatorException(ne);
+       } catch (Exception e) {
+            throw new ServiceLocatorException(e);
+       }
+		return result;
 	}
 	
 	void around() : ServiceLocatorWebHandler(){

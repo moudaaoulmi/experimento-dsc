@@ -91,12 +91,8 @@ public class ProcessManagerEJB implements SessionBean {
     }
 
     public void ejbCreate() throws CreateException {
-      try {
-         ic = new InitialContext();
-         mlh = (ManagerLocalHome) ic.lookup(MANAGER_HOME_ENV_NAME);
-      } catch (NamingException ne) {
-         throw new EJBException("Got naming exception! " + ne.getMessage());
-      }
+    	ic = new InitialContext();
+    	mlh = (ManagerLocalHome) ic.lookup(MANAGER_HOME_ENV_NAME);
     }
 
     // Misc Method
