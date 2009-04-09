@@ -81,6 +81,8 @@ public class DataSource {
 
         private SwingPropertyChangeSupport pcs = new
         SwingPropertyChangeSupport(this);
+        
+        private ClientHandler clientHandler = new ClientHandler();
 
         /** Property identifying that the orders data has changed. */
         public static final String ORDER_DATA_CHANGED = "ORDER_DATA_CHANGED";
@@ -107,11 +109,11 @@ public class DataSource {
                 server.setup(hostname, port, endpoint);
                 this.parent = parent;
             } catch (ClassNotFoundException cnfe) {
-                cnfe.printStackTrace();
+                this.clientHandler.printStackTraceHandler(cnfe);
             } catch (InstantiationException ie) {
-                ie.printStackTrace();
+            	this.clientHandler.printStackTraceHandler(ie);
             } catch (IllegalAccessException iae) {
-                iae.printStackTrace();
+            	this.clientHandler.printStackTraceHandler(iae);
             }
         }
 
@@ -345,7 +347,7 @@ public class DataSource {
                         try {
                             result = new Integer(order.getId());
                         } catch (NumberFormatException e) {
-                            result = new Integer(-1);
+                            result =clientHandler.getValueAtHandler();
                         }
                         break;
                     case 1:

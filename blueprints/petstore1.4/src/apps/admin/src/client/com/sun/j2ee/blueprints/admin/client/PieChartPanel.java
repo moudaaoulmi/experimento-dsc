@@ -65,6 +65,8 @@ public class PieChartPanel extends JPanel implements PropertyChangeListener {
     private DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     private DecimalFormat df;
     private JButton submitButton;
+    
+    private ClientHandler clientHandler = new ClientHandler();
 
     public PieChartPanel(DataSource.PieChartModel pieChartModel) {
         // Create and set up the decimal format to format floating point
@@ -120,11 +122,8 @@ public class PieChartPanel extends JPanel implements PropertyChangeListener {
             endDate =
                 dateFormat.parse(endDateTxtField.getText());
         } catch (ParseException e) {
-            JOptionPane.showMessageDialog(this,
-                PetStoreAdminClient.getString("DateFormatErrorDialog.message"),
-                PetStoreAdminClient.getString("DateFormatErrorDialog.title"),
-                JOptionPane.ERROR_MESSAGE);
-            return;
+           this.clientHandler.updateModelDatesHandler(this);
+           return;
         }
 
         // Setting the dates will automatically retrieve the data from the

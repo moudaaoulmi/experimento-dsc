@@ -67,128 +67,131 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 import com.sun.j2ee.blueprints.processmanager.transitions.*;
 
-
 /**
- * MailOrderApprovalMDB receives a JMS message containing an OrderApproval
- * xml message that has a list of user's orders that . It builds a mail
- * message pr each order that it then sends to the mailer service so that
- * the customer gets email
+ * MailOrderApprovalMDB receives a JMS message containing an OrderApproval xml
+ * message that has a list of user's orders that . It builds a mail message pr
+ * each order that it then sends to the mailer service so that the customer gets
+ * email
  */
 public class MailOrderApprovalMDB implements MessageDrivenBean, MessageListener {
 
-  private static final String MAIL_SUBJECT = "Java Pet Store Order Status: ";
-  private static final String ORDER_APPROVAL_STYLE_SHEET =
-                "/com/sun/j2ee/blueprints/opc/rsrc/xsl/OrderApproval.xsl";
-  private Context context;
-  private MessageDrivenContext mdc = null;
-  private boolean sendConfirmationMail = false;
-  private MailContentXDE mailContentXDE;
-  private TransitionDelegate transitionDelegate;
-  private PurchaseOrderLocalHome  poHome;
-  private URL entityCatalogURL;
-  private boolean validateXmlOrderApproval;
+	private static final String MAIL_SUBJECT = "Java Pet Store Order Status: ";
+	private static final String ORDER_APPROVAL_STYLE_SHEET = "/com/sun/j2ee/blueprints/opc/rsrc/xsl/OrderApproval.xsl";
+	private Context context;
+	private MessageDrivenContext mdc = null;
+	private boolean sendConfirmationMail = false;
+	private MailContentXDE mailContentXDE;
+	private TransitionDelegate transitionDelegate;
+	private PurchaseOrderLocalHome poHome;
+	private URL entityCatalogURL;
+	private boolean validateXmlOrderApproval;
 
+	private EjbHandler ejbHandler = new EjbHandler();
 
-  public MailOrderApprovalMDB() {
-  }
+	public MailOrderApprovalMDB() {
+	}
 
-  public void ejbCreate() {
-    try {
-      ServiceLocator serviceLocator   = new ServiceLocator();
-      sendConfirmationMail = serviceLocator.getBoolean(JNDINames.SEND_APPROVAL_MAIL);
-      poHome = (PurchaseOrderLocalHome)serviceLocator.getLocalHome(JNDINames.PURCHASE_ORDER_EJB);
-      entityCatalogURL = serviceLocator.getUrl(JNDINames.XML_ENTITY_CATALOG_URL);
-      validateXmlOrderApproval = serviceLocator.getBoolean(JNDINames.XML_VALIDATION_ORDER_APPROVAL);
-      transitionDelegate = new MailOrderApprovalTransitionDelegate();
-      transitionDelegate.setup();
-      mailContentXDE = new MailContentXDE(ORDER_APPROVAL_STYLE_SHEET);
-    } catch (ServiceLocatorException se) {
-      throw new EJBException(se);
-    } catch (TransitionException te) {
-      throw new EJBException(te);
-    } catch (MailContentXDE.FormatterException exception) {
-      throw new EJBException(exception);
-    }
-  }
+	public void ejbCreate() {
+		try {
+			ServiceLocator serviceLocator = new ServiceLocator();
+			sendConfirmationMail = serviceLocator
+					.getBoolean(JNDINames.SEND_APPROVAL_MAIL);
+			poHome = (PurchaseOrderLocalHome) serviceLocator
+					.getLocalHome(JNDINames.PURCHASE_ORDER_EJB);
+			entityCatalogURL = serviceLocator
+					.getUrl(JNDINames.XML_ENTITY_CATALOG_URL);
+			validateXmlOrderApproval = serviceLocator
+					.getBoolean(JNDINames.XML_VALIDATION_ORDER_APPROVAL);
+			transitionDelegate = new MailOrderApprovalTransitionDelegate();
+			transitionDelegate.setup();
+			mailContentXDE = new MailContentXDE(ORDER_APPROVAL_STYLE_SHEET);
+		} catch (ServiceLocatorException se) {
+			this.ejbHandler.throwEJBExceptionHandler(se);
+		} catch (TransitionException te) {
+			this.ejbHandler.throwEJBExceptionHandler(te);
+		} catch (MailContentXDE.FormatterException exception) {
+			this.ejbHandler.throwEJBExceptionHandler(exception);
+		}
+	}
 
-  /**
-   * Receive a JMS Message containing the OrderApproval xml to
-   * generate Mail xml messages for each customer in the list.
-   * The Mail xml mesages contain html presentation
-   */
-  public void onMessage(Message recvMsg) {
-    TextMessage recdTM = null;
-    String recdText = null;
-    Collection result = null;
+	/**
+	 * Receive a JMS Message containing the OrderApproval xml to generate Mail
+	 * xml messages for each customer in the list. The Mail xml mesages contain
+	 * html presentation
+	 */
+	public void onMessage(Message recvMsg) {
+		TextMessage recdTM = null;
+		String recdText = null;
+		Collection result = null;
 
-    try {
-      recdTM = (TextMessage)recvMsg;
-      recdText = recdTM.getText();
-      if (sendConfirmationMail) {
-        result = doWork(recdText);
-        doTransition(result);
-      }
-    } catch(XMLDocumentException xde) {
-      throw new EJBException(xde);
-    } catch(TransitionException te) {
-      throw new EJBException(te);
-    } catch  (JMSException je) {
-      throw new EJBException(je);
-    } catch (MailContentXDE.FormatterException mfe) {
-      throw new EJBException(mfe);
-    } catch  (FinderException fe) {
-      throw new EJBException(fe);
-    }
-  }
+		try {
+			recdTM = (TextMessage) recvMsg;
+			recdText = recdTM.getText();
+			if (sendConfirmationMail) {
+				result = doWork(recdText);
+				doTransition(result);
+			}
+		} catch (XMLDocumentException xde) {
+			this.ejbHandler.throwEJBExceptionHandler(xde);
+		} catch (TransitionException te) {
+			this.ejbHandler.throwEJBExceptionHandler(te);
+		} catch (JMSException je) {
+			this.ejbHandler.throwEJBExceptionHandler(je);
+		} catch (MailContentXDE.FormatterException mfe) {
+			this.ejbHandler.throwEJBExceptionHandler(mfe);
+		} catch (FinderException fe) {
+			this.ejbHandler.throwEJBExceptionHandler(fe);
+		}
+	}
 
-  public void setMessageDrivenContext(MessageDrivenContext mdc) {
-    this.mdc = mdc;
-  }
+	public void setMessageDrivenContext(MessageDrivenContext mdc) {
+		this.mdc = mdc;
+	}
 
-  public void ejbRemove() {
-  }
+	public void ejbRemove() {
+	}
 
-  /**
-   * update PO EJB based on list of order status updates and approvals
-   * Also call the doTransition method for each order, so that the customer
-   * will receive an email.
-   */
-  private Collection doWork(String xmlMessage) throws JMSException,
-                                                XMLDocumentException,
-                                                MailContentXDE.FormatterException,
-                                                FinderException,
-                                                TransitionException {
+	/**
+	 * update PO EJB based on list of order status updates and approvals Also
+	 * call the doTransition method for each order, so that the customer will
+	 * receive an email.
+	 */
+	private Collection doWork(String xmlMessage) throws JMSException,
+			XMLDocumentException, MailContentXDE.FormatterException,
+			FinderException, TransitionException {
 
-      ArrayList mailingList = new ArrayList();
-      PurchaseOrderLocal po = null;
-      OrderApproval approval = OrderApproval.fromXML(xmlMessage, entityCatalogURL, validateXmlOrderApproval);
+		ArrayList mailingList = new ArrayList();
+		PurchaseOrderLocal po = null;
+		OrderApproval approval = OrderApproval.fromXML(xmlMessage,
+				entityCatalogURL, validateXmlOrderApproval);
 
-      Collection coll = approval.getOrdersList();
-      Iterator it = coll.iterator();
-      while(it!= null && it.hasNext()) {
-        ChangedOrder co = (ChangedOrder) it.next();
-        String subject = MAIL_SUBJECT +  co.getOrderId();
-        po = poHome.findByPrimaryKey(co.getOrderId());
-        String emailAddress = po.getPoEmailId();
-        mailContentXDE.setDocument(new DOMSource(co.toDOM()));
-        mailContentXDE.setLocale(LocaleUtil.getLocaleFromString(po.getPoLocale()));
-        String message = mailContentXDE.getDocumentAsString();
+		Collection coll = approval.getOrdersList();
+		Iterator it = coll.iterator();
+		while (it != null && it.hasNext()) {
+			ChangedOrder co = (ChangedOrder) it.next();
+			String subject = MAIL_SUBJECT + co.getOrderId();
+			po = poHome.findByPrimaryKey(co.getOrderId());
+			String emailAddress = po.getPoEmailId();
+			mailContentXDE.setDocument(new DOMSource(co.toDOM()));
+			mailContentXDE.setLocale(LocaleUtil.getLocaleFromString(po
+					.getPoLocale()));
+			String message = mailContentXDE.getDocumentAsString();
 
-        //build  mail message as xml
-        Mail mailMsg = new Mail(emailAddress, subject, message);
-        String xmlMail = mailMsg.toXML();
-        mailingList.add(xmlMail);
+			// build mail message as xml
+			Mail mailMsg = new Mail(emailAddress, subject, message);
+			String xmlMail = mailMsg.toXML();
+			mailingList.add(xmlMail);
 
-      }//end while
-      return mailingList;
-  }
+		}// end while
+		return mailingList;
+	}
 
-  /**
-   * send a Mail message to mailer service, so customer gets an email
-   */
-  private void doTransition(Collection mailingList) throws TransitionException {
-    TransitionInfo info = new TransitionInfo(mailingList);
-    transitionDelegate.doTransition(info);
-  }
+	/**
+	 * send a Mail message to mailer service, so customer gets an email
+	 */
+	private void doTransition(Collection mailingList)
+			throws TransitionException {
+		TransitionInfo info = new TransitionInfo(mailingList);
+		transitionDelegate.doTransition(info);
+	}
 }
-

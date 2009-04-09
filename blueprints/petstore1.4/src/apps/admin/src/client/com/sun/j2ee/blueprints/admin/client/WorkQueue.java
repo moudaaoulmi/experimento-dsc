@@ -43,6 +43,8 @@ public class WorkQueue
 {
     private final List queue = new LinkedList();
     private boolean stopped = false;
+    
+    private ClientHandler clientHandler = new ClientHandler();
 
 
     public WorkQueue(String name) {
@@ -77,7 +79,7 @@ public class WorkQueue
                             queue.wait();
                     }
                     catch(InterruptedException e) {
-                        stopped = true;
+                        stopped = clientHandler.workerThreadHandler();
                     }
                     if (stopped) {
                         return;

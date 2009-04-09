@@ -96,7 +96,7 @@
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/appserv-rt_zh_CN.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/appserv-tags.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/appserv-upgrade.jar"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/Auditório/Desktop/aspectjlib.jar"/>
+	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/aspectjlib.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/aspectjtools.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/aspectjweaver.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/commons-launcher.jar"/>

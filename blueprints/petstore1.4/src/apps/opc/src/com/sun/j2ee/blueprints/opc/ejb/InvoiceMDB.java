@@ -44,14 +44,11 @@ import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 import javax.ejb.MessageDrivenBean;
 import javax.ejb.MessageDrivenContext;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.naming.Context;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-
 import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrderHelper;
 import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrderLocalHome;
 import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrderLocal;
@@ -64,123 +61,132 @@ import com.sun.j2ee.blueprints.processmanager.transitions.*;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 
-
 /**
- * InvoiceMDB receives a JMS message containing an Invoice
- * for a user order. It updates the Purchase Order EJB based
- * on the invoice information.
+ * InvoiceMDB receives a JMS message containing an Invoice for a user order. It
+ * updates the Purchase Order EJB based on the invoice information.
  */
 public class InvoiceMDB implements MessageDrivenBean, MessageListener {
 
-  private Context context;
-  private MessageDrivenContext mdc;
-  private ProcessManagerLocal processManager;
-  private PurchaseOrderLocalHome  poHome;
-  private TPAInvoiceXDE invoiceXDE;
-  private TransitionDelegate transitionDelegate;
+	private Context context;
+	private MessageDrivenContext mdc;
+	private ProcessManagerLocal processManager;
+	private PurchaseOrderLocalHome poHome;
+	private TPAInvoiceXDE invoiceXDE;
+	private TransitionDelegate transitionDelegate;
 
-  public InvoiceMDB() {
-  }
+	private EjbHandler ejbHandler = new EjbHandler();
 
-  public void ejbCreate() {
-    try {
-      ServiceLocator serviceLocator = new ServiceLocator();
-      poHome = (PurchaseOrderLocalHome)serviceLocator.getLocalHome(JNDINames.PURCHASE_ORDER_EJB);
-      ProcessManagerLocalHome pmlh = (ProcessManagerLocalHome)serviceLocator.getLocalHome(JNDINames.PROCESS_MANAGER_EJB);
-      processManager = pmlh.create();
-      URL entityCatalogURL = serviceLocator.getUrl(JNDINames.XML_ENTITY_CATALOG_URL);
-      boolean validateXmlInvoice = serviceLocator.getBoolean(JNDINames.XML_VALIDATION_INVOICE);
-      invoiceXDE = new TPAInvoiceXDE(entityCatalogURL, validateXmlInvoice,
-                            serviceLocator.getBoolean(JNDINames.XML_XSD_VALIDATION));
-      transitionDelegate = new InvoiceTD();
-      transitionDelegate.setup();
-    } catch (TransitionException te) {
-        throw new EJBException(te);
-    } catch (ServiceLocatorException se) {
-        throw new EJBException(se);
-    } catch (CreateException ce) {
-        throw new EJBException(ce);
-    } catch (XMLDocumentException xde) {
-        throw new EJBException(xde);
-    }
-  }
+	public InvoiceMDB() {
+	}
 
-  /**
-   * InvoiceMDB receives a JMS message containing an Invoice
-   * for a user order. If all the order items have been shipped
-   * for the order, it updates the purchase order status to
-   * COMPLETED to end the purchase order fulfillment process.
-   * If the order is not yet all shipped, it updates the order
-   * status based on the invoice.
-   *
-   * @param recvMsg is the JMS message contaning the xml content for the invoice
-   */
-  public void onMessage(Message recvMsg) {
-    TextMessage recdTM = null;
-    String recdText = null;
-    try {
-      recdTM = (TextMessage)recvMsg;
-      recdText = recdTM.getText();
-      String joinMessage = doWork(recdText);
+	public void ejbCreate() {
+		try {
+			ServiceLocator serviceLocator = new ServiceLocator();
+			poHome = (PurchaseOrderLocalHome) serviceLocator
+					.getLocalHome(JNDINames.PURCHASE_ORDER_EJB);
+			ProcessManagerLocalHome pmlh = (ProcessManagerLocalHome) serviceLocator
+					.getLocalHome(JNDINames.PROCESS_MANAGER_EJB);
+			processManager = pmlh.create();
+			URL entityCatalogURL = serviceLocator
+					.getUrl(JNDINames.XML_ENTITY_CATALOG_URL);
+			boolean validateXmlInvoice = serviceLocator
+					.getBoolean(JNDINames.XML_VALIDATION_INVOICE);
+			invoiceXDE = new TPAInvoiceXDE(entityCatalogURL,
+					validateXmlInvoice, serviceLocator
+							.getBoolean(JNDINames.XML_XSD_VALIDATION));
+			transitionDelegate = new InvoiceTD();
+			transitionDelegate.setup();
+		} catch (TransitionException te) {
+			this.ejbHandler.throwEJBExceptionHandler(te);
+		} catch (ServiceLocatorException se) {
+			this.ejbHandler.throwEJBExceptionHandler(se);
+		} catch (CreateException ce) {
+			this.ejbHandler.throwEJBExceptionHandler(ce);
+		} catch (XMLDocumentException xde) {
+			this.ejbHandler.throwEJBExceptionHandler(xde);
+		}
+	}
 
-      //if order completed so join condition is met
-      if (joinMessage != null) {
-        doTransition(joinMessage);
-      }
-    } catch(TransitionException te) {
-      throw new EJBException(te);
-    } catch(XMLDocumentException xde) {
-      throw new EJBException(xde);
-    } catch  (JMSException je) {
-      throw new EJBException(je);
-    } catch  (FinderException fe) {
-      throw new EJBException(fe);
-    }
-  }
+	/**
+	 * InvoiceMDB receives a JMS message containing an Invoice for a user order.
+	 * If all the order items have been shipped for the order, it updates the
+	 * purchase order status to COMPLETED to end the purchase order fulfillment
+	 * process. If the order is not yet all shipped, it updates the order status
+	 * based on the invoice.
+	 * 
+	 * @param recvMsg
+	 *            is the JMS message contaning the xml content for the invoice
+	 */
+	public void onMessage(Message recvMsg) {
+		TextMessage recdTM = null;
+		String recdText = null;
+		try {
+			recdTM = (TextMessage) recvMsg;
+			recdText = recdTM.getText();
+			String joinMessage = doWork(recdText);
 
-  public void setMessageDrivenContext(MessageDrivenContext mdc) {
-    this.mdc = mdc;
-  }
+			// if order completed so join condition is met
+			if (joinMessage != null) {
+				doTransition(joinMessage);
+			}
+		} catch (TransitionException te) {
+			this.ejbHandler.throwEJBExceptionHandler(te);
+		} catch (XMLDocumentException xde) {
+			this.ejbHandler.throwEJBExceptionHandler(xde);
+		} catch (JMSException je) {
+			this.ejbHandler.throwEJBExceptionHandler(je);
+		} catch (FinderException fe) {
+			this.ejbHandler.throwEJBExceptionHandler(fe);
+		}
+	}
 
-  public void ejbRemove() {
-  }
+	public void setMessageDrivenContext(MessageDrivenContext mdc) {
+		this.mdc = mdc;
+	}
 
-  /**
-   * update POEJB to reflect items shipped, and also update Process Manager
-   * to completed or partially completed status based on  the items shipped
-   * in the order's invoice. If the join condition is met and all items are
-   * shipped, then send an order completed message to user
-   *
-   * @return orderMessage if order completed
-   *         else null if NOT completed
-   */
-  private String doWork(String xmlInvoice) throws XMLDocumentException, FinderException {
-    String completedOrder = null;
-    PurchaseOrderHelper poHelper = new PurchaseOrderHelper();
-    invoiceXDE.setDocument(xmlInvoice);
-    PurchaseOrderLocal po = poHome.findByPrimaryKey(invoiceXDE.getOrderId());
-    boolean orderDone = poHelper.processInvoice(po, invoiceXDE.getLineItemIds());
+	public void ejbRemove() {
+	}
 
-    //update process manager if this order is completely done, or partially done
-    //for this purchase order
-    if(orderDone) {
-      processManager.updateStatus(invoiceXDE.getOrderId(), OrderStatusNames.COMPLETED);
-      completedOrder = invoiceXDE.getOrderId();
-    } else {
-      processManager.updateStatus(invoiceXDE.getOrderId(), OrderStatusNames.SHIPPED_PART);
-    }
-    return completedOrder;
-  }
+	/**
+	 * update POEJB to reflect items shipped, and also update Process Manager to
+	 * completed or partially completed status based on the items shipped in the
+	 * order's invoice. If the join condition is met and all items are shipped,
+	 * then send an order completed message to user
+	 * 
+	 * @return orderMessage if order completed else null if NOT completed
+	 */
+	private String doWork(String xmlInvoice) throws XMLDocumentException,
+			FinderException {
+		String completedOrder = null;
+		PurchaseOrderHelper poHelper = new PurchaseOrderHelper();
+		invoiceXDE.setDocument(xmlInvoice);
+		PurchaseOrderLocal po = poHome
+				.findByPrimaryKey(invoiceXDE.getOrderId());
+		boolean orderDone = poHelper.processInvoice(po, invoiceXDE
+				.getLineItemIds());
 
-   /**
-   * Send a completed order message to the customer relations so that
-   * a mail can be generated and sent to the user informing them that
-   * their order has been completed
-   */
-  private void doTransition(String completedOrder) throws TransitionException {
-      TransitionInfo info = new TransitionInfo(completedOrder);
-      transitionDelegate.doTransition(info);
-  }
+		// update process manager if this order is completely done, or partially
+		// done
+		// for this purchase order
+		if (orderDone) {
+			processManager.updateStatus(invoiceXDE.getOrderId(),
+					OrderStatusNames.COMPLETED);
+			completedOrder = invoiceXDE.getOrderId();
+		} else {
+			processManager.updateStatus(invoiceXDE.getOrderId(),
+					OrderStatusNames.SHIPPED_PART);
+		}
+		return completedOrder;
+	}
+
+	/**
+	 * Send a completed order message to the customer relations so that a mail
+	 * can be generated and sent to the user informing them that their order has
+	 * been completed
+	 */
+	private void doTransition(String completedOrder) throws TransitionException {
+		TransitionInfo info = new TransitionInfo(completedOrder);
+		transitionDelegate.doTransition(info);
+	}
 
 }
-

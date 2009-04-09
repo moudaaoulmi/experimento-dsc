@@ -1,7 +1,6 @@
 package com.sun.j2ee.blueprints.petstore.controller.ejb;
 
 
-import javax.ejb.CreateException;
 
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
