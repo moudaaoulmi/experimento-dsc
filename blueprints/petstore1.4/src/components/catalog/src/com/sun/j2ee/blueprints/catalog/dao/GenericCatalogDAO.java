@@ -85,7 +85,7 @@ public class GenericCatalogDAO implements CatalogDAO {
   private static final String XML_SEARCH_ITEMS = "SEARCH_ITEMS";
   private Map sqlStatements = new HashMap();
 
-  /** Exception Handler Refactoring */
+  /** Exception Handler */
   DaoHandler daoHandler = new DaoHandler();
   
   public GenericCatalogDAO() throws CatalogDAOSysException {

@@ -89,7 +89,7 @@ public class ProfilePopulator {
       }
       return profileHome.create(preferredLanguage, favoriteCategory, myListPreference, bannerPreference);
     } catch (Exception exception) {
-      /** Exception Handler Refactoring */
+      /** Exception Handler  */
     	ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
     	toolPopulateHandler.createHandler(exception);
     	//throw new PopulateException ("Could not create: " + exception.getMessage(), exception);

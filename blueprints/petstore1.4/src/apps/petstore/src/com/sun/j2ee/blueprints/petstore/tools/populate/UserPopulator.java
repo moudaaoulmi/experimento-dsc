@@ -70,7 +70,7 @@ public class UserPopulator {
     return;
   }
   
-  /** Exception Handler Refactoring */
+  /** Exception Handler  */
   ToolPopulateHandler tooPopulateHandler = new ToolPopulateHandler();
 
   public XMLFilter setup(XMLReader reader) throws PopulateException {

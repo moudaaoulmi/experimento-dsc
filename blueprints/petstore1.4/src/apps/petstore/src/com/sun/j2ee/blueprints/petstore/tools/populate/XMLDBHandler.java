@@ -73,7 +73,7 @@ public abstract class XMLDBHandler extends XMLFilterImpl {
     return;
   }
   
-  /** Exception Handler Refactoring */
+  /** Exception Handler  */
   ToolPopulateHandler tooPopulateHandler = new ToolPopulateHandler();
 
   public void startDocument() throws SAXException {

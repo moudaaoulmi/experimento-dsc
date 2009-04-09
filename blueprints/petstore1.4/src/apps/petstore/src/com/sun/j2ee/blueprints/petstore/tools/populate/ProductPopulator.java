@@ -91,7 +91,7 @@ public class ProductPopulator {
     try {
       productDetailsPopulator.dropTables(connection);
     } catch (PopulateException exception) {
-    	/** Exception Handler Refacotring */
+    	/** Exception Handler */
     	ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
     	toolPopulateHandler.dropTablesHandler(exception);
     }
