@@ -90,7 +90,7 @@ public class CategoryPopulator {
     try {
       categoryDetailsPopulator.dropTables(connection);
     } catch (PopulateException exception) {
-    /** To Exception Handler refactoring */
+    /** Exception Handler */
    	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
    	 toolPopulateHandler.ignoreHandler();
    	}

@@ -1,7 +1,6 @@
 package com.sun.j2ee.blueprints.petstore.tools.populate;
 
 import org.xml.sax.SAXException;
-import java.lang.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;

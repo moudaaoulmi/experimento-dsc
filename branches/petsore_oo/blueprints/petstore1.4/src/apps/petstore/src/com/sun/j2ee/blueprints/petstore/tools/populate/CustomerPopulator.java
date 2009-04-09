@@ -93,7 +93,7 @@ public class CustomerPopulator {
         return false;
       }
     } catch (Exception e) {
-	 /** To Exception Handler refactoring */
+	 /**  Exception Handler  */
   	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
   	 toolPopulateHandler.checkHandler();
          // return false;
@@ -102,7 +102,7 @@ public class CustomerPopulator {
   }
 
   private CustomerLocal createCustomer(String id, AccountLocal account, ProfileLocal profile) throws PopulateException {
-  /** To Exception Handler refactoring */
+  /**  Exception Handler  */
    	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
    	 
 	try {

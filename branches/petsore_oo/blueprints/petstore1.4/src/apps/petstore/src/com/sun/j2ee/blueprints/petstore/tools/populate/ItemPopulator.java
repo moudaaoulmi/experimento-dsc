@@ -89,7 +89,7 @@ public class ItemPopulator {
     try {
       itemDetailsPopulator.dropTables(connection);
     } catch (PopulateException exception) {
-	/** To Exception Handler refactoring */
+	/**  Exception Handler  */
  	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
  	 toolPopulateHandler.ignoreHandler();
     }

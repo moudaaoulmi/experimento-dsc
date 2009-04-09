@@ -77,7 +77,7 @@ public final class PopulateUtils {
         statement.close();
         return result;
       } catch (SQLException exception) {
-    	  /** Exception Handler Refactoring */
+    	  /** Exception Handler  */
     	  ToolPopulateHandler toolPopularHandler = new ToolPopulateHandler();
     	  toolPopularHandler.executeSQLStatementHandler(exception);
        // throw new PopulateException(sqlStatement, exception);

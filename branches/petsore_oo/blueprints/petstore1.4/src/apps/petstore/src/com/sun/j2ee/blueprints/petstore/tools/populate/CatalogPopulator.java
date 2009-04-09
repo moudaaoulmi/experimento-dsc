@@ -73,7 +73,7 @@ public class CatalogPopulator {
   }
 
   public void dropTables(Connection connection) {
-  /** To Exception Handler refactoring */
+  /** Exception Handler  */
 	 ToolPopulateHandler toolPopulateHandlere = new ToolPopulateHandler();  
 	  
     try {

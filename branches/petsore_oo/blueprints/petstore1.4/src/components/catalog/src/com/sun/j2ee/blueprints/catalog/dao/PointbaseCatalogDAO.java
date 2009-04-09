@@ -109,7 +109,7 @@ public class PointbaseCatalogDAO implements CatalogDAO {
       ") )"
   };
   
-  /** Exception Handler Refactoring */
+  /** Exception Handler */
   DaoHandler daoHanlder = new DaoHandler();
 
   // Helper methods
