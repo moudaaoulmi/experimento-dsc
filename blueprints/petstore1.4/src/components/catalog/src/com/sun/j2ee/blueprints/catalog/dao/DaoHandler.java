@@ -13,14 +13,17 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 public class DaoHandler {
 	
 	//catch (NamingException ne)
-	public void getDAO1Handler(NamingException ne) throws CatalogDAOSysException{
-        throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:  NamingException while getting DAO type : \n" + ne.getMessage());
+	public void getDAOHandler(Exception ne) throws CatalogDAOSysException{
+        throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:"+ ne.getClass().getName() + "while getting DAO type : \n" + ne.getMessage());
     } 
 	
+	/**
+	 * Reusado
+	 * 
 	//catch (Exception se) 
 	public void getDAO2Handler(Exception se) throws CatalogDAOSysException{
         throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:  Exception while getting DAO type : \n" + se.getMessage());
-    }
+    }*/
 	
 	//catch (Exception exception) 
 	public void genericCatalogDAOHandler(Exception exception) throws CatalogDAOSysException{
