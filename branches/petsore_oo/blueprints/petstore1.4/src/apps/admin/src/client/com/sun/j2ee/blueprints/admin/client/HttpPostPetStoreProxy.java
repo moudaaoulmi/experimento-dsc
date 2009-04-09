@@ -68,6 +68,8 @@ public class HttpPostPetStoreProxy implements PetStoreProxy {
     private DocumentBuilder documentBuilder = null;
     private DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
+    private ClientHandler clientHandler = new ClientHandler();
+    
     public HttpPostPetStoreProxy() {
     }
 
@@ -77,14 +79,14 @@ public class HttpPostPetStoreProxy implements PetStoreProxy {
             url = new URL("http://" + host + ":" + port
                 + "/admin/ApplRequestProcessor;jsessionid=" + sessionID);
         } catch(MalformedURLException e) {
-            e.printStackTrace();
+            this.clientHandler.printStackTraceHandler(e);
             // TBD deal with exception - rethrow to main()
         }
 
         try {
             documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         } catch (Exception e) {
-            e.printStackTrace();
+        	this.clientHandler.printStackTraceHandler(e);
             // TBD deal with exception - rethrow to main()
         }
     }
@@ -127,25 +129,10 @@ public class HttpPostPetStoreProxy implements PetStoreProxy {
             InputSource src = new InputSource(new StringReader(sb.toString()));
             return documentBuilder.parse(src);
         } catch (Exception e) {
-            if (uc != null) {
-                uc.disconnect();
-            }
+           this.clientHandler.doHttpPostHandler(uc);
             return null;
         } finally { // Carefully close the input and output streams
-            if (ost != null) {
-                try {
-                    ost.close();
-                }
-                catch (IOException ignore) {
-                }
-            }
-            if (ist != null) {
-                try {
-                    ist.close();
-                }
-                catch (IOException ignore) {
-                }
-            }
+           this.clientHandler.doHttpPostFinallyHandler(ost, ist);
         }
     }
 
@@ -165,8 +152,7 @@ public class HttpPostPetStoreProxy implements PetStoreProxy {
         try {
             return node.getFirstChild().getNodeValue();
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        	 return this.clientHandler.getBodyHandler(e);
         }
     }
 
@@ -191,8 +177,7 @@ public class HttpPostPetStoreProxy implements PetStoreProxy {
             return dateFormat.parse(s, new ParsePosition(0));
         }
         catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        	 return this.clientHandler.getDateHandler(e);
         }
     }
 
@@ -217,8 +202,7 @@ public class HttpPostPetStoreProxy implements PetStoreProxy {
             return Integer.parseInt(s);
         }
         catch (Exception e) {
-            e.printStackTrace();
-            return -1;
+        	 return this.clientHandler.getIntHandler(e);
         }
     }
 
@@ -232,8 +216,7 @@ public class HttpPostPetStoreProxy implements PetStoreProxy {
             return Float.parseFloat(s);
         }
         catch (Exception e) {
-            e.printStackTrace();
-            return -1.0f;
+            return this.clientHandler.getFloatHandler(e);
         }
     }
 

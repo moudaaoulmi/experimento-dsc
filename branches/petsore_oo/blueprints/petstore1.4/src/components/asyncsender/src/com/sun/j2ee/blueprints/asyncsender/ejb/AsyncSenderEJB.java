@@ -39,63 +39,65 @@ package com.sun.j2ee.blueprints.asyncsender.ejb;
 
 import javax.jms.*;
 import javax.ejb.*;
-import javax.naming.NamingException;
-
 import com.sun.j2ee.blueprints.asyncsender.util.JNDINames;
 import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
-
 public class AsyncSenderEJB implements SessionBean {
 
-  private SessionContext sc;
-  private Queue q;
-  private QueueConnectionFactory qFactory;
+	private SessionContext sc;
+	private Queue q;
+	private QueueConnectionFactory qFactory;
 
+	private EjbHandler ejbHandler = new EjbHandler();
 
-  public AsyncSenderEJB() {}
+	public AsyncSenderEJB() {
+	}
 
-  public void ejbCreate( ) throws CreateException {
-        try {
-      ServiceLocator serviceLocator = new ServiceLocator();
-      qFactory = serviceLocator.getQueueConnectionFactory(JNDINames.QUEUE_CONNECTION_FACTORY);
-      q = serviceLocator.getQueue(JNDINames.ASYNC_SENDER_QUEUE);
-        } catch (ServiceLocatorException sle) {
-      throw new EJBException("AsyncSenderEJB.ejbCreate failed", sle);
-        }
-  }
+	public void ejbCreate() throws CreateException {
+		try {
+			ServiceLocator serviceLocator = new ServiceLocator();
+			qFactory = serviceLocator
+					.getQueueConnectionFactory(JNDINames.QUEUE_CONNECTION_FACTORY);
+			q = serviceLocator.getQueue(JNDINames.ASYNC_SENDER_QUEUE);
+		} catch (ServiceLocatorException sle) {
+			this.ejbHandler.throwEJBExceptionHandler(
+					"AsyncSenderEJB.ejbCreate failed", sle);
+		}
+	}
 
-  public void sendAMessage(String msg)  {
-    QueueSession session = null;
-    QueueConnection qConnect = null;
-    QueueSender qSender = null;
+	public void sendAMessage(String msg) {
+		QueueSession session = null;
+		QueueConnection qConnect = null;
+		QueueSender qSender = null;
 
-    try {
-      qConnect = qFactory.createQueueConnection();
-      session = qConnect.createQueueSession(true,0);
-      qSender = session.createSender(q);
-      TextMessage jmsMsg = session.createTextMessage();
-      jmsMsg.setText(msg);
-      qSender.send(jmsMsg);
-    }catch  (Exception e) {
-      e.printStackTrace();
-      throw new EJBException("askMDBToSendAMessage: Error!",e);
-    } finally {
-      try {
-                if( qConnect != null ) {
-          qConnect.close();
-                }
-      } catch(Exception e) {}
-        }
-  }
+		try {
+			qConnect = qFactory.createQueueConnection();
+			session = qConnect.createQueueSession(true, 0);
+			qSender = session.createSender(q);
+			TextMessage jmsMsg = session.createTextMessage();
+			jmsMsg.setText(msg);
+			qSender.send(jmsMsg);
+		} catch (Exception e) {
+			this.ejbHandler.printStackTraceHandler(e);
+			this.ejbHandler.throwEJBExceptionHandler(
+					"askMDBToSendAMessage: Error!", e);
+		} finally {
+			this.ejbHandler.sendAMessageFinallyHandler(qConnect);
+		}
+	}
 
-  public void setSessionContext(SessionContext sc) { }
+	public void setSessionContext(SessionContext sc) {
+	}
 
-  public void ejbRemove() { }
+	public void ejbRemove() {
+	}
 
-  //empty for stateless session EJBs
-  public void ejbActivate() { }
-  //empty for stateless session EJBs
-  public void ejbPassivate() { }
+	// empty for stateless session EJBs
+	public void ejbActivate() {
+	}
+
+	// empty for stateless session EJBs
+	public void ejbPassivate() {
+	}
 }
-

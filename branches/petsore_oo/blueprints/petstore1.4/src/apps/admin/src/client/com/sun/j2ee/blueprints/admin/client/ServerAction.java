@@ -85,6 +85,9 @@ public class ServerAction extends AbstractAction
      * See getWorkQueue().
      */
     private static WorkQueue workQueue = null;
+    
+    private ClientHandler clientHandler = new ClientHandler();
+
 
     /* This field holds the value returned by the request method
      * and then passed to the response method.  Access to the field
@@ -145,18 +148,15 @@ public class ServerAction extends AbstractAction
      */
     public void actionPerformed(final ActionEvent actionEvent)
     {
+    	final ServerAction server = this; // variavel utilizada para prover o tratamento...
+    	
         final Runnable doRequest = new Runnable() {
             public void run() {
                 try {
                     setValue(request(actionEvent));
                 }
                 catch (final Exception e) {
-                    Runnable doHandleException = new Runnable() {
-                        public void run() {
-                            handleException(e);
-                        }
-                    };
-                    EventQueue.invokeLater(doHandleException);
+                    clientHandler.actionPerformedHandler(e,server);
                 }
                 Runnable doResponse = new Runnable() {
                     public void run() {
@@ -164,7 +164,7 @@ public class ServerAction extends AbstractAction
                     }
                 };
                 EventQueue.invokeLater(doResponse);
-            }
+            }			
         };
 
         getWorkQueue().enqueue(doRequest);

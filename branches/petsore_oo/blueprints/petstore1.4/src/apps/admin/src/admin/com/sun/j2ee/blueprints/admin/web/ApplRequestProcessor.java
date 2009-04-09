@@ -72,6 +72,7 @@ public class ApplRequestProcessor extends HttpServlet {
 
     String replyHeader = "<?xml version=\"1.0\" standalone=\"yes\"?>\n" +
         "<Response>\n";
+    private WebHandler webHandler =  new WebHandler();
 
     // Servlet classes start here
 
@@ -147,19 +148,13 @@ public class ApplRequestProcessor extends HttpServlet {
             }
         }
         catch (ParserConfigurationException pe) {
-            return replyHeader +
-                "<Error>Exception while processing :  " + pe.getMessage() +
-                ". Please try again</Error>\n</Response>\n";
+            return this.webHandler.messageExeptionHandler(pe, replyHeader);
         }
         catch (SAXException se) {
-            return replyHeader +
-                "<Error>Exception while processing :  " + se.getMessage() +
-                ". Please try again</Error>\n</Response>\n";
+            return this.webHandler.messageExeptionHandler(se, replyHeader);
         }
         catch (IOException ie) {
-            return replyHeader +
-                "<Error>Exception while processing :  " + ie.getMessage() +
-                ". Please try again</Error>\n</Response>\n";
+            return this.webHandler.messageExeptionHandler(ie, replyHeader);
         }
     }
 
@@ -197,8 +192,7 @@ public class ApplRequestProcessor extends HttpServlet {
             return responseBuffer.toString();
         }
         catch (AdminBDException e) {
-            e.printStackTrace();
-            return null;
+          return this.webHandler.printStackTraceHandler(e);
         }
     }
 
@@ -230,9 +224,7 @@ public class ApplRequestProcessor extends HttpServlet {
                 + "<Status>SUCCESS</Status>\n"
                 + "</Response>\n";
         } catch (AdminBDException e) {
-            return replyHeader
-                + "<Error>Exception while processing :  " + e.getMessage()
-                + ". Please try again</Error>\n</Response>\n";
+            return this.webHandler.messageExeptionHandler(e, replyHeader);
         }
     }
 
@@ -299,8 +291,7 @@ public class ApplRequestProcessor extends HttpServlet {
             return responseBuffer.toString();
         }
         catch (AdminBDException e) {
-            e.printStackTrace();
-            return null;
+        	 return this.webHandler.printStackTraceHandler(e);
         }
     }
 

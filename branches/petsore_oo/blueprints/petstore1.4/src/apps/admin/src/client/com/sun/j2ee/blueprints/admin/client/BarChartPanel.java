@@ -49,6 +49,8 @@ import java.util.Date;
 import javax.swing.*;
 import javax.swing.border.SoftBevelBorder;
 
+
+
 /**
  * Panel that displays a bar chart defined by the given data model.
  * TODO: Refactor panel code to support both chart types.
@@ -62,6 +64,8 @@ public class BarChartPanel extends JPanel implements PropertyChangeListener {
     private JTextField endDateTxtField;
     private DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     private JButton submitButton;
+    
+    private ClientHandler clientHandler = new ClientHandler();
 
     public BarChartPanel(DataSource.BarChartModel barChartModel) {
         this.barChartModel = barChartModel;
@@ -111,10 +115,7 @@ public class BarChartPanel extends JPanel implements PropertyChangeListener {
             endDate =
                 dateFormat.parse(endDateTxtField.getText());
         } catch (ParseException e) {
-            JOptionPane.showMessageDialog(this,
-                PetStoreAdminClient.getString("DateFormatErrorDialog.message"),
-                PetStoreAdminClient.getString("DateFormatErrorDialog.title"),
-                JOptionPane.ERROR_MESSAGE);
+        	this.clientHandler.updateModelDatesHandler(this);
             return;
         }
 

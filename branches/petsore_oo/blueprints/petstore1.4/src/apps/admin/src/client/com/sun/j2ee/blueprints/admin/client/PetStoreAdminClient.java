@@ -269,9 +269,9 @@ public class PetStoreAdminClient extends JFrame
         try {
             result = getResourceBundle().getString(key);
         } catch (MissingResourceException e) {
-            e.printStackTrace();
+           ClientHandler.staticPrintStackTraceHandler(e);
         } catch (Exception e) {
-            e.printStackTrace();
+        	ClientHandler.staticPrintStackTraceHandler(e);
         }
         return result;
     }
@@ -297,9 +297,9 @@ public class PetStoreAdminClient extends JFrame
         try {
             result = Integer.parseInt(getString(key));
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+        	ClientHandler.staticPrintStackTraceHandler(e);
         } catch (Exception e) {
-            e.printStackTrace();
+        	ClientHandler.staticPrintStackTraceHandler(e);
         }
         return result;
     }

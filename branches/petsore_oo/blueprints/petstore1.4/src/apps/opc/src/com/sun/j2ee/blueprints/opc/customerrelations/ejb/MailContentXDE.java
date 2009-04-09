@@ -49,175 +49,188 @@ import javax.xml.transform.Source;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentEditor;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 
-
 /**
  * A helper class which format the content of a mail by applying style sheets.
  */
 public class MailContentXDE extends XMLDocumentEditor.DefaultXDE {
-  private TransformerFactory transformerFactory;
-  private Map transformers = new HashMap();
-  private String styleSheetPath;
-  private Source source = null;
-  private String result = null;
-  private Locale locale = null;
+	private TransformerFactory transformerFactory;
+	private Map transformers = new HashMap();
+	private String styleSheetPath;
+	private Source source = null;
+	private String result = null;
+	private Locale locale = null;
 
+	private EjbHandler ejbHandler = new EjbHandler();
 
-  public static class FormatterException extends Exception {
-    private Exception exception;
+	public static class FormatterException extends Exception {
+		private Exception exception;
 
-    /**
-     * Creates a new FormatterException wrapping another exception, and with a detail message.
-     * @param message the detail message.
-     * @param exception the wrapped exception.
-     */
-    public FormatterException(String message, Exception exception) {
-      super(message);
-      this.exception = exception;
-      return;
-    }
+		/**
+		 * Creates a new FormatterException wrapping another exception, and with
+		 * a detail message.
+		 * 
+		 * @param message
+		 *            the detail message.
+		 * @param exception
+		 *            the wrapped exception.
+		 */
+		public FormatterException(String message, Exception exception) {
+			super(message);
+			this.exception = exception;
+			return;
+		}
 
-    /**
-     * Creates a FormatterException with the specified detail message.
-     * @param message the detail message.
-     */
-    public FormatterException(String message) {
-      this(message, null);
-      return;
-    }
+		/**
+		 * Creates a FormatterException with the specified detail message.
+		 * 
+		 * @param message
+		 *            the detail message.
+		 */
+		public FormatterException(String message) {
+			this(message, null);
+			return;
+		}
 
-    /**
-     * Creates a new FormatterException wrapping another exception, and with no detail message.
-     * @param exception the wrapped exception.
-     */
-    public FormatterException(Exception exception) {
-      this(null, exception);
-      return;
-    }
+		/**
+		 * Creates a new FormatterException wrapping another exception, and with
+		 * no detail message.
+		 * 
+		 * @param exception
+		 *            the wrapped exception.
+		 */
+		public FormatterException(Exception exception) {
+			this(null, exception);
+			return;
+		}
 
-    /**
-     * Gets the wrapped exception.
-     *
-     * @return the wrapped exception.
-     */
-    public Exception getException() {
-      return exception;
-    }
+		/**
+		 * Gets the wrapped exception.
+		 * 
+		 * @return the wrapped exception.
+		 */
+		public Exception getException() {
+			return exception;
+		}
 
-    /**
-     * Retrieves (recursively) the root cause exception.
-     *
-     * @return the root cause exception.
-     */
-    public Exception getRootCause() {
-      if (exception instanceof FormatterException) {
-        return ((FormatterException) exception).getRootCause();
-      }
-      return exception == null ? this : exception;
-    }
+		/**
+		 * Retrieves (recursively) the root cause exception.
+		 * 
+		 * @return the root cause exception.
+		 */
+		public Exception getRootCause() {
+			if (exception instanceof FormatterException) {
+				return ((FormatterException) exception).getRootCause();
+			}
+			return exception == null ? this : exception;
+		}
 
-    public String toString() {
-      if (exception instanceof FormatterException) {
-        return ((FormatterException) exception).toString();
-      }
-      return exception == null ? super.toString() : exception.toString();
-    }
-  }
+		public String toString() {
+			if (exception instanceof FormatterException) {
+				return ((FormatterException) exception).toString();
+			}
+			return exception == null ? super.toString() : exception.toString();
+		}
+	}
 
-  public MailContentXDE(String styleSheetPath) throws FormatterException {
-    this.styleSheetPath = styleSheetPath;
-    try {
-      transformerFactory = TransformerFactory.newInstance();
-    } catch (Exception exception) {
-      throw new FormatterException(exception);
-    }
-    return;
-  }
+	public MailContentXDE(String styleSheetPath) throws FormatterException {
+		this.styleSheetPath = styleSheetPath;
+		try {
+			transformerFactory = TransformerFactory.newInstance();
+		} catch (Exception exception) {
+			this.ejbHandler.throwFormatterException(exception);
+		}
+		return;
+	}
 
-  private Transformer getTransformer(Locale locale) throws FormatterException {
-    Transformer transformer = (Transformer) transformers.get(locale);
-    if (transformer == null) {
-      InputStream stream = getClass().getResourceAsStream(getStyleSheetPath(styleSheetPath, locale));
-      if (stream != null) {
-        try {
-          transformer = transformerFactory.newTransformer(new StreamSource(stream));
-          transformers.put(locale, transformer);
-        } catch (Exception exception) {
-          throw new FormatterException(exception);
-        }
-      } else {
-        throw new FormatterException("No style sheet found for locale: " + locale);
-      }
-    }
-    return transformer;
-  }
+	private Transformer getTransformer(Locale locale) throws FormatterException {
+		Transformer transformer = (Transformer) transformers.get(locale);
+		if (transformer == null) {
+			InputStream stream = getClass().getResourceAsStream(
+					getStyleSheetPath(styleSheetPath, locale));
+			if (stream != null) {
+				try {
+					transformer = transformerFactory
+							.newTransformer(new StreamSource(stream));
+					transformers.put(locale, transformer);
+				} catch (Exception exception) {
+					this.ejbHandler.throwFormatterException(exception);
+				}
+			} else {
+				this.ejbHandler.getTransformerHandler(locale);
+			}
+		}
+		return transformer;
+	}
 
-  private String getStyleSheetPath(String styleSheetPath, Locale locale) {
-    if (locale != null) {
-      int i = styleSheetPath.lastIndexOf('.');
-      if (i >= 0) {
-        String suffix = styleSheetPath.substring(i);
-        String base = styleSheetPath.substring(0, i);
-        return base + "_" + locale.toString() + suffix;
-      }
-      return styleSheetPath + "_" + locale.toString();
-    }
-    return styleSheetPath;
-  }
+	private String getStyleSheetPath(String styleSheetPath, Locale locale) {
+		if (locale != null) {
+			int i = styleSheetPath.lastIndexOf('.');
+			if (i >= 0) {
+				String suffix = styleSheetPath.substring(i);
+				String base = styleSheetPath.substring(0, i);
+				return base + "_" + locale.toString() + suffix;
+			}
+			return styleSheetPath + "_" + locale.toString();
+		}
+		return styleSheetPath;
+	}
 
-  public void setLocale(Locale locale) {
-    this.locale = locale;
-    return;
-  }
+	public void setLocale(Locale locale) {
+		this.locale = locale;
+		return;
+	}
 
-  public Locale getLocale() {
-    return locale;
-  }
+	public Locale getLocale() {
+		return locale;
+	}
 
-  public void setDocument(Source source) {
-    this.source = source;
-    result = null;
-        return;
-  }
+	public void setDocument(Source source) {
+		this.source = source;
+		result = null;
+		return;
+	}
 
-  public void setDocument(String text) {
-        setDocument(new StreamSource(new StringReader(text)));
-        return;
-  }
+	public void setDocument(String text) {
+		setDocument(new StreamSource(new StringReader(text)));
+		return;
+	}
 
-  public Source getDocument() throws XMLDocumentException {
-    if (result == null) {
-      try {
-        result = format(source, locale);
-      } catch (FormatterException exception) {
-        throw new XMLDocumentException(exception);
-      }
-    }
-    return new StreamSource(new StringReader(result));
-  }
+	public Source getDocument() throws XMLDocumentException {
+		if (result == null) {
+			try {
+				result = format(source, locale);
+			} catch (FormatterException exception) {
+				this.ejbHandler.throwXMLDocumentExceptiontHandler(exception);
+			}
+		}
+		return new StreamSource(new StringReader(result));
+	}
 
-  public String getDocumentAsString() throws XMLDocumentException {
-    if (result == null) {
-      try {
-        result = format(source, locale);
-      } catch (FormatterException exception) {
-        throw new XMLDocumentException(exception);
-      }
-    }
-    return result;
-  }
+	public String getDocumentAsString() throws XMLDocumentException {
+		if (result == null) {
+			try {
+				result = format(source, locale);
+			} catch (FormatterException exception) {
+				this.ejbHandler.throwXMLDocumentExceptiontHandler(exception);
+			}
+		}
+		return result;
+	}
 
-  private String format(Source source, Locale locale) throws FormatterException {
-    Transformer transformer = getTransformer(locale);
-    StreamResult result = new StreamResult(new ByteArrayOutputStream());
-    transformer.clearParameters();
-    try {
-      transformer.transform(source, result);
-      String encoding = transformer.getOutputProperty(OutputKeys.ENCODING);
-      return ((ByteArrayOutputStream) result.getOutputStream()).toString(encoding);
-    } catch (Exception exception) {
-      throw new FormatterException(exception);
-    }
-  }
+	private String format(Source source, Locale locale)
+			throws FormatterException {
+		Transformer transformer = getTransformer(locale);
+		StreamResult result = new StreamResult(new ByteArrayOutputStream());
+		transformer.clearParameters();
+		try {
+			transformer.transform(source, result);
+			String encoding = transformer
+					.getOutputProperty(OutputKeys.ENCODING);
+			return ((ByteArrayOutputStream) result.getOutputStream())
+					.toString(encoding);
+		} catch (Exception exception) {
+			this.ejbHandler.throwFormatterException(exception);
+			return null; // para possibiliar o tratamento
+		}
+	}
 }
-
-

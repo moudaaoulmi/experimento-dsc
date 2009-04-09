@@ -43,12 +43,9 @@ import java.io.*;
 import java.util.*;
 import java.net.*;
 import org.w3c.dom.*;
-
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
-import javax.xml.transform.sax.*;
 import javax.xml.transform.dom.*;
-import javax.xml.transform.stream.*;
 import org.xml.sax.*;
 
 import com.sun.j2ee.blueprints.xmldocuments.*;
@@ -71,6 +68,8 @@ public class TPAInvoiceXDE extends XMLDocumentEditor.DefaultXDE {
   private String orderId = null;
   private Map lineItemIds = null;
   private Document invoiceDocument = null;
+  
+  private EjbHandler ejbHandler = new EjbHandler();
 
 
   public TPAInvoiceXDE(URL entityCatalogURL, boolean validating) throws XMLDocumentException {
@@ -166,12 +165,12 @@ public class TPAInvoiceXDE extends XMLDocumentEditor.DefaultXDE {
 
                 });
             } catch ( javax.xml.parsers.ParserConfigurationException pce) {
-                System.err.println(pce);
+                this.ejbHandler.errPrintlnHandler(pce);
             }
           //InputSource is =  new InputSource(new StringReader(xmlText));
             doc = db.parse(src);
         } catch (Exception e) {
-            System.err.println("TPAInvoiceXDE::getDocument error loading XML Document " + e);
+            this.ejbHandler.getDocumentHandler(e);
         }
         return doc;
     }

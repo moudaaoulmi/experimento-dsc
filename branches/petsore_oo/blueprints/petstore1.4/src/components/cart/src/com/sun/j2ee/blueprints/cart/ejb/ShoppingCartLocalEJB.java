@@ -64,6 +64,8 @@ public class ShoppingCartLocalEJB implements SessionBean {
     private HashMap cart;
     // default to the US English
     private Locale locale = Locale.US;
+    
+    private EjbHandler ejbHandler = new EjbHandler();
 
     public ShoppingCartLocalEJB() {
         cart = new HashMap();
@@ -102,7 +104,7 @@ public class ShoppingCartLocalEJB implements SessionBean {
                                       item.getListCost());
                items.add(ci);
            } catch (CatalogException cce) {
-               System.out.println("ShoppingCartEJB caught: " + cce);
+               this.ejbHandler.getItemsHandler(cce);
            }
        }
        return items;

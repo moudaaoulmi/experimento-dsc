@@ -77,20 +77,19 @@ public class AdminRequestBD {
 
     private String OPC_ADMIN_NAME = "java:comp/env/ejb/OPCAdminFacadeRemote";
     private OPCAdminFacade opcAdminEJB = null;
+    private WebHandler webHandler =  new WebHandler();
+;
 
     public AdminRequestBD() throws AdminBDException {      
     	try {
             OPCAdminFacadeHome home = (OPCAdminFacadeHome) ServiceLocator.getInstance().getRemoteHome(OPC_ADMIN_NAME, OPCAdminFacadeHome.class);
             opcAdminEJB = home.create();
         } catch (ServiceLocatorException sle) {
-            sle.printStackTrace();
-            throw new AdminBDException(sle.getMessage());
+           this.webHandler.throwAdminBDExceptionHandler(sle);
         } catch (CreateException ce) {
-            ce.printStackTrace();
-            throw new AdminBDException(ce.getMessage());
+        	this.webHandler.throwAdminBDExceptionHandler(ce);
         } catch (RemoteException re) {
-            re.printStackTrace();
-            throw new AdminBDException(re.getMessage());
+        	this.webHandler.throwAdminBDExceptionHandler(re);
         }
     
     }
@@ -105,12 +104,12 @@ public class AdminRequestBD {
         try {
             return opcAdminEJB.getOrdersByStatus(status);
         } catch (RemoteException re) {
-            re.printStackTrace();
-            throw new AdminBDException(re.getMessage());
+        	this.webHandler.throwAdminBDExceptionHandler(re);
         } catch (OPCAdminFacadeException oafee) {
-            oafee.printStackTrace();
-            throw new AdminBDException(oafee.getMessage());
+        	this.webHandler.throwAdminBDExceptionHandler(oafee);
         }
+        return null;// Para nao da erro de compilacao, pois o metodo requer retorno. 
+        //Linha nunca sera executada. Dessa forma nao muda o comportamento...
     }
 
     public void updateOrders(OrderApproval oa) throws AdminBDException {
@@ -120,13 +119,11 @@ public class AdminRequestBD {
             AsyncSender sender= home.create();
             sender.sendAMessage(oa.toXML());
         } catch (ServiceLocatorException sle) {
-            sle.printStackTrace();
-            throw new AdminBDException(sle.getMessage());
+        	this.webHandler.throwAdminBDExceptionHandler(sle);
         } catch (XMLDocumentException xde) {
-            xde.printStackTrace();
-            throw new AdminBDException(xde.getMessage());
+        	this.webHandler.throwAdminBDExceptionHandler(xde);
         }  catch (CreateException ce) {
-            throw new AdminBDException(ce.getMessage());
+            this.webHandler.updateOrdersHandler(ce);
         }
     }
 
@@ -146,11 +143,11 @@ public class AdminRequestBD {
         try {
             return opcAdminEJB.getChartInfo(request, start, end, category);
         } catch (RemoteException re) {
-            re.printStackTrace();
-            throw new AdminBDException(re.getMessage());
+        	this.webHandler.throwAdminBDExceptionHandler(re);
         } catch (OPCAdminFacadeException oafee) {
-            oafee.printStackTrace();
-            throw new AdminBDException(oafee.getMessage());
+        	this.webHandler.throwAdminBDExceptionHandler(oafee);
         }
+        return null;// Para nao da erro de compilacao, pois o metodo requer retorno. 
+        //Linha nunca sera executada. Dessa forma nao muda o comportamento...
     }
 }
