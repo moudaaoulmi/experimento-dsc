@@ -57,12 +57,8 @@ public class UniqueIdGeneratorEJB implements javax.ejb.SessionBean {
     public CounterLocalHome clh;
 
     public void ejbCreate() {
-      try {
-        ic = new InitialContext();
-        clh = (CounterLocalHome) ic.lookup("java:comp/env/ejb/Counter");
-      } catch (NamingException ne) {
-         throw new EJBException("UniqueIdGeneratorEJB Got naming exception! " + ne.getMessage());
-      }
+	    ic = new InitialContext();
+	    clh = (CounterLocalHome) ic.lookup("java:comp/env/ejb/Counter");
     }
 
     // Business Methods
@@ -79,9 +75,14 @@ public class UniqueIdGeneratorEJB implements javax.ejb.SessionBean {
  	*/                   
     private CounterLocal getCounter(String name) {
         CounterLocal counter = null;
-        counter = clh.findByPrimaryKey(name);
-        return counter;
+        return internalGetCounter(name, counter);
     }
+
+	private CounterLocal internalGetCounter(String name, CounterLocal counter)
+			throws CreateException {
+		counter = clh.findByPrimaryKey(name);
+		return counter;
+	}
 
     public void setSessionContext(SessionContext c) { }
     public void ejbRemove() { }

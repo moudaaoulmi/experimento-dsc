@@ -10,16 +10,23 @@ import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBAction;
  */
 public aspect WafControllerEjbHandler {
 	
-	/*** StateMachine ***/
-	pointcut internalGetActionHandler() : 
-		execution(private EJBAction StateMachine.internalGetAction(String));
-	
-	
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
 	declare soft : ClassNotFoundException : internalGetActionHandler();
 	declare soft : IllegalAccessException : internalGetActionHandler();
 	declare soft : InstantiationException : internalGetActionHandler();
 	
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
+	/*** StateMachine ***/
+	pointcut internalGetActionHandler() : 
+		execution(private EJBAction StateMachine.internalGetAction(String));
 	
+	// ---------------------------
+    // Advice's
+    // ---------------------------	
 	EJBAction around(String actionName) : 
 		internalGetActionHandler() && args(actionName)  {
 		try {

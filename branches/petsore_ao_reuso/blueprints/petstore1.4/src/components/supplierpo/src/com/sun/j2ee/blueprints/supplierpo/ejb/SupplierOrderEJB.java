@@ -161,29 +161,21 @@ public abstract class SupplierOrderEJB implements EntityBean {
    */
   public void ejbPostCreate(SupplierOrder supplierOrder)
                                               throws CreateException {
-  try {
-      ServiceLocator serviceLocator = new ServiceLocator();
-      ContactInfoLocalHome cinforef = (ContactInfoLocalHome)
-          serviceLocator.getLocalHome(JNDINames.CINFO_EJB);
-      ContactInfoLocal cinfoloc = (ContactInfoLocal)
-                      cinforef.create(supplierOrder.getShippingInfo());
-      setContactInfo(cinfoloc);
-      LineItemLocalHome lineItemref = (LineItemLocalHome)
-          serviceLocator.getLocalHome(JNDINames.LI_EJB);
-      Collection litems = supplierOrder.getLineItems();
-      Iterator it = litems.iterator();
-      while((it != null) && (it.hasNext())) {
-        LineItem li = (LineItem) it.next();
-        LineItemLocal lineItemloc = (LineItemLocal) lineItemref.create(li, 0);
-        addLineItem(lineItemloc);
-      }
-    } catch(ServiceLocatorException ne) {
-      throw new CreateException("ServiceLocator Ex while persisting PO CMR :" +
-                                ne.getMessage());
-    } catch (NullPointerException nex) {
-        System.err.println("SupplierOrderEJB caught a null pointer");
-        nex.printStackTrace();
-    }
+	  ServiceLocator serviceLocator = new ServiceLocator();
+	  ContactInfoLocalHome cinforef = (ContactInfoLocalHome)
+	      serviceLocator.getLocalHome(JNDINames.CINFO_EJB);
+	  ContactInfoLocal cinfoloc = (ContactInfoLocal)
+	                  cinforef.create(supplierOrder.getShippingInfo());
+	  setContactInfo(cinfoloc);
+	  LineItemLocalHome lineItemref = (LineItemLocalHome)
+	      serviceLocator.getLocalHome(JNDINames.LI_EJB);
+	  Collection litems = supplierOrder.getLineItems();
+	  Iterator it = litems.iterator();
+	  while((it != null) && (it.hasNext())) {
+	    LineItem li = (LineItem) it.next();
+	    LineItemLocal lineItemloc = (LineItemLocal) lineItemref.create(li, 0);
+	    addLineItem(lineItemloc);
+	  }
   }
 
   /**

@@ -116,17 +116,13 @@ public final class I18nUtil extends Object {
             int index=0;
             int previousIndex =0;
             breakIt.setText(keywordString);
-            try{
-                while(index < keywordString.length()){
-                    previousIndex = index;
-                    index = breakIt.next();
-                    String word = keywordString.substring(previousIndex, index);
-                    if (!word.trim().equals("")) keywords.addElement(word);
-                }
-                return keywords;
-            } catch (Throwable e){
-                Debug.print(e, "Error while parsing search string");
+            while(index < keywordString.length()){
+                previousIndex = index;
+                index = breakIt.next();
+                String word = keywordString.substring(previousIndex, index);
+                if (!word.trim().equals("")) keywords.addElement(word);
             }
+            return keywords;
         }
         return null;
     }
@@ -138,18 +134,13 @@ public final class I18nUtil extends Object {
             int index=0;
             int previousIndex =0;
             breakIt.setText(keywordString);
-            try{
-                while(index < keywordString.length()){
-                    previousIndex = index;
-                    index = breakIt.next();
-                    String word = keywordString.substring(previousIndex, index);
-                    if (!word.trim().equals("")) keywords.addElement(word);
-                }
-                return keywords;
-            } catch (Throwable e){
-                Debug.print(e, "Error while parsing search string" );
+            while(index < keywordString.length()){
+                previousIndex = index;
+                index = breakIt.next();
+                String word = keywordString.substring(previousIndex, index);
+                if (!word.trim().equals("")) keywords.addElement(word);
             }
-
+            return keywords;
         }
         return null;
     }
