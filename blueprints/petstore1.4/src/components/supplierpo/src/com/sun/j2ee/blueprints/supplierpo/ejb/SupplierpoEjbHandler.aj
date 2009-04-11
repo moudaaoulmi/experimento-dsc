@@ -25,8 +25,8 @@ public aspect SupplierpoEjbHandler extends XMLDocumentExceptionGenericAspect {
     // Declare soft's
     // ---------------------------
 	declare soft : UnsupportedEncodingException : afterXMLDocumentExceptionHandler();
-	declare soft : ParseException: internalSetOrderDateHandler(); 
-	declare soft : XMLDocumentException: internalSetOrderDateHandler();
+	declare soft : ParseException: supplierOrder_internalSetOrderDateHandler(); 
+	declare soft : XMLDocumentException: supplierOrder_internalSetOrderDateHandler();
 	declare soft : ServiceLocatorException: supplierOrderEJB_ejbPostCreateHandler();
 	
 	// ---------------------------
@@ -35,9 +35,9 @@ public aspect SupplierpoEjbHandler extends XMLDocumentExceptionGenericAspect {
 	/*** SupplierOrder ***/
 	public pointcut afterXMLDocumentExceptionHandler() : 
 		execution(public String SupplierOrder.toXML(URL));
-	 public pointcut afterWithPrintXMLDocumentExceptionHandler() : 
+	public pointcut afterWithPrintXMLDocumentExceptionHandler() : 
 			execution(public static SupplierOrder SupplierOrder.fromXML(String, URL, boolean));
-	pointcut internalSetOrderDateHandler() : 
+	pointcut supplierOrder_internalSetOrderDateHandler() : 
 		execution(private static Element SupplierOrder.internalSetOrderDate(Element, SupplierOrder));
 	pointcut supplierOrderEJB_ejbPostCreateHandler() : 
 		execution(public void SupplierOrderEJB.ejbPostCreate(SupplierOrder));
@@ -59,7 +59,7 @@ public aspect SupplierpoEjbHandler extends XMLDocumentExceptionGenericAspect {
 	}
 	*/
 	Element around(Element child, SupplierOrder supplierOrder) : 
-		internalSetOrderDateHandler() && 
+		supplierOrder_internalSetOrderDateHandler() && 
 		args(child, supplierOrder) {
 		try {
 			return proceed(child, supplierOrder);
@@ -72,7 +72,7 @@ public aspect SupplierpoEjbHandler extends XMLDocumentExceptionGenericAspect {
 	void around() throws CreateException : supplierOrderEJB_ejbPostCreateHandler(){
 		try{
 			proceed();
-		} catch(ServiceLocatorException ne) {
+		} catch (ServiceLocatorException ne) {
 		      throw new CreateException("ServiceLocator Ex while persisting PO CMR :" +
 		                                ne.getMessage());
 		} catch (NullPointerException nex) {

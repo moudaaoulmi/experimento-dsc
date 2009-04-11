@@ -27,42 +27,42 @@ public aspect SignonWebHandler {
 	// ---------------------------
     // Declare soft's
     // ---------------------------
-	declare soft : CreateException : doPostHandler() ||
-		getSignOnEjbHandler() || 
-		getSignOnFilterEjbHandler();
-	declare soft : NamingException : getSignOnEjbHandler() || 
-		getSignOnFilterEjbHandler();
-	declare soft : SAXParseException : loadDocumentHandler();
-	declare soft : SAXException : loadDocumentHandler();
-	declare soft : MalformedURLException : loadDocumentHandler() ||
-		initHandler();
-	declare soft : IOException : loadDocumentHandler();
-	declare soft : ParserConfigurationException : loadDocumentHandler();
+	declare soft : CreateException : createUserServlet_doPostHandler() ||
+		createUserServlet_getSignOnEjbHandler() || 
+		signOnFilter_getSignOnFilterEjbHandler();
+	declare soft : NamingException : createUserServlet_getSignOnEjbHandler() || 
+		signOnFilter_getSignOnFilterEjbHandler();
+	declare soft : SAXParseException : signOnDAO_loadDocumentHandler();
+	declare soft : SAXException : signOnDAO_loadDocumentHandler();
+	declare soft : MalformedURLException : signOnDAO_loadDocumentHandler() ||
+		signOnFilter_initHandler();
+	declare soft : IOException : signOnDAO_loadDocumentHandler();
+	declare soft : ParserConfigurationException : signOnDAO_loadDocumentHandler();
 	
 	// ---------------------------
     // Pointcut's
     // ---------------------------
 	/*** CreateUserServlet ***/
-	pointcut doPostHandler() : 
+	pointcut createUserServlet_doPostHandler() : 
 		execution(public  void CreateUserServlet.doPost(HttpServletRequest, HttpServletResponse));
-	pointcut getSignOnEjbHandler() : 
+	pointcut createUserServlet_getSignOnEjbHandler() : 
 		execution(private SignOnLocal CreateUserServlet.getSignOnEjb());
 	
 	/*** SignOnDAO ***/
-	pointcut loadDocumentHandler() : 
+	pointcut signOnDAO_loadDocumentHandler() : 
 		execution(private  Element SignOnDAO.loadDocument(URL));
 	
 	/*** SignOnFilter ***/
-	pointcut initHandler() : 
+	pointcut signOnFilter_initHandler() : 
 		execution(public void SignOnFilter.init(FilterConfig));
-	pointcut getSignOnFilterEjbHandler() : 
+	pointcut signOnFilter_getSignOnFilterEjbHandler() : 
 		execution(private SignOnLocal SignOnFilter.getSignOnEjb());
 	
 	// ---------------------------
     // Advice's
     // ---------------------------		
 	void around(HttpServletRequest request, HttpServletResponse  response) throws IOException : 
-		doPostHandler() && args(request,response) {
+		createUserServlet_doPostHandler() && args(request,response) {
 		try {
 			proceed(request,response);
 		} catch (CreateException ce) {
@@ -71,7 +71,7 @@ public aspect SignonWebHandler {
 		}
 	}
 
-	Element around() : loadDocumentHandler() {
+	Element around() : signOnDAO_loadDocumentHandler() {
 		try {
 			return proceed();
         } catch (SAXParseException err) {
@@ -84,7 +84,7 @@ public aspect SignonWebHandler {
         }
 	}
 	
-	void around() : initHandler() {
+	void around() : signOnFilter_initHandler() {
 		try {
 			proceed();
 		} catch (MalformedURLException ex) {
@@ -93,7 +93,7 @@ public aspect SignonWebHandler {
 	}
 
 	SignOnLocal around() throws ServletException : 
-		getSignOnFilterEjbHandler() || getSignOnEjbHandler(){
+		signOnFilter_getSignOnFilterEjbHandler() || createUserServlet_getSignOnEjbHandler(){
 		try{
 			return proceed();
 		}catch(CreateException cx){

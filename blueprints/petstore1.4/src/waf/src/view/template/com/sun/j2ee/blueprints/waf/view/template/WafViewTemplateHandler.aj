@@ -33,48 +33,48 @@ public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
 	// ---------------------------
     // Declare soft's
     // ---------------------------
-	declare soft : SAXParseException : loadDocument();
-	declare soft : SAXException : loadDocument();
-	declare soft : MalformedURLException : loadDocument() ||
-		initScreensGetResourceHandler();
-	declare soft : IOException : loadDocument() || 
+	declare soft : SAXParseException : screenDefinitionDAO_loadDocument();
+	declare soft : SAXException : screenDefinitionDAO_loadDocument();
+	declare soft : MalformedURLException : screenDefinitionDAO_loadDocument() ||
+		templateServlet_initScreensGetResourceHandler();
+	declare soft : IOException : screenDefinitionDAO_loadDocument() || 
 		aroundExceptionDoNothingHandler() ||
-		doEndTagHandler();
-	declare soft : ParserConfigurationException : loadDocument();
-	declare soft : ServletException : doEndTagHandler();
-	declare soft : NamingException : internalGetUserTransactionHandler();
-	declare soft : NotSupportedException : internalGetUserTransactionHandler();
-	declare soft : SystemException : internalGetUserTransactionHandler();
+		insertTag_doEndTagHandler();
+	declare soft : ParserConfigurationException : screenDefinitionDAO_loadDocument();
+	declare soft : ServletException : insertTag_doEndTagHandler();
+	declare soft : NamingException : templateServlet_internalGetUserTransactionHandler();
+	declare soft : NotSupportedException : templateServlet_internalGetUserTransactionHandler();
+	declare soft : SystemException : templateServlet_internalGetUserTransactionHandler();
 	
 	// ---------------------------
     // Pointcut's
     // ---------------------------
 	/*** ScreenDefinitionDAO ***/
-	pointcut loadDocument() :  
+	pointcut screenDefinitionDAO_loadDocument() :  
 		execution(public static Element ScreenDefinitionDAO.loadDocument(URL));
 	
 	/*** TemplateServlet ***/
-	pointcut initScreensGetResourceHandler() : 
+	pointcut templateServlet_initScreensGetResourceHandler() : 
 		call(URL ServletContext.getResource(String)) && 
 		withincode(private void TemplateServlet.initScreens(ServletContext, String));
-	pointcut internalGetUserTransactionHandler() : 
+	pointcut templateServlet_internalGetUserTransactionHandler() : 
 		execution(* TemplateServlet.internalGetUserTransaction());		
-	pointcut internalGetRequestDispatcherHandler() : 
+	pointcut templateServlet_internalGetRequestDispatcherHandler() : 
 		execution(private void TemplateServlet.internalGetRequestDispatcher(..));
 		
 	
 	/*** com.sun.j2ee.blueprints.waf.view.template.tags.InsertTag ***/
 	public pointcut aroundExceptionDoNothingHandler() :   
 		execution(private void com.sun.j2ee.blueprints.waf.view.template.tags.InsertTag.internalDoStartTag1());
-	pointcut internalDoStartTag2Handler() :  
+	pointcut insertTag_internalDoStartTag2Handler() :  
 		execution(private void com.sun.j2ee.blueprints.waf.view.template.tags.InsertTag.internalDoStartTag2());
-	pointcut doEndTagHandler() : 
+	pointcut insertTag_doEndTagHandler() : 
 		execution(public int com.sun.j2ee.blueprints.waf.view.template.tags.InsertTag.doEndTag());
 
 	// ---------------------------
     // Advice's
     // ---------------------------	
-	Element around() : loadDocument() {
+	Element around() : screenDefinitionDAO_loadDocument() {
 		try {
 			return proceed();
         } catch (SAXParseException err) {
@@ -88,7 +88,7 @@ public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
         }
 	}
 	
-	URL around() : initScreensGetResourceHandler() {
+	URL around() : templateServlet_initScreensGetResourceHandler() {
 		try {
 			return proceed();
         } catch (MalformedURLException ex) {
@@ -97,7 +97,7 @@ public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
         }
 	}
 			
-	Object[] around() : internalGetUserTransactionHandler() {
+	Object[] around() : templateServlet_internalGetUserTransactionHandler() {
 		Object[] values = new Object[2];
         values[0] = Boolean.FALSE;
         values[1] = null;		
@@ -118,7 +118,7 @@ public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
     }
 
 	void around(boolean tx_started,UserTransaction ut) : 
-		internalGetRequestDispatcherHandler() && 
+		templateServlet_internalGetRequestDispatcherHandler() && 
 		args(..,tx_started,ut) {
         try{
             proceed(tx_started,ut);
@@ -142,7 +142,7 @@ public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
         }
     }
 	
-	void around() throws JspTagException : internalDoStartTag2Handler(){
+	void around() throws JspTagException : insertTag_internalDoStartTag2Handler(){
 		try {
 			proceed();
 		} catch (NullPointerException e){
@@ -150,7 +150,7 @@ public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
         }
 	}
 	
-	int around() : doEndTagHandler() {
+	int around() : insertTag_doEndTagHandler() {
 		try {
 			return proceed();
         } catch (Exception ex) {

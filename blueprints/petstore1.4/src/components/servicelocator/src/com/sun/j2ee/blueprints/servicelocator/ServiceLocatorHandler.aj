@@ -18,16 +18,16 @@ public aspect ServiceLocatorHandler {
     // ---------------------------
 	declare soft : NamingException : ServiceLocatorEjbHandler() ||
 		ServiceLocatorWebHandler() || 
-		getLocalHomeHandler() ||
-		getRemoteHomeHandler() || 
-		getQueueConnectionFactoryHandler() ||
-		getQueueHandler() ||
-		getTopicConnectionFactoryHandler() || 
-		getTopicHandler() ||
-		getDataSourceHandler() ||
-		getUrlHandler() ||
-		getBooleanHandler() || 
-		getStringHandler();
+		serviceLocator_getLocalHomeHandler() ||
+		serviceLocator_getRemoteHomeHandler() || 
+		serviceLocator_getQueueConnectionFactoryHandler() ||
+		serviceLocator_getQueueHandler() ||
+		serviceLocator_getTopicConnectionFactoryHandler() || 
+		serviceLocator_getTopicHandler() ||
+		serviceLocator_getDataSourceHandler() ||
+		serviceLocator_getUrlHandler() ||
+		serviceLocator_getBooleanHandler() || 
+		serviceLocator_getStringHandler();
 	
 	// ---------------------------
     // Pointcut's
@@ -37,28 +37,28 @@ public aspect ServiceLocatorHandler {
 		execution(com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator.new()) ;
 	pointcut ServiceLocatorWebHandler() : 
 		execution(com.sun.j2ee.blueprints.servicelocator.web.ServiceLocator.new()) ;
-	pointcut staticInitHandler() : 
+	pointcut serviceLocator_staticInitHandler() : 
 		set(com.sun.j2ee.blueprints.servicelocator.web.ServiceLocator com.sun.j2ee.blueprints.servicelocator.web.ServiceLocator.me) && 
 		within(com.sun.j2ee.blueprints.servicelocator.web.ServiceLocator);
-	pointcut getLocalHomeHandler() : 
+	pointcut serviceLocator_getLocalHomeHandler() : 
 		execution(* com.sun.j2ee.blueprints.servicelocator.*.ServiceLocator.getLocalHome(String));
-	pointcut getRemoteHomeHandler() : 
+	pointcut serviceLocator_getRemoteHomeHandler() : 
 		execution(* com.sun.j2ee.blueprints.servicelocator.*.ServiceLocator.getRemoteHome(String, Class));
-	pointcut getQueueConnectionFactoryHandler() : 
+	pointcut serviceLocator_getQueueConnectionFactoryHandler() : 
 		execution(* com.sun.j2ee.blueprints.servicelocator.*.ServiceLocator.getQueueConnectionFactory(String));
-	pointcut getQueueHandler() : 
+	pointcut serviceLocator_getQueueHandler() : 
 		execution(* com.sun.j2ee.blueprints.servicelocator.*.ServiceLocator.getQueue(String));
-	pointcut getTopicConnectionFactoryHandler() : 
+	pointcut serviceLocator_getTopicConnectionFactoryHandler() : 
 		execution(* com.sun.j2ee.blueprints.servicelocator.*.ServiceLocator.getTopicConnectionFactory(String));
-	pointcut getTopicHandler() : 
+	pointcut serviceLocator_getTopicHandler() : 
 		execution(* com.sun.j2ee.blueprints.servicelocator.*.ServiceLocator.getTopic(String));
-	pointcut getDataSourceHandler() : 
+	pointcut serviceLocator_getDataSourceHandler() : 
 		execution(* com.sun.j2ee.blueprints.servicelocator.*.ServiceLocator.getDataSource(String)); 
-	pointcut getUrlHandler() : 
+	pointcut serviceLocator_getUrlHandler() : 
 		execution(* com.sun.j2ee.blueprints.servicelocator.*.ServiceLocator.getUrl(String));
-	pointcut getBooleanHandler() : 
+	pointcut serviceLocator_getBooleanHandler() : 
 		execution(public boolean com.sun.j2ee.blueprints.servicelocator.*.ServiceLocator.getBoolean(String));
-	pointcut getStringHandler() : 
+	pointcut serviceLocator_getStringHandler() : 
 		execution(public String com.sun.j2ee.blueprints.servicelocator.*.ServiceLocator.getString(String));
 
 	// ---------------------------
@@ -66,16 +66,16 @@ public aspect ServiceLocatorHandler {
     // ---------------------------			
 	Object around() throws ServiceLocatorException : 
 		ServiceLocatorEjbHandler() ||
-		getLocalHomeHandler() ||
-		getRemoteHomeHandler() ||
-		getQueueConnectionFactoryHandler() ||
-		getQueueHandler() ||
-		getTopicConnectionFactoryHandler() ||
-		getTopicHandler() ||
-		getDataSourceHandler() ||
-		getUrlHandler() ||
-		getBooleanHandler() ||
-		getStringHandler(){
+		serviceLocator_getLocalHomeHandler() ||
+		serviceLocator_getRemoteHomeHandler() ||
+		serviceLocator_getQueueConnectionFactoryHandler() ||
+		serviceLocator_getQueueHandler() ||
+		serviceLocator_getTopicConnectionFactoryHandler() ||
+		serviceLocator_getTopicHandler() ||
+		serviceLocator_getDataSourceHandler() ||
+		serviceLocator_getUrlHandler() ||
+		serviceLocator_getBooleanHandler() ||
+		serviceLocator_getStringHandler(){
 		Object result = null;
 		try{
 			result = proceed();
@@ -97,7 +97,7 @@ public aspect ServiceLocatorHandler {
 	
 
 	void around() : 
-		staticInitHandler() {
+		serviceLocator_staticInitHandler() {
 		try {
 			proceed();
 		} catch(SoftException se) {		

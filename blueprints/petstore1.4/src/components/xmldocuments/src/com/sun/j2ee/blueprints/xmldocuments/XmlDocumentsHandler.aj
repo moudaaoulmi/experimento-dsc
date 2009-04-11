@@ -41,28 +41,28 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	declare soft : IOException : CustomEntityResolverHandler() || 
 		CustomEntityResolverURLHandler() || 
 		XMLDocumentEditorFactoryHandler() || 
-		internalOpenStreamHandler() ||
-		resolveEntityHandler() || 
-		internalResolveEntityHandler() || 
+		customEntityResolver_internalOpenStreamHandler() ||
+		customEntityResolver_resolveEntityHandler() || 
+		customEntityResolver_internalResolveEntityHandler() || 
 		fromXMLUtilsHandler();
-	declare soft : SAXNotSupportedException : createParserHandler();
-	declare soft : SAXNotRecognizedException : createParserSetPropertyHandler() ||
-		createParserHandler();
-	declare soft : SAXException : createParserSetFeatureHandler() || 
-		internalResolveEntityHandler() ||
-		transformHandler() ||
+	declare soft : SAXNotSupportedException : xMLDocumentUtils_createParserHandler();
+	declare soft : SAXNotRecognizedException : xMLDocumentUtils_createParserSetPropertyHandler() ||
+		xMLDocumentUtils_createParserHandler();
+	declare soft : SAXException : xMLDocumentUtils_createParserSetFeatureHandler() || 
+		customEntityResolver_internalResolveEntityHandler() ||
+		xMLDocumentUtils_transformHandler() ||
 		fromXMLUtilsHandler() || 
-		createParserHandler();
+		xMLDocumentUtils_createParserHandler();
 	declare soft : UnsupportedEncodingException : toXMLHandler();
-	declare soft : ClassNotFoundException : createXDEHandler();
-	declare soft : IllegalAccessException : createXDEHandler();
-	declare soft : InstantiationException : createXDEHandler();
-	declare soft : TransformerException : serializeHandler() ||
-		transformHandler();
+	declare soft : ClassNotFoundException : xMLDocumentEditorFactory_createXDEHandler();
+	declare soft : IllegalAccessException : xMLDocumentEditorFactory_createXDEHandler();
+	declare soft : InstantiationException : xMLDocumentEditorFactory_createXDEHandler();
+	declare soft : TransformerException : xMLDocumentUtils_serializeHandler() ||
+		xMLDocumentUtils_transformHandler();
 	declare soft : ParserConfigurationException : fromXMLUtilsHandler() ||
-		createDocumentBuilderHandler() || 
-		createParserHandler();
-	declare soft : TransformerConfigurationException : createTransformerHandler();
+		xMLDocumentUtils_createDocumentBuilderHandler() || 
+		xMLDocumentUtils_createParserHandler();
+	declare soft : TransformerConfigurationException : xMLDocumentUtils_createTransformerHandler();
 	declare soft : UnsupportedEncodingException : getDocumentAsStringHandler();
 	
 	// ---------------------------
@@ -73,23 +73,22 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 		execution(public CustomEntityResolver.new(EntityResolver));
 	pointcut CustomEntityResolverURLHandler() : 
 		execution(public CustomEntityResolver.new(URL, EntityResolver));
-	pointcut resolveEntityFromURL() : 
+	pointcut customEntityResolver_resolveEntityFromURL() : 
 		withincode(private InputSource CustomEntityResolver.resolveEntityFromURL(String));
-	pointcut resolveEntityFromURLURLHandler() :
-		call(URL.new(String)) && resolveEntityFromURL();
-	pointcut internalOpenStreamHandler() :
+	pointcut customEntityResolver_resolveEntityFromURLURLHandler() :
+		call(URL.new(String)) && customEntityResolver_resolveEntityFromURL();
+	pointcut customEntityResolver_internalOpenStreamHandler() :
 		execution(private InputStream CustomEntityResolver.internalOpenStream(String, URL));
-	pointcut internalGetResourceAsStreamHandler() : 
+	pointcut customEntityResolver_internalGetResourceAsStreamHandler() : 
 		execution(private InputStream CustomEntityResolver.internalGetResourceAsStream(String, URL));
-	pointcut internalResolveEntityHandler() : 
+	pointcut customEntityResolver_internalResolveEntityHandler() : 
 		execution(private InputSource CustomEntityResolver.internalResolveEntity(String, String));
-	pointcut resolveEntityHandler() : 
+	pointcut customEntityResolver_resolveEntityHandler() : 
 		execution(public InputSource CustomEntityResolver.resolveEntity(String, String));
 
 	/*** OrderApproval ***/
 	pointcut toXMLHandler() : 
 		execution(public String OrderApproval.toXML(URL));
-	
 	public pointcut afterXMLDocumentExceptionHandler() : 
 	    toXMLHandler() ||
 		fromXMLUtilsHandler() ||
@@ -100,56 +99,56 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	/*** XMLDocumentEditorFactory ***/
 	pointcut XMLDocumentEditorFactoryHandler() : 
 		execution(public XMLDocumentEditorFactory.new(URL));
-	pointcut createXDEHandler() : 
+	pointcut xMLDocumentEditorFactory_createXDEHandler() : 
 		execution(public XMLDocumentEditor XMLDocumentEditorFactory.createXDE(String));
 	
 	/*** XMLDocumentUtils ***/
-	pointcut getAttributeAsIntHandler() : 
+	pointcut xMLDocumentUtils_getAttributeAsIntHandler() : 
 		execution(public static int XMLDocumentUtils.getAttributeAsInt(Element, String, boolean));
-	pointcut internalBufferAppendHandler() : 	
+	pointcut xMLDocumentUtils_internalBufferAppendHandler() : 	
 		execution(private static void XMLDocumentUtils.internalBufferAppend(StringBuffer, Node));
-	pointcut getContentAsIntHandler() : 
+	pointcut xMLDocumentUtils_getContentAsIntHandler() : 
 		execution(public static int XMLDocumentUtils.getContentAsInt(Element, boolean));
-	pointcut getContentAsFloatHandler() : 
+	pointcut xMLDocumentUtils_getContentAsFloatHandler() : 
 		execution(public static float XMLDocumentUtils.getContentAsFloat(Element, boolean));
-	pointcut getAttributeAsIntNSHandler() : 
+	pointcut xMLDocumentUtils_getAttributeAsIntNSHandler() : 
 		execution(public static int XMLDocumentUtils.getAttributeAsIntNS(Element, String, String, boolean));
-	pointcut serializeHandler() : 
+	pointcut xMLDocumentUtils_serializeHandler() : 
 		execution(public static void XMLDocumentUtils.serialize(Transformer, Document, String, String , boolean, String, Result));
-	pointcut toXMLUtilsHandler() : 
+	pointcut xMLDocumentUtils_toXMLUtilsHandler() : 
 		execution(public static void XMLDocumentUtils.toXML(Document, String, URL, String, Result)) || 
 		execution(public static void XMLDocumentUtils.toXML(Document, String, URL, boolean, String, Result));
-	pointcut transformSetSystemIdHandler() : 
+	pointcut xMLDocumentUtils_transformSetSystemIdHandler() : 
 		call(void Source.setSystemId(String)) && 
 		withincode(public static void XMLDocumentUtils.transform(Transformer, Source, Result, String, URL, boolean, boolean));
-	pointcut transformSetXMLReaderHandler() : 
+	pointcut xMLDocumentUtils_transformSetXMLReaderHandler() : 
 		call(void SAXSource.setXMLReader(XMLReader)) && 
 		withincode(public static void XMLDocumentUtils.transform(Transformer, Source, Result, String, URL, boolean, boolean));
-	pointcut transformHandler() : 
+	pointcut xMLDocumentUtils_transformHandler() : 
 		execution(public static void XMLDocumentUtils.transform(Transformer, Source, Result, String, URL, boolean, boolean));
 	pointcut fromXMLUtilsHandler() : 
 		execution(public static Document XMLDocumentUtils.fromXML(InputSource, String, URL, boolean));
-	pointcut createDocumentBuilderHandler() : 
+	pointcut xMLDocumentUtils_createDocumentBuilderHandler() : 
 		execution(public static DocumentBuilder XMLDocumentUtils.createDocumentBuilder());
-	pointcut createParserSetPropertyHandler() : 
+	pointcut xMLDocumentUtils_createParserSetPropertyHandler() : 
 		call(void SAXParser.setProperty(String, Object)) && 
 		withincode(public static SAXParser XMLDocumentUtils.createParser(boolean, boolean, CustomEntityResolver, String));
-	pointcut createParserSetFeatureHandler() : 
+	pointcut xMLDocumentUtils_createParserSetFeatureHandler() : 
 		call(void XMLReader.setFeature(String, boolean)) && 
 		withincode(public static SAXParser XMLDocumentUtils.createParser(boolean, boolean, CustomEntityResolver, String));
-	pointcut createParserHandler() : 
+	pointcut xMLDocumentUtils_createParserHandler() : 
 		execution(public static SAXParser XMLDocumentUtils.createParser(boolean, boolean, CustomEntityResolver, String));
-	pointcut createTransformerHandler() : 
+	pointcut xMLDocumentUtils_createTransformerHandler() : 
 		execution(public static Transformer XMLDocumentUtils.createTransformer());
 
 	/*** com.sun.j2ee.blueprints.xmldocuments.tpa.TPAInvoiceXDE ***/
-	pointcut internalTPAInvoiceXDEHandler() : 
+	pointcut tPAInvoiceXDE_internalTPAInvoiceXDEHandler() : 
 		execution(public String com.sun.j2ee.blueprints.xmldocuments.tpa.TPAInvoiceXDE.internalTPAInvoiceXDE(URL));
 	pointcut getDocumentAsStringHandler() : 
 		execution(public String com.sun.j2ee.blueprints.xmldocuments.tpa.*.getDocumentAsString());
 	
 	/*** com.sun.j2ee.blueprints.xmldocuments.tpa.TPASupplierOrderXDE ***/
-	pointcut internalTPASupplierOrderXDEHandler() : 
+	pointcut tPASupplierOrderXDE_internalTPASupplierOrderXDEHandler() : 
 		execution(private String com.sun.j2ee.blueprints.xmldocuments.tpa.TPASupplierOrderXDE.internalTPASupplierOrderXDE(URL));
 	
 	// ---------------------------
@@ -174,7 +173,7 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	}	
 	
 	URL around(String entityURL) : 
-		resolveEntityFromURLURLHandler() && 
+		customEntityResolver_resolveEntityFromURLURLHandler() && 
 		args(entityURL) {
 		try{
 			return proceed(entityURL);
@@ -187,7 +186,7 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	}
 
 	InputStream around(String entityURL, URL entityURLURL) : 
-		internalOpenStreamHandler() && 
+		customEntityResolver_internalOpenStreamHandler() && 
 		args(entityURL,entityURLURL) {
 		try{
 			return proceed(entityURL,entityURLURL);
@@ -200,7 +199,7 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	}
 
 	InputStream around() : 
-		internalGetResourceAsStreamHandler() {
+		customEntityResolver_internalGetResourceAsStreamHandler() {
 		try{
 			return proceed();
 	    } catch (Exception exception1) {
@@ -214,7 +213,7 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	}
     // Need to be first
 	InputSource around(String entityURI, String entityURL) : 
-		internalResolveEntityHandler() && 
+		customEntityResolver_internalResolveEntityHandler() && 
 		args(entityURI, entityURL) {
 		try {
 			return proceed(entityURI, entityURL);
@@ -227,7 +226,7 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
     }	
 	
 	InputSource around(CustomEntityResolver cer, String entityURI, String entityURL) : 
-		resolveEntityHandler() && 
+		customEntityResolver_resolveEntityHandler() && 
 		args(entityURI, entityURL) && target(cer){
 		try {
 			return proceed(cer, entityURI, entityURL);
@@ -236,8 +235,6 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 			return null;
 		}
     }	
-	
-
 	
 	void around(URL catalogURL) throws XMLDocumentException: 
 		XMLDocumentEditorFactoryHandler() && args(catalogURL){
@@ -249,7 +246,7 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	}
 	
 	XMLDocumentEditor around(String className) throws XMLDocumentException : 
-		createXDEHandler() && args(className){
+		xMLDocumentEditorFactory_createXDEHandler() && args(className){
 		try{
 			return proceed(className);
 		} catch(Exception exception) {
@@ -258,7 +255,7 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	}
 	
 	int around(Element element, String name, boolean optional) throws XMLDocumentException : 
-		getAttributeAsIntHandler() && 
+		xMLDocumentUtils_getAttributeAsIntHandler() && 
 		args(element, name, optional) {
 		try{
 			return proceed(element, name, optional);
@@ -267,7 +264,17 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 		}
 	}
 	
-	void around() : internalBufferAppendHandler() {
+	int around(Element element, String nsURI, String name, boolean optional) throws XMLDocumentException :
+		xMLDocumentUtils_getAttributeAsIntNSHandler() && 
+		args(element, nsURI, name, optional) {
+		try {
+			return proceed(element, nsURI, name, optional);
+		} catch (NumberFormatException exception) {
+			throw new XMLDocumentException(element.getTagName() + "/@" + name + " attribute: value format error.", exception);
+        }
+	}
+	
+	void around() : xMLDocumentUtils_internalBufferAppendHandler() {
 		try {
 			proceed();
 		} catch(DOMException e) {
@@ -276,8 +283,8 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	}
 	
 	int around(Element element, boolean optional) throws XMLDocumentException :
-		(getContentAsIntHandler() || 
-		 getContentAsFloatHandler()) && 
+		(xMLDocumentUtils_getContentAsIntHandler() || 
+		 xMLDocumentUtils_getContentAsFloatHandler()) && 
 		args(element, optional) {
 		try{
 			return proceed(element, optional);
@@ -286,16 +293,7 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 		}
 	}
 	
-	int around(Element element, String nsURI, String name, boolean optional) throws XMLDocumentException :
-		getAttributeAsIntNSHandler() && 
-		args(element, nsURI, name, optional) {
-		try {
-			return proceed(element, nsURI, name, optional);
-		} catch (NumberFormatException exception) {
-			throw new XMLDocumentException(element.getTagName() + "/@" + name + " attribute: value format error.", exception);
-        }
-	}
-	void around() : transformSetSystemIdHandler() {
+	void around() : xMLDocumentUtils_transformSetSystemIdHandler() {
         try {
             proceed();
         } catch (Throwable e) {
@@ -303,7 +301,7 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
         }				
 	}	
 
-	void around() : transformSetXMLReaderHandler() {
+	void around() : xMLDocumentUtils_transformSetXMLReaderHandler() {
         try {
             proceed();
         } catch (DOMException dex) {
@@ -311,7 +309,7 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
         }
 	}
 	//Need to be first
-	void around() : createParserSetPropertyHandler() {
+	void around() : xMLDocumentUtils_createParserSetPropertyHandler() {
 		try {
 			proceed();
         } catch(SAXNotRecognizedException exception) {
@@ -319,7 +317,7 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
         }
 	}
 	//Need to be first	
-	void around() : createParserSetFeatureHandler() {
+	void around() : xMLDocumentUtils_createParserSetFeatureHandler() {
 		try {
 			proceed();
         } catch (SAXException exception) {
@@ -328,14 +326,14 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	}	
 	
 	Object around() throws XMLDocumentException :
-		serializeHandler() ||
-		toXMLUtilsHandler() || 
-		transformHandler() || 
-		createDocumentBuilderHandler() || 
-		createParserHandler() ||
-		createTransformerHandler() ||
-		internalTPAInvoiceXDEHandler() || 
-		internalTPASupplierOrderXDEHandler() {
+		xMLDocumentUtils_serializeHandler() ||
+		xMLDocumentUtils_toXMLUtilsHandler() || 
+		xMLDocumentUtils_transformHandler() || 
+		xMLDocumentUtils_createDocumentBuilderHandler() || 
+		xMLDocumentUtils_createParserHandler() ||
+		xMLDocumentUtils_createTransformerHandler() ||
+		tPAInvoiceXDE_internalTPAInvoiceXDEHandler() || 
+		tPASupplierOrderXDE_internalTPASupplierOrderXDEHandler() {
 		try{
 			return proceed();
 		}catch (Exception exception){
