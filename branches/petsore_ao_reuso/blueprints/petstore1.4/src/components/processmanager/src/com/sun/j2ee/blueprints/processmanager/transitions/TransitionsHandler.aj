@@ -8,20 +8,33 @@ package com.sun.j2ee.blueprints.processmanager.transitions;
  */
 public aspect TransitionsHandler {
 	
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
+	declare soft : ClassNotFoundException : transitionDelegateFactory_getTransitionDelegateHandler();
+	declare soft : IllegalAccessException : transitionDelegateFactory_getTransitionDelegateHandler();
+	declare soft : InstantiationException : transitionDelegateFactory_getTransitionDelegateHandler();
+	
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** TransitionDelegateFactory ***/
-	pointcut getTransitionDelegateHandler() :  
+	pointcut transitionDelegateFactory_getTransitionDelegateHandler() :  
 		execution(public TransitionDelegate TransitionDelegateFactory.getTransitionDelegate(String));
 	
-	
-	declare soft : ClassNotFoundException : getTransitionDelegateHandler();
-	declare soft : IllegalAccessException : getTransitionDelegateHandler();
-	declare soft : InstantiationException : getTransitionDelegateHandler();
-	 
-	 
-	after() throwing(Exception e) throws TransitionException :
-		getTransitionDelegateHandler() {
-		throw new TransitionException(e);
-    }
-
+	// ---------------------------
+    // Advice's
+    // ---------------------------
+	TransitionDelegate around(String className) throws TransitionException :
+		transitionDelegateFactory_getTransitionDelegateHandler() &&
+		args(className){
+		TransitionDelegate td = null;
+		try{
+			td = proceed(className);
+		} catch(Exception e) {
+			throw new TransitionException(e);
+		}
+		return td;
+	}
 
 }
