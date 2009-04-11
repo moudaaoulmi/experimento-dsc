@@ -30,6 +30,25 @@ import com.sun.j2ee.blueprints.util.aspect.ExceptionGenericAspect;
  */
 public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
 	
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
+	declare soft : SAXParseException : loadDocument();
+	declare soft : SAXException : loadDocument();
+	declare soft : MalformedURLException : loadDocument() ||
+		initScreensGetResourceHandler();
+	declare soft : IOException : loadDocument() || 
+		aroundExceptionDoNothingHandler() ||
+		doEndTagHandler();
+	declare soft : ParserConfigurationException : loadDocument();
+	declare soft : ServletException : doEndTagHandler();
+	declare soft : NamingException : internalGetUserTransactionHandler();
+	declare soft : NotSupportedException : internalGetUserTransactionHandler();
+	declare soft : SystemException : internalGetUserTransactionHandler();
+	
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** ScreenDefinitionDAO ***/
 	pointcut loadDocument() :  
 		execution(public static Element ScreenDefinitionDAO.loadDocument(URL));
@@ -52,21 +71,9 @@ public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
 	pointcut doEndTagHandler() : 
 		execution(public int com.sun.j2ee.blueprints.waf.view.template.tags.InsertTag.doEndTag());
 
-	
-	declare soft : SAXParseException : loadDocument();
-	declare soft : SAXException : loadDocument();
-	declare soft : MalformedURLException : loadDocument() ||
-		initScreensGetResourceHandler();
-	declare soft : IOException : loadDocument() || 
-		aroundExceptionDoNothingHandler() ||
-		doEndTagHandler();
-	declare soft : ParserConfigurationException : loadDocument();
-	declare soft : ServletException : doEndTagHandler();
-	declare soft : NamingException : internalGetUserTransactionHandler();
-	declare soft : NotSupportedException : internalGetUserTransactionHandler();
-	declare soft : SystemException : internalGetUserTransactionHandler();
-	
-	
+	// ---------------------------
+    // Advice's
+    // ---------------------------	
 	Element around() : loadDocument() {
 		try {
 			return proceed();
@@ -135,9 +142,12 @@ public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
         }
     }
 	
-	after() throwing(NullPointerException e) throws JspTagException : 
-		internalDoStartTag2Handler() {
-		throw new JspTagException("Error extracting Screen from session: " + e);
+	void around() throws JspTagException : internalDoStartTag2Handler(){
+		try {
+			proceed();
+		} catch (NullPointerException e){
+            throw new JspTagException("Error extracting Screen from session: " + e);
+        }
 	}
 	
 	int around() : doEndTagHandler() {

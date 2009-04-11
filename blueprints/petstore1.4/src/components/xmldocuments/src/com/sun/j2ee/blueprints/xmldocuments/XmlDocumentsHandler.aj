@@ -35,6 +35,39 @@ import com.sun.j2ee.blueprints.util.aspect.XMLDocumentExceptionGenericAspect;
  */
 public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
+	declare soft : IOException : CustomEntityResolverHandler() || 
+		CustomEntityResolverURLHandler() || 
+		XMLDocumentEditorFactoryHandler() || 
+		internalOpenStreamHandler() ||
+		resolveEntityHandler() || 
+		internalResolveEntityHandler() || 
+		fromXMLUtilsHandler();
+	declare soft : SAXNotSupportedException : createParserHandler();
+	declare soft : SAXNotRecognizedException : createParserSetPropertyHandler() ||
+		createParserHandler();
+	declare soft : SAXException : createParserSetFeatureHandler() || 
+		internalResolveEntityHandler() ||
+		transformHandler() ||
+		fromXMLUtilsHandler() || 
+		createParserHandler();
+	declare soft : UnsupportedEncodingException : toXMLHandler();
+	declare soft : ClassNotFoundException : createXDEHandler();
+	declare soft : IllegalAccessException : createXDEHandler();
+	declare soft : InstantiationException : createXDEHandler();
+	declare soft : TransformerException : serializeHandler() ||
+		transformHandler();
+	declare soft : ParserConfigurationException : fromXMLUtilsHandler() ||
+		createDocumentBuilderHandler() || 
+		createParserHandler();
+	declare soft : TransformerConfigurationException : createTransformerHandler();
+	declare soft : UnsupportedEncodingException : getDocumentAsStringHandler();
+	
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** CustomEntityResolver ***/
 	pointcut CustomEntityResolverHandler() : 
 		execution(public CustomEntityResolver.new(EntityResolver));
@@ -119,38 +152,9 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	pointcut internalTPASupplierOrderXDEHandler() : 
 		execution(private String com.sun.j2ee.blueprints.xmldocuments.tpa.TPASupplierOrderXDE.internalTPASupplierOrderXDE(URL));
 	
-	
-	
-	
-	declare soft : IOException : CustomEntityResolverHandler() || 
-		CustomEntityResolverURLHandler() || 
-		XMLDocumentEditorFactoryHandler() || 
-		internalOpenStreamHandler() ||
-		resolveEntityHandler() || 
-		internalResolveEntityHandler() || 
-		fromXMLUtilsHandler();
-	declare soft : SAXNotSupportedException : createParserHandler();
-	declare soft : SAXNotRecognizedException : createParserSetPropertyHandler() ||
-		createParserHandler();
-	declare soft : SAXException : createParserSetFeatureHandler() || 
-		internalResolveEntityHandler() ||
-		transformHandler() ||
-		fromXMLUtilsHandler() || 
-		createParserHandler();
-	declare soft : UnsupportedEncodingException : toXMLHandler();
-	declare soft : ClassNotFoundException : createXDEHandler();
-	declare soft : IllegalAccessException : createXDEHandler();
-	declare soft : InstantiationException : createXDEHandler();
-	declare soft : TransformerException : serializeHandler() ||
-		transformHandler();
-	declare soft : ParserConfigurationException : fromXMLUtilsHandler() ||
-		createDocumentBuilderHandler() || 
-		createParserHandler();
-	declare soft : TransformerConfigurationException : createTransformerHandler();
-	declare soft : UnsupportedEncodingException : getDocumentAsStringHandler();
-	
-	
-	
+	// ---------------------------
+    // Advice's
+    // ---------------------------	
 	void around() : CustomEntityResolverHandler() {
 		try {
 			proceed();
@@ -243,17 +247,25 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 			throw new XMLDocumentException("Can't load from resource: " + catalogURL, exception);
 		}
 	}
-
-	after(String className) throwing(Exception exception) throws XMLDocumentException : 
-		createXDEHandler() && args(className) {
-		throw new XMLDocumentException("Can't instantiate XDE: " + className, exception);
+	
+	XMLDocumentEditor around(String className) throws XMLDocumentException : 
+		createXDEHandler() && args(className){
+		try{
+			return proceed(className);
+		} catch(Exception exception) {
+		      throw new XMLDocumentException("Can't instantiate XDE: " + className, exception);
+	    }
 	}
 	
-	after(Element element, String name, boolean optional) throwing(NumberFormatException exception) throws XMLDocumentException :
+	int around(Element element, String name, boolean optional) throws XMLDocumentException : 
 		getAttributeAsIntHandler() && 
 		args(element, name, optional) {
-		throw new XMLDocumentException(element.getTagName() + "/@" + name + " attribute: value format error.", exception);		
-    }
+		try{
+			return proceed(element, name, optional);
+		} catch (NumberFormatException exception) {
+		      throw new XMLDocumentException(element.getTagName() + "/@" + name + " attribute: value format error.", exception);
+		}
+	}
 	
 	void around() : internalBufferAppendHandler() {
 		try {
@@ -262,20 +274,27 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 			//DO NOTHING
 		}
 	}
-
-	after(Element element, boolean optional) throwing(NumberFormatException exception) throws XMLDocumentException :
+	
+	int around(Element element, boolean optional) throws XMLDocumentException :
 		(getContentAsIntHandler() || 
 		 getContentAsFloatHandler()) && 
 		args(element, optional) {
-		throw new XMLDocumentException(element.getTagName() + " element: content format error.", exception);
-    }
+		try{
+			return proceed(element, optional);
+		} catch (NumberFormatException exception) {
+		      throw new XMLDocumentException(element.getTagName() + " element: content format error.", exception);
+		}
+	}
 	
-	after(Element element, String nsURI, String name, boolean optional) throwing(NumberFormatException exception) throws XMLDocumentException :
+	int around(Element element, String nsURI, String name, boolean optional) throws XMLDocumentException :
 		getAttributeAsIntNSHandler() && 
 		args(element, nsURI, name, optional) {
-		throw new XMLDocumentException(element.getTagName() + "/@" + name + " attribute: value format error.", exception);		
-    }
-	
+		try {
+			return proceed(element, nsURI, name, optional);
+		} catch (NumberFormatException exception) {
+			throw new XMLDocumentException(element.getTagName() + "/@" + name + " attribute: value format error.", exception);
+        }
+	}
 	void around() : transformSetSystemIdHandler() {
         try {
             proceed();
@@ -308,7 +327,7 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
         }
 	}	
 	
-	after() throwing(Exception exception) throws XMLDocumentException : 
+	Object around() throws XMLDocumentException :
 		serializeHandler() ||
 		toXMLUtilsHandler() || 
 		transformHandler() || 
@@ -317,9 +336,12 @@ public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 		createTransformerHandler() ||
 		internalTPAInvoiceXDEHandler() || 
 		internalTPASupplierOrderXDEHandler() {
-        exception.printStackTrace(System.err);
-        throw new XMLDocumentException(exception);		
+		try{
+			return proceed();
+		}catch (Exception exception){
+			exception.printStackTrace(System.err);
+	        throw new XMLDocumentException(exception);
+		}
 	}
 	
-		
 }

@@ -37,6 +37,41 @@ import org.xml.sax.SAXParseException;
  */
 public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
+	declare soft : CreateException : getEJBControllerHandler();
+	declare soft : ServiceLocatorException : getEJBControllerHandler() || 
+		getWebControllerHandler();
+	declare soft : MalformedURLException : initGetResourceHandler() || 
+		loadDocumentHandler() ||
+		flowInitGetResourceHandler();
+	declare soft : EventException : internalDoProcessHandler();
+	declare soft : HTMLActionException : internalDoProcessHandler();
+	declare soft : RemoveException : destroyHandler();
+	declare soft : SAXParseException : loadDocumentHandler();
+	declare soft : SAXException : loadDocumentHandler();
+	declare soft : IOException : loadDocumentHandler() || 
+		internalProcessFlowHandler() ||
+		getWebControllerHandler();
+	declare soft : ClassNotFoundException : internalGetExceptionScreen() || 
+		internalProcessFlowHandler() ||
+		getWebControllerHandler() ||
+		internalGetActionHandler() ||
+		internalForwardToNextScreenHandler();
+	declare soft : OptionalDataException : internalProcessFlowHandler();
+	declare soft : UnsupportedEncodingException : convertJISEncodingHandler();
+	declare soft : IllegalAccessException : internalGetActionHandler() ||
+		internalForwardToNextScreenHandler();
+	declare soft : InstantiationException : internalGetActionHandler() ||
+		internalForwardToNextScreenHandler();
+	declare soft : ParserConfigurationException : loadDocumentHandler();
+	declare soft : FlowHandlerException : internalDoProcessHandler() ||
+		internalForwardToNextScreenHandler(); 
+	
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** DefaultComponentManager ***/
 	pointcut getWebControllerHandler() :  
 		execution(public WebController DefaultComponentManager.getWebController(HttpSession));
@@ -83,39 +118,9 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 		call(String.new(byte[], String)) && 
 		withincode(public static String com.sun.j2ee.blueprints.waf.util.I18nUtil.convertJISEncoding(String));
 		
-	
-	
-	
-	declare soft : CreateException : getEJBControllerHandler();
-	declare soft : ServiceLocatorException : getEJBControllerHandler() || 
-		getWebControllerHandler();
-	declare soft : MalformedURLException : initGetResourceHandler() || 
-		loadDocumentHandler() ||
-		flowInitGetResourceHandler();
-	declare soft : EventException : internalDoProcessHandler();
-	declare soft : HTMLActionException : internalDoProcessHandler();
-	declare soft : RemoveException : destroyHandler();
-	declare soft : SAXParseException : loadDocumentHandler();
-	declare soft : SAXException : loadDocumentHandler();
-	declare soft : IOException : loadDocumentHandler() || 
-		internalProcessFlowHandler() ||
-		getWebControllerHandler();
-	declare soft : ClassNotFoundException : internalGetExceptionScreen() || 
-		internalProcessFlowHandler() ||
-		getWebControllerHandler() ||
-		internalGetActionHandler() ||
-		internalForwardToNextScreenHandler();
-	declare soft : OptionalDataException : internalProcessFlowHandler();
-	declare soft : UnsupportedEncodingException : convertJISEncodingHandler();
-	declare soft : IllegalAccessException : internalGetActionHandler() ||
-		internalForwardToNextScreenHandler();
-	declare soft : InstantiationException : internalGetActionHandler() ||
-		internalForwardToNextScreenHandler();
-	declare soft : ParserConfigurationException : loadDocumentHandler();
-	declare soft : FlowHandlerException : internalDoProcessHandler() ||
-		internalForwardToNextScreenHandler(); 
-		
-	
+	// ---------------------------
+    // Advice's
+    // ---------------------------	
 	WebController around() throws RuntimeException : getWebControllerHandler(){
 		try{
 			return proceed();
