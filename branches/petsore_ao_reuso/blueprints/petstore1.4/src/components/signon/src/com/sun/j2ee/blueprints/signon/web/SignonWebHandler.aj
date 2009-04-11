@@ -24,6 +24,24 @@ import com.sun.j2ee.blueprints.signon.ejb.SignOnLocal;
  */
 public aspect SignonWebHandler {
 	
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
+	declare soft : CreateException : doPostHandler() ||
+		getSignOnEjbHandler() || 
+		getSignOnFilterEjbHandler();
+	declare soft : NamingException : getSignOnEjbHandler() || 
+		getSignOnFilterEjbHandler();
+	declare soft : SAXParseException : loadDocumentHandler();
+	declare soft : SAXException : loadDocumentHandler();
+	declare soft : MalformedURLException : loadDocumentHandler() ||
+		initHandler();
+	declare soft : IOException : loadDocumentHandler();
+	declare soft : ParserConfigurationException : loadDocumentHandler();
+	
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** CreateUserServlet ***/
 	pointcut doPostHandler() : 
 		execution(public  void CreateUserServlet.doPost(HttpServletRequest, HttpServletResponse));
@@ -40,22 +58,9 @@ public aspect SignonWebHandler {
 	pointcut getSignOnFilterEjbHandler() : 
 		execution(private SignOnLocal SignOnFilter.getSignOnEjb());
 	
-	
-	
-	declare soft : CreateException : doPostHandler() ||
-		getSignOnEjbHandler() || 
-		getSignOnFilterEjbHandler();
-	declare soft : NamingException : getSignOnEjbHandler() || 
-		getSignOnFilterEjbHandler();
-	declare soft : SAXParseException : loadDocumentHandler();
-	declare soft : SAXException : loadDocumentHandler();
-	declare soft : MalformedURLException : loadDocumentHandler() ||
-		initHandler();
-	declare soft : IOException : loadDocumentHandler();
-	declare soft : ParserConfigurationException : loadDocumentHandler();
-	
-	
-	
+	// ---------------------------
+    // Advice's
+    // ---------------------------		
 	void around(HttpServletRequest request, HttpServletResponse  response) throws IOException : 
 		doPostHandler() && args(request,response) {
 		try {
@@ -89,7 +94,6 @@ public aspect SignonWebHandler {
 
 	SignOnLocal around() throws ServletException : 
 		getSignOnFilterEjbHandler() || getSignOnEjbHandler(){
-		
 		try{
 			return proceed();
 		}catch(CreateException cx){
