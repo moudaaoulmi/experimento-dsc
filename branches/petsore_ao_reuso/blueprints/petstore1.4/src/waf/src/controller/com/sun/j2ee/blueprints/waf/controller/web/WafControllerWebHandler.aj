@@ -40,99 +40,96 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 	// ---------------------------
     // Declare soft's
     // ---------------------------
-	declare soft : CreateException : getEJBControllerHandler();
-	declare soft : ServiceLocatorException : getEJBControllerHandler() || 
-		getWebControllerHandler();
-	declare soft : MalformedURLException : initGetResourceHandler() || 
-		loadDocumentHandler() ||
-		flowInitGetResourceHandler();
-	declare soft : EventException : internalDoProcessHandler();
-	declare soft : HTMLActionException : internalDoProcessHandler();
-	declare soft : RemoveException : destroyHandler();
-	declare soft : SAXParseException : loadDocumentHandler();
-	declare soft : SAXException : loadDocumentHandler();
-	declare soft : IOException : loadDocumentHandler() || 
-		internalProcessFlowHandler() ||
-		getWebControllerHandler();
-	declare soft : ClassNotFoundException : internalGetExceptionScreen() || 
-		internalProcessFlowHandler() ||
-		getWebControllerHandler() ||
-		internalGetActionHandler() ||
-		internalForwardToNextScreenHandler();
-	declare soft : OptionalDataException : internalProcessFlowHandler();
-	declare soft : UnsupportedEncodingException : convertJISEncodingHandler();
-	declare soft : IllegalAccessException : internalGetActionHandler() ||
-		internalForwardToNextScreenHandler();
-	declare soft : InstantiationException : internalGetActionHandler() ||
-		internalForwardToNextScreenHandler();
-	declare soft : ParserConfigurationException : loadDocumentHandler();
-	declare soft : FlowHandlerException : internalDoProcessHandler() ||
-		internalForwardToNextScreenHandler(); 
+	declare soft : CreateException : defaultComponentManager_getEJBControllerHandler();
+	declare soft : ServiceLocatorException : defaultComponentManager_getEJBControllerHandler() || 
+		defaultComponentManager_getWebControllerHandler();
+	declare soft : MalformedURLException : mainServlet_initGetResourceHandler() || 
+		URLMappingsXmlDAO_loadDocumentHandler() ||
+		screenFlowManager_flowInitGetResourceHandler();
+	declare soft : EventException : mainServlet_internalDoProcessHandler();
+	declare soft : HTMLActionException : mainServlet_internalDoProcessHandler();
+	declare soft : RemoveException : defaultWebController_destroyHandler();
+	declare soft : SAXParseException : URLMappingsXmlDAO_loadDocumentHandler();
+	declare soft : SAXException : URLMappingsXmlDAO_loadDocumentHandler();
+	declare soft : IOException : URLMappingsXmlDAO_loadDocumentHandler() || 
+		clientStateFlowHandler_internalProcessFlowHandler() ||
+		defaultComponentManager_getWebControllerHandler();
+	declare soft : ClassNotFoundException : screenFlowManager_internalGetExceptionScreen() || 
+		clientStateFlowHandler_internalProcessFlowHandler() ||
+		defaultComponentManager_getWebControllerHandler() ||
+		requestProcessor_internalGetActionHandler() ||
+		screenFlowManager_internalForwardToNextScreenHandler();
+	declare soft : OptionalDataException : clientStateFlowHandler_internalProcessFlowHandler();
+	declare soft : UnsupportedEncodingException : i18nUtil_convertJISEncodingHandler();
+	declare soft : IllegalAccessException : requestProcessor_internalGetActionHandler() ||
+		screenFlowManager_internalForwardToNextScreenHandler();
+	declare soft : InstantiationException : requestProcessor_internalGetActionHandler() ||
+		screenFlowManager_internalForwardToNextScreenHandler();
+	declare soft : ParserConfigurationException : URLMappingsXmlDAO_loadDocumentHandler();
+	declare soft : FlowHandlerException : mainServlet_internalDoProcessHandler() ||
+		screenFlowManager_internalForwardToNextScreenHandler(); 
 	
 	// ---------------------------
     // Pointcut's
     // ---------------------------
 	/*** DefaultComponentManager ***/
-	pointcut getWebControllerHandler() :  
+	pointcut defaultComponentManager_getWebControllerHandler() :  
 		execution(public WebController DefaultComponentManager.getWebController(HttpSession));
-	pointcut getEJBControllerHandler() : 
+	pointcut defaultComponentManager_getEJBControllerHandler() : 
 		execution(public EJBControllerLocal DefaultComponentManager.getEJBController(HttpSession));
 	
 	public pointcut aroundExceptionDoNothingHandler() : 
 		execution(public void DefaultComponentManager.sessionDestroyed(HttpSessionEvent));
 	
 	/*** MainServlet ***/
-	pointcut initGetResourceHandler() : 
+	pointcut mainServlet_initGetResourceHandler() : 
 		call(URL ServletContext.getResource(String)) && 
 		withincode(public void MainServlet.init(ServletConfig));
-	pointcut internalDoProcessHandler() : 
+	pointcut mainServlet_internalDoProcessHandler() : 
 		execution(private void MainServlet.internalDoProcess(HttpServletRequest, HttpServletResponse, ServletContext));
 	
 	/*** RequestProcessor ***/
-	pointcut internalGetActionHandler() : 
+	pointcut requestProcessor_internalGetActionHandler() : 
 		execution(private HTMLAction RequestProcessor.internalGetAction(String));
 	
 	/*** DefaultWebController ***/
-	pointcut destroyHandler() : 
+	pointcut defaultWebController_destroyHandler() : 
 		execution(public synchronized void destroy(HttpSession));
 	
 	/*** URLMappingsXmlDAO ***/
-	pointcut loadDocumentHandler() : 	
+	pointcut URLMappingsXmlDAO_loadDocumentHandler() : 	
 		execution(public static Element URLMappingsXmlDAO.loadDocument(String));
 	
 	/*** com.sun.j2ee.blueprints.waf.controller.web.flow.ScreenFlowManager ***/
-	pointcut flowInitGetResourceHandler() : 
+	pointcut screenFlowManager_flowInitGetResourceHandler() : 
 		call(URL ServletContext.getResource(String)) && 
 		withincode(public void com.sun.j2ee.blueprints.waf.controller.web.flow.ScreenFlowManager.init(ServletContext));
-	pointcut internalForwardToNextScreenHandler() : 
+	pointcut screenFlowManager_internalForwardToNextScreenHandler() : 
 		execution(private String com.sun.j2ee.blueprints.waf.controller.web.flow.ScreenFlowManager.internalForwardToNextScreen(FlowHandler, String, HttpServletRequest, URLMapping));
-	pointcut internalGetExceptionScreen() :  
+	pointcut screenFlowManager_internalGetExceptionScreen() :  
 		execution(private Class com.sun.j2ee.blueprints.waf.controller.web.flow.ScreenFlowManager.internalGetExceptionScreen(String));
 	
 	/*** com.sun.j2ee.blueprints.waf.controller.web.flow.handlers.ClientStateFlowHandler ***/
-	pointcut internalProcessFlowHandler() :  
+	pointcut clientStateFlowHandler_internalProcessFlowHandler() :  
 		execution(private void com.sun.j2ee.blueprints.waf.controller.web.flow.handlers.ClientStateFlowHandler.internalProcessFlow(HttpServletRequest, String, String, byte[]));
 	
 	/*** com.sun.j2ee.blueprints.waf.util.I18nUtil ***/
-	pointcut convertJISEncodingHandler() :  
+	pointcut i18nUtil_convertJISEncodingHandler() :  
 		call(String.new(byte[], String)) && 
 		withincode(public static String com.sun.j2ee.blueprints.waf.util.I18nUtil.convertJISEncoding(String));
 		
 	// ---------------------------
     // Advice's
     // ---------------------------	
-	WebController around() throws RuntimeException : getWebControllerHandler(){
+	WebController around() throws RuntimeException : defaultComponentManager_getWebControllerHandler(){
 		try{
 			return proceed();
 		}catch(Exception exc){
 			throw new RuntimeException ("Cannot create bean of class WebController: " + exc);
 		}
 	}
-	
-	
-
 		
-	EJBControllerLocal around() throws GeneralFailureException : getEJBControllerHandler(){
+	EJBControllerLocal around() throws GeneralFailureException : defaultComponentManager_getEJBControllerHandler(){
 		try{
 			return proceed();
 		}catch(CreateException ce){
@@ -153,18 +150,9 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 	}
 	*/
 	
-	URL around() : initGetResourceHandler() {
-		try {
-			return proceed();
-		} catch(MalformedURLException ex) {
-			System.err.println("MainServlet: initializing ScreenFlowManager malformed URL exception: " + ex);
-			return null;
-		}
-	}
-	
 	void around(MainServlet ms,HttpServletRequest request, HttpServletResponse response, ServletContext context) 
 	throws IOException, ServletException : 
-		internalDoProcessHandler() && 
+		mainServlet_internalDoProcessHandler() && 
 		args(request, response, context) && 
 		target(ms) {   
 		try {
@@ -183,16 +171,7 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 		}
 	}
 	
-    HTMLAction around() : internalGetActionHandler() {
-        try {
-            return proceed();
-        } catch (Exception ex) {
-            System.err.println("RequestProcessor caught loading action: " + ex);
-            return null;
-        }
-    }
-	
-    void around() :  destroyHandler() {
+    void around() :  defaultWebController_destroyHandler() {
 	    try {
 	        proceed();
 	    } catch(RemoveException re){
@@ -201,7 +180,7 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 	    }
     }
 
-    Element around() : loadDocumentHandler() { 
+    Element around() : URLMappingsXmlDAO_loadDocumentHandler() { 
     	try {
     		return proceed();
         } catch (SAXParseException err) {
@@ -215,7 +194,7 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
         }        
     }
     
-	URL around() : flowInitGetResourceHandler() {
+	URL around() : screenFlowManager_flowInitGetResourceHandler() {
 		try {
 			return proceed();
 		} catch(MalformedURLException ex) {
@@ -224,7 +203,16 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 		}
 	}
     
-	String around() : internalForwardToNextScreenHandler() {
+	URL around() : mainServlet_initGetResourceHandler() {
+		try {
+			return proceed();
+		} catch(MalformedURLException ex) {
+			System.err.println("MainServlet: initializing ScreenFlowManager malformed URL exception: " + ex);
+			return null;
+		}
+	}
+	
+	String around() : screenFlowManager_internalForwardToNextScreenHandler() {
 		try {
 			return proceed();			
 	    } catch (Exception ex) {
@@ -233,7 +221,16 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 	    }
 	}
 	
-	Class around(String exceptionName) : internalGetExceptionScreen() && args(exceptionName) {
+	HTMLAction around() : requestProcessor_internalGetActionHandler() {
+        try {
+            return proceed();
+        } catch (Exception ex) {
+            System.err.println("RequestProcessor caught loading action: " + ex);
+            return null;
+        }
+    }
+	
+	Class around(String exceptionName) : screenFlowManager_internalGetExceptionScreen() && args(exceptionName) {
 		try {
 			return proceed(exceptionName);
         } catch (ClassNotFoundException cnfe) {
@@ -242,7 +239,7 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
         }    	
 	}
 	
-	void around() : internalProcessFlowHandler() {
+	void around() : clientStateFlowHandler_internalProcessFlowHandler() {
 		try {
 			proceed();
         } catch (OptionalDataException ode) {
@@ -254,7 +251,7 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
         }
 	}
 	
-	String around() : convertJISEncodingHandler() {
+	String around() : i18nUtil_convertJISEncodingHandler() {
 		try {
 			return proceed();
 		} catch (UnsupportedEncodingException uex) {
