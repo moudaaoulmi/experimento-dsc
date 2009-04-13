@@ -71,6 +71,7 @@ public class SupplierOrder {
   private ContactInfo shippingInfo;
   private ArrayList lineItems = null;
 
+  static EjbHandler ejbHandler = new EjbHandler();
 
   // Constructor to be used when creating SupplierOrder from data
 
@@ -149,8 +150,9 @@ public class SupplierOrder {
       }
       return stream.toString(XMLDocumentUtils.DEFAULT_ENCODING);
     } catch (Exception exception) {
-      throw new XMLDocumentException(exception);
+      ejbHandler.toXMLHandler(exception);
     }
+    return null;
   }
 
   public static SupplierOrder fromXML(Source source)
@@ -176,9 +178,9 @@ public class SupplierOrder {
         return fromXML(new StreamSource(new StringReader(buffer)),
                        entityCatalogURL, validating);
       } catch (XMLDocumentException exception) {
-        System.err.println(exception.getRootCause().getMessage());
-        throw new XMLDocumentException(exception);
+        ejbHandler.fromXMLHandler(exception);
       }
+      return null;
   }
 
   public Document toDOM() throws XMLDocumentException {
@@ -220,8 +222,7 @@ public class SupplierOrder {
         child = XMLDocumentUtils.getNextSiblingNS(child, TPASO_XML_NS, XML_ORDERDATE, true);
         supplierOrder.setOrderDate(supplierOrder.dateFormat.parse(XMLDocumentUtils.getContentAsString(child, false)));
       } catch (Exception exception) {
-        supplierOrder.setOrderDate(new Date());
-        System.err.println(XML_ORDERDATE + ": " + exception.getMessage() + " reset to current date.");
+    	  ejbHandler.fromDOMHandler(supplierOrder, XML_ORDERDATE, exception);
       }
       child = XMLDocumentUtils.getNextSiblingNS(child,TPASO_XML_NS, XML_SHIPPINGINFO, false);
       supplierOrder.shippingInfo
