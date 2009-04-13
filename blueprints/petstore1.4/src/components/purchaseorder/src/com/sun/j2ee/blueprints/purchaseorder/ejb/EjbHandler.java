@@ -24,17 +24,12 @@ public class EjbHandler {
 		return pO;      
 	}
 	
-	public void main1Handler(Exception e){
+	public void mainHandler(Exception e, Exception msg){
 		e.printStackTrace(System.err);
-        System.err.println(e);
+        System.err.println(msg);
         System.exit(2);	
 	}
 	
-	public void main2Handler(XMLDocumentException e){
-		e.printStackTrace(System.err);
-        System.err.println(e.getRootCause());
-        System.exit(2);	
-	}
 	
 	public void ejbPostCreateHandler(ServiceLocatorException ne) throws CreateException{
 		throw new CreateException("ServiceLocator Ex while persisting PO CMR :" + ne.getMessage());

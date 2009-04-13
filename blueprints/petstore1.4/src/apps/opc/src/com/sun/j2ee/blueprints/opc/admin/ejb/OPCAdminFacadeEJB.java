@@ -74,7 +74,7 @@ public class OPCAdminFacadeEJB implements SessionBean {
 	private PurchaseOrderLocalHome poLocalHome;
 	private ProcessManagerLocal processManagerLocal;
 
-	private EjbHandler ejbHandler = new EjbHandler();
+	private AdminEjbHandler adminEjbHandler = new AdminEjbHandler();
 
 	public OPCAdminFacadeEJB() {
 	}
@@ -88,9 +88,9 @@ public class OPCAdminFacadeEJB implements SessionBean {
 					.getLocalHome(PROCMGR_ORDER_EJB);
 			processManagerLocal = processManagerLocalHome.create();
 		} catch (ServiceLocatorException se) {
-			this.ejbHandler.ejbCreateHanlder(se);
+			this.adminEjbHandler.ejbCreateHandler(se);
 		} catch (CreateException ce) {
-			this.ejbHandler.ejbCreateHanlder(ce);
+			this.adminEjbHandler.ejbCreateHandler(ce);
 		}
 	}
 
@@ -161,7 +161,7 @@ public class OPCAdminFacadeEJB implements SessionBean {
 						podate, po.getPoValue(), status));
 			}
 		} catch (FinderException fe) {
-			this.ejbHandler.getOrdersByStatusHandler(fe);
+			this.adminEjbHandler.getOrdersByStatusHandler(fe);
 		}
 		return (retVal);
 	}
@@ -261,7 +261,7 @@ public class OPCAdminFacadeEJB implements SessionBean {
 				}
 			}
 		} catch (FinderException fe) {
-			this.ejbHandler.getChartInfo(fe);
+			this.adminEjbHandler.getChartInfoHandler(fe);
 		}
 		return (chartDetails);
 	}

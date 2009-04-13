@@ -73,7 +73,7 @@ public class OrderApprovalTD implements TransitionDelegate {
       mailQueueHelper     = new QueueHelper(qFactory, mailQueue);
       supplierQueueHelper = new QueueHelper(qFactory, supplierPoQueue);
     } catch(ServiceLocatorException se) {
-    	transitionsHandler.setupHandler(se);
+    	transitionsHandler.throwsTransitionExceptionHandler(se);
     }
   }
 
@@ -100,7 +100,7 @@ public class OrderApprovalTD implements TransitionDelegate {
        sendMail(xmlMailOrderApprovals);
      } catch(JMSException je) {
 //        throw new TransitionException(je);
-    	 transitionsHandler.setupHandler(je);
+    	 transitionsHandler.throwsTransitionExceptionHandler(je);
     }
 
   }

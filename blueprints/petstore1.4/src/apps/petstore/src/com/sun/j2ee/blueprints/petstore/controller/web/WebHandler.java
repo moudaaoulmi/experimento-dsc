@@ -10,14 +10,10 @@ import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
 
 public class WebHandler {
 	
-	public void getCustomer1Handler(FinderException e){
-		System.err.println("PetstoreComponentManager finder error: " + e);
+	public void SystemErrHandler(String msg,Exception e){
+		System.err.println(msg + e);
 	}
-	
-	public void getCustomer2Handler(Exception e){
-		System.err.println("PetstoreComponentManager error: " + e);
-	}
-
+		
 	public void getShoppingControllerHandler(Exception e){
 		throw new GeneralFailureException(e.getMessage());
 	}
@@ -26,8 +22,5 @@ public class WebHandler {
 		Debug.print(re);
 	}
 	
-	public void processEventHandler(EventException e){
-		System.err.println("SignOnNotifier Error handling event " + e);
-	}
-
+	
 }

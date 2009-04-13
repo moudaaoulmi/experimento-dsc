@@ -87,8 +87,7 @@ public abstract class ContactInfoEJB implements javax.ejb.EntityBean {
       AddressLocal address = adh.create();
       setAddress(address);
     } catch (ServiceLocatorException ne) {
-//      throw new CreateException("ContactInfoEJB error: ServiceLocator exception looking up address");
-    	ejbHandler.postCreateHandler();
+    	ejbHandler.throwCreateExceptionHandler();
     }
   }
 
@@ -124,8 +123,7 @@ public abstract class ContactInfoEJB implements javax.ejb.EntityBean {
       AddressLocal address = adh.create(contactInfo.getAddress());
       setAddress(address);
     } catch (ServiceLocatorException ne) {
-//      throw new CreateException("ContactInfoEJB error: ServiceLocator exception looking up address");
-    	ejbHandler.postCreateHandler();
+    	ejbHandler.throwCreateExceptionHandler();
     }
   }
 

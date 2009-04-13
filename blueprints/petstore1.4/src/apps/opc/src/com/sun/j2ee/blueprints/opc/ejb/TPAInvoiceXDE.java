@@ -165,12 +165,12 @@ public class TPAInvoiceXDE extends XMLDocumentEditor.DefaultXDE {
 
                 });
             } catch ( javax.xml.parsers.ParserConfigurationException pce) {
-                this.ejbHandler.errPrintlnHandler(pce);
+                this.ejbHandler.getDocument1Handler(pce);
             }
           //InputSource is =  new InputSource(new StringReader(xmlText));
             doc = db.parse(src);
         } catch (Exception e) {
-            this.ejbHandler.getDocumentHandler(e);
+            this.ejbHandler.getDocument2Handler(e);
         }
         return doc;
     }

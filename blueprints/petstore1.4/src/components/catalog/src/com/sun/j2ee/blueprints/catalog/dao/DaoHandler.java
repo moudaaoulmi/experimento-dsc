@@ -1,12 +1,21 @@
 package com.sun.j2ee.blueprints.catalog.dao;
 
-import java.sql.SQLException;
+import java.sql.*;
+import javax.sql.*;
+
 
 import javax.naming.NamingException;
+
+import org.xml.sax.SAXException;
+
 import java.lang.*;
 
-import com.sun.j2ee.blueprints.catalog.dao.GenericCatalogDAO.ParsingDoneException;
+//import com.sun.j2ee.blueprints.catalog.dao.GenericCatalogDAO.ParsingDoneException;
 import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
+import com.sun.j2ee.blueprints.catalog.model.Category;
+import com.sun.j2ee.blueprints.catalog.model.Item;
+import com.sun.j2ee.blueprints.catalog.model.Page;
+import com.sun.j2ee.blueprints.catalog.model.Product;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
 
@@ -33,7 +42,7 @@ public class DaoHandler {
 	}
 
 	//catch (NamingException exception) 
-	public static void getDataSourceHandler(NamingException exception) throws CatalogDAOSysException {
+	public static DataSource getDataSourceHandler(NamingException exception) throws CatalogDAOSysException {
 	      throw new CatalogDAOSysException("NamingException while looking up DB context : " +
 	                                       exception.getMessage());
 	}
@@ -44,22 +53,34 @@ public class DaoHandler {
 	}
 	
 	//catch (SQLException exception) 
-	public void getCategoryHandler(SQLException exception) throws CatalogDAOSysException {
+	public Category getCategoryHandler(SQLException exception) throws CatalogDAOSysException {
 	      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
 	} 
 	
 	public void getCategoryFINALLYHandler(Connection connection, PreparedStatement statement, ResultSet resultSet) {
-	    GenericCatalogDAO obj = new GenericCatalogDAO();  
-		obj.closeAll(connection, statement, resultSet);
+		GenericCatalogDAO.closeAll(connection, statement, resultSet);
 	}
+	
+	public Page getCategories1Handler(SQLException exception) throws CatalogDAOSysException {
+	      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
+	} 
+	
+	public Product getProductHandler(SQLException exception) throws CatalogDAOSysException {
+	      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
+	} 
+	
+	public Item getItemHandler(SQLException exception) throws CatalogDAOSysException {
+	      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
+	} 
+	
 	
 	 //catch (NumberFormatException exception)
 	public void parseIntHandler(NumberFormatException exception){
          //throw new SAXException(exception);
     }
 	
-	//catch (ParsingDoneException exception) 
-	public void loadSQLStatementsHandler(ParsingDoneException exception){
+//	catch (ParsingDoneException exception) 
+	public void loadSQLStatementsHandler(SAXException exception){
 		// Ignored
 	} 
 	
@@ -71,13 +92,13 @@ public class DaoHandler {
 	}
 	
 	//catch (ServiceLocatorException slx) 
-	public static void getDataSourceHandler(ServiceLocatorException slx) throws CatalogDAOSysException {
+	public static DataSource getDataSourceHandler(ServiceLocatorException slx) throws CatalogDAOSysException {
         throw new CatalogDAOSysException("NamingException while looking up DB context : " +
                                slx.getMessage());
     }
 	
 	//catch (SQLException se) 
-	public void getCategoriesHandler(SQLException se) throws CatalogDAOSysException {
+	public void getCategories2Handler(SQLException se) throws CatalogDAOSysException {
         se.printStackTrace(System.err);
         throw new CatalogDAOSysException("SQLException: " + se.getMessage());
       }

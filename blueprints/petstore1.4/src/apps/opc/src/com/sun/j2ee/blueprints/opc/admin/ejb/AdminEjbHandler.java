@@ -4,11 +4,9 @@ import java.util.Map;
 
 import javax.ejb.EJBException;
 
-public class EjbHandler {
+public class AdminEjbHandler {
 
-	// private EjbHandler ejbHandler = new EjbHandler();
-
-	public void ejbCreateHanlder(Exception e) throws EJBException {
+	public void ejbCreateHandler(Exception e) throws EJBException {
 		throw new EJBException(e);
 	}
 
@@ -19,7 +17,7 @@ public class EjbHandler {
 				+ " of given status : " + e.getMessage());
 	}
 
-	public void getChartInfo(Exception e) throws OPCAdminFacadeException {
+	public void getChartInfoHandler(Exception e) throws OPCAdminFacadeException {
 		System.err.println("finder Ex while getChart :" + e.getMessage());
 		throw new OPCAdminFacadeException("Unable to find PurchaseOrders"
 				+ " in given period : " + e.getMessage());

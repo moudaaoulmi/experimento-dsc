@@ -5,14 +5,12 @@ import javax.jms.QueueConnection;
 
 public class EjbHandler {
 
-	// private EjbHandler ejbHandler = new EjbHandler();
-
 	public void throwEJBExceptionHandler(String str, Exception e)
 			throws EJBException {
 		throw new EJBException(str, e);
 	}
 
-	public void printStackTraceHandler(Exception e) {
+	public void sendAMessageHandler(Exception e) {
 		e.printStackTrace();
 	}
 

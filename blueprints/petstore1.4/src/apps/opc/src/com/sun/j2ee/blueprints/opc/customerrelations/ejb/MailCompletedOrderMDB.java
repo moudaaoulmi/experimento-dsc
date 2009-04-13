@@ -85,7 +85,7 @@ public class MailCompletedOrderMDB implements MessageDrivenBean,
 	private TransitionDelegate transitionDelegate;
 	private PurchaseOrderLocalHome poHome;
 
-	private EjbHandler ejbHandler = new EjbHandler();
+	private CustomerrelationsEjbHandler ejbHandler = new CustomerrelationsEjbHandler();
 
 	public MailCompletedOrderMDB() {
 	}

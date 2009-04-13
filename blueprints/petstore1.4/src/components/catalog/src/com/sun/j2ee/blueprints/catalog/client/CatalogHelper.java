@@ -183,7 +183,7 @@ public class CatalogHelper implements java.io.Serializable {
             return dao.searchItems(searchQuery, start, count,
                                    locale);
         } catch (CatalogDAOSysException se) {
-        	return clientHandler.searchItemsFromDAOperformHandler(se);
+        	return clientHandler.throwCatalogException1Handler(se);
         }
     }
 
@@ -212,7 +212,7 @@ public class CatalogHelper implements java.io.Serializable {
                 dao = CatalogDAOFactory.getDAO();
             return dao.getCategories(start, count, locale);
         } catch (CatalogDAOSysException se) {
-        	return clientHandler.searchItemsFromDAOperformHandler(se); 
+        	return clientHandler.throwCatalogException1Handler(se); 
         }
     }
 
@@ -255,7 +255,7 @@ public class CatalogHelper implements java.io.Serializable {
                 dao = CatalogDAOFactory.getDAO();
             return dao.getProducts(categoryId, start, count, locale);
         } catch (CatalogDAOSysException se) {
-        	return clientHandler.searchItemsFromDAOperformHandler(se);
+        	return clientHandler.throwCatalogException1Handler(se);
         }
     }
 
@@ -291,7 +291,7 @@ public class CatalogHelper implements java.io.Serializable {
                 dao = CatalogDAOFactory.getDAO();
             return dao.getItems(productId, start, count, locale);
         } catch (CatalogDAOSysException se) {
-        	return clientHandler.searchItemsFromDAOperformHandler(se);
+        	return clientHandler.throwCatalogException1Handler(se);
         }
     }
 
@@ -323,7 +323,7 @@ public class CatalogHelper implements java.io.Serializable {
                 dao = CatalogDAOFactory.getDAO();
             return dao.getItem(itemId, locale);
         } catch (CatalogDAOSysException se) {
-        	return clientHandler.getItemFromDAOHandler(se);
+        	return clientHandler.throwCatalogException2Handler(se);
         }
     }
 
@@ -342,9 +342,11 @@ public class CatalogHelper implements java.io.Serializable {
             CatalogLocalHome home =(CatalogLocalHome)sl.getLocalHome(JNDINames.CATALOG_EJBHOME);
             return home.create();
         } catch (javax.ejb.CreateException cx) {
-       	return clientHandler.getCatalogEJB1Handler(cx);
+        	String msg = "CatalogHelper: failed to create CatalogLocal EJB: caught ";
+        	return clientHandler.getCatalogEJBHandler(msg,cx);
         } catch (ServiceLocatorException slx) {
-                throw new CatalogException("CatalogHelper: failed to look up Catalog Home: caught " + slx);
+        	String msg = "CatalogHelper: failed to look up Catalog Home: caught ";
+        	return clientHandler.getCatalogEJBHandler(msg,slx);
         }
     }
 

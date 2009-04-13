@@ -84,9 +84,11 @@ public class ShoppingControllerEJB extends EJBControllerLocalEJB {
                     (ShoppingClientFacadeLocalHome)sl.getLocalHome(JNDINames.SHOPPING_CLIENT_FACADE_EJBHOME);
                 clientFacade = home.create();
             } catch (javax.ejb.CreateException cx) {
-            	  ejbHandler.shoppingClientFacadeLocal1Handler(cx);
+            	String msg ="ShoppingControllerEJB: Failed to Create ShoppingClientFacade: caught ";
+            	ejbHandler.throwGeneralFailureExceptionHandler(msg,cx)	;
             } catch (ServiceLocatorException slx) {
-            	ejbHandler.shoppingClientFacadeLocal1Handler(slx);
+            	String msg ="ShoppingControllerEJB: Failed to Create ShoppingClientFacade: caught ";
+            	ejbHandler.throwGeneralFailureExceptionHandler(msg,slx)	;
             }
         }
         return clientFacade;

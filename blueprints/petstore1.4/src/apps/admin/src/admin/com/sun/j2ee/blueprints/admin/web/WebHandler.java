@@ -4,7 +4,7 @@ import javax.ejb.CreateException;
 
 public class WebHandler {
 
-	public void throwAdminBDExceptionHandler(Exception e) throws AdminBDException {
+	public void printStackTraceThrowAdminBDExceptionHandler(Exception e) throws AdminBDException {
 		e.printStackTrace();
 		throw new AdminBDException(e.getMessage());
 	}
@@ -13,7 +13,7 @@ public class WebHandler {
 		throw new AdminBDException(ce.getMessage());
 	}
 
-	public String messageExeptionHandler(Exception e, String replyHeader) {
+	public String messageExceptionHandler(Exception e, String replyHeader) {
 		return replyHeader + "<Error>Exception while processing :  "
 				+ e.getMessage() + ". Please try again</Error>\n</Response>\n";
 	}

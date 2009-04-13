@@ -10,21 +10,17 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
 public class ClientHandler {
 
-	public Page searchItemsFromDAOperformHandler(CatalogDAOSysException se) throws CatalogException {
+	public Page throwCatalogException1Handler(CatalogDAOSysException se) throws CatalogException {
 		throw new CatalogException(se.getMessage());		
 	}
 	
-	public Item getItemFromDAOHandler(CatalogDAOSysException se) throws CatalogException {
+	public Item throwCatalogException2Handler(CatalogDAOSysException se) throws CatalogException {
 		throw new CatalogException(se.getMessage());		
 	}
 	
-	public CatalogLocal getCatalogEJB1Handler(javax.ejb.CreateException cx) throws CatalogException  {
-		throw new CatalogException("CatalogHelper: failed to create CatalogLocal EJB: caught " + cx);		
+	public CatalogLocal getCatalogEJBHandler(String msg,Exception cx) throws CatalogException  {
+		throw new CatalogException(msg + cx);		
 	}
 	
-	public CatalogLocal getCatalogEJB2Handler(ServiceLocatorException slx) throws CatalogException  {
-		throw new CatalogException("CatalogHelper: failed to look up Catalog Home: caught " + slx);	
-	}
-
 	
 }

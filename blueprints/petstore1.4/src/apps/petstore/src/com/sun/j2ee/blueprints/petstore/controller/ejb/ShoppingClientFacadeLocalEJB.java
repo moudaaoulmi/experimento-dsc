@@ -111,7 +111,8 @@ public class ShoppingClientFacadeLocalEJB implements SessionBean {
                 CustomerLocalHome home =(CustomerLocalHome)sl.getLocalHome(JNDINames.CUSTOMER_EJBHOME);
                 customer = home.findByPrimaryKey(userId);
             } catch (ServiceLocatorException slx) {
-                  ejbHandler.getCustomerHandler(slx)	;	
+            	String msg ="ShoppingClientFacade: failed to look up name of customer: caught ";
+            	ejbHandler.throwGeneralFailureExceptionHandler(msg,slx)	;	
             }
         return customer;
     }
@@ -123,9 +124,11 @@ public class ShoppingClientFacadeLocalEJB implements SessionBean {
                 customer = home.create(userId);
                 this.userId = userId;
             } catch (javax.ejb.CreateException ce) {
-            	ejbHandler.createCustomerHandler(ce);
+            	String msg ="ShoppingClientFacade: failed to create customer: caught ";
+            	ejbHandler.throwGeneralFailureExceptionHandler(msg,ce)	;
             } catch (ServiceLocatorException slx) {
-            	ejbHandler.getCustomerHandler(slx)	;
+            	String msg ="ShoppingClientFacade: failed to look up name of customer: caught ";
+            	ejbHandler.throwGeneralFailureExceptionHandler(msg,slx)	;
             }
         return customer;
     }
@@ -137,9 +140,11 @@ public class ShoppingClientFacadeLocalEJB implements SessionBean {
                 ShoppingCartLocalHome home =(ShoppingCartLocalHome)sl.getLocalHome(JNDINames.SHOPPING_CART_EJBHOME);
                 cart = home.create();
             } catch (javax.ejb.CreateException cx) {
-            	  ejbHandler.getShoppingCart1Handler( cx);
+            	String msg ="ShoppingClientFacade: failed to create cart: caught ";
+            	ejbHandler.throwGeneralFailureExceptionHandler(msg,cx)	;
             } catch (ServiceLocatorException slx) {
-            	ejbHandler.getShoppingCart2Handler(slx);           
+            	String msg ="ShoppingClientFacade: failed to look up name of cart: caught ";
+            	ejbHandler.throwGeneralFailureExceptionHandler(msg,slx)	;          
             }
         }
         return cart;

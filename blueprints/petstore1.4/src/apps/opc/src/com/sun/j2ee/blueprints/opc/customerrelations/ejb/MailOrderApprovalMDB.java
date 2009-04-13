@@ -86,7 +86,7 @@ public class MailOrderApprovalMDB implements MessageDrivenBean, MessageListener 
 	private URL entityCatalogURL;
 	private boolean validateXmlOrderApproval;
 
-	private EjbHandler ejbHandler = new EjbHandler();
+	private CustomerrelationsEjbHandler ejbHandler = new CustomerrelationsEjbHandler();
 
 	public MailOrderApprovalMDB() {
 	}
