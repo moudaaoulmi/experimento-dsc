@@ -60,7 +60,8 @@ public class Mail {
   private String subject  = null;
   private String content = null;
 
-
+  static EjbHandler ejbHandler = new EjbHandler();
+  
   private Mail() {}
 
   public Mail(String address, String subject, String content) {
@@ -110,8 +111,9 @@ public class Mail {
       //System.err.println("toXML: " + stream.toString(XMLDocumentUtils.DEFAULT_ENCODING));
       return stream.toString(XMLDocumentUtils.DEFAULT_ENCODING);
     } catch (Exception exception) {
-      throw new XMLDocumentException(exception);
+      ejbHandler.toXMLHandler(exception);
     }
+    return null;
   }
 
   public static Mail fromXML(Source source) throws XMLDocumentException {
@@ -131,9 +133,9 @@ public class Mail {
     try {
       return fromXML(new StreamSource(new StringReader(buffer)), entityCatalogURL, validating);
     } catch (XMLDocumentException exception) {
-      System.err.println(exception.getRootCause().getMessage());
-      throw new XMLDocumentException(exception);
+       ejbHandler.fromXMLHandler(exception);
     }
+    return null;
   }
 
   public Document toDOM() throws XMLDocumentException {
@@ -172,11 +174,9 @@ public class Mail {
         System.out.println(Mail.fromXML(mail.toXML()).getContent());
         System.exit(0);
       } catch (IOException exception) {
-        System.err.println(exception);
-        System.exit(2);
+    	 ejbHandler.mainHandler(exception);
       } catch (XMLDocumentException exception) {
-        System.err.println(exception.getRootCause());
-        System.exit(2);
+    	  ejbHandler.main2Handler(exception);
       }
     }
     System.err.println("Usage: " + Mail.class.getName() + " [file-name]");

@@ -58,6 +58,8 @@ public class MailerMDB implements MessageDrivenBean, MessageListener {
   private Context context;
   private MessageDrivenContext mdc = null;
 
+  EjbHandler ejbHandler = new EjbHandler();
+  
   public MailerMDB() {
   }
 
@@ -83,10 +85,11 @@ public class MailerMDB implements MessageDrivenBean, MessageListener {
     } catch (MailerAppException me) {
       //throw new EJBException("MailerMDB.onMessage" + me);
       //ignore since user probably forgot to set up mail server
+      ejbHandler.onMessageHandler(me);
     } catch (XMLDocumentException xde) {
-      throw new EJBException("MailerMDB.onMessage" + xde);
+    	ejbHandler.onMessage2Handler(xde);
     } catch(JMSException je) {
-      throw new EJBException("MailerMDB.onMessage" + je);
+    	ejbHandler.onMessage2Handler(je);
     }
   }
 

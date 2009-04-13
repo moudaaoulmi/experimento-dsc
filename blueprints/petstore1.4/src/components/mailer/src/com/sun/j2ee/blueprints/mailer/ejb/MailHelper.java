@@ -61,6 +61,7 @@ import com.sun.j2ee.blueprints.mailer.exceptions.MailerAppException;
  */
 public class MailHelper {
 
+	EjbHandler ejbHandler = new EjbHandler();
 
     /**
      * This method creates an email message and sends it using the
@@ -84,8 +85,7 @@ public class MailHelper {
             msg.setSentDate(new Date());
             Transport.send(msg);
         } catch (Exception e) {
-            System.err.print("createAndSendMail exception : " + e);
-            throw new MailerAppException("Failure while sending mail");
+            ejbHandler.createAndSendMailHandler(e);
         }
     }
 }
