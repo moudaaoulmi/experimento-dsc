@@ -112,12 +112,12 @@ public class UserPopulator {
         user = userHome.findByPrimaryKey(id);
         user.remove();
       } catch (Exception exception) {
-    	  tooPopulateHandler.createCustomerHandler();
+    	  return tooPopulateHandler.createUserHandler(exception);
       }
       user = userHome.create(id, password);
       return user;
     } catch (Exception exception) {
-    	tooPopulateHandler.createHandler(exception);
+    	return tooPopulateHandler.createUserHandler(exception);
       //throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
     }
   }

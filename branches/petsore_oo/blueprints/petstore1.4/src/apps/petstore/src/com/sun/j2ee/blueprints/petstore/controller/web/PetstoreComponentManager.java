@@ -115,10 +115,12 @@ public class PetstoreComponentManager extends DefaultComponentManager implements
             //scf.setUserId(userId);
             return scf.getCustomer();
         } catch (FinderException e) {
-        	webHandler.getCustomer1Handler(e);
+        	String msg = "PetstoreComponentManager finder error: ";
+        	webHandler.SystemErrHandler(msg,e);
+        	
         } catch (Exception e) {
-//                System.err.println("PetstoreComponentManager error: " + e);
-        	webHandler.getCustomer2Handler(e);
+        	String msg = "PetstoreComponentManager  error: ";
+        	webHandler.SystemErrHandler(msg,e);
         }
         return null;
     }

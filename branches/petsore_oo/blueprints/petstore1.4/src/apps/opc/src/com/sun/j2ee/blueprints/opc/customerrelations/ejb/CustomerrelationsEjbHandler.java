@@ -7,10 +7,7 @@ import com.sun.j2ee.blueprints.opc.customerrelations.ejb.MailContentXDE.Formatte
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 
 
-public class EjbHandler {
-	
-	// private EjbHandler ejbHandler = new EjbHandler();
-
+public class CustomerrelationsEjbHandler {
 	
 	public void throwEJBExceptionHandler(Exception e)throws EJBException{
 		throw new EJBException(e);

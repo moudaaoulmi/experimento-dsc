@@ -103,7 +103,7 @@ public class AddressPopulator {
     	
 	/** Exception Handler */
 	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
-	 toolPopulateHandler.createHandler(exception); 
+	 return toolPopulateHandler.createAddressHandler(exception); 
       //throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
     }
 

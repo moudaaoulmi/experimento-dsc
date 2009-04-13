@@ -47,6 +47,7 @@ import javax.xml.parsers.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 
+import com.sun.corba.ee.pept.transport.Connection;
 import com.sun.j2ee.blueprints.catalog.util.JNDINames;
 import com.sun.j2ee.blueprints.catalog.model.Page;
 import com.sun.j2ee.blueprints.catalog.model.Category;
@@ -134,13 +135,12 @@ public class GenericCatalogDAO implements CatalogDAO {
       InitialContext context = new InitialContext();
       return (DataSource) context.lookup(JNDINames.CATALOG_DATASOURCE);
     } catch (NamingException exception) {
-    	DaoHandler.getDataSourceHandler(exception);
-//      throw new CatalogDAOSysException("NamingException while looking up DB context : " +
-//                                       exception.getMessage());
+    	return DaoHandler.getDataSourceHandler(exception);
+
     }
   }
 
-  protected static void closeAll(Connection connection, PreparedStatement statement, ResultSet resultSet) {
+  protected static void closeAll(java.sql.Connection connection, PreparedStatement statement, ResultSet resultSet) {
     if (resultSet != null) {
       try {
         resultSet.close();
@@ -168,7 +168,7 @@ public class GenericCatalogDAO implements CatalogDAO {
   // Business methods
 
   public Category getCategory(String categoryID, Locale locale) throws CatalogDAOSysException {
-    Connection connection = null;
+    java.sql.Connection connection = null;
     ResultSet resultSet = null;
     PreparedStatement statement = null;
     try {
@@ -184,7 +184,7 @@ public class GenericCatalogDAO implements CatalogDAO {
       }
       return null;
     } catch (SQLException exception) {
-    	daoHandler.getCategoryHandler(exception);
+    	return daoHandler.getCategoryHandler(exception);
       //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
     } finally {
        daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
@@ -193,7 +193,7 @@ public class GenericCatalogDAO implements CatalogDAO {
   }
 
   public Page getCategories(int start, int count, Locale locale) throws CatalogDAOSysException {
-    Connection connection = null;
+    java.sql.Connection connection = null;
     PreparedStatement statement = null;
     ResultSet resultSet = null;
     try {
@@ -216,7 +216,7 @@ public class GenericCatalogDAO implements CatalogDAO {
       }
       return Page.EMPTY_PAGE;
     } catch (SQLException exception) {
-    	daoHandler.getCategoryHandler(exception);
+    	return daoHandler.getCategories1Handler(exception);
         //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
       } finally {
          daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
@@ -225,7 +225,7 @@ public class GenericCatalogDAO implements CatalogDAO {
   }
 
   public Product getProduct(String productID, Locale locale) throws CatalogDAOSysException {
-    Connection connection = null;
+    java.sql.Connection connection = null;
     PreparedStatement statement = null;
     ResultSet resultSet = null;
     try {
@@ -242,7 +242,7 @@ public class GenericCatalogDAO implements CatalogDAO {
       return null;
     }
     catch (SQLException exception) {
-    	daoHandler.getCategoryHandler(exception);
+    	return daoHandler.getProductHandler(exception);
         //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
       } finally {
          daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
@@ -251,7 +251,7 @@ public class GenericCatalogDAO implements CatalogDAO {
   }
 
   public Page getProducts(String categoryID, int start, int count, Locale locale) throws CatalogDAOSysException {
-    Connection connection = null;
+    java.sql.Connection connection = null;
     PreparedStatement statement = null;
     ResultSet resultSet = null;
     try {
@@ -274,7 +274,7 @@ public class GenericCatalogDAO implements CatalogDAO {
       }
       return Page.EMPTY_PAGE;
     } catch (SQLException exception) {
-    	daoHandler.getCategoryHandler(exception);
+    	return daoHandler.getCategories1Handler(exception);
         //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
       } finally {
          daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
@@ -283,7 +283,7 @@ public class GenericCatalogDAO implements CatalogDAO {
   }
 
   public Item getItem(String itemID, Locale locale) throws CatalogDAOSysException {
-    Connection connection = null;
+    java.sql.Connection connection = null;
     PreparedStatement statement = null;
     ResultSet resultSet = null;
     try {
@@ -312,7 +312,7 @@ public class GenericCatalogDAO implements CatalogDAO {
       }
       return null;
     } catch (SQLException exception) {
-    	daoHandler.getCategoryHandler(exception);
+    	return daoHandler.getItemHandler(exception);
         //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
       } finally {
          daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
@@ -321,7 +321,7 @@ public class GenericCatalogDAO implements CatalogDAO {
   }
 
   public Page getItems(String productID, int start, int count, Locale locale) throws CatalogDAOSysException {
-    Connection connection = null;
+    java.sql.Connection connection = null;
     PreparedStatement statement = null;
     ResultSet resultSet = null;
     try {
@@ -355,7 +355,7 @@ public class GenericCatalogDAO implements CatalogDAO {
       }
       return Page.EMPTY_PAGE;
     } catch (SQLException exception) {
-    	daoHandler.getCategoryHandler(exception);
+    	return daoHandler.getCategories1Handler(exception);
         //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
       } finally {
          daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
@@ -374,7 +374,7 @@ public class GenericCatalogDAO implements CatalogDAO {
         return Page.EMPTY_PAGE;
       }
       String[] keywords = (String[]) keywordSet.toArray(new String[0]);
-      Connection connection = null;
+      java.sql.Connection connection = null;
       PreparedStatement statement = null;
       ResultSet resultSet = null;
       try {
@@ -414,7 +414,7 @@ public class GenericCatalogDAO implements CatalogDAO {
         }
         return Page.EMPTY_PAGE;
       } catch (SQLException exception) {
-    	  daoHandler.getCategoryHandler(exception);
+    	  return daoHandler.getCategories1Handler(exception);
           //throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
         } finally {
            daoHandler.getCategoryFINALLYHandler(connection, statement, resultSet);
@@ -422,7 +422,7 @@ public class GenericCatalogDAO implements CatalogDAO {
           }
   }
 
-  private PreparedStatement buildSQLStatement(Connection connection, Map sqlStatements, String sqlStatementKey,
+  private PreparedStatement buildSQLStatement(java.sql.Connection connection, Map sqlStatements, String sqlStatementKey,
                                               String[] parameterValues)
     throws SQLException {
       Statement statement = (Statement) sqlStatements.get(sqlStatementKey);
@@ -432,7 +432,7 @@ public class GenericCatalogDAO implements CatalogDAO {
       return null;
   }
 
-  private PreparedStatement buildSQLStatement(Connection connection, Statement sqlStatement, String[] parameterValues)
+  private PreparedStatement buildSQLStatement(java.sql.Connection connection, Statement sqlStatement, String[] parameterValues)
     throws SQLException {
       StringBuffer buffer = new StringBuffer();
       int totalParameterValueNb = parameterValues != null ? parameterValues.length : 0;

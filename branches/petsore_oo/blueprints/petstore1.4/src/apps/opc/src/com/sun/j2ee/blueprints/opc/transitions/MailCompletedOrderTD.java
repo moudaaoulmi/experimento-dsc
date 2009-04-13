@@ -69,7 +69,7 @@ public class MailCompletedOrderTD implements TransitionDelegate {
       q = serviceLocator.getQueue(JNDINames.MAIL_SENDER_QUEUE);
       mailHelper = new QueueHelper(qFactory, q);
     } catch (ServiceLocatorException se) {
-    	transitionsHandler.setupHandler(se);
+    	transitionsHandler.throwsTransitionExceptionHandler(se);
     }
   }
 
@@ -84,7 +84,7 @@ public class MailCompletedOrderTD implements TransitionDelegate {
         mailHelper.sendMessage(xmlMail);
       }
     } catch (JMSException je) {
-    	transitionsHandler.setupHandler(je);
+    	transitionsHandler.throwsTransitionExceptionHandler(je);
     }
   }
 

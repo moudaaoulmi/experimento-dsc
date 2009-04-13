@@ -186,7 +186,7 @@ public class PopulateServlet extends HttpServlet {
       InitialContext context = new InitialContext();
       return ((DataSource) context.lookup(JNDINames.CATALOG_DATASOURCE)).getConnection();
     } catch (Exception exception) {
-    	toolPopulateHandler.getConnectionHandler(exception);
+    	return toolPopulateHandler.getConnectionHandler(exception);
       //throw new PopulateException("Can't get catalog data source connection", exception);
     }
   }
@@ -204,11 +204,11 @@ public class PopulateServlet extends HttpServlet {
   }
 
   private String getResource(String path) throws IOException {
-    String url;
+    String url = null;
     try {
       url = new URL(path).toString();
     } catch (MalformedURLException exception) {
-    	toolPopulateHandler.getResourceHandler(exception, path);
+    	url= toolPopulateHandler.getResourceHandler(exception, path,url);
 //      URL u = getServletContext().getResource(path);
 //      url = u != null ? u.toString() : path;
     }

@@ -135,7 +135,7 @@ public class CustomerPopulator {
       }
       return customer;
     } catch (Exception exception) {
-        toolPopulateHandler.createHandler(exception);
+        return toolPopulateHandler.createCustomerHandler(exception);
     	//throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
     }
   }

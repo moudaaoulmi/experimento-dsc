@@ -73,7 +73,7 @@ public class MailInvoiceMDB implements MessageDrivenBean, MessageListener {
 	private TPAInvoiceXDE invoiceXDE = null;
 	private PurchaseOrderLocalHome poHome;
 
-	private EjbHandler ejbHandler = new EjbHandler();
+	private CustomerrelationsEjbHandler ejbHandler = new CustomerrelationsEjbHandler();
 
 	public MailInvoiceMDB() {
 	}

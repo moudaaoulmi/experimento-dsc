@@ -71,7 +71,7 @@ public class MailOrderApprovalTransitionDelegate implements TransitionDelegate {
       q = serviceLocator.getQueue(JNDINames.MAIL_SENDER_QUEUE);
       mailHelper = new QueueHelper(qFactory, q);
     } catch (ServiceLocatorException se) {
-    	transitionsHandler.setupHandler(se);
+    	transitionsHandler.throwsTransitionExceptionHandler(se);
     }
   }
 
@@ -89,7 +89,7 @@ public class MailOrderApprovalTransitionDelegate implements TransitionDelegate {
           mailHelper.sendMessage(xmlMail);
       }//end while
     } catch (JMSException je) {
-    	transitionsHandler.setupHandler(je);
+    	transitionsHandler.throwsTransitionExceptionHandler(je);
     }
   }
 

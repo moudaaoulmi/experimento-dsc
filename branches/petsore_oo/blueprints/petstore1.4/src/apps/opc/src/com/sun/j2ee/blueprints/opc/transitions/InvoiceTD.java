@@ -68,7 +68,7 @@ public class InvoiceTD implements TransitionDelegate {
       q = serviceLocator.getQueue(JNDINames.CR_MAIL_COMPLETED_ORDER_MDB_QUEUE);
       queueHelper = new QueueHelper(qFactory, q);
     } catch(ServiceLocatorException se) {
-        transitionsHandler.setupHandler(se);
+        transitionsHandler.throwsTransitionExceptionHandler(se);
     }
   }
 
@@ -82,7 +82,7 @@ public class InvoiceTD implements TransitionDelegate {
     try {
       queueHelper.sendMessage(xmlCompletedOrder);
     } catch (JMSException je) {
-       transitionsHandler.setupHandler(je);
+       transitionsHandler.throwsTransitionExceptionHandler(je);
     }
   }
 

@@ -232,7 +232,7 @@ public abstract class XMLDBHandler extends XMLFilterImpl {
         return Integer.valueOf(value).intValue();
       }
     } catch (NumberFormatException exception) {
-    	tooPopulateHandler.getValueHandler();
+    	return tooPopulateHandler.getValueHandler();
     }
     return defaultValue;
   }

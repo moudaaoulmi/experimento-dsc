@@ -76,7 +76,7 @@ public class QueueHelper implements java.io.Serializable {
             qSender.send(jmsMsg);
         } finally {
 
-        	transitionsHandler.sendMessageHandler(qConnect);
+        	transitionsHandler.sendMessageFinallyHandler(qConnect);
         	
         }
     }

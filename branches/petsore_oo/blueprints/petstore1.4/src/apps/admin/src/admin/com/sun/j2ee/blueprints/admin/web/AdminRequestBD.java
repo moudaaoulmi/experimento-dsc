@@ -85,11 +85,11 @@ public class AdminRequestBD {
             OPCAdminFacadeHome home = (OPCAdminFacadeHome) ServiceLocator.getInstance().getRemoteHome(OPC_ADMIN_NAME, OPCAdminFacadeHome.class);
             opcAdminEJB = home.create();
         } catch (ServiceLocatorException sle) {
-           this.webHandler.throwAdminBDExceptionHandler(sle);
+           this.webHandler.printStackTraceThrowAdminBDExceptionHandler(sle);
         } catch (CreateException ce) {
-        	this.webHandler.throwAdminBDExceptionHandler(ce);
+        	this.webHandler.printStackTraceThrowAdminBDExceptionHandler(ce);
         } catch (RemoteException re) {
-        	this.webHandler.throwAdminBDExceptionHandler(re);
+        	this.webHandler.printStackTraceThrowAdminBDExceptionHandler(re);
         }
     
     }
@@ -104,9 +104,9 @@ public class AdminRequestBD {
         try {
             return opcAdminEJB.getOrdersByStatus(status);
         } catch (RemoteException re) {
-        	this.webHandler.throwAdminBDExceptionHandler(re);
+        	this.webHandler.printStackTraceThrowAdminBDExceptionHandler(re);
         } catch (OPCAdminFacadeException oafee) {
-        	this.webHandler.throwAdminBDExceptionHandler(oafee);
+        	this.webHandler.printStackTraceThrowAdminBDExceptionHandler(oafee);
         }
         return null;// Para nao da erro de compilacao, pois o metodo requer retorno. 
         //Linha nunca sera executada. Dessa forma nao muda o comportamento...
@@ -119,9 +119,9 @@ public class AdminRequestBD {
             AsyncSender sender= home.create();
             sender.sendAMessage(oa.toXML());
         } catch (ServiceLocatorException sle) {
-        	this.webHandler.throwAdminBDExceptionHandler(sle);
+        	this.webHandler.printStackTraceThrowAdminBDExceptionHandler(sle);
         } catch (XMLDocumentException xde) {
-        	this.webHandler.throwAdminBDExceptionHandler(xde);
+        	this.webHandler.printStackTraceThrowAdminBDExceptionHandler(xde);
         }  catch (CreateException ce) {
             this.webHandler.updateOrdersHandler(ce);
         }
@@ -143,9 +143,9 @@ public class AdminRequestBD {
         try {
             return opcAdminEJB.getChartInfo(request, start, end, category);
         } catch (RemoteException re) {
-        	this.webHandler.throwAdminBDExceptionHandler(re);
+        	this.webHandler.printStackTraceThrowAdminBDExceptionHandler(re);
         } catch (OPCAdminFacadeException oafee) {
-        	this.webHandler.throwAdminBDExceptionHandler(oafee);
+        	this.webHandler.printStackTraceThrowAdminBDExceptionHandler(oafee);
         }
         return null;// Para nao da erro de compilacao, pois o metodo requer retorno. 
         //Linha nunca sera executada. Dessa forma nao muda o comportamento...

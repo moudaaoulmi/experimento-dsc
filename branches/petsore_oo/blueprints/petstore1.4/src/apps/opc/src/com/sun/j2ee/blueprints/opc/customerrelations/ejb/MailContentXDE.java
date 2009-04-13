@@ -60,7 +60,7 @@ public class MailContentXDE extends XMLDocumentEditor.DefaultXDE {
 	private String result = null;
 	private Locale locale = null;
 
-	private EjbHandler ejbHandler = new EjbHandler();
+	private CustomerrelationsEjbHandler ejbHandler = new CustomerrelationsEjbHandler();
 
 	public static class FormatterException extends Exception {
 		private Exception exception;

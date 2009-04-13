@@ -341,11 +341,11 @@ public class PurchaseOrder {
         purchaseOrder.toXML(new StreamResult(System.out));
         System.exit(0);
       } catch (IOException exception) {
-    	  ejbHandler.main1Handler(exception);
+    	  ejbHandler.mainHandler(exception,exception);
       } catch (XMLDocumentException exception) {
-    	  ejbHandler.main2Handler(exception);
+    	  ejbHandler.mainHandler(exception,exception.getRootCause());
       } catch (Exception exception) {
-    	  ejbHandler.main1Handler(exception);
+    	  ejbHandler.mainHandler(exception,exception);
       }
     }
     System.err.println("Usage: " + PurchaseOrder.class.getName() + " [file-name]");

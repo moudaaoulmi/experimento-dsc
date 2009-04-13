@@ -68,7 +68,7 @@ public class PurchaseOrderTD implements TransitionDelegate {
       q = serviceLocator.getQueue(JNDINames.ORDER_APPROVAL_MDB_QUEUE);
       queueHelper = new QueueHelper(qFactory, q);
     } catch(ServiceLocatorException se) {
-    	transitionsHandler.setupHandler(se);
+    	transitionsHandler.throwsTransitionExceptionHandler(se);
     }
   }
 
@@ -83,7 +83,7 @@ public class PurchaseOrderTD implements TransitionDelegate {
         queueHelper.sendMessage(xmlOrderApproval);
       }
     } catch (JMSException je) {
-    	transitionsHandler.setupHandler( je);
+    	transitionsHandler.throwsTransitionExceptionHandler( je);
     }
   }
 

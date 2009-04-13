@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 
 public class ClientHandler {
 
-	// private ClientHandler clientHandler = new ClientHandler();
-
 	public void updateModelDatesHandler(JPanel panel) {
 		JOptionPane.showMessageDialog(panel, PetStoreAdminClient
 				.getString("DateFormatErrorDialog.message"),

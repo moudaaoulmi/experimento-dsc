@@ -1,21 +1,55 @@
 package com.sun.j2ee.blueprints.petstore.tools.populate;
 
-import org.xml.sax.SAXException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.xml.sax.SAXException;
+
+import com.sun.j2ee.blueprints.address.ejb.AddressLocal;
+import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfoLocal;
+import com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocal;
+import com.sun.j2ee.blueprints.customer.account.ejb.AccountLocal;
+import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
+import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileLocal;
+import com.sun.j2ee.blueprints.signon.user.ejb.UserLocal;
 
 public class ToolPopulateHandler {
 	
-	/** Coloquei o nome 'create' para reusar porque tem muitos
-	 * createAddress(), createAccount(), etc,,, tudo 
-	 * com o mesmo catch!
-	 * 
-	 */
+	
 	 //catch (Exception exception) 
-	public void createHandler(Exception exception) throws PopulateException{
+	public AccountLocal createAccountHandler(Exception exception) throws PopulateException{
 	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
 	}
+	
+	public AddressLocal createAddressHandler(Exception exception) throws PopulateException{
+	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+	}
+	
+	public ContactInfoLocal createContactInfoHandler(Exception exception) throws PopulateException{
+	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+	}
+	
+	public CreditCardLocal createCreditCardHandler(Exception exception) throws PopulateException{
+	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+	}
+	
+	public CustomerLocal createCustomerHandler(Exception exception) throws PopulateException{
+	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+	}
+	public ProfileLocal createProfileHandler(Exception exception) throws PopulateException{
+	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+	}
+	
+	public UserLocal createUserHandler(Exception exception) throws PopulateException{
+	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+	}
+	
 	
 	/**
 	 * MÉTODO criado para reusar, pois haviam vários catchs 
@@ -42,7 +76,7 @@ public class ToolPopulateHandler {
 //    }
 	
 	//catch (Exception exception) 
-	public void initHandler(Exception exception){	
+	public void initHandler(Exception exception) throws ServletException{	
 	   throw new ServletException(exception);
 	}
 	
@@ -53,7 +87,9 @@ public class ToolPopulateHandler {
 	      if (errorPageURL == null) {
 	        throw new ServletException("Populate exception occured :" + exception.getMessage(), exception.getRootCause());
 	      } else {
-	        redirect(request, response, errorPageURL);
+	        PopulateServlet obj = new PopulateServlet();
+	    	//n„o pode metodo privado  
+	        obj.redirect(request, response, errorPageURL);
 	      }
 	    }
 	
@@ -63,7 +99,9 @@ public class ToolPopulateHandler {
     }
 	
 //	//catch (NumberFormatException exception)
-//	public void getValueHandler(){}
+	public int getValueHandler(){
+		return 0;
+	}
 	
 	//catch (Exception exception) 
 	public static void mainHandler (Exception exception) {
@@ -72,7 +110,7 @@ public class ToolPopulateHandler {
 	}
 	
 	//catch (SQLException exception) 
-	public void executeSQLStatementHandler(SQLException exception) throws PopulateException  {
+	public boolean executeSQLStatementHandler(String sqlStatement,SQLException exception) throws PopulateException  {
         throw new PopulateException(sqlStatement, exception);
     }
 	
@@ -97,14 +135,15 @@ public class ToolPopulateHandler {
 	}
 	
 	 //catch (Exception exception)
-	public void getConnectionHandler(Exception exception) throws PopulateException  {
+	public Connection getConnectionHandler(Exception exception) throws PopulateException  {
 	      throw new PopulateException("Can't get catalog data source connection", exception);
 	}
 	
 	//catch (MalformedURLException exception) 
-	public void getResourceHandler(MalformedURLException exception, String path){
-	      URL u = getServletContext().getResource(path);
-	      url = u != null ? u.toString() : path;
+	public String getResourceHandler(MalformedURLException exception, String path,String url) throws MalformedURLException{
+	    PopulateServlet obj = new PopulateServlet();  
+		URL u = obj.getServletContext().getResource(path);
+	     return  url = u != null ? u.toString() : path;
 	    }
 	
 }//ToolPopulateHandler{}

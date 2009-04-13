@@ -148,13 +148,13 @@ public class ApplRequestProcessor extends HttpServlet {
             }
         }
         catch (ParserConfigurationException pe) {
-            return this.webHandler.messageExeptionHandler(pe, replyHeader);
+            return this.webHandler.messageExceptionHandler(pe, replyHeader);
         }
         catch (SAXException se) {
-            return this.webHandler.messageExeptionHandler(se, replyHeader);
+            return this.webHandler.messageExceptionHandler(se, replyHeader);
         }
         catch (IOException ie) {
-            return this.webHandler.messageExeptionHandler(ie, replyHeader);
+            return this.webHandler.messageExceptionHandler(ie, replyHeader);
         }
     }
 
@@ -224,7 +224,7 @@ public class ApplRequestProcessor extends HttpServlet {
                 + "<Status>SUCCESS</Status>\n"
                 + "</Response>\n";
         } catch (AdminBDException e) {
-            return this.webHandler.messageExeptionHandler(e, replyHeader);
+            return this.webHandler.messageExceptionHandler(e, replyHeader);
         }
     }
 

@@ -91,7 +91,7 @@ public class ProfilePopulator {
     } catch (Exception exception) {
       /** Exception Handler  */
     	ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
-    	toolPopulateHandler.createHandler(exception);
+    	return toolPopulateHandler.createProfileHandler(exception);
     	//throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
     }
 
