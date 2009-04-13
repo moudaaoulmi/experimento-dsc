@@ -73,6 +73,7 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 public abstract class SupplierOrderEJB implements EntityBean {
 
   private EntityContext context = null;
+  EjbHandler ejbHandler = new EjbHandler();
 
   /**
    * Accessor method for purchase order ID
@@ -178,11 +179,9 @@ public abstract class SupplierOrderEJB implements EntityBean {
         addLineItem(lineItemloc);
       }
     } catch(ServiceLocatorException ne) {
-      throw new CreateException("ServiceLocator Ex while persisting PO CMR :" +
-                                ne.getMessage());
+    	ejbHandler.ejbPostCreateHandler(ne);
     } catch (NullPointerException nex) {
-        System.err.println("SupplierOrderEJB caught a null pointer");
-        nex.printStackTrace();
+    	ejbHandler.ejbPostCreate2Handler(nex);
     }
   }
 
