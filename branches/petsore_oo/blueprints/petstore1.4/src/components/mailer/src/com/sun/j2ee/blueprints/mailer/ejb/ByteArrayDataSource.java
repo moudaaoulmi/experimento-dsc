@@ -55,6 +55,8 @@ import javax.activation.DataSource;
 class ByteArrayDataSource implements DataSource {
     private byte[] data; // data for mail message
     private String type; // content type/mime type
+    
+    EjbHandler ejbHandler = new EjbHandler();
 
    /**
     * Create a DataSource from a String
@@ -64,7 +66,9 @@ class ByteArrayDataSource implements DataSource {
     ByteArrayDataSource(String data, String type) {
         try {
            this.data = data.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException uex) { }
+        } catch (UnsupportedEncodingException uex) {
+        	ejbHandler.ByteArrayDataSourceHandler(uex);
+        }
         this.type = type;
     }
 
