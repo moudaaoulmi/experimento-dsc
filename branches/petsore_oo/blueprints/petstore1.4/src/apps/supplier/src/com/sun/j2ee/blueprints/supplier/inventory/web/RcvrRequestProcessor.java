@@ -87,6 +87,8 @@ public class RcvrRequestProcessor extends HttpServlet {
   private InventoryLocalHome inventoryHomeRef = null;
   private OrderFulfillmentFacadeLocalHome orderFacadeHomeRef = null;
   private OrderFulfillmentFacadeLocal procPO = null;
+  
+  WebHandler webHandler = new WebHandler();
 
   public void init() {
     try {
@@ -97,9 +99,9 @@ public class RcvrRequestProcessor extends HttpServlet {
           serviceLocator.getLocalHome(JNDINames.ORDERFACADE_EJB);
       procPO = orderFacadeHomeRef.create();
     } catch(ServiceLocatorException se) {
-      se.printStackTrace();
+      webHandler.printStackTraceHandler(se);
     } catch(CreateException ce) {
-      ce.printStackTrace();
+      webHandler.printStackTraceHandler(ce);
     }
   }
 
@@ -132,7 +134,7 @@ public class RcvrRequestProcessor extends HttpServlet {
         }
       }
     } catch (FinderException ne) {
-      ne.printStackTrace();
+    	webHandler.printStackTraceHandler(ne);
     }
   }
 
@@ -150,9 +152,9 @@ public class RcvrRequestProcessor extends HttpServlet {
         transitionDelegate.doTransition(info);
       }
     } catch(ServiceLocatorException se) {
-      se.printStackTrace();
+    	webHandler.printStackTraceHandler(se);
     } catch(TransitionException te) {
-      te.printStackTrace();
+    	webHandler.printStackTraceHandler(te);
     }
   }
 
@@ -188,21 +190,21 @@ public class RcvrRequestProcessor extends HttpServlet {
             ut.commit();        // end xaction
             getServletConfig().getServletContext().getRequestDispatcher("/back.jsp").forward(req, resp);
           } catch (FinderException fe) {
-            fe.printStackTrace();
+            webHandler.printStackTraceHandler(fe);
           } catch (NamingException ne) {
-            ne.printStackTrace();
+            webHandler.printStackTraceHandler(ne);
           } catch (NotSupportedException nse) {
-            nse.printStackTrace();
+            webHandler.printStackTraceHandler(nse);
           } catch (IllegalStateException re) {
-            re.printStackTrace();
+            webHandler.printStackTraceHandler(re);
           } catch (RollbackException re) {
-            re.printStackTrace();
+            webHandler.printStackTraceHandler(re);
           } catch (HeuristicMixedException hme) {
-            hme.printStackTrace();
+            webHandler.printStackTraceHandler(hme);
           } catch (HeuristicRollbackException hre) {
-            hre.printStackTrace();
+            webHandler.printStackTraceHandler(hre);
           } catch (SystemException se) {
-            se.printStackTrace();
+        	webHandler.printStackTraceHandler(se);
           }
         }
       }

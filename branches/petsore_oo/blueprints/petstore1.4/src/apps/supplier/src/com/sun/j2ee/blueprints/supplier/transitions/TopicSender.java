@@ -56,6 +56,8 @@ public class TopicSender implements java.io.Serializable {
 
     private TopicConnectionFactory topicFactory;
     private Topic topic;
+    
+    TransitionsHandler transitionsHandler = new TransitionsHandler();
 
     /**
      * constructor that initializes the topic related resources
@@ -85,8 +87,7 @@ public class TopicSender implements java.io.Serializable {
         jmsMsg.setText(xmlMessage);
         topicPublisher.publish(jmsMsg);
       } finally {
-        if( topicConnect != null )
-          topicConnect.close();
+    	  transitionsHandler.sendMessage(topicConnect);
       }
       return;
     }

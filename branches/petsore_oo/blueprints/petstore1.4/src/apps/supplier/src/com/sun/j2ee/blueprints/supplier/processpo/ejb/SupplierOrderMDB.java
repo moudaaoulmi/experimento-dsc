@@ -70,6 +70,8 @@ public class SupplierOrderMDB implements MessageDrivenBean, MessageListener {
 
   private TransitionDelegate transitionDelegate;
 
+  EjbHandler ejbHandler = new EjbHandler();
+  
   public SupplierOrderMDB() {}
 
   public void ejbCreate() {
@@ -83,11 +85,11 @@ public class SupplierOrderMDB implements MessageDrivenBean, MessageListener {
       transitionDelegate = tdf.getTransitionDelegate(tdClassName);
       transitionDelegate.setup();
     } catch (CreateException ce) {
-        throw new EJBException(ce);
+        ejbHandler.ejbExceptionHandler(ce);
     } catch (TransitionException te) {
-        throw new EJBException(te);
+        ejbHandler.ejbExceptionHandler(te);
     } catch (ServiceLocatorException se) {
-        throw new EJBException(se);
+        ejbHandler.ejbExceptionHandler(se);
     }
   }
 
@@ -112,14 +114,13 @@ public class SupplierOrderMDB implements MessageDrivenBean, MessageListener {
         doTransition(invoice);
       } //else wait for the inventory to arrive at the inventory receiver
     } catch (TransitionException te) {
-        throw new EJBException(te);
+        ejbHandler.ejbExceptionHandler(te);
     } catch  (CreateException ce) {
-      throw new EJBException(ce);
+    	  ejbHandler.ejbExceptionHandler(ce);
     } catch  (XMLDocumentException xe) {
-        xe.printStackTrace();
-      throw new EJBException(xe);
+        ejbHandler.onMessageHandler(xe);
     } catch  (JMSException je) {
-      throw new EJBException(je);
+    	ejbHandler.ejbExceptionHandler(je);
     }
   }
 

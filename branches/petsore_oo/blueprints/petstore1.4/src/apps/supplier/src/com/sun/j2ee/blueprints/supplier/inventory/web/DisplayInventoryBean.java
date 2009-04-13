@@ -62,7 +62,9 @@ import  com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 public class DisplayInventoryBean {
 
     private InventoryLocalHome inventoryHomeRef = null;
-
+    
+    WebHandler webHandler = new WebHandler();
+    
     public DisplayInventoryBean() {}
 
     /**
@@ -81,9 +83,9 @@ public class DisplayInventoryBean {
             }
             invColl = inventoryHomeRef.findAllInventoryItems();
         } catch(ServiceLocatorException ne) {
-            ne.printStackTrace();
+        	webHandler.printStackTraceHandler(ne);
         } catch(FinderException fe) {
-            fe.printStackTrace();
+        	webHandler.printStackTraceHandler(fe);
         }
         return invColl;
     }
