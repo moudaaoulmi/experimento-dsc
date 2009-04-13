@@ -52,6 +52,7 @@ public abstract class CustomerEJB implements javax.ejb.EntityBean {
 
     private EntityContext context = null;
 
+    EjbHandler ejbHandler = new EjbHandler();
     // getters and setters for CMP fields
     //====================================
     public abstract String getUserId();
@@ -84,7 +85,7 @@ public abstract class CustomerEJB implements javax.ejb.EntityBean {
         ProfileLocalHome.DefaultBannerPreference);
         setProfile(profile);
         } catch (NamingException ne) {
-            throw new CreateException ("could not lookup ejb. Exception is " + ne.getMessage());
+            ejbHandler.ejbPostCreateHandler(ne);
         }
     }
 
