@@ -56,6 +56,7 @@ public class InventoryPopulator {
   private InventoryLocalHome inventoryHome = null;
   private String rootTag;
 
+  PopulateHandler populateHandler = new PopulateHandler();
 
   public InventoryPopulator() {
     this(XML_INVENTORYLIST);
@@ -89,7 +90,7 @@ public class InventoryPopulator {
         return false;
       }
     } catch (Exception e) {
-          return false;
+    	populateHandler.checkHandler();
     }
     return true;
   }
@@ -104,12 +105,15 @@ public class InventoryPopulator {
       try {
         inventory = inventoryHome.findByPrimaryKey(id);
         inventory.remove();
-      } catch (Exception exception) {}
+      } catch (Exception exception) {
+    	  populateHandler.createInventoryHandler(exception);
+      }
       inventory = inventoryHome.create(id, quantity);
       return inventory;
     } catch (Exception exception) {
-      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+    	populateHandler.createInventory2Handler(exception);
     }
+    return null;
   }
 }
 

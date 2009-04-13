@@ -57,6 +57,8 @@ public class PopulateServlet extends HttpServlet {
   private static final String REFERER_HEADER = "Referer";
   private String populateDataPath;
 
+  PopulateHandler populateHandler = new PopulateHandler();
+  
   public void init(ServletConfig config) throws javax.servlet.ServletException {
     super.init(config);
     populateDataPath = config.getInitParameter(POPULATE_DATA_PATH_PARAM);
@@ -107,18 +109,20 @@ public class PopulateServlet extends HttpServlet {
       if (!forcefully) {
         try {
           alreadyPopulated = inventoryPopulator.check();
-        } catch (PopulateException exception) {}
+        } catch (PopulateException exception) {
+        	populateHandler.populate1Handler(exception);
+        }
         //System.err.println("Already populated: " + alreadyPopulated);
       }
       if (forcefully || !alreadyPopulated) {
         try {
           inventoryPopulator.setup(reader).parse(new InputSource(getResource(populateDataPath)));
         } catch (Exception exception) {
-          throw new PopulateException(exception);
+        	populateHandler.populate2Handler(exception);
         }
       }
     } catch (Exception exception) {
-      throw new PopulateException(exception);
+    	populateHandler.populate2Handler(exception);
     }
     return forcefully || !alreadyPopulated;
   }

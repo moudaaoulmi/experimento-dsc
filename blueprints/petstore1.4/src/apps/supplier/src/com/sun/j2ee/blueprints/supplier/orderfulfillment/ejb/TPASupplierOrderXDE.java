@@ -61,6 +61,7 @@ public class TPASupplierOrderXDE extends XMLDocumentEditor.DefaultXDE {
   private Transformer transformer;
   private SupplierOrder supplierOrder = null;
 
+  EjbHandler ejbHandler = new EjbHandler();
 
   public TPASupplierOrderXDE() throws XMLDocumentException {
     this(null, true, DEFAULT_SCHEMA_URI);
@@ -78,7 +79,7 @@ public class TPASupplierOrderXDE extends XMLDocumentEditor.DefaultXDE {
         try {
           styleSheetCatalog.load(stream);
         } catch (IOException exception) {
-          System.err.println("Can't load from resource: " + STYLE_SHEET_CATALOG_PATH + ": " + exception);
+        	ejbHandler.TPASupplierOrderXDE1Handler(exception, STYLE_SHEET_CATALOG_PATH);
         }
       } else {
         System.err.println("Can't access resource: " + STYLE_SHEET_CATALOG_PATH);
@@ -92,7 +93,7 @@ public class TPASupplierOrderXDE extends XMLDocumentEditor.DefaultXDE {
           try {
             transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(stream));
           } catch (Exception exception) {
-            throw new XMLDocumentException(exception);
+        	  ejbHandler.TPASupplierOrderXDE2Handler(exception);
           }
         } else {
           throw new XMLDocumentException("Can't access style sheet: " + styleSheetPath);
@@ -101,7 +102,7 @@ public class TPASupplierOrderXDE extends XMLDocumentEditor.DefaultXDE {
         try {
           transformer = XMLDocumentUtils.createTransformer();
         } catch (Exception exception) {
-          throw new XMLDocumentException(exception);
+        	ejbHandler.TPASupplierOrderXDE2Handler(exception);
         }
       }
       return;
