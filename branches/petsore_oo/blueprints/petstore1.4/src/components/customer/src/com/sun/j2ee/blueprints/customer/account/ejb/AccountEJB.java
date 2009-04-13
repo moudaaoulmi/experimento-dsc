@@ -51,6 +51,8 @@ import com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocalHome;
 public abstract class AccountEJB implements javax.ejb.EntityBean {
 
     private EntityContext context = null;
+    
+    EjbHandler ejbHandler = new EjbHandler();
 
     // getters and setters for CMP fields
     //====================================
@@ -88,7 +90,7 @@ public abstract class AccountEJB implements javax.ejb.EntityBean {
             CreditCardLocal creditCard = cch.create();
             setCreditCard(creditCard);
         } catch (javax.naming.NamingException ne) {
-            throw new CreateException("ContactInfoEJB error: naming exception looking up contact info or credit card");
+            ejbHandler.ejbPostCreateHandler(ne);
         }
 
     }
