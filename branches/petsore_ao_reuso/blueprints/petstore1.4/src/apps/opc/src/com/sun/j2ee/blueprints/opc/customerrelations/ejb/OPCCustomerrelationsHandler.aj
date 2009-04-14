@@ -25,6 +25,29 @@ import com.sun.j2ee.blueprints.util.aspect.EJBExceptionGenericAspect;
  */
 public aspect OPCCustomerrelationsHandler extends EJBExceptionGenericAspect {
 
+	declare soft: XMLDocumentException : onMessageHandler() || 
+										 mailInvoiceMDBOnMessageHandler() || 
+										 mailOrderApprovalMDBOnMessageHandler();
+	declare soft: TransitionException : onMessageHandler() || 
+										mailInvoiceMDBOnMessageHandler() || 
+										mailOrderApprovalMDBOnMessageHandler();
+	declare soft: JMSException : onMessageHandler() || 
+								 mailInvoiceMDBOnMessageHandler() || 
+								 mailOrderApprovalMDBOnMessageHandler();
+	declare soft: MailContentXDE.FormatterException : onMessageHandler() || 
+													  mailInvoiceMDBOnMessageHandler() || 
+													  mailOrderApprovalMDBOnMessageHandler();
+	declare soft: FinderException : onMessageHandler() || 
+									mailInvoiceMDBOnMessageHandler() || 
+									mailOrderApprovalMDBOnMessageHandler();
+	declare soft : TransformerConfigurationException : getTransformerHandler();
+	declare soft : TransformerException : formatHandler();
+	declare soft : UnsupportedEncodingException : formatHandler();
+	declare soft : FormatterException : getDocumentHandler() || 
+										getDocumentAsStringHandler();
+
+
+
 	/*** MailCompletedOrderMDB ***/
 	pointcut onMessageHandler() : 
 		execution(public void MailCompletedOrderMDB.onMessage(Message));
@@ -58,27 +81,7 @@ public aspect OPCCustomerrelationsHandler extends EJBExceptionGenericAspect {
 	    mailOrderApprovalMDBOnMessageHandler();
 	    
 	    
-	declare soft: XMLDocumentException : onMessageHandler() || 
-		mailInvoiceMDBOnMessageHandler() || 
-		mailOrderApprovalMDBOnMessageHandler();
-	declare soft: TransitionException : onMessageHandler() || 
-		mailInvoiceMDBOnMessageHandler() || 
-		mailOrderApprovalMDBOnMessageHandler();
-	declare soft: JMSException : onMessageHandler() || 
-		mailInvoiceMDBOnMessageHandler() || 
-		mailOrderApprovalMDBOnMessageHandler();
-	declare soft: MailContentXDE.FormatterException : onMessageHandler() || 
-		mailInvoiceMDBOnMessageHandler() || 
-		mailOrderApprovalMDBOnMessageHandler();
-	declare soft: FinderException : onMessageHandler() || 
-		mailInvoiceMDBOnMessageHandler() || 
-		mailOrderApprovalMDBOnMessageHandler();
-	declare soft : TransformerConfigurationException : getTransformerHandler();
-	declare soft : TransformerException : formatHandler();
-	declare soft : UnsupportedEncodingException : formatHandler();
-	declare soft : FormatterException : getDocumentHandler() || getDocumentAsStringHandler();
-	
-	
+
 	
 	void around() throws EJBException : onMessageHandler(){
 		try{
@@ -90,11 +93,18 @@ public aspect OPCCustomerrelationsHandler extends EJBExceptionGenericAspect {
 			throw new EJBException(e);
 		}
 	}
-	
-	after() throwing(Exception exception) throws FormatterException : 
-		newMailContentXDEHandler() || getTransformerHandler() || formatHandler() {
-        throw new FormatterException(exception);
+	Object around() throws FormatterException : 
+		newMailContentXDEHandler() || getTransformerHandler() || formatHandler(){
+		try{
+			return proceed();
+		}catch(Exception exception){
+			throw new FormatterException(exception);
+		}
 	}
+//	after() throwing(Exception exception) throws FormatterException : 
+//		newMailContentXDEHandler() || getTransformerHandler() || formatHandler() {
+//        throw new FormatterException(exception);
+//	}
 
 	Object around() throws XMLDocumentException : 
 		getDocumentHandler() || getDocumentAsStringHandler(){
@@ -104,13 +114,6 @@ public aspect OPCCustomerrelationsHandler extends EJBExceptionGenericAspect {
 			throw new XMLDocumentException(exception);
 		}
 	}
-	/*
-	//Differs from above advice to onMessageHandler() only because of System.err.println
-	after() throwing(Exception e) throws EJBException : 
-		mailInvoiceMDBOnMessageHandler() || mailOrderApprovalMDBOnMessageHandler() {
-		throw new EJBException(e);
-	}
-	*/
 	
 	
 }

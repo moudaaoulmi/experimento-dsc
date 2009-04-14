@@ -26,6 +26,23 @@ import com.sun.j2ee.blueprints.util.aspect.EJBExceptionGenericAspect;
  */
 public aspect OPCHandler extends EJBExceptionGenericAspect {
 	
+	declare soft : TransitionException : onMessageHandler() || 
+		orderApprovalMDBOnMessageHandler() || 
+		purchaseOrderMDBOnMessageHandler();
+	declare soft : XMLDocumentException : onMessageHandler() || 
+		orderApprovalMDBOnMessageHandler() || 
+		purchaseOrderMDBOnMessageHandler();
+	declare soft : JMSException : onMessageHandler() || 
+		orderApprovalMDBOnMessageHandler() || 
+		purchaseOrderMDBOnMessageHandler();
+	declare soft : FinderException : onMessageHandler() || 
+		orderApprovalMDBOnMessageHandler();
+	declare soft : CreateException : purchaseOrderMDBOnMessageHandler();
+	declare soft : IOException : getDocumentHandler();
+	declare soft : SAXException : getDocumentHandler();
+	declare soft : ParserConfigurationException : getDocumentBuilderHandler();
+	
+	
 	/*** InvoiceMDB ***/
 	pointcut onMessageHandler() : 
 		execution(public void InvoiceMDB.onMessage(Message));
@@ -50,22 +67,7 @@ public aspect OPCHandler extends EJBExceptionGenericAspect {
 		orderApprovalMDBOnMessageHandler() ||
 		purchaseOrderMDBOnMessageHandler();
 	
-	
-	declare soft : TransitionException : onMessageHandler() || 
-		orderApprovalMDBOnMessageHandler() || 
-		purchaseOrderMDBOnMessageHandler();
-	declare soft : XMLDocumentException : onMessageHandler() || 
-		orderApprovalMDBOnMessageHandler() || 
-		purchaseOrderMDBOnMessageHandler();
-	declare soft : JMSException : onMessageHandler() || 
-		orderApprovalMDBOnMessageHandler() || 
-		purchaseOrderMDBOnMessageHandler();
-	declare soft : FinderException : onMessageHandler() || 
-		orderApprovalMDBOnMessageHandler();
-	declare soft : CreateException : purchaseOrderMDBOnMessageHandler();
-	declare soft : IOException : getDocumentHandler();
-	declare soft : SAXException : getDocumentHandler();
-	declare soft : ParserConfigurationException : getDocumentBuilderHandler();
+
 	
 	
 	/*
