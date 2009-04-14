@@ -1,8 +1,7 @@
 package org.jhotdraw.contrib.html;
 
 
-@ExceptionHandler
-public privileged aspect ContribHtmlHandler {
+public privileged aspect ContribHtmlExceptionHandler {
 	
 	// pointuts
 	

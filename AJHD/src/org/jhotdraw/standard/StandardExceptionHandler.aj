@@ -7,8 +7,7 @@ import java.io.InputStream;
 
 import org.aspectj.lang.SoftException;
 
-@org.jhotdraw.Exception.ExceptionHandler
-public privileged aspect StandardHandler {
+public privileged aspect StandardExceptionHandler {
 	
 	// Declare Soft
 	declare soft : IOException : AbstractFigure_internalClone2Hander() || AbstractFigure_internalCloneHandler() || StandardFigureSelection_internalGetDataHandler();

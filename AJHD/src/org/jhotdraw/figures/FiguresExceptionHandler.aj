@@ -1,10 +1,8 @@
 package org.jhotdraw.figures;
 
-import org.jhotdraw.Exception.ExceptionHandler;
 
 
-@ExceptionHandler
-public privileged aspect FiguresHandler {
+public privileged aspect FiguresExceptionHandler {
 	
 	declare soft : CloneNotSupportedException : FigureAttributes_cloneHandler();
 	//declare soft : NumberFormatException : NumberTextFigure_getValueHandler();
