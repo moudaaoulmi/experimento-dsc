@@ -6,7 +6,6 @@ import java.io.IOException;
 import org.jhotdraw.framework.Drawing;
 import org.jhotdraw.framework.JHotDrawRuntimeException;
 
-@ExceptionHandler
 public privileged aspect  UtilExceptionHandler{
 
 	// ---------------------------
