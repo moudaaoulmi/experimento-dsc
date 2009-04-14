@@ -22,6 +22,17 @@ import java.io.UnsupportedEncodingException;
  * @author Raquel Maranhao
  */
 public aspect MailerEjbHandler extends XMLDocumentExceptionGenericAspect {
+
+	declare soft : UnsupportedEncodingException : internalByteArrayDataSource();
+	declare soft : IOException : mainMailHandler();
+	declare soft : XMLDocumentException : mainMailHandler() ||
+		onMessageHandler();
+	declare soft : MailerAppException : onMessageHandler();
+	declare soft : JMSException : onMessageHandler();
+	declare soft : UnsupportedEncodingException : afterXMLDocumentExceptionHandler();
+	declare soft : NamingException : createAndSendMailHandler();
+	declare soft : MessagingException : createAndSendMailHandler();
+	declare soft : AddressException : createAndSendMailHandler();
 	
 	/*** ByteArrayDataSource ***/
 	pointcut internalByteArrayDataSource() : 
@@ -42,20 +53,6 @@ public aspect MailerEjbHandler extends XMLDocumentExceptionGenericAspect {
 	/*** MailHelper ***/
 	pointcut createAndSendMailHandler() : 
 		execution(public void MailHelper.createAndSendMail(String, String, String, Locale));
-	
-	
-	
-	declare soft : UnsupportedEncodingException : internalByteArrayDataSource();
-	declare soft : IOException : mainMailHandler();
-	declare soft : XMLDocumentException : mainMailHandler() ||
-		onMessageHandler();
-	declare soft : MailerAppException : onMessageHandler();
-	declare soft : JMSException : onMessageHandler();
-	declare soft : UnsupportedEncodingException : afterXMLDocumentExceptionHandler();
-	declare soft : NamingException : createAndSendMailHandler();
-	declare soft : MessagingException : createAndSendMailHandler();
-	declare soft : AddressException : createAndSendMailHandler();
-	 
 
 	
 	void around() :  internalByteArrayDataSource() {
@@ -65,7 +62,6 @@ public aspect MailerEjbHandler extends XMLDocumentExceptionGenericAspect {
 			//Do nothing
 		}
 	}
-	
 
 	void around() : mainMailHandler(){
 		try{
@@ -78,8 +74,6 @@ public aspect MailerEjbHandler extends XMLDocumentExceptionGenericAspect {
 	        System.exit(2);
 		}
 	}
-	
-
 
 	void around() : onMessageHandler() {
 		try {
@@ -94,10 +88,15 @@ public aspect MailerEjbHandler extends XMLDocumentExceptionGenericAspect {
 	    }
 	}
 	
-	after() throwing(Exception e) throws MailerAppException : 
+	void around() throws MailerAppException : 
 		createAndSendMailHandler() {
-        System.err.print("createAndSendMail exception : " + e);
-        throw new MailerAppException("Failure while sending mail");
-    }
+		try{
+			proceed();
+		}catch(Exception e){
+	        System.err.print("createAndSendMail exception : " + e);
+	        throw new MailerAppException("Failure while sending mail");			
+		}
+	}
+
 
 }
