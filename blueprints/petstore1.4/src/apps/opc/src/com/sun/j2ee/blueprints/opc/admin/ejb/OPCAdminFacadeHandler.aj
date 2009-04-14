@@ -12,7 +12,10 @@ import javax.ejb.FinderException;
  * @author Raquel Maranhao
  */
 public aspect OPCAdminFacadeHandler {
-
+	
+	declare soft: FinderException : getOrdersByStatusHandler() || getChartInfoHandler();
+	
+	
 	/*** OPCAdminFacadeEJB ***/
 	pointcut getOrdersByStatusHandler() :
 		execution(public OrdersTO OPCAdminFacadeEJB.getOrdersByStatus(String));
@@ -20,12 +23,11 @@ public aspect OPCAdminFacadeHandler {
 	pointcut getChartInfoHandler() :
 		execution(public Map OPCAdminFacadeEJB.getChartInfo(String,Date,Date,String));	
 	
-	declare soft: FinderException : getOrdersByStatusHandler() || getChartInfoHandler();
+
 	
-	
-	
-	OrdersTO around() throws OPCAdminFacadeException : 
-		getOrdersByStatusHandler(){
+	Object around() throws OPCAdminFacadeException : 
+		getOrdersByStatusHandler() ||
+		getChartInfoHandler(){
 		try{
 			return proceed();
 		}catch(FinderException fe){
@@ -36,19 +38,5 @@ public aspect OPCAdminFacadeHandler {
 		}
 		
 	}
-	
-	Map around() throws OPCAdminFacadeException : 
-		getChartInfoHandler(){
-		try{
-			return proceed();
-		}catch(FinderException fe){
-			System.err.println("finder Ex while getChart :" + fe.getMessage());
-	        throw new OPCAdminFacadeException("Unable to find PurchaseOrders"+
-	                                          " in given period : " +
-	                                          fe.getMessage());  	
-		}
-		
-	}
-     
         
 }
