@@ -77,6 +77,7 @@ public class TemplateServlet extends HttpServlet {
     private boolean cachePreviousScreenAttributes = false;
     private boolean cachePreviousScreenParameters = false;
     private static final String PREVIOUS_SCREEN = "PREVIOUS";
+    private TemplateHandler templateHandler = new TemplateHandler();
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -117,7 +118,7 @@ public class TemplateServlet extends HttpServlet {
         try {
             screenDefinitionURL = context.getResource("/WEB-INF/screendefinitions_" + language + ".xml");
         } catch (java.net.MalformedURLException ex) {
-            System.err.println("TemplateServlet: malformed URL exception: " + ex);
+            templateHandler.initScreensHandler(ex);
         }
         if (screenDefinitionURL != null) {
             Screens screenDefinitions = ScreenDefinitionDAO.loadScreenDefinitions(screenDefinitionURL);
@@ -275,13 +276,13 @@ public class TemplateServlet extends HttpServlet {
         } catch (NamingException ne) {
             // it should not have happened, but it is a recoverable error.
             // Just dont start the transaction.
-            ne.printStackTrace();
+            templateHandler.insertTemplateHandler(ne);
         } catch (NotSupportedException nse) {
             // Again this is a recoverable error.
-            nse.printStackTrace();
+        	templateHandler.insertTemplateHandler(nse);
         } catch (SystemException se) {
             // Again this is a recoverable error.
-            se.printStackTrace();
+        	templateHandler.insertTemplateHandler(se);
         }
 
         try {
@@ -293,15 +294,15 @@ public class TemplateServlet extends HttpServlet {
                     ut.commit();
                 }
             } catch (IllegalStateException re) {
-                re.printStackTrace();
+            	templateHandler.insertTemplateHandler(re);
             } catch (RollbackException re) {
-                re.printStackTrace();
+            	templateHandler.insertTemplateHandler(re);
             } catch (HeuristicMixedException hme) {
-                hme.printStackTrace();
+            	templateHandler.insertTemplateHandler(hme);
             } catch (HeuristicRollbackException hre) {
-                hre.printStackTrace();
+            	templateHandler.insertTemplateHandler(hre);
             } catch (SystemException se) {
-                se.printStackTrace();
+            	templateHandler.insertTemplateHandler(se);
             }
         }
     }

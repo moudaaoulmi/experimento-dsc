@@ -84,6 +84,7 @@ public class SignOnFilter implements Filter {
     private String signOnErrorPage = null;
     private String signOnPage = null;
     private String userCreationError = null;
+    private WebHandler webHandler = new WebHandler();
 
     public void init(FilterConfig config) throws ServletException {
         this.config = config;
@@ -95,7 +96,7 @@ public class SignOnFilter implements Filter {
             signOnPage = dao.getSignOnPage();
             protectedResources = dao.getProtectedResources();
         } catch (java.net.MalformedURLException ex) {
-            System.err.println("SignonFilter: malformed URL exception: " + ex);
+            webHandler.initHandler(ex);
         }
     }
 
@@ -214,9 +215,9 @@ public class SignOnFilter implements Filter {
             SignOnLocalHome home =(SignOnLocalHome)o;
             signOn = home.create();
          } catch (javax.ejb.CreateException cx) {
-             throw new ServletException("Failed to Create SignOn EJB: caught " + cx);
+             webHandler.getSignOnEjbHandler(cx);
          } catch (javax.naming.NamingException nx) {
-             throw new ServletException("Failed to Create SignOn EJB: caught " + nx);
+             webHandler.getSignOnEjbHandler(nx);
         }
         return signOn;
      }

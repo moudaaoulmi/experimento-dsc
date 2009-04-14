@@ -62,108 +62,124 @@ import javax.xml.transform.*;
 import javax.xml.transform.sax.*;
 import javax.xml.transform.stream.*;
 
-
 public class OrderApproval {
-  public static final String DTD_PUBLIC_ID = "-//Sun Microsystems, Inc. - J2EE Blueprints Group//DTD Order Approval 1.0//EN";
-  public static final String DTD_SYSTEM_ID = "/com/sun/j2ee/blueprints/xmldocuments/rsrc/schemas/OrderApproval.dtd";
-  public static final boolean VALIDATING = false;
-  public static final String XML_ORDERAPPROVAL = "OrderApproval";
-  private ArrayList orderList = new ArrayList();
+	public static final String DTD_PUBLIC_ID = "-//Sun Microsystems, Inc. - J2EE Blueprints Group//DTD Order Approval 1.0//EN";
+	public static final String DTD_SYSTEM_ID = "/com/sun/j2ee/blueprints/xmldocuments/rsrc/schemas/OrderApproval.dtd";
+	public static final boolean VALIDATING = false;
+	public static final String XML_ORDERAPPROVAL = "OrderApproval";
+	private ArrayList orderList = new ArrayList();
+	private static XMLDocumentsHandler xmlHandler = new XMLDocumentsHandler();
+
+	// Constructor to be used when creating from data
+
+	public OrderApproval() {
+	}
+
+	public void addOrder(ChangedOrder order) {
+		orderList.add(order);
+		return;
+	}
+
+	public Collection getOrdersList() {
+		return orderList;
+	}
+
+	// XML (de)serialization methods
+
+	public void toXML(Result result) throws XMLDocumentException {
+		toXML(result, null);
+		return;
+	}
+
+	public String toXML() throws XMLDocumentException {
+		return toXML((URL) null);
+	}
+
+	public void toXML(Result result, URL entityCatalogURL)
+			throws XMLDocumentException {
+		if (entityCatalogURL != null) {
+			XMLDocumentUtils.toXML(toDOM(), DTD_PUBLIC_ID, entityCatalogURL,
+					XMLDocumentUtils.DEFAULT_ENCODING, result);
+		} else {
+			XMLDocumentUtils.toXML(toDOM(), DTD_PUBLIC_ID, DTD_SYSTEM_ID,
+					XMLDocumentUtils.DEFAULT_ENCODING, result);
+		}
+		return;
+	}
+
+	public String toXML(URL entityCatalogURL) throws XMLDocumentException {
+		try {
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			toXML(new StreamResult(stream), entityCatalogURL);
+			return stream.toString(XMLDocumentUtils.DEFAULT_ENCODING);
+		} catch (Exception exception) {
+			xmlHandler.toXMLHandler(exception);
+		}
+		return null;
+	}
 
 
-  // Constructor to be used when creating from data
 
-  public OrderApproval() {}
+	public static OrderApproval fromXML(Source source)
+			throws XMLDocumentException {
+		return fromXML(source, null, VALIDATING);
+	}
 
-  public void addOrder(ChangedOrder order) {
-    orderList.add(order);
-    return;
-  }
+	public static OrderApproval fromXML(String buffer)
+			throws XMLDocumentException {
+		return fromXML(buffer, null, VALIDATING);
+	}
 
-  public Collection getOrdersList() {
-    return orderList;
-  }
+	public static OrderApproval fromXML(Source source, URL entityCatalogURL,
+			boolean validating) throws XMLDocumentException {
+		return fromDOM(XMLDocumentUtils.fromXML(source, DTD_PUBLIC_ID,
+				entityCatalogURL, validating).getDocumentElement());
+	}
 
-  // XML (de)serialization methods
+	public static OrderApproval fromXML(String buffer, URL entityCatalogURL,
+			boolean validating) throws XMLDocumentException {
+		try {
+			return fromXML(new StreamSource(new StringReader(buffer)),
+					entityCatalogURL, validating);
+		} catch (XMLDocumentException exception) {
+			xmlHandler.fromXMLHandler(exception);
+		}
+		return null;
+	}
 
-  public void toXML(Result result) throws XMLDocumentException {
-    toXML(result, null);
-    return;
-  }
 
-  public String toXML() throws XMLDocumentException {
-    return toXML((URL) null);
-  }
 
-  public void toXML(Result result, URL entityCatalogURL) throws XMLDocumentException {
-    if (entityCatalogURL != null) {
-      XMLDocumentUtils.toXML(toDOM(), DTD_PUBLIC_ID, entityCatalogURL, XMLDocumentUtils.DEFAULT_ENCODING, result);
-    } else {
-      XMLDocumentUtils.toXML(toDOM(), DTD_PUBLIC_ID, DTD_SYSTEM_ID, XMLDocumentUtils.DEFAULT_ENCODING, result);
-    }
-    return;
-  }
+	public Document toDOM() throws XMLDocumentException {
+		Document document = XMLDocumentUtils.createDocument();
+		Element root = (Element) toDOM(document);
+		document.appendChild(root);
+		return document;
+	}
 
-  public String toXML(URL entityCatalogURL) throws XMLDocumentException {
-    try {
-      ByteArrayOutputStream stream = new ByteArrayOutputStream();
-      toXML(new StreamResult(stream), entityCatalogURL);
-      return stream.toString(XMLDocumentUtils.DEFAULT_ENCODING);
-    } catch (Exception exception) {
-      throw new XMLDocumentException(exception);
-    }
-  }
+	public Node toDOM(Document document) {
+		Element root = document.createElement(XML_ORDERAPPROVAL);
+		for (Iterator i = orderList.iterator(); i.hasNext();) {
+			ChangedOrder changedOrder = (ChangedOrder) i.next();
+			root.appendChild(changedOrder.toDOM(document));
+		}
+		return root;
+	}
 
-  public static OrderApproval fromXML(Source source) throws XMLDocumentException {
-    return fromXML(source, null, VALIDATING);
-  }
-
-  public static OrderApproval fromXML(String buffer) throws XMLDocumentException {
-    return fromXML(buffer, null, VALIDATING);
-  }
-
-  public static OrderApproval fromXML(Source source, URL entityCatalogURL, boolean validating) throws XMLDocumentException {
-    return fromDOM(XMLDocumentUtils.fromXML(source, DTD_PUBLIC_ID, entityCatalogURL, validating).getDocumentElement());
-  }
-
-  public static OrderApproval fromXML(String buffer, URL entityCatalogURL, boolean validating) throws XMLDocumentException {
-    try {
-      return fromXML(new StreamSource(new StringReader(buffer)), entityCatalogURL, validating);
-    } catch (XMLDocumentException exception) {
-      System.err.println(exception.getRootCause().getMessage());
-      throw new XMLDocumentException(exception);
-    }
-  }
-
-  public Document toDOM() throws XMLDocumentException {
-    Document document = XMLDocumentUtils.createDocument();
-    Element root = (Element) toDOM(document);
-    document.appendChild(root);
-    return document;
-  }
-
-  public Node toDOM(Document document) {
-    Element root = document.createElement(XML_ORDERAPPROVAL);
-    for (Iterator i = orderList.iterator(); i.hasNext();) {
-      ChangedOrder changedOrder = (ChangedOrder) i.next();
-      root.appendChild(changedOrder.toDOM(document));
-    }
-    return root;
-  }
-
-  public static OrderApproval fromDOM(Node node) throws XMLDocumentException {
-    Element element;
-    if (node.getNodeType() == Node.ELEMENT_NODE && (element = ((Element) node)).getTagName().equals(XML_ORDERAPPROVAL)) {
-      Element child;
-      OrderApproval orderApproval = new OrderApproval();
-      orderApproval.orderList = new ArrayList();
-      for (child = XMLDocumentUtils.getFirstChild(element, ChangedOrder.XML_ORDER, false);
-           child != null;
-           child = XMLDocumentUtils.getNextSibling(child, ChangedOrder.XML_ORDER, true)) {
-        orderApproval.orderList.add(ChangedOrder.fromDOM(child));
-      }
-      return orderApproval;
-    }
-    throw new XMLDocumentException(XML_ORDERAPPROVAL + " element expected.");
-  }
+	public static OrderApproval fromDOM(Node node) throws XMLDocumentException {
+		Element element;
+		if (node.getNodeType() == Node.ELEMENT_NODE
+				&& (element = ((Element) node)).getTagName().equals(
+						XML_ORDERAPPROVAL)) {
+			Element child;
+			OrderApproval orderApproval = new OrderApproval();
+			orderApproval.orderList = new ArrayList();
+			for (child = XMLDocumentUtils.getFirstChild(element,
+					ChangedOrder.XML_ORDER, false); child != null; child = XMLDocumentUtils
+					.getNextSibling(child, ChangedOrder.XML_ORDER, true)) {
+				orderApproval.orderList.add(ChangedOrder.fromDOM(child));
+			}
+			return orderApproval;
+		}
+		throw new XMLDocumentException(XML_ORDERAPPROVAL + " element expected.");
+	}
 }

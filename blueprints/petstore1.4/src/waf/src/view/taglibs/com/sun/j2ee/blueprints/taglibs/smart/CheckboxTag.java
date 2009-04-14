@@ -52,7 +52,7 @@ public class CheckboxTag extends BodyTagSupport {
     private String value;
     private String name;
     private boolean checked = true;
-
+    private SmartHandler smartHandler = new SmartHandler();
 
     public void setName(String name) {
         this.name = name;
@@ -85,8 +85,9 @@ public class CheckboxTag extends BodyTagSupport {
             return EVAL_PAGE;
         }
         catch (IOException e) {
-            throw new JspTagException("CheckboxTag: " + e.getMessage());
+            smartHandler.doEndTag6Handler(e);
         }
+        return 0;
     }
 }
 

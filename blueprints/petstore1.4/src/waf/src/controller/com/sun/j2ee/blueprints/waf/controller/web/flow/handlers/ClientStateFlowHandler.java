@@ -60,6 +60,8 @@ import com.sun.j2ee.blueprints.waf.controller.web.flow.FlowHandlerException;
 */
 public class ClientStateFlowHandler implements FlowHandler {
 
+	private HandlersHandler handlersHandler = new HandlersHandler();
+	
     public void doStart(HttpServletRequest request){
     }
 
@@ -89,11 +91,11 @@ public class ClientStateFlowHandler implements FlowHandler {
                         String requestObjectKey = key.substring((cacheId + "_attribute_").length(), key.length());
                         request.setAttribute(requestObjectKey, requestObject);
                     } catch (java.io.OptionalDataException ode) {
-                        System.err.println("ClientCacheLinkFlowHandler caught: " + ode);
+                    	handlersHandler.processFlowHandler(ode);
                     } catch (java.lang.ClassNotFoundException cnfe) {
-                        System.err.println("ClientCacheLinkFlowHandler caught: " + cnfe);
+                    	handlersHandler.processFlowHandler(cnfe);
                     } catch (java.io.IOException iox) {
-                        System.err.println("ClientCacheLinkFlowHandler caught: " + iox);
+                    	handlersHandler.processFlowHandler(iox);
                     }
                 }
             }

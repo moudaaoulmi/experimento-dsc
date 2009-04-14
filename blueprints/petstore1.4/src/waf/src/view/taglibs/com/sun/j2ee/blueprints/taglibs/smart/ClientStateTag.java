@@ -83,6 +83,7 @@ public class ClientStateTag extends BodyTagSupport {
     private boolean encodeRequestParameters = true;
     private Class serializableClass = null;
     private HashMap parameters = null;
+    private SmartHandler smartHandler = new SmartHandler();
 
     public void setId(String cacheId) {
         this.cacheId = cacheId;
@@ -188,7 +189,7 @@ public class ClientStateTag extends BodyTagSupport {
                             try {
                                  serializableClass = getClass().forName("java.io.Serializable");
                              } catch (java.lang.ClassNotFoundException cnf) {
-                                 System.err.println("ClientStateTag caught: " + cnf);
+                                 smartHandler.doEndTag4Handler(cnf);
                              }
                          }
                          // check if seralizable
@@ -202,7 +203,7 @@ public class ClientStateTag extends BodyTagSupport {
                                         "_attribute_" + key + "\" value=\"" +
                                        new String(Base64.encode(bos.toByteArray()), "ISO-8859-1")  + "\" />");
                          } catch (java.io.IOException iox) {
-                                 System.err.println("ClientStateTag caught: " + iox);
+                        	 smartHandler.doEndTag4Handler(iox);
                          }
                      } else {
                          System.out.println(key + " not to Serializeable");
@@ -225,7 +226,7 @@ public class ClientStateTag extends BodyTagSupport {
                 JspWriter out = pageContext.getOut();
                 out.print(buffer.toString());
         } catch (IOException ioe) {
-            System.err.println("ClientStateTag: Problems with writing...");
+            smartHandler.doEndTag5Handler();
         }
         // reset everything
         parameters = null;

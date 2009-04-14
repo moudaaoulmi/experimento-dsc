@@ -54,6 +54,8 @@ public class SelectTag extends BodyTagSupport {
     int size = 0;
     String name = null;
     boolean isEditable = true;
+    
+    private SmartHandler smartHandler = new SmartHandler(); 
 
     public void setSelectedValue(String sv) { selectedValue = sv; }
 
@@ -99,8 +101,9 @@ public class SelectTag extends BodyTagSupport {
             return EVAL_PAGE;
         }
         catch (IOException e) {
-            throw new JspTagException("LinkTag: " + e.getMessage());
+            smartHandler.doEndTag1Handler(e);
         }
+        return 0;
     }
 }
 

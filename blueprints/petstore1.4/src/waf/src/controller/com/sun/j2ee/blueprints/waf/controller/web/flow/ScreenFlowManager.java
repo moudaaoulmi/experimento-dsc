@@ -69,6 +69,7 @@ public class ScreenFlowManager implements java.io.Serializable {
     private HashMap screenDefinitionMappings;
     private String defaultScreen = "";
     private ServletContext context;
+    private WebFlowHandler flowHandler = new WebFlowHandler();
 
     public ScreenFlowManager() {
         screens = new HashMap();
@@ -80,13 +81,15 @@ public class ScreenFlowManager implements java.io.Serializable {
         try {
             requestMappingsURL = context.getResource("/WEB-INF/mappings.xml").toString();
         } catch (java.net.MalformedURLException ex) {
-            System.err.println("ScreenFlowManager: initializing ScreenFlowManager malformed URL exception: " + ex);
+            flowHandler.initHandler(ex);
         }
         urlMappings = (HashMap)context.getAttribute(WebKeys.URL_MAPPINGS);
         ScreenFlowData screenFlowData = URLMappingsXmlDAO.loadScreenFlowData(requestMappingsURL);
         defaultScreen = screenFlowData.getDefaultScreen();
         exceptionMappings = screenFlowData.getExceptionMappings();
     }
+
+	
 
     /**
      * The UrlMapping object contains information that will match
@@ -146,7 +149,7 @@ public class ScreenFlowManager implements java.io.Serializable {
                     //the screen itself
                     if (currentScreen == null) currentScreen = flowResult;
                } catch (Exception ex) {
-                   System.err.println("ScreenFlowManager caught loading handler: " + ex);
+                   flowHandler.forwardToNextScreenHandler(ex);
                }
             }
         }
@@ -157,6 +160,7 @@ public class ScreenFlowManager implements java.io.Serializable {
         context.getRequestDispatcher("/" + currentScreen).forward(request, response);
 
     }
+
     /**
             go through the list and use the Class.isAssignableFrom(Class method)
             to see it is a subclass of one of the exceptions
@@ -169,7 +173,7 @@ public class ScreenFlowManager implements java.io.Serializable {
             try {
                 targetExceptionClass = this.getClass().getClassLoader().loadClass(exceptionName);
             } catch (ClassNotFoundException cnfe) {
-                System.err.println("ScreenFlowManager: Could not load exception " + exceptionName);
+                flowHandler.getExceptionScreenHandler(exceptionName);
             }
             System.err.println("Checking exception: " + exceptionName + " against " + e.getClass().getName());
             // check if the exception is a sub class of matches the exception

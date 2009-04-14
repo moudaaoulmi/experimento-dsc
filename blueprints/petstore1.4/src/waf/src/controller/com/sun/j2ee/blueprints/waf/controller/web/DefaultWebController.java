@@ -65,6 +65,8 @@ import com.sun.j2ee.blueprints.waf.exceptions.AppException;
  */
 public class DefaultWebController implements WebController {
 
+	private WebHandler webHandler = new WebHandler();
+	
     public DefaultWebController() {
     }
 
@@ -103,9 +105,9 @@ public class DefaultWebController implements WebController {
         try {
             controllerEJB.remove();
         } catch(RemoveException re){
-            // ignore, after all its only a remove() call!
-            Debug.print(re);
+            webHandler.destroyHandler(re);
         }
     }
+
 }
 

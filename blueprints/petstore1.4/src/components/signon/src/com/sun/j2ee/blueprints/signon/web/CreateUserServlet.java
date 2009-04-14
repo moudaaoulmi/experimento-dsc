@@ -56,46 +56,46 @@ import com.sun.j2ee.blueprints.signon.ejb.SignOnLocal;
 
 public class CreateUserServlet extends HttpServlet {
 
-     public  void doPost(HttpServletRequest request, HttpServletResponse  response)
-        throws IOException, ServletException {
-        // convert to a http servlet request for now
+	private WebHandler webHandler = new WebHandler();
 
-        // get the user name
-        String userName = request.getParameter(SignOnFilter.FORM_USER_NAME);
-        // get the password
-        String password = request.getParameter(SignOnFilter.FORM_PASSWORD);
-        //validate against the registered users
-        System.out.println("CreateUserServlet create user: username=" + userName);
-        System.out.println("CreateUserServlet create user: password=" + password);
-        SignOnLocal signOn = getSignOnEjb();
-        try {
-             signOn.createUser(userName, password);
-            // restore the request attributes and parameters -- maybe later
-            // place a true boolean in the session
-            String targetURL = (String)request.getSession().getAttribute(SignOnFilter.ORIGINAL_URL);
-            // redirect to the original destination
-            request.getSession().setAttribute(SignOnFilter.SIGNED_ON_USER, new Boolean(true));
-            System.out.println("CreateUserServlet:: create good redirecting to original requested url=" + targetURL );
-            response.sendRedirect(targetURL);
-        } catch (CreateException ce) {
-            System.out.println("CreateUserServlet:: redirecting to user creation error error url"  );
-            response.sendRedirect("user_creation_error.jsp");
-        }
-     }
+	public  void doPost(HttpServletRequest request, HttpServletResponse  response) throws IOException, ServletException {
+		// convert to a http servlet request for now
 
-     private SignOnLocal getSignOnEjb() throws ServletException {
-         SignOnLocal signOn = null;
-         try {
-            InitialContext ic = new InitialContext();
-            Object o = ic.lookup("java:comp/env/ejb/SignOn");
-            SignOnLocalHome home =(SignOnLocalHome)o;
-            signOn = home.create();
-         } catch (javax.ejb.CreateException cx) {
-             throw new ServletException("Failed to Create SignOn EJB: caught " + cx);
-         } catch (javax.naming.NamingException nx) {
-             throw new ServletException("Failed to Create SignOn EJB: caught " + nx);
-        }
-        return signOn;
-     }
+		// get the user name
+		String userName = request.getParameter(SignOnFilter.FORM_USER_NAME);
+		// get the password
+		String password = request.getParameter(SignOnFilter.FORM_PASSWORD);
+		//validate against the registered users
+		System.out.println("CreateUserServlet create user: username=" + userName);
+		System.out.println("CreateUserServlet create user: password=" + password);
+		SignOnLocal signOn = getSignOnEjb();
+		try {
+			signOn.createUser(userName, password);
+			// restore the request attributes and parameters -- maybe later
+			// place a true boolean in the session
+			String targetURL = (String)request.getSession().getAttribute(SignOnFilter.ORIGINAL_URL);
+			// redirect to the original destination
+			request.getSession().setAttribute(SignOnFilter.SIGNED_ON_USER, new Boolean(true));
+			System.out.println("CreateUserServlet:: create good redirecting to original requested url=" + targetURL );
+			response.sendRedirect(targetURL);
+		} catch (CreateException ce) {
+			webHandler.doPostHandler(ce, response);
+		}
+	}
+
+	private SignOnLocal getSignOnEjb() throws ServletException {
+		SignOnLocal signOn = null;
+		try {
+			InitialContext ic = new InitialContext();
+			Object o = ic.lookup("java:comp/env/ejb/SignOn");
+			SignOnLocalHome home =(SignOnLocalHome)o;
+			signOn = home.create();
+		} catch (javax.ejb.CreateException cx) {
+			webHandler.getSignOnEjbHandler(cx);
+		} catch (javax.naming.NamingException nx) {
+			webHandler.getSignOnEjbHandler(nx);
+		}
+		return signOn;
+	}
 }
 

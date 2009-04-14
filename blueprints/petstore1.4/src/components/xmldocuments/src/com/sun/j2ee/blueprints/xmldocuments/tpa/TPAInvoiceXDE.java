@@ -35,9 +35,7 @@
  * any nuclear facility.
  */
 
-
 package com.sun.j2ee.blueprints.xmldocuments.tpa;
-
 
 import java.io.*;
 import java.util.*;
@@ -53,127 +51,141 @@ import javax.xml.transform.stream.*;
 
 import com.sun.j2ee.blueprints.xmldocuments.*;
 
-
 public class TPAInvoiceXDE extends XMLDocumentEditor.DefaultXDE {
-  public static final String DTD_PUBLIC_ID = "-//Sun Microsystems, Inc. - J2EE Blueprints Group//DTD TPA-Invoice 1.0//EN";
-  public static final String XSD_PUBLIC_ID = "http://blueprints.j2ee.sun.com/TPAInvoice";
-  public static final String XML_NAMESPACE = "http://blueprints.j2ee.sun.com/TPAInvoice";
-  public static final String XML_PREFIX = "tpai";
-  public static final String LINE_ITEM_PREFIX = "tpali";
-  public static final String LINE_ITEM_NAMESPACE = "http://blueprints.j2ee.sun.com/TPALineItem"; 
-  public static final String DTD_SYSTEM_ID = "/com/sun/j2ee/blueprints/xmldocuments/rsrc/schemas/TPAInvoice.dtd";
-  public static final String XSD_SYSTEM_ID = "/com/sun/j2ee/blueprints/xmldocuments/rsrc/schemas/TPAInvoice.xsd";
-  public static final String XML_INVOICE = XML_PREFIX + ":" + "Invoice";
-  public static final String XML_ORDERID = XML_PREFIX + ":" + "OrderId";
-  public static final String XML_USERID = XML_PREFIX + ":" + "UserId";
-  public static final String XML_ORDERDATE = XML_PREFIX + ":" + "OrderDate";
-  public static final String XML_SHIPPINGDATE = XML_PREFIX + ":" + "ShippingDate";
-  public static final String XML_LINEITEMS = XML_PREFIX + ":" + "LineItems";
-  private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-  private final DocumentBuilder builder;
-  private final Transformer transformer;
-  private final String systemId;
-  private Document invoiceDocument = null;
-  private Element orderIdElement = null;
-  private Element userIdElement = null;
-  private Element orderDateElement = null;
-  private Element shippingDateElement = null;
-  private Element lineItemsElement = null;
+	public static final String DTD_PUBLIC_ID = "-//Sun Microsystems, Inc. - J2EE Blueprints Group//DTD TPA-Invoice 1.0//EN";
+	public static final String XSD_PUBLIC_ID = "http://blueprints.j2ee.sun.com/TPAInvoice";
+	public static final String XML_NAMESPACE = "http://blueprints.j2ee.sun.com/TPAInvoice";
+	public static final String XML_PREFIX = "tpai";
+	public static final String LINE_ITEM_PREFIX = "tpali";
+	public static final String LINE_ITEM_NAMESPACE = "http://blueprints.j2ee.sun.com/TPALineItem";
+	public static final String DTD_SYSTEM_ID = "/com/sun/j2ee/blueprints/xmldocuments/rsrc/schemas/TPAInvoice.dtd";
+	public static final String XSD_SYSTEM_ID = "/com/sun/j2ee/blueprints/xmldocuments/rsrc/schemas/TPAInvoice.xsd";
+	public static final String XML_INVOICE = XML_PREFIX + ":" + "Invoice";
+	public static final String XML_ORDERID = XML_PREFIX + ":" + "OrderId";
+	public static final String XML_USERID = XML_PREFIX + ":" + "UserId";
+	public static final String XML_ORDERDATE = XML_PREFIX + ":" + "OrderDate";
+	public static final String XML_SHIPPINGDATE = XML_PREFIX + ":"
+			+ "ShippingDate";
+	public static final String XML_LINEITEMS = XML_PREFIX + ":" + "LineItems";
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat(
+			"yyyy-MM-dd");
+	private final DocumentBuilder builder;
+	private final Transformer transformer;
+	private String systemId = null;
+	private Document invoiceDocument = null;
+	private Element orderIdElement = null;
+	private Element userIdElement = null;
+	private Element orderDateElement = null;
+	private Element shippingDateElement = null;
+	private Element lineItemsElement = null;
+	private TPAHandler tpaHandler = new TPAHandler();
 
+	public TPAInvoiceXDE() throws XMLDocumentException {
+		this(null, false);
+		return;
+	}
 
-  public TPAInvoiceXDE() throws XMLDocumentException {
-    this(null, false);
-    return;
-  }
+	public TPAInvoiceXDE(URL entityCatalogURL, boolean xsdValidation)
+			throws XMLDocumentException {
+		setEntityCatalogURL(entityCatalogURL);
+		setSupportingXSD(xsdValidation);
+		try {
+			CustomEntityResolver entityResolver = new CustomEntityResolver(
+					entityCatalogURL);
+			String systemId = entityResolver
+					.mapEntityURI(isSupportingXSD() ? XSD_PUBLIC_ID
+							: DTD_PUBLIC_ID);
+			this.systemId = (systemId != null) ? systemId
+					: (isSupportingXSD() ? XSD_SYSTEM_ID : DTD_SYSTEM_ID);
+		} catch (Exception exception) {
+			tpaHandler.tpaXDEHandler(exception);
+		}
+		builder = XMLDocumentUtils.createDocumentBuilder();
+		transformer = XMLDocumentUtils.createTransformer();
+		return;
+	}
 
-  public TPAInvoiceXDE(URL entityCatalogURL, boolean xsdValidation) throws XMLDocumentException {
-    setEntityCatalogURL(entityCatalogURL);
-    setSupportingXSD(xsdValidation);
-    try {
-      CustomEntityResolver entityResolver = new CustomEntityResolver(entityCatalogURL);
-      String systemId = entityResolver.mapEntityURI(isSupportingXSD() ? XSD_PUBLIC_ID : DTD_PUBLIC_ID);
-      this.systemId = (systemId != null) ? systemId : (isSupportingXSD() ? XSD_SYSTEM_ID : DTD_SYSTEM_ID);
-    } catch (Exception exception) {
-      exception.printStackTrace(System.err);
-      throw new XMLDocumentException(exception);
-    }
-    builder = XMLDocumentUtils.createDocumentBuilder();
-    transformer = XMLDocumentUtils.createTransformer();
-    return;
-  }
+	public void newDocument() {
+		invoiceDocument = builder.newDocument();
+		orderIdElement = null;
+		userIdElement = null;
+		orderDateElement = null;
+		shippingDateElement = null;
+		lineItemsElement = null;
+		return;
+	}
 
-  public void newDocument() {
-    invoiceDocument = builder.newDocument();
-    orderIdElement = null;
-    userIdElement = null;
-    orderDateElement = null;
-    shippingDateElement = null;
-    lineItemsElement = null;
-    return;
-  }
+	public void copyDocument(Result result) throws XMLDocumentException {
+		Element invoiceElement = invoiceDocument.createElementNS(XML_NAMESPACE,
+				XML_INVOICE);
+		invoiceElement.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:"
+				+ XML_PREFIX, XML_NAMESPACE);
+		invoiceElement.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:"
+				+ LINE_ITEM_PREFIX, LINE_ITEM_NAMESPACE);
+		invoiceElement.appendChild(orderIdElement);
+		invoiceElement.appendChild(userIdElement);
+		invoiceElement.appendChild(orderDateElement);
+		invoiceElement.appendChild(shippingDateElement);
+		invoiceElement.appendChild(lineItemsElement);
+		invoiceDocument.appendChild(invoiceElement);
 
-  public void copyDocument(Result result) throws XMLDocumentException {
-    Element invoiceElement = invoiceDocument.createElementNS(XML_NAMESPACE, XML_INVOICE);
-    invoiceElement.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:" + XML_PREFIX, XML_NAMESPACE);
-    invoiceElement.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:" + LINE_ITEM_PREFIX, LINE_ITEM_NAMESPACE);
-    invoiceElement.appendChild(orderIdElement);
-    invoiceElement.appendChild(userIdElement);
-    invoiceElement.appendChild(orderDateElement);
-    invoiceElement.appendChild(shippingDateElement);
-    invoiceElement.appendChild(lineItemsElement);
-    invoiceDocument.appendChild(invoiceElement);
-    
-    XMLDocumentUtils.serialize(XMLDocumentUtils.createTransformer(), invoiceDocument,
-                               (isSupportingXSD() ? XSD_PUBLIC_ID : DTD_PUBLIC_ID),
-                               systemId, isSupportingXSD(), XMLDocumentUtils.DEFAULT_ENCODING, result);
-    return;
-  }
+		XMLDocumentUtils.serialize(XMLDocumentUtils.createTransformer(),
+				invoiceDocument, (isSupportingXSD() ? XSD_PUBLIC_ID
+						: DTD_PUBLIC_ID), systemId, isSupportingXSD(),
+				XMLDocumentUtils.DEFAULT_ENCODING, result);
+		return;
+	}
 
-  public Source getDocument() throws XMLDocumentException {
-    DOMResult result = new DOMResult();
-    copyDocument(result);
-    return new DOMSource(result.getNode(), result.getSystemId());
-  }
+	public Source getDocument() throws XMLDocumentException {
+		DOMResult result = new DOMResult();
+		copyDocument(result);
+		return new DOMSource(result.getNode(), result.getSystemId());
+	}
 
-  public String getDocumentAsString() throws XMLDocumentException {
-    try {
-      ByteArrayOutputStream stream = new ByteArrayOutputStream();
-      copyDocument(new StreamResult(stream));
-      return stream.toString(XMLDocumentUtils.DEFAULT_ENCODING);
-    } catch (Exception exception) {
-      throw new XMLDocumentException(exception);
-    }
-  }
+	public String getDocumentAsString() throws XMLDocumentException {
+		try {
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			copyDocument(new StreamResult(stream));
+			return stream.toString(XMLDocumentUtils.DEFAULT_ENCODING);
+		} catch (Exception exception) {
+			tpaHandler.getDocumentAsStringHandler(exception);
+		}
+		return null;
+	}
 
-  public void setOrderId(String orderId) {
-    orderIdElement = XMLDocumentUtils.createElement(invoiceDocument, XML_NAMESPACE, XML_ORDERID, orderId);
-    return;
-  }
+	public void setOrderId(String orderId) {
+		orderIdElement = XMLDocumentUtils.createElement(invoiceDocument,
+				XML_NAMESPACE, XML_ORDERID, orderId);
+		return;
+	}
 
-  public void setUserId(String userId) {
-    userIdElement = XMLDocumentUtils.createElement(invoiceDocument, XML_NAMESPACE, XML_USERID, userId);
-    return;
-  }
+	public void setUserId(String userId) {
+		userIdElement = XMLDocumentUtils.createElement(invoiceDocument,
+				XML_NAMESPACE, XML_USERID, userId);
+		return;
+	}
 
-  public void setOrderDate(Date orderDate) {
-    orderDateElement = XMLDocumentUtils.createElement(invoiceDocument, XML_NAMESPACE, XML_ORDERDATE,
-                                                      dateFormat.format(orderDate));
-    return;
-  }
+	public void setOrderDate(Date orderDate) {
+		orderDateElement = XMLDocumentUtils.createElement(invoiceDocument,
+				XML_NAMESPACE, XML_ORDERDATE, dateFormat.format(orderDate));
+		return;
+	}
 
-  public void setShippingDate(Date shippingDate) {
-    shippingDateElement = XMLDocumentUtils.createElement(invoiceDocument, XML_NAMESPACE, XML_SHIPPINGDATE,
-                                                         dateFormat.format(shippingDate));
-    return;
-  }
+	public void setShippingDate(Date shippingDate) {
+		shippingDateElement = XMLDocumentUtils.createElement(invoiceDocument,
+				XML_NAMESPACE, XML_SHIPPINGDATE, dateFormat
+						.format(shippingDate));
+		return;
+	}
 
-  public void addLineItem(String categoryId, String productId, String itemId, String lineNo,
-                          int quantity, float unitPrice) {
-    if (lineItemsElement == null) {
-      lineItemsElement = invoiceDocument.createElementNS(XML_NAMESPACE, XML_LINEITEMS);
-    }
-    TPALineItemUtils.addLineItem(invoiceDocument, lineItemsElement,
-                                 categoryId, productId, itemId, lineNo, quantity, unitPrice);
-    return;
-  }
+	public void addLineItem(String categoryId, String productId, String itemId,
+			String lineNo, int quantity, float unitPrice) {
+		if (lineItemsElement == null) {
+			lineItemsElement = invoiceDocument.createElementNS(XML_NAMESPACE,
+					XML_LINEITEMS);
+		}
+		TPALineItemUtils.addLineItem(invoiceDocument, lineItemsElement,
+				categoryId, productId, itemId, lineNo, quantity, unitPrice);
+		return;
+	}
 }

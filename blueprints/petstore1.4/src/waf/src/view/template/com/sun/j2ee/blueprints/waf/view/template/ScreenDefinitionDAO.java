@@ -90,6 +90,8 @@ public class ScreenDefinitionDAO {
     public static final String NAME = "name";
     public static final String URL = "url";
     public static final String PARAMETER = "parameter";
+    
+    private static TemplateHandler templateHandler = new TemplateHandler();
 
     public static Element loadDocument(URL url) {
         Document doc = null;
@@ -103,20 +105,20 @@ public class ScreenDefinitionDAO {
             root.normalize();
             return root;
         } catch (SAXParseException err) {
-            System.err.println ("ScreenFlowXmlDAO ** Parsing error" + ", line " +
-                        err.getLineNumber () + ", uri " + err.getSystemId ());
-            System.err.println("ScreenFlowXmlDAO error: " + err.getMessage ());
+        	templateHandler.loadDocument1Handler(err);
         } catch (SAXException e) {
-            System.err.println("ScreenFlowXmlDAO error: " + e);
+            templateHandler.loadDocument2Handler(e);
         } catch (java.net.MalformedURLException mfx) {
-            System.err.println("ScreenFlowXmlDAO error: " + mfx);
+            templateHandler.loadDocument2Handler(mfx);
         } catch (java.io.IOException e) {
-            System.err.println("ScreenFlowXmlDAO error: " + e);
+            templateHandler.loadDocument2Handler(e);
         } catch (Exception pce) {
-            System.err.println("ScreenFlowXmlDAO error: " + pce);
+            templateHandler.loadDocument2Handler(pce);
         }
         return null;
     }
+
+
 
     public static Screens loadScreenDefinitions(URL location) {
         Element root = loadDocument(location);

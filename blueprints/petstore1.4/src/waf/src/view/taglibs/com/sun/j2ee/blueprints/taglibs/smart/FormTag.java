@@ -54,6 +54,8 @@ public class FormTag extends BodyTagSupport {
     String action;
     String method;
     String formHTML;
+    
+    private SmartHandler smartHandler = new SmartHandler();
 
     public void putValidatedField(String fieldName, String fieldType) {
         validatedFields.put(fieldName, fieldType);
@@ -117,8 +119,9 @@ public class FormTag extends BodyTagSupport {
             return EVAL_PAGE;
         }
         catch (IOException e) {
-            throw new JspTagException("FormTag: " + e.getMessage());
+            smartHandler.doEndTag3Handler(e);
         }
+        return 0;
     }
 }
 
