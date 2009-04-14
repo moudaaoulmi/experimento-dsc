@@ -121,13 +121,12 @@ public class PopulateServlet extends HttpServlet {
     try {
       populate(forcefully != null && Boolean.valueOf(forcefully).booleanValue());
     } catch(PopulateException exception) {
-   	 toolPopulateHandler.doPostHandler(exception, request, response, errorPageURL);
-//      System.err.println(exception.getRootCause().getMessage());
-//      if (errorPageURL == null) {
-//        throw new ServletException("Populate exception occured :" + exception.getMessage(), exception.getRootCause());
-//      } else {
- //     redirect(request, response, errorPageURL);
-//      }
+      System.err.println(exception.getRootCause().getMessage());
+      if (errorPageURL == null) {
+        throw new ServletException("Populate exception occured :" + exception.getMessage(), exception.getRootCause());
+      } else {
+      redirect(request, response, errorPageURL);
+      }
     }
     if (successPageURL != null) {
       redirect(request, response, successPageURL);
