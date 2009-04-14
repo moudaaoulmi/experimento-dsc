@@ -43,7 +43,37 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
     //PreparedStatement statement = null;
     Map resultSet = new HashMap();
     //ResultSet resultSet = null;
-    
+    declare soft : NamingException : getDataSourceHandler() || 
+							 		 getDAOHandler() || 
+							 		 newGenericCatalogDAOHandler();
+    declare soft : SQLException : getCategoryHandler() || 
+								  getCategoriesHandler() || 
+								  getProductHandler() || 
+								  getProductsHandler() || 
+								  getItemHandler() || 
+								  getItemsHandler() || 
+								  searchItemsHandler() || 
+								  getCategoryPointBaseHandler() ||
+								  getCategoriesPointBaseHandler() ||
+								  getProductPointBaseHandler()  || 
+								  getProductsPointBaseHandler() || 
+								  getItemPointBaseHandler() || 
+								  getItemsPointBaseHandler() ||
+								  searchItemsPointBaseHandler() ||
+								  resultSetClose() ||
+								  preparedStatementClose() || 
+								  connectionClose();
+
+    //declare soft : NumberFormatException : parseIntHandler();
+    declare soft : ParsingDoneException : loadSQLStatementsHandler();
+    declare soft : ServiceLocatorException : getDataSourcePointBaseHandler();
+    declare soft : ClassNotFoundException : getDAOHandler();
+    declare soft : IllegalAccessException : getDAOHandler();
+    declare soft : InstantiationException : getDAOHandler();
+    declare soft : ParserConfigurationException : newGenericCatalogDAOHandler();
+    declare soft : SAXException : newGenericCatalogDAOHandler();
+    declare soft : IOException : newGenericCatalogDAOHandler();
+
 	
 	/*** CatalogDAOFactory ***/
 	pointcut getDAOHandler() :  
@@ -134,42 +164,6 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 		execution(public Page PointbaseCatalogDAO.getItems(String, int, int, Locale));
 	pointcut searchItemsPointBaseHandler() : 
 		execution(public Page PointbaseCatalogDAO.searchItems(String, int, int, Locale));
-	
-	
-	
-	declare soft : NamingException : getDataSourceHandler() || 
-		getDAOHandler() || 
-		newGenericCatalogDAOHandler();
-	declare soft : SQLException : getCategoryHandler() || 
-		getCategoriesHandler() || 
-		getProductHandler() || 
-		getProductsHandler() || 
-		getItemHandler() || 
-		getItemsHandler() || 
-		searchItemsHandler() || 
-		getCategoryPointBaseHandler() ||
-		getCategoriesPointBaseHandler() ||
-		getProductPointBaseHandler()  || 
-		getProductsPointBaseHandler() || 
-		getItemPointBaseHandler() || 
-		getItemsPointBaseHandler() ||
-		searchItemsPointBaseHandler() ||
-		resultSetClose() ||
-		preparedStatementClose() || 
-		connectionClose();
-	//declare soft : NumberFormatException : parseIntHandler();
-	declare soft : ParsingDoneException : loadSQLStatementsHandler();
-	declare soft : ServiceLocatorException : getDataSourcePointBaseHandler();
-	declare soft : ClassNotFoundException : getDAOHandler();
-	declare soft : IllegalAccessException : getDAOHandler();
-	declare soft : InstantiationException : getDAOHandler();
-	declare soft : ParserConfigurationException : newGenericCatalogDAOHandler();
-	declare soft : SAXException : newGenericCatalogDAOHandler();
-	declare soft : IOException : newGenericCatalogDAOHandler();
-	
-	
-	
-	
 	
 	after() throwing(Exception se) throws CatalogDAOSysException : 
 		getDAOHandler() {
@@ -291,9 +285,7 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
                     slx.getMessage());
 		}
 	}
-	
 
-	
 	Object around() throws CatalogDAOSysException : 
 		getCategoryPointBaseHandler() || 
 		getCategoriesPointBaseHandler() ||
