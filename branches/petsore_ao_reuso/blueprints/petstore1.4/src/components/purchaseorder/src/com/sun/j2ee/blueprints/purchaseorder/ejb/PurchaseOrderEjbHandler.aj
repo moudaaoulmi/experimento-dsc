@@ -22,6 +22,15 @@ import com.sun.j2ee.blueprints.util.aspect.XMLDocumentExceptionGenericAspect;
  */
 public aspect PurchaseOrderEjbHandler extends XMLDocumentExceptionGenericAspect {
 	
+	declare soft : UnsupportedEncodingException : afterXMLDocumentExceptionHandler();
+	declare soft : XMLDocumentException : internalSetOrderDateHandler() || 
+		mainHandler();
+	declare soft : ParseException : internalSetOrderDateHandler() ||
+		mainHandler();
+	declare soft : FileNotFoundException : mainHandler();
+	declare soft : SAXException : mainHandler();
+	declare soft : ParserConfigurationException : mainHandler();
+	
 	/*** PurchaseOrder ***/
     public pointcut afterXMLDocumentExceptionHandler() : 
 		execution(public String PurchaseOrder.toXML(URL));
@@ -31,20 +40,7 @@ public aspect PurchaseOrderEjbHandler extends XMLDocumentExceptionGenericAspect 
 		execution(private static Element PurchaseOrder.internalSetOrderDate(Element, PurchaseOrder));
 	pointcut mainHandler() : 
 		execution(public static void PurchaseOrder.main(String[]));
-	
-	
 
-	declare soft : UnsupportedEncodingException : afterXMLDocumentExceptionHandler();
-	declare soft : XMLDocumentException : internalSetOrderDateHandler() || 
-		mainHandler();
-	declare soft : ParseException : internalSetOrderDateHandler() ||
-		mainHandler();
-	declare soft : FileNotFoundException : mainHandler();
-	declare soft : SAXException : mainHandler();
-	declare soft : ParserConfigurationException : mainHandler();
-	 
-	
-	
 	Element around(Element child, PurchaseOrder purchaseOrder) : 
 		internalSetOrderDateHandler() && args(child, purchaseOrder) {
 		try {
