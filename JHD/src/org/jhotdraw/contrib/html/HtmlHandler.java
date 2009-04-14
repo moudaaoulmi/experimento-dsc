@@ -1,7 +1,9 @@
 package org.jhotdraw.contrib.html;
 
+import org.jhotdraw.exception.ExceptionHandler;
 import org.jhotdraw.exception.GeneralException;
 
+@ExceptionHandler
 public class HtmlHandler extends GeneralException {
 
 	public void contentProducerRegistryRead() {

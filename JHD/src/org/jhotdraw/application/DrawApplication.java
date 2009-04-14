@@ -26,8 +26,6 @@ import org.jhotdraw.framework.*;
 import org.jhotdraw.standard.*;
 import org.jhotdraw.util.*;
 
-import com.sun.mirror.apt.AnnotationProcessorListener;
-
 /**
  * DrawApplication defines a standard presentation for standalone drawing
  * editors. The presentation is customized in subclasses. The application is
