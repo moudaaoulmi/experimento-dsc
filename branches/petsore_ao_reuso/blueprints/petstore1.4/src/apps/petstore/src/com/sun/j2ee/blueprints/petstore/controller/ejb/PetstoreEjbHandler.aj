@@ -14,67 +14,73 @@ import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
  * @author Raquel Maranhao
  */
 public aspect PetstoreEjbHandler {
-	
+
+	declare soft : ServiceLocatorException : getCustomerHandler() || 
+									         createCustomerHandler() || 
+									         getShoppingCartHandler() || 
+									         getShoppingClientFacadeHandler();
+	declare soft : javax.ejb.CreateException : createCustomerHandler() || 
+											   getShoppingCartHandler() || 
+											   getShoppingClientFacadeHandler();
+
 	/*** ShoppingClientFacadeLocalEJB ***/
 	pointcut getCustomerHandler() : 
 		execution(public CustomerLocal ShoppingClientFacadeLocalEJB.getCustomer());
-	
+
 	pointcut createCustomerHandler() : 
 		execution(public CustomerLocal ShoppingClientFacadeLocalEJB.createCustomer(String));
-	
+
 	pointcut getShoppingCartHandler() : 
 		execution(public ShoppingCartLocal ShoppingClientFacadeLocalEJB.getShoppingCart());
-	
+
 	/*** ShoppingControllerEJB ***/
 	pointcut getShoppingClientFacadeHandler() :  
 		execution(public ShoppingClientFacadeLocal ShoppingControllerEJB.getShoppingClientFacade());
-	
-	
-	
-	declare soft : ServiceLocatorException : getCustomerHandler() || 
-		createCustomerHandler() || 
-		getShoppingCartHandler() || 
-		getShoppingClientFacadeHandler();
-	declare soft : javax.ejb.CreateException : createCustomerHandler() || 
-		getShoppingCartHandler() || 
-		getShoppingClientFacadeHandler();
-	
-	
-	
-	
+
 	CustomerLocal around() throws GeneralFailureException : getCustomerHandler()||createCustomerHandler(){
-		try{
+		try {
 			return proceed();
-		}catch(ServiceLocatorException slx){
-			throw new GeneralFailureException("ShoppingClientFacade: failed to look up name of customer: caught " + slx);
+		} catch (ServiceLocatorException slx) {
+			throw new GeneralFailureException(
+					"ShoppingClientFacade: failed to look up name of customer: caught "
+							+ slx);
 		}
 	}
 
 	CustomerLocal around() throws GeneralFailureException : createCustomerHandler(){
-		try{
+		try {
 			return proceed();
-		}catch(javax.ejb.CreateException ce){
-			throw new GeneralFailureException("ShoppingClientFacade: failed to create customer: caught " + ce);
+		} catch (javax.ejb.CreateException ce) {
+			throw new GeneralFailureException(
+					"ShoppingClientFacade: failed to create customer: caught "
+							+ ce);
 		}
 	}
 
 	ShoppingCartLocal around() throws GeneralFailureException : getShoppingCartHandler(){
-		try{
+		try {
 			return proceed();
-		}catch(ServiceLocatorException slx){
-			throw new GeneralFailureException("ShoppingClientFacade: failed to look up name of cart: caught " + slx);
-		}catch(javax.ejb.CreateException cx){
-			throw new GeneralFailureException("ShoppingClientFacade: failed to create cart: caught " + cx);
+		} catch (ServiceLocatorException slx) {
+			throw new GeneralFailureException(
+					"ShoppingClientFacade: failed to look up name of cart: caught "
+							+ slx);
+		} catch (javax.ejb.CreateException cx) {
+			throw new GeneralFailureException(
+					"ShoppingClientFacade: failed to create cart: caught " + cx);
 		}
 	}
-	
+
 	ShoppingClientFacadeLocal around() throws GeneralFailureException : getShoppingClientFacadeHandler(){
-		try{
+		try {
 			return proceed();
-		}catch(ServiceLocatorException slx){
-			throw new GeneralFailureException("ShoppingControllerEJB: Failed to Create ShoppingClientFacade: caught " + slx);
-		}catch(javax.ejb.CreateException cx){
-			throw new GeneralFailureException("ShoppingControllerEJB: Failed to Create ShoppingClientFacade: caught " + cx);
+		} catch (ServiceLocatorException slx) {
+			throw new GeneralFailureException(
+					"ShoppingControllerEJB: Failed to Create ShoppingClientFacade: caught "
+							+ slx);
+		} catch (javax.ejb.CreateException cx) {
+			throw new GeneralFailureException(
+					"ShoppingControllerEJB: Failed to Create ShoppingClientFacade: caught "
+							+ cx);
 		}
 	}
 }
