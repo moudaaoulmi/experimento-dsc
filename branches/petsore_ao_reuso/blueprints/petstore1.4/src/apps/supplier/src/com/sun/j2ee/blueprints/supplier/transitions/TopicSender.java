@@ -70,21 +70,29 @@ public class TopicSender implements java.io.Serializable {
      * 
      * EH - Refactored to aspect SupplierTransitionsHandler.
      */
-    public void sendMessage(String xmlMessage) throws JMSException {
-     TopicConnection topicConnect  = null;
-     TopicSession pubSession       = null;
-     TopicPublisher topicPublisher = null;
+	public void sendMessage(String xmlMessage) throws JMSException {
+		TopicConnection topicConnect = null;
+		TopicSession pubSession = null;
+		TopicPublisher topicPublisher = null;
 
-     topicConnect = topicFactory.createTopicConnection();
-     pubSession = topicConnect.createTopicSession(false,
-                                          Session.AUTO_ACKNOWLEDGE);
-     topicPublisher = pubSession.createPublisher(topic);
-     //topicConnect.start();
-     TextMessage jmsMsg = pubSession.createTextMessage();
-     jmsMsg.setText(xmlMessage);
-     topicPublisher.publish(jmsMsg);
-     return;
-    }
+		internalSendMessage(xmlMessage, topicConnect, pubSession,
+				topicPublisher);
+		return;
+	}
+
+	private void internalSendMessage(String xmlMessage,
+			TopicConnection topicConnect, TopicSession pubSession,
+			TopicPublisher topicPublisher) throws JMSException {
+
+		topicConnect = topicFactory.createTopicConnection();
+		pubSession = topicConnect.createTopicSession(false,
+				Session.AUTO_ACKNOWLEDGE);
+		topicPublisher = pubSession.createPublisher(topic);
+		// topicConnect.start();
+		TextMessage jmsMsg = pubSession.createTextMessage();
+		jmsMsg.setText(xmlMessage);
+		topicPublisher.publish(jmsMsg);
+	}
         
 }
 
