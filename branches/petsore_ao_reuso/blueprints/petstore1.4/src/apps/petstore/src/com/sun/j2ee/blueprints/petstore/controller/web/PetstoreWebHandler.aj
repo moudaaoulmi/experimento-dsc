@@ -22,6 +22,14 @@ import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
  */
 public aspect PetstoreWebHandler {
 	
+	declare soft : Exception : getCustomerHandler();
+	declare soft : CreateException : getShoppingControllerHandler();
+	declare soft : ServiceLocatorException : getShoppingControllerHandler();
+	declare soft : RemoveException : destroyHandler();
+	declare soft : EventException : internalHandleEventHandler();
+
+	//NumberFormatException is already a RuntimeException
+	//declare soft : NumberFormatException : internalGetQuantityHandler();
 	/*** PetstoreComponentManager ***/
 	pointcut getCustomerHandler() : 
 		execution(public CustomerLocal PetstoreComponentManager.getCustomer(HttpSession));
@@ -41,24 +49,10 @@ public aspect PetstoreWebHandler {
 	pointcut internalGetQuantityHandler() : 
 		execution(private Integer com.sun.j2ee.blueprints.petstore.controller.web.actions.CartHTMLAction.internalGetQuantity(String));
 	
-	
-	
-	declare soft : FinderException : getCustomerHandler();
-	declare soft : CreateException : getShoppingControllerHandler();
-	declare soft : ServiceLocatorException : getShoppingControllerHandler();
-	declare soft : RemoveException : destroyHandler();
-	declare soft : EventException : internalHandleEventHandler();
-	//NumberFormatException is already a RuntimeException
-	//declare soft : NumberFormatException : internalGetQuantityHandler();
-	
-	
 	CustomerLocal around() : 
 		getCustomerHandler() {
 	    try {
 	        return proceed();
-        } catch (FinderException e) {
-            System.err.println("PetstoreComponentManager finder error: " + e);
-            return null;
         } catch (Exception e) {
             System.err.println("PetstoreComponentManager error: " + e);
             return null;

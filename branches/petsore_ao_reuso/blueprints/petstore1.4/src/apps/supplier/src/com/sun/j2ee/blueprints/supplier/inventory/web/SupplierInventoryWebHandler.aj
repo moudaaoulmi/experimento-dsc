@@ -23,111 +23,101 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
  * @author Raquel Maranhao
  */
 public aspect SupplierInventoryWebHandler {
-	
-	/*** DisplayInventoryBean ***/
-	pointcut getInventoryHandler() : 
-		execution(public Collection DisplayInventoryBean.getInventory());
-	
-	/*** RcvrRequestProcessor ***/
-	pointcut initHandler() : 
-		execution(public void RcvrRequestProcessor.init());
-	pointcut updateInventoryHandler() : 
-		execution(private void RcvrRequestProcessor.updateInventory(HttpServletRequest));
-	pointcut sendInvoicesHandler() : 
-		execution(private void RcvrRequestProcessor.sendInvoices(Collection));
-	pointcut doPostHandler() : 
-		execution(public void RcvrRequestProcessor.doPost(HttpServletRequest, HttpServletResponse));
-	
-	
-	
+
 	declare soft : ServiceLocatorException : getInventoryHandler() || 
-		initHandler() ||
-		sendInvoicesHandler();
+											 initHandler() ||
+											 sendInvoicesHandler();
 	declare soft : FinderException : getInventoryHandler() || 
-		updateInventoryHandler() ||
-		doPostHandler();
+									 updateInventoryHandler() ||
+									 doPostHandler();
 	declare soft : CreateException : initHandler();
 	declare soft : TransitionException : sendInvoicesHandler();
 	declare soft : NamingException : doPostHandler();
 	declare soft : NotSupportedException : doPostHandler();
-	//IllegalStateException is a RuntimeException
-	//declare soft : IllegalStateException : doPostHandler();
+	// IllegalStateException is a RuntimeException
+	// declare soft : IllegalStateException : doPostHandler();
 	declare soft : RollbackException : doPostHandler();
 	declare soft : HeuristicMixedException : doPostHandler();
 	declare soft : HeuristicRollbackException : doPostHandler();
 	declare soft : SystemException : doPostHandler();
 	
-		
+
+	/*** DisplayInventoryBean ***/
+	pointcut getInventoryHandler() : 
+		execution(public Collection DisplayInventoryBean.getInventory());
+
+	/*** RcvrRequestProcessor ***/
+	pointcut initHandler() : 
+		execution(public void RcvrRequestProcessor.init());
+
+	pointcut updateInventoryHandler() : 
+		execution(private void RcvrRequestProcessor.updateInventory(HttpServletRequest));
+
+	pointcut sendInvoicesHandler() : 
+		execution(private void RcvrRequestProcessor.sendInvoices(Collection));
+
+	pointcut doPostHandler() : 
+		execution(public void RcvrRequestProcessor.doPost(HttpServletRequest, HttpServletResponse));
+
+	
 	void around() :  
 		initHandler() {
 		try {
 			proceed();
-		} catch(CreateException ce) {
+		} catch (CreateException ce) {
 			ce.printStackTrace();
-		} 
-	}	
-
-	Collection around() :  
-		getInventoryHandler() {
-		try {
-			return proceed();
-		} catch(FinderException ne) {
-			ne.printStackTrace();
-			return null;
-		} catch(ServiceLocatorException se) {
-			se.printStackTrace();
-			return null;
 		}
 	}
-	
-	void around() :  
-		updateInventoryHandler() {
+	Object around() :  
+		updateInventoryHandler() || getInventoryHandler()  || doPostHandler() {
+		Object result = null;
 		try {
-			proceed();
-		} catch(FinderException ne) {
+			result = proceed();
+		} catch (FinderException ne) {
 			ne.printStackTrace();
 		}
+		return result;
 	}
 	
-	void around() :  
-		sendInvoicesHandler()|| initHandler(){
+	Object around() :  
+		sendInvoicesHandler()|| initHandler() || getInventoryHandler(){
+		Object result = null;
 		try {
-			proceed();
-		} catch(ServiceLocatorException se) {
+			result = proceed();
+		} catch (ServiceLocatorException se) {
 			se.printStackTrace();
 		}
+		return result;
 	}
 
 	void around() :  
 		sendInvoicesHandler() {
 		try {
 			proceed();
-		}catch(TransitionException te) {
+		} catch (TransitionException te) {
 			te.printStackTrace();
 		}
 	}
-	
+
 	void around() :  
 		doPostHandler() {
 		try {
 			proceed();
-		} catch(FinderException fe) {
-			fe.printStackTrace();
-		} catch(NamingException ne) {
+		} catch (NamingException ne) {
 			ne.printStackTrace();
-		} catch(NotSupportedException nse) {
+		} catch (NotSupportedException nse) {
 			nse.printStackTrace();
-		} catch(IllegalStateException ie) {
+		} catch (IllegalStateException ie) {
 			ie.printStackTrace();
-		} catch(RollbackException re) {
+		} catch (RollbackException re) {
 			re.printStackTrace();
-		} catch(HeuristicMixedException hme) {
+		} catch (HeuristicMixedException hme) {
 			hme.printStackTrace();
-		} catch(HeuristicRollbackException hre) {
+		} catch (HeuristicRollbackException hre) {
 			hre.printStackTrace();
-		} catch(SystemException se) {
+		} catch (SystemException se) {
 			se.printStackTrace();
 		}
 	}
-	
+
 }
