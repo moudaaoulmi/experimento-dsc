@@ -5,11 +5,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.jhotdraw.Exception.ExceptionHandler;
 
-
-@ExceptionHandler
-public privileged aspect JavadrawHandler {
+public privileged aspect JavadrawExceptionHandler {
 
 	// ---------------------------
 	// Declare soft's

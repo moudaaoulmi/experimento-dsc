@@ -2,8 +2,7 @@ package org.jhotdraw.applet;
 
 import java.io.IOException;
 
-@ExceptionHandler
-public privileged aspect AppletHandler {
+public privileged aspect AppletExceptionHandler {
 	
 	
 	// Pointcuts
