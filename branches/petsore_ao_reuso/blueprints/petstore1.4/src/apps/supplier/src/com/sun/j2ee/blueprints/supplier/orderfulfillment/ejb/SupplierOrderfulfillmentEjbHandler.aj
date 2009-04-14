@@ -19,72 +19,77 @@ import java.util.HashMap;
 /**
  * @author Raquel Maranhao
  */
-public aspect SupplierOrderfulfillmentEjbHandler { 
+public aspect SupplierOrderfulfillmentEjbHandler {
+
+	declare soft : FinderException : checkInventoryHandler();
+	declare soft : XMLDocumentException : internalCreateInvoiceHandler() || 
+										  internalProcessAnOrderHandler();
+	declare soft : IOException : internalLoadHandler();
+	declare soft : TransformerConfigurationException : internalGetTransformerHandler();
 
 	/*** OrderFulfillmentFacadeEJB ***/
 	pointcut checkInventoryHandler() : 
 		execution(private boolean OrderFulfillmentFacadeEJB.checkInventory(LineItemLocal));
+
 	pointcut internalCreateInvoiceHandler() : 
 		execution(private String OrderFulfillmentFacadeEJB.internalCreateInvoice(SupplierOrderLocal, HashMap));
+
 	pointcut internalProcessAnOrderHandler() : 
 		execution(private String OrderFulfillmentFacadeEJB.internalProcessAnOrder(SupplierOrderLocal));
-	
+
 	/*** TPASupplierOrderXDE ***/
 	pointcut internalLoadHandler() :  
 		execution(private void TPASupplierOrderXDE.internalLoad(Properties, InputStream));
+
 	pointcut internalGetTransformerHandler() : 
 		execution(private Transformer TPASupplierOrderXDE.internalGetTransformer(InputStream));
+
 	pointcut internalCreateTransformerHandler() : 
 		execution(private Transformer TPASupplierOrderXDE.internalCreateTransformer());
-	
-	
-	
-	declare soft : FinderException : checkInventoryHandler();
-	declare soft : XMLDocumentException : internalCreateInvoiceHandler() || 
-		internalProcessAnOrderHandler();
-	declare soft : IOException : internalLoadHandler();
-	declare soft : TransformerConfigurationException : internalGetTransformerHandler();
-	
-	
-
 
 	boolean around() : 
 		checkInventoryHandler() {
 		try {
 			return proceed();
-		} catch(FinderException fe) {
-		    // swallow the finder exception because this means
-		    // supplier has not been populated; So we cant fulfill
-		    // this part of the order now
-		    return(false);	
+		} catch (FinderException fe) {
+			// swallow the finder exception because this means
+			// supplier has not been populated; So we cant fulfill
+			// this part of the order now
+			return (false);
 		}
 	}
-	
+
 	String around() : 
 		internalCreateInvoiceHandler() || 
 		internalProcessAnOrderHandler() {
 		try {
 			return proceed();
-	      } catch (XMLDocumentException xe) {
-	        System.out.println("OrderFulfillmentFacade**" + xe);
-	        return null;
-	      }  	
+		} catch (XMLDocumentException xe) {
+			System.out.println("OrderFulfillmentFacade**" + xe);
+			return null;
+		}
 	}
-	
+
 	void around() :
 		internalLoadHandler() {
 		try {
 			proceed();
-		} catch(IOException exception) {
-			System.err.println("Can't load from resource: " + TPASupplierOrderXDE.STYLE_SHEET_CATALOG_PATH + ": " + exception);
+		} catch (IOException exception) {
+			System.err.println("Can't load from resource: "
+					+ TPASupplierOrderXDE.STYLE_SHEET_CATALOG_PATH + ": "
+					+ exception);
 		}
 	}
 
-	after() throwing(Exception exception) throws XMLDocumentException :
+	Object around() throws XMLDocumentException :
 		internalGetTransformerHandler() || 
-		internalCreateTransformerHandler() {
-		throw new XMLDocumentException(exception);		
+		internalCreateTransformerHandler(){
+		try {
+			return proceed();
+		} catch (Exception exception) {
+			throw new XMLDocumentException(exception);
+		}
+	
 	}
-	
-	
+
 }

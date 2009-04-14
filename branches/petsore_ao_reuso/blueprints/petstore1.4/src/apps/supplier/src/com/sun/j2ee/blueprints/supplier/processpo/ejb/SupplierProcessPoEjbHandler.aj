@@ -17,17 +17,15 @@ import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
  */
 public aspect SupplierProcessPoEjbHandler {
 	
-	/*** SupplierOrderMDB ***/
-	pointcut onMessageHandler() : 
-		execution(public void SupplierOrderMDB.onMessage(Message));
-
-	
 	declare soft : TransitionException : onMessageHandler();
 	declare soft : CreateException : onMessageHandler();
 	declare soft : XMLDocumentException : onMessageHandler();
 	declare soft : JMSException : onMessageHandler();
 	
-	
+	/*** SupplierOrderMDB ***/
+	pointcut onMessageHandler() : 
+		execution(public void SupplierOrderMDB.onMessage(Message));
+
 	void around() throws EJBException: onMessageHandler(){
 		try{
 			proceed();
