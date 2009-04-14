@@ -80,6 +80,10 @@ public class ToolPopulateHandler {
 	   throw new ServletException(exception);
 	}
 	
+	/** Nao pode refatorar porque dentro do
+	 *  catch existe um metodo privado
+	 * 
+	 *
 	//catch(PopulateException exception)
 	public void doPostHandler(PopulateException exception, HttpServletRequest request, 
 			HttpServletResponse response,String errorPageURL ){
@@ -92,6 +96,7 @@ public class ToolPopulateHandler {
 	        obj.redirect(request, response, errorPageURL);
 	      }
 	    }
+	*/
 	
 	//catch (PopulateException exception) 
 	public void startElementHandler(PopulateException exception) throws SAXException {

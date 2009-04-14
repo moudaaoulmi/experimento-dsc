@@ -42,4 +42,8 @@ public class AdminBDException extends Exception {
     public AdminBDException() { super(); }
 
     public AdminBDException(String s) { super(s); }
+    
+    
 }
+
+
