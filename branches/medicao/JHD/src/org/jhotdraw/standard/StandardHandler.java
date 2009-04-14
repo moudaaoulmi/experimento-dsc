@@ -5,8 +5,10 @@ import java.awt.Graphics;
 
 import javax.swing.JOptionPane;
 
+import org.jhotdraw.exception.ExceptionHandler;
 import org.jhotdraw.exception.GeneralException;
 
+@ExceptionHandler
 public class StandardHandler extends GeneralException {
 
 	public void selectAreaTrackerDrawXORRect(Graphics g) {

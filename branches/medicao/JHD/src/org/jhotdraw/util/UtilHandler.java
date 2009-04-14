@@ -2,11 +2,11 @@ package org.jhotdraw.util;
 
 import java.io.IOException;
 
-import javax.jdo.PersistenceManager;
-
+import org.jhotdraw.exception.ExceptionHandler;
 import org.jhotdraw.exception.GeneralException;
 import org.jhotdraw.framework.JHotDrawRuntimeException;
 
+@ExceptionHandler
 public class UtilHandler extends GeneralException {
 	
 	public void createCollectionsFactoryHandler(Exception e){
