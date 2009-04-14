@@ -28,6 +28,23 @@ import com.sun.j2ee.blueprints.util.aspect.ExceptionGenericAspect;
  */
 public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 	
+	declare soft : PopulateException : internalPopulateHandler() || 
+									   internalInventoryPopulatorCheckHandler() || 
+									   internalStartElementHandler() || 
+									   internalEndElementHandler();
+	declare soft : MalformedURLException : getResourceHandler();
+	declare soft : SAXException : populateHandler() || 
+								  internalInventoryPopulatorHandler();
+	declare soft : ParserConfigurationException : populateHandler();
+	declare soft : NamingException : checkHandler() || 
+									 createInventoryHandler();
+	declare soft : FinderException : checkHandler() || 
+									 aroundExceptionDoNothingHandler();
+	declare soft : RemoveException : aroundExceptionDoNothingHandler();
+	declare soft : CreateException : createInventoryHandler();
+	declare soft : IOException : internalInventoryPopulatorHandler();
+
+	
 	/*** InventoryPopulator ***/
 	pointcut checkHandler() : 
 		execution(public boolean InventoryPopulator.check());
@@ -42,44 +59,28 @@ public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 	/*** PopulateServlet ***/
 	pointcut internalPopulateHandler() : 
 		execution(private void PopulateServlet.internalPopulate(String, String, HttpServletRequest, HttpServletResponse));
+	
 	pointcut internalInventoryPopulatorCheckHandler() : 
 		execution(private boolean PopulateServlet.internalInventoryPopulatorCheck(InventoryPopulator));
+	
 	pointcut internalInventoryPopulatorHandler() : 
 		execution(private void PopulateServlet.internalInventoryPopulator(InventoryPopulator, XMLReader));
+	
 	pointcut populateHandler() : 
 		execution(private boolean PopulateServlet.populate(boolean ));	
+	
 	pointcut getResourceHandler() : 
 		execution(private String PopulateServlet.getResource(String));	
 	
 	/*** XMLDBHandler ***/
 	pointcut internalStartElementHandler() : 
 		execution(private void XMLDBHandler.internalStartElement());
+	
 	pointcut internalEndElementHandler() : 
 		execution(private void XMLDBHandler.internalEndElement());	
+	
 	pointcut getValueHandler() : 
 		execution(public int XMLDBHandler.getValue(String, int));
-	
-	
-
-	
-	declare soft : PopulateException : internalPopulateHandler() || 
-		internalInventoryPopulatorCheckHandler() || 
-		internalStartElementHandler() || 
-		internalEndElementHandler();
-	declare soft : MalformedURLException : getResourceHandler();
-	declare soft : SAXException : populateHandler() || 
-		internalInventoryPopulatorHandler();
-	declare soft : ParserConfigurationException : populateHandler();
-	declare soft : NamingException : checkHandler() || 
-		createInventoryHandler();
-	declare soft : FinderException : checkHandler() || 
-		aroundExceptionDoNothingHandler();
-	declare soft : RemoveException : aroundExceptionDoNothingHandler();
-	declare soft : CreateException : createInventoryHandler();
-	declare soft : IOException : internalInventoryPopulatorHandler();
-
-	
-	
 	
 	boolean around() : checkHandler() {
 		try {
@@ -99,17 +100,25 @@ public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 		}
 	}
 	*/
-	
-	after() throwing(Exception exception) throws PopulateException :
+	InventoryLocal around() throws PopulateException :
 		createInventoryHandler() {
-		throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+		try{
+			return proceed();
+		}
+		catch(Exception exception){
+			throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+		}
 	}
 	
-	after() throwing(Exception exception) throws PopulateException :
+	Object around()throws PopulateException :
 		internalInventoryPopulatorHandler() || 
 		populateHandler() {
-		throw new PopulateException(exception);
-	}	
+		try{
+			return proceed();
+		}		catch(Exception e){
+			throw new PopulateException(e);
+		}
+	}
 
 	void around(PopulateServlet ps, String forcefully, String errorPageURL, HttpServletRequest request, HttpServletResponse response) 
 	throws ServletException, IOException : 

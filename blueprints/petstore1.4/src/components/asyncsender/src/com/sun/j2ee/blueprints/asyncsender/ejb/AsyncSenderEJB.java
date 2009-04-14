@@ -68,18 +68,24 @@ public class AsyncSenderEJB implements SessionBean {
   /**
    * EH - Refactored to aspect AsyncsenderEjbHandler.
    */
-  public void sendAMessage(String msg)  {
-    QueueSession session = null;
-    QueueConnection qConnect = null;
-    QueueSender qSender = null;
+	public void sendAMessage(String msg) {
+		QueueSession session = null;
+		QueueConnection qConnect = null;
+		QueueSender qSender = null;
 
-    qConnect = qFactory.createQueueConnection();
-    session = qConnect.createQueueSession(true,0);
-    qSender = session.createSender(q);
-    TextMessage jmsMsg = session.createTextMessage();
-    jmsMsg.setText(msg);
-    qSender.send(jmsMsg);
-  }
+		internalSendAMessage(msg, qConnect, session, qSender);
+	}
+
+	private void internalSendAMessage(String msg, QueueConnection qConnect,
+			QueueSession session, QueueSender qSender) {
+			qConnect = qFactory.createQueueConnection();
+			session = qConnect.createQueueSession(true, 0);
+			qSender = session.createSender(q);
+			TextMessage jmsMsg = session.createTextMessage();
+			jmsMsg.setText(msg);
+			qSender.send(jmsMsg);
+
+	}
 
   public void setSessionContext(SessionContext sc) { }
 
