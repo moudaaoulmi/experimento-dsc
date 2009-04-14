@@ -44,6 +44,7 @@ import java.util.*;
 
 public class XMLDocumentEditorFactory {
   private Properties xdeCatalog = new Properties();
+  private XMLDocumentsHandler xmlHandler = new XMLDocumentsHandler();
 
 
   public XMLDocumentEditorFactory() {}
@@ -52,7 +53,7 @@ public class XMLDocumentEditorFactory {
     try {
       xdeCatalog.load(catalogURL.openStream());
     } catch (IOException exception) {
-      throw new XMLDocumentException("Can't load from resource: " + catalogURL, exception);
+      xmlHandler.xmlDocumentEditorFactoryHandler(catalogURL, exception);
     }
     return;
   }
@@ -69,8 +70,11 @@ public class XMLDocumentEditorFactory {
     try {
       return (XMLDocumentEditor) Class.forName(className).newInstance();
     } catch(Exception exception) {
-      throw new XMLDocumentException("Can't instantiate XDE: " + className, exception);
+      xmlHandler.createXDEHandler(className, exception);
     }
+    return null;
   }
+
+
 }
 

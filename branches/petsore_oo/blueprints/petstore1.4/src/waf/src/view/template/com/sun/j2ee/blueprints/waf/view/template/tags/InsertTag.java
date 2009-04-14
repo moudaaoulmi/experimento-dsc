@@ -58,6 +58,7 @@ public class InsertTag extends TagSupport {
     private String parameter = null;
     private Parameter parameterRef = null;
     private Screen screen = null;
+    private TagsHandler tagsHandler = new TagsHandler();
 
     /**
      * default constructor
@@ -80,7 +81,7 @@ public class InsertTag extends TagSupport {
         try {
                 screen = (Screen)pageContext.getRequest().getAttribute(WebKeys.CURRENT_SCREEN);
         } catch (NullPointerException e){
-            throw new JspTagException("Error extracting Screen from session: " + e);
+            tagsHandler.doStartTagHandler(e);
         }
         if ((screen != null) && (parameter != null)) {
             parameterRef = (Parameter)screen.getParameter(parameter);
@@ -99,8 +100,7 @@ public class InsertTag extends TagSupport {
                 if (parameterRef.getValue() != null) pageContext.getRequest().getRequestDispatcher(parameterRef.getValue()).include(pageContext.getRequest(), pageContext.getResponse());
             }
          } catch (Exception ex) {
-             System.err.println("InsertTag:doEndTag caught: " + ex);
-             ex.printStackTrace();
+             tagsHandler.doEndTagHandler(ex);
         }
         return EVAL_PAGE;
     }

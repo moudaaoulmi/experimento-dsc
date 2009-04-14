@@ -79,6 +79,7 @@ public class SignOnDAO {
     private String signOnLoginPage = null;
     private String signOnErrorPage = null;
     private HashMap protectedResources = null;
+    private WebHandler webHandler = new WebHandler();
 
     public SignOnDAO(URL configURL) {
         Element root = loadDocument (configURL);
@@ -109,17 +110,15 @@ public class SignOnDAO {
             root.normalize();
             return root;
         } catch (SAXParseException err) {
-            System.err.println ("SignOnDAO ** Parsing error" + ", line " +
-                        err.getLineNumber () + ", uri " + err.getSystemId ());
-            System.err.println("SignOnDAO error: " + err.getMessage ());
+            webHandler.loadDocumentHandler(err);
         } catch (SAXException e) {
-            System.err.println("SignOnDAO error: " + e);
+            webHandler.loadDocumentHandler(e);
         } catch (java.net.MalformedURLException mfx) {
-            System.err.println("SignOnDAO error: " + mfx);
+        	webHandler.loadDocumentHandler(mfx);
         } catch (java.io.IOException e) {
-            System.err.println("SignOnDAO error: " + e);
+        	webHandler.loadDocumentHandler(e);
         } catch (Exception pce) {
-            System.err.println("SignOnDAO error: " + pce);
+        	webHandler.loadDocumentHandler(pce);
         }
         return null;
     }

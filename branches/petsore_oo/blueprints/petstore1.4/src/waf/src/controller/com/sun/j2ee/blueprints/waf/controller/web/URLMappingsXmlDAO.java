@@ -95,6 +95,8 @@ public class URLMappingsXmlDAO {
     public static final String SCREEN= "screen";
     public static final String SCREEN_NAME = "screen-name";
     public static final String PARAMETER = "parameter";
+    
+    private static WebHandler webHandler = new WebHandler();
 
     public static Element loadDocument(String location) {
         Document doc = null;
@@ -109,22 +111,19 @@ public class URLMappingsXmlDAO {
             root.normalize();
             return root;
         } catch (SAXParseException err) {
-            System.err.println ("URLMappingsXmlDAO ** Parsing error" + ", line " +
-                        err.getLineNumber () + ", uri " + err.getSystemId ());
-            System.err.println("URLMappingsXmlDAO error: " + err.getMessage ());
+            webHandler.loadDocument1Handler(err);
         } catch (SAXException e) {
-            System.err.println("URLMappingsXmlDAO error: " + e);
+            webHandler.loadDocument2Handler(e);
         } catch (java.net.MalformedURLException mfx) {
-            System.err.println("URLMappingsXmlDAO error: " + mfx);
+        	webHandler.loadDocument2Handler(mfx);
         } catch (java.io.IOException e) {
-            System.err.println("URLMappingsXmlDAO error: " + e);
+        	webHandler.loadDocument2Handler(e);
         } catch (Exception pce) {
-            System.err.println("URLMappingsXmlDAO error: " + pce);
+        	webHandler.loadDocument2Handler(pce);
         }
         return null;
     }
-
-
+    
     public static ScreenFlowData loadScreenFlowData(String location) {
         Element root = loadDocument(location);
         HashMap exceptionMappings = getExceptionMappings(root);

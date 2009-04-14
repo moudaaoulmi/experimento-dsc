@@ -55,13 +55,14 @@ public class SignOnEJB implements SessionBean {
     private static final String USER_HOME_ENV_NAME = "java:comp/env/ejb/User";
     private InitialContext ic = null;
     private UserLocalHome ulh = null;
+    private EjbHandler ejbHandler = new EjbHandler();
 
     public void ejbCreate() throws CreateException {
       try {
         ic = new InitialContext();
         ulh = (UserLocalHome) ic.lookup(USER_HOME_ENV_NAME);
       } catch (NamingException ne) {
-         throw new EJBException("SignOnEJB Got naming exception! " + ne.getMessage());
+         ejbHandler.ejbCreateHandler(ne);
       }
     }
 
@@ -73,7 +74,7 @@ public class SignOnEJB implements SessionBean {
             UserLocal user = ulh.findByPrimaryKey(userName);
             return user.matchPassword(password);
         } catch (FinderException fe) {
-            return false; // User not found, so authentication failed.
+            return ejbHandler.authenticateHandler();
         }
     }
     /** business method to called to create new users **/

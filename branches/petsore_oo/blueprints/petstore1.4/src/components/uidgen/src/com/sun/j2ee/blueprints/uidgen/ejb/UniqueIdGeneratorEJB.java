@@ -50,43 +50,51 @@ import com.sun.j2ee.blueprints.uidgen.counter.ejb.CounterLocalHome;
 
 public class UniqueIdGeneratorEJB implements javax.ejb.SessionBean {
 
-    private  InitialContext ic;
-    private  CounterLocalHome clh;
+	private InitialContext ic;
+	private CounterLocalHome clh;
+	private EjbHandler ejbHandler = new EjbHandler();
 
-    public void ejbCreate() {
-      try {
-        ic = new InitialContext();
-        clh = (CounterLocalHome) ic.lookup("java:comp/env/ejb/Counter");
-      } catch (NamingException ne) {
-         throw new EJBException("UniqueIdGeneratorEJB Got naming exception! " + ne.getMessage());
-      }
-    }
+	public void ejbCreate() {
+		try {
+			ic = new InitialContext();
+			clh = (CounterLocalHome) ic.lookup("java:comp/env/ejb/Counter");
+		} catch (NamingException ne) {
+			ejbHandler.ejbCreateHandler(ne);
+		}
+	}
 
-    // Business Methods
-    //=================
-    public String getUniqueId(String idPrefix) {
-        return getCounter(idPrefix).getNextValue();
-    }
+	// Business Methods
+	// =================
+	public String getUniqueId(String idPrefix) {
+		return getCounter(idPrefix).getNextValue();
+	}
 
+	// Misc Method
+	// =============
+	private CounterLocal getCounter(String name) {
+		try {
+			CounterLocal counter = null;
+			try {
+				counter = clh.findByPrimaryKey(name);
+			} catch (FinderException fe) {
+				counter = clh.create(name);
+			}
+			return counter;
+		} catch (CreateException ce) {
+			ejbHandler.getCounterHandler(ce, name);
+		}
+		return null;
+	}
 
-    // Misc Method
-    //=============
-    private CounterLocal getCounter(String name) {
-        try {
-            CounterLocal counter = null;
-            try {
-                counter = clh.findByPrimaryKey(name);
-            } catch (FinderException fe) {
-                counter = clh.create(name);
-            }
-            return counter;
-        } catch (CreateException ce) {
-            throw new EJBException("Could not create counter " + name + ". Error: " + ce.getMessage());
-        }
-    }
+	public void setSessionContext(SessionContext c) {
+	}
 
-    public void setSessionContext(SessionContext c) { }
-    public void ejbRemove() { }
-    public void ejbActivate() { }
-    public void ejbPassivate() { }
+	public void ejbRemove() {
+	}
+
+	public void ejbActivate() {
+	}
+
+	public void ejbPassivate() {
+	}
 }

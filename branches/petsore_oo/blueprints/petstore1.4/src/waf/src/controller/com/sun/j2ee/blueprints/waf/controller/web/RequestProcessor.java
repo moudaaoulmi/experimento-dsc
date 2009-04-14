@@ -59,110 +59,116 @@ import com.sun.j2ee.blueprints.waf.controller.web.ComponentManager;
 
 /**
  * This is the web tier controller for the sample application.
- *
- * This class is responsible for processing all requests received from
- * the Main.jsp and generating necessary events to modify data which
- * are sent to the WebController.
- *
+ * 
+ * This class is responsible for processing all requests received from the
+ * Main.jsp and generating necessary events to modify data which are sent to the
+ * WebController.
+ * 
  */
 public class RequestProcessor implements java.io.Serializable {
 
-    private HashMap urlMappings;
-    private HashMap eventMappings;
+	private HashMap urlMappings;
+	private HashMap eventMappings;
+	private WebHandler webHandler = new WebHandler();
 
-    public RequestProcessor() {}
+	public RequestProcessor() {
+	}
 
+	public void init(ServletContext context) {
+		urlMappings = (HashMap) context.getAttribute(WebKeys.URL_MAPPINGS);
+		eventMappings = (HashMap) context.getAttribute(WebKeys.EVENT_MAPPINGS);
+	}
 
-    public void init(ServletContext context) {
-        urlMappings = (HashMap)context.getAttribute(WebKeys.URL_MAPPINGS);
-        eventMappings = (HashMap)context.getAttribute(WebKeys.EVENT_MAPPINGS);
-    }
+	/**
+	 * The UrlMapping object contains information that will match a url to a
+	 * mapping object that contains information about the current screen, the
+	 * HTMLAction that is needed to process a request, and the HTMLAction that
+	 * is needed to insure that the propper screen is displayed.
+	 */
 
-    /**
-     * The UrlMapping object contains information that will match
-     * a url to a mapping object that contains information about
-     * the current screen, the HTMLAction that is needed to
-     * process a request, and the HTMLAction that is needed
-     * to insure that the propper screen is displayed.
-    */
+	private URLMapping getURLMapping(String urlPattern) {
+		if ((urlMappings != null) && urlMappings.containsKey(urlPattern)) {
+			return (URLMapping) urlMappings.get(urlPattern);
+		} else {
+			return null;
+		}
+	}
 
-    private URLMapping getURLMapping(String urlPattern) {
-        if ((urlMappings != null) && urlMappings.containsKey(urlPattern)) {
-            return (URLMapping)urlMappings.get(urlPattern);
-        } else {
-            return null;
-        }
-    }
+	/**
+	 * The EventMapping object contains information that will match a event
+	 * class name to an EJBActionClass.
+	 * 
+	 */
 
-    /**
-     * The EventMapping object contains information that will match
-     * a event class name to an EJBActionClass.
-     *
-    */
+	private EventMapping getEventMapping(Event eventClass) {
+		// get the fully qualified name of the event class
+		String eventClassName = eventClass.getClass().getName();
+		if ((eventMappings != null)
+				&& eventMappings.containsKey(eventClassName)) {
+			return (EventMapping) eventMappings.get(eventClassName);
+		} else {
+			return null;
+		}
+	}
 
-    private EventMapping getEventMapping(Event eventClass) {
-        // get the fully qualified name of the event class
-        String eventClassName = eventClass.getClass().getName();
-        if ((eventMappings != null) && eventMappings.containsKey(eventClassName)) {
-            return (EventMapping)eventMappings.get(eventClassName);
-        } else {
-            return null;
-        }
-    }
+	/**
+	 * This method is the core of the RequestProcessor. It receives all requests
+	 * and generates the necessary events.
+	 */
+	public void processRequest(HttpServletRequest request)
+			throws HTMLActionException, EventException, ServletException {
+		Event ev = null;
+		String fullURL = request.getRequestURI();
+		// get the screen name
+		String selectedURL = null;
+		int lastPathSeparator = fullURL.lastIndexOf("/") + 1;
+		if (lastPathSeparator != -1) {
+			selectedURL = fullURL
+					.substring(lastPathSeparator, fullURL.length());
+		}
+		URLMapping urlMapping = getURLMapping(selectedURL);
+		HTMLAction action = getAction(urlMapping);
+		if (action != null) {
+			action.setServletContext(request.getSession().getServletContext());
+			action.doStart(request);
+			ev = action.perform(request);
+			EventResponse eventResponse = null;
+			if (ev != null) {
+				// set the ejb action class name on the event
+				EventMapping eventMapping = getEventMapping(ev);
+				if (eventMapping != null) {
+					ev.setEJBActionClassName(eventMapping
+							.getEJBActionClassName());
+				}
+				ComponentManager sl = (ComponentManager) request.getSession()
+						.getAttribute(WebKeys.COMPONENT_MANAGER);
+				WebController wcc = sl.getWebController(request.getSession());
+				eventResponse = wcc.handleEvent(ev, request.getSession());
+			}
+			action.doEnd(request, eventResponse);
+		}
+	}
 
-    /**
-    * This method is the core of the RequestProcessor. It receives all requests
-    *  and generates the necessary events.
-    */
-    public void processRequest(HttpServletRequest request) throws HTMLActionException, EventException, ServletException {
-        Event ev = null;
-        String fullURL = request.getRequestURI();
-        // get the screen name
-        String selectedURL = null;
-        int lastPathSeparator = fullURL.lastIndexOf("/") + 1;
-        if (lastPathSeparator != -1) {
-            selectedURL = fullURL.substring(lastPathSeparator, fullURL.length());
-        }
-        URLMapping urlMapping = getURLMapping(selectedURL);
-        HTMLAction action = getAction(urlMapping);
-        if (action != null) {
-            action.setServletContext(request.getSession().getServletContext());
-            action.doStart(request);
-            ev = action.perform(request);
-            EventResponse eventResponse = null;
-            if (ev != null) {
-               // set the ejb action class name on the event
-                EventMapping eventMapping = getEventMapping(ev);
-                if (eventMapping != null) {
-                        ev.setEJBActionClassName(eventMapping.getEJBActionClassName());
-                }
-               ComponentManager sl = (ComponentManager)request.getSession().getAttribute(WebKeys.COMPONENT_MANAGER);
-               WebController wcc =  sl.getWebController(request.getSession());
-               eventResponse  = wcc.handleEvent(ev, request.getSession());
-           }
-           action.doEnd(request, eventResponse);
-        }
-    }
+	/**
+	 * This method load the necessary HTMLAction class necessary to process a
+	 * the request for the specified URL.
+	 */
 
-    /**
-     * This method load the necessary HTMLAction class necessary to process a the
-     * request for the specified URL.
-     */
+	private HTMLAction getAction(URLMapping urlMapping) {
+		HTMLAction handler = null;
+		String actionClassString = null;
+		if (urlMapping != null) {
+			actionClassString = urlMapping.getWebAction();
+			if (urlMapping.isAction()) {
+				try {
+					handler = (HTMLAction) getClass().getClassLoader()
+							.loadClass(actionClassString).newInstance();
+				} catch (Exception ex) {
+					webHandler.getActionHandler(ex);
+				}
+			}
+		}
+		return handler;
+	}
 
-    private HTMLAction getAction(URLMapping urlMapping) {
-        HTMLAction handler = null;
-        String actionClassString = null;
-        if (urlMapping != null) {
-            actionClassString = urlMapping.getWebAction();
-            if (urlMapping.isAction()) {
-                try {
-                    handler = (HTMLAction)getClass().getClassLoader().loadClass(actionClassString).newInstance();
-                } catch (Exception ex) {
-                    System.err.println("RequestProcessor caught loading action: " + ex);
-                }
-            }
-        }
-        return handler;
-    }
 }
-

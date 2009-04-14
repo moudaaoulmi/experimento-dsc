@@ -56,6 +56,8 @@ public class InputTag extends BodyTagSupport {
     String validation;
     int maxlength;
     String cssClass;
+    
+    private SmartHandler smartHandler = new SmartHandler();
 
     public void setCssClass(String c) { cssClass = c; }
 
@@ -100,8 +102,9 @@ public class InputTag extends BodyTagSupport {
             return EVAL_PAGE;
         }
         catch (IOException e) {
-            throw new JspTagException("InputTag: " + e.getMessage());
+            smartHandler.doEndTag2Handler(e);
         }
+        return 0;
     }
 }
 

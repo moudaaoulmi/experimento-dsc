@@ -55,6 +55,7 @@ public class CacheTag extends BodyTagSupport {
     private String name;
     private long duration;
     private Entry entry;
+    private SmartHandler smartHandler = new SmartHandler();
 
     public void setScope(String s) { scope = s; }
 
@@ -128,7 +129,7 @@ public class CacheTag extends BodyTagSupport {
                     out.print(content);
                 }
                 catch (IOException ioe) {
-                    System.err.println("ChacheTag: Problems with writing...");
+                    smartHandler.doEndTag7Handler();
                 }
             }
         } else {
@@ -136,7 +137,7 @@ public class CacheTag extends BodyTagSupport {
                 JspWriter out = pageContext.getOut();
                 out.print(entry.getContent());
             } catch (IOException ioe) {
-                System.err.println("CacheTag: Problems with writing...");
+            	smartHandler.doEndTag7Handler();
             }
         }
         // reset everything

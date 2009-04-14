@@ -81,6 +81,7 @@ public class StateMachine implements java.io.Serializable {
     private HashMap attributeMap;
     private HashMap actionMap;
     private SessionContext sc;
+    private EJBHandler ejbHandler = new EJBHandler();
 
     public StateMachine(EJBControllerLocalEJB ccejb, SessionContext sc) {
         this.ccejb = ccejb;
@@ -102,7 +103,7 @@ public class StateMachine implements java.io.Serializable {
                      actionMap.put(actionName, action);
              }
             } catch (Exception ex) {
-                System.err.println("StateMachine: error loading " + actionName + " :" + ex);
+                ejbHandler.processEventHandler(actionName, ex);
             }
             if (action != null) {
                 action.init(this);
@@ -114,6 +115,8 @@ public class StateMachine implements java.io.Serializable {
         }
         return response;
     }
+
+
 
     public void setAttribute(String key, Object value) {
         attributeMap.put(key, value);

@@ -60,83 +60,86 @@ import com.sun.j2ee.blueprints.waf.controller.ejb.EJBControllerLocal;
 
 import com.sun.j2ee.blueprints.util.tracer.Debug;
 
-
 /**
- * This implmentation class of the ComponentManager provides
- * access to services in the web tier and ejb tier.
- *
+ * This implmentation class of the ComponentManager provides access to services
+ * in the web tier and ejb tier.
+ * 
  */
-public class DefaultComponentManager implements ComponentManager, java.io.Serializable {
+public class DefaultComponentManager implements ComponentManager,
+		java.io.Serializable {
 
-    protected ServiceLocator sl = null;
+	protected ServiceLocator sl = null;
+	private WebHandler webHandler = new WebHandler();
 
-    public DefaultComponentManager() {
-        sl = ServiceLocator.getInstance();
-    }
+	public DefaultComponentManager() {
+		sl = ServiceLocator.getInstance();
+	}
 
-    public WebController getWebController(HttpSession session) {
-        ServletContext context = session.getServletContext();
-        WebController wcc =  (WebController)context.getAttribute(WebKeys.WEB_CONTROLLER);
-        if ( wcc == null ) {
-            try {
-                String wccClassName = sl.getString(JNDINames.DEFAULT_WEB_CONTROLLER);
-                wcc = (WebController) Beans.instantiate(this.getClass().getClassLoader(), wccClassName);
-                wcc.init(context);
-            } catch (ServiceLocatorException slx) {
-                throw new RuntimeException ("Cannot create bean of class WebController: " + slx);
-            } catch (Exception exc) {
-                 throw new RuntimeException ("Cannot create bean of class WebController: " + exc);
-             }
-         }
-         return wcc;
-    }
+	public WebController getWebController(HttpSession session) {
+		ServletContext context = session.getServletContext();
+		WebController wcc = (WebController) context
+				.getAttribute(WebKeys.WEB_CONTROLLER);
+		if (wcc == null) {
+			try {
+				String wccClassName = sl
+						.getString(JNDINames.DEFAULT_WEB_CONTROLLER);
+				wcc = (WebController) Beans.instantiate(this.getClass()
+						.getClassLoader(), wccClassName);
+				wcc.init(context);
+			} catch (ServiceLocatorException slx) {
+				webHandler.getWebControllerHandler(slx);
+			} catch (Exception exc) {
+				webHandler.getWebControllerHandler(exc);
+			}
+		}
+		return wcc;
+	}
 
-    public EJBControllerLocal getEJBController(HttpSession session) {
-        EJBControllerLocal ccEjb = (EJBControllerLocal)session.getAttribute(WebKeys.EJB_CONTROLLER);
-        if (ccEjb == null) {
-            try {
-                EJBControllerLocalHome home = (EJBControllerLocalHome)sl.getLocalHome(JNDINames.EJB_CONTROLLER_EJBHOME);
-                ccEjb = home.create();
-            } catch (CreateException ce) {
-                throw new GeneralFailureException(ce.getMessage());
-            } catch (ServiceLocatorException slx) {
-                 throw new GeneralFailureException(slx.getMessage());
-            }
-        }
-        return ccEjb;
-    }
+	public EJBControllerLocal getEJBController(HttpSession session) {
+		EJBControllerLocal ccEjb = (EJBControllerLocal) session
+				.getAttribute(WebKeys.EJB_CONTROLLER);
+		if (ccEjb == null) {
+			try {
+				EJBControllerLocalHome home = (EJBControllerLocalHome) sl
+						.getLocalHome(JNDINames.EJB_CONTROLLER_EJBHOME);
+				ccEjb = home.create();
+			} catch (CreateException ce) {
+				webHandler.getEJBControllerHandler(ce.getMessage());
+			} catch (ServiceLocatorException slx) {
+				webHandler.getEJBControllerHandler(slx.getMessage());
+			}
+		}
+		return ccEjb;
+	}
 
-    /**
-     *
-     * Create the WebController which in turn should create the
-     * EJBClientController.
-     *
-     */
-    public void sessionCreated(HttpSessionEvent se) {
-        HttpSession session = se.getSession();
-        sl = ServiceLocator.getInstance();
-        session.setAttribute(WebKeys.COMPONENT_MANAGER, this);
-    }
+	/**
+	 * 
+	 * Create the WebController which in turn should create the
+	 * EJBClientController.
+	 * 
+	 */
+	public void sessionCreated(HttpSessionEvent se) {
+		HttpSession session = se.getSession();
+		sl = ServiceLocator.getInstance();
+		session.setAttribute(WebKeys.COMPONENT_MANAGER, this);
+	}
 
-    /**
-     *
-     * Destroy the WebClientController which in turn should destroy the
-     * EJBClientController.
-     *
-     */
-    public void sessionDestroyed(HttpSessionEvent se) {
+	/**
+	 * 
+	 * Destroy the WebClientController which in turn should destroy the
+	 * EJBClientController.
+	 * 
+	 */
+	public void sessionDestroyed(HttpSessionEvent se) {
 
-    try{
-        HttpSession session = se.getSession();
-        WebController wcc = getWebController(session);
-        if (wcc != null) {
-            wcc.destroy(session);
-        }
-   }
-   catch(Exception exe){
-   // ignore the exception
-  }
-    }
+		try {
+			HttpSession session = se.getSession();
+			WebController wcc = getWebController(session);
+			if (wcc != null) {
+				wcc.destroy(session);
+			}
+		} catch (Exception exe) {
+			// ignore the exception
+		}
+	}
 }
-
-
