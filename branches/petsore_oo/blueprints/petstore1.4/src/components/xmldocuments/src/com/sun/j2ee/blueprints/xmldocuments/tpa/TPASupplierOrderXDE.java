@@ -101,7 +101,7 @@ public class TPASupplierOrderXDE extends XMLDocumentEditor.DefaultXDE {
 			String systemId = entityResolver.mapEntityURI(isSupportingXSD() ? XSD_PUBLIC_ID	: DTD_PUBLIC_ID);
 			this.systemId = (systemId != null) ? systemId : (isSupportingXSD() ? XSD_SYSTEM_ID : DTD_SYSTEM_ID);
 		} catch (Exception exception) {
-			tpaHandler.tpaXDEHandler(exception);
+			tpaHandler.printStackTraceThrowXMLDocumentExceptionHandler(exception);
 		}
 		builder = XMLDocumentUtils.createDocumentBuilder();
 		transformer = XMLDocumentUtils.createTransformer();
@@ -148,7 +148,7 @@ public class TPASupplierOrderXDE extends XMLDocumentEditor.DefaultXDE {
 			copyDocument(new StreamResult(stream));
 			return stream.toString(XMLDocumentUtils.DEFAULT_ENCODING);
 		} catch (Exception exception) {
-			tpaHandler.getDocumentAsStringHandler(exception);
+			tpaHandler.throwXMLDocumentExceptionHandler(exception);
 		}
 		return null;
 	}

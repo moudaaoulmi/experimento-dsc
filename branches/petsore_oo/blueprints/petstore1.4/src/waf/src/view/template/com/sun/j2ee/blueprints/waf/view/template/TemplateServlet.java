@@ -276,13 +276,13 @@ public class TemplateServlet extends HttpServlet {
         } catch (NamingException ne) {
             // it should not have happened, but it is a recoverable error.
             // Just dont start the transaction.
-            templateHandler.insertTemplateHandler(ne);
+            templateHandler.printStackTraceHandler(ne);
         } catch (NotSupportedException nse) {
             // Again this is a recoverable error.
-        	templateHandler.insertTemplateHandler(nse);
+        	templateHandler.printStackTraceHandler(nse);
         } catch (SystemException se) {
             // Again this is a recoverable error.
-        	templateHandler.insertTemplateHandler(se);
+        	templateHandler.printStackTraceHandler(se);
         }
 
         try {
@@ -294,15 +294,15 @@ public class TemplateServlet extends HttpServlet {
                     ut.commit();
                 }
             } catch (IllegalStateException re) {
-            	templateHandler.insertTemplateHandler(re);
+            	templateHandler.printStackTraceHandler(re);
             } catch (RollbackException re) {
-            	templateHandler.insertTemplateHandler(re);
+            	templateHandler.printStackTraceHandler(re);
             } catch (HeuristicMixedException hme) {
-            	templateHandler.insertTemplateHandler(hme);
+            	templateHandler.printStackTraceHandler(hme);
             } catch (HeuristicRollbackException hre) {
-            	templateHandler.insertTemplateHandler(hre);
+            	templateHandler.printStackTraceHandler(hre);
             } catch (SystemException se) {
-            	templateHandler.insertTemplateHandler(se);
+            	templateHandler.printStackTraceHandler(se);
             }
         }
     }

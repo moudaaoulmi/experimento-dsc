@@ -28,20 +28,25 @@ public class XMLDocumentsHandler {
 		throw new XMLDocumentException(exception);
 	}
 
-	public void transformHandler(String path) {
+	public void transform1Handler(String path) {
 		System.out
 				.println("XMLDocuments: could not set schemas directory path to:"
 						+ path);
 	}
 
-	public void transformHandler(DOMException dex) {
+	public void transform2Handler(DOMException dex) {
 		System.out.println("XMLDocumentUtils:caught " + dex);
 	}
 
-	public void fromXMLHandler(Exception exception) throws XMLDocumentException {
+	public void fromXML1Handler(Exception exception) throws XMLDocumentException {
 		throw new XMLDocumentException(exception);
 	}
 
+	public void fromXML2Handler(XMLDocumentException exception)
+		throws XMLDocumentException {
+		System.err.println(exception.getRootCause().getMessage());
+		throw new XMLDocumentException(exception);
+}
 	public void createParserHandler(SAXNotRecognizedException exception) {
 		System.err.println(exception);
 	}
@@ -62,38 +67,25 @@ public class XMLDocumentsHandler {
 		throw new XMLDocumentException(exception);
 	}
 
-	public void fromXMLHandler(XMLDocumentException exception)
-			throws XMLDocumentException {
-		System.err.println(exception.getRootCause().getMessage());
-		throw new XMLDocumentException(exception);
-	}
-
-	public void customEntityResolverHandler(IOException exception,
+	public void customEntityResolver1Handler(IOException exception,
 			String message) {
 		System.err.println("CustomEntityResolver: Can't load from resource: "
 				+ message + ": " + exception);
 	}
 
-	public void customEntityResolverHandler(URL entityCatalogURL,
+	public void customEntityResolver2Handler(URL entityCatalogURL,
 			IOException exception) {
 		System.err.println("Can't load from resource: " + entityCatalogURL
 				+ ": " + exception);
 	}
 
-	public void resolveEntityFromURL1Handler(String entityURL, boolean trace) {
+	public void resolveEntityFromURL1Handler(String entityURL, boolean trace,String msg) {
 		if (trace) {
-			System.err.println("entityURL: " + entityURL + ": not a URL");
+			System.err.println("entityURL: " + entityURL + msg);
 		}
 	}
 
-	public void resolveEntityFromURL2Handler(String entityURL, boolean trace) {
-		if (trace) {
-			System.err.println("entityURL: " + entityURL
-					+ ": not a readable URL");
-		}
-	}
-
-	public void resolveEntityFromURL3Handler(Exception exception1, boolean trace) {
+	public void resolveEntityFromURL2Handler(Exception exception1, boolean trace) {
 		if (trace) {
 			System.err.println("No");
 			System.err.println(exception1.getMessage());

@@ -142,7 +142,7 @@ public class OrderApproval {
 			return fromXML(new StreamSource(new StringReader(buffer)),
 					entityCatalogURL, validating);
 		} catch (XMLDocumentException exception) {
-			xmlHandler.fromXMLHandler(exception);
+			xmlHandler.fromXML2Handler(exception);
 		}
 		return null;
 	}

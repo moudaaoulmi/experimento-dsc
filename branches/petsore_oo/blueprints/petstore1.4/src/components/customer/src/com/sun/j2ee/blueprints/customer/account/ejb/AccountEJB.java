@@ -52,7 +52,7 @@ public abstract class AccountEJB implements javax.ejb.EntityBean {
 
     private EntityContext context = null;
     
-    EjbHandler ejbHandler = new EjbHandler();
+    AccountEjbHandler accountEjbHandler = new AccountEjbHandler();
 
     // getters and setters for CMP fields
     //====================================
@@ -90,7 +90,7 @@ public abstract class AccountEJB implements javax.ejb.EntityBean {
             CreditCardLocal creditCard = cch.create();
             setCreditCard(creditCard);
         } catch (javax.naming.NamingException ne) {
-            ejbHandler.ejbPostCreateHandler(ne);
+        	accountEjbHandler.ejbPostCreateHandler(ne);
         }
 
     }

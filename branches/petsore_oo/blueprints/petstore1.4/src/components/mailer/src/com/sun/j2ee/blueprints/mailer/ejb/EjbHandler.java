@@ -9,7 +9,7 @@ import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 
 public class EjbHandler {
 
-	public void ByteArrayDataSourceHandler(UnsupportedEncodingException uex){
+	public void byteArrayDataSourceHandler(UnsupportedEncodingException uex){
 		
 	}
 	
@@ -24,11 +24,6 @@ public class EjbHandler {
 	
 	public void mainHandler(Exception e){
 		System.err.println(e);
-        System.exit(2);
-	}
-	
-	public void main2Handler(XMLDocumentException e){
-		System.err.println(e.getRootCause());
         System.exit(2);
 	}
 	

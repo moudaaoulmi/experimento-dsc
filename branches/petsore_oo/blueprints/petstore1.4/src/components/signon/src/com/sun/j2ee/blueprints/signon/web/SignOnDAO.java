@@ -110,15 +110,15 @@ public class SignOnDAO {
             root.normalize();
             return root;
         } catch (SAXParseException err) {
-            webHandler.loadDocumentHandler(err);
+            webHandler.loadDocument1Handler(err);
         } catch (SAXException e) {
-            webHandler.loadDocumentHandler(e);
+            webHandler.loadDocument2Handler(e);
         } catch (java.net.MalformedURLException mfx) {
-        	webHandler.loadDocumentHandler(mfx);
+        	webHandler.loadDocument2Handler(mfx);
         } catch (java.io.IOException e) {
-        	webHandler.loadDocumentHandler(e);
+        	webHandler.loadDocument2Handler(e);
         } catch (Exception pce) {
-        	webHandler.loadDocumentHandler(pce);
+        	webHandler.loadDocument2Handler(pce);
         }
         return null;
     }

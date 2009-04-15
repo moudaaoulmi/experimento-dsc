@@ -2,7 +2,7 @@ package com.sun.j2ee.blueprints.supplier.tools.populate;
 
 
 
-public class PopulateHandler {
+public class ToolsPopulateHandler {
 
 	public boolean checkHandler(){
 		return false;

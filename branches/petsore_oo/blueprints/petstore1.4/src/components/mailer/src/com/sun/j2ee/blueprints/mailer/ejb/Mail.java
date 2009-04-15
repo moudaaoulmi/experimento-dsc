@@ -176,7 +176,8 @@ public class Mail {
       } catch (IOException exception) {
     	 ejbHandler.mainHandler(exception);
       } catch (XMLDocumentException exception) {
-    	  ejbHandler.main2Handler(exception);
+    	  Exception e = exception.getRootCause();
+    	  ejbHandler.mainHandler(e);
       }
     }
     System.err.println("Usage: " + Mail.class.getName() + " [file-name]");

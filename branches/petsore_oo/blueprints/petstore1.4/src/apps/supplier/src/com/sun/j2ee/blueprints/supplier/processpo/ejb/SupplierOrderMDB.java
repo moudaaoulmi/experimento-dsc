@@ -70,7 +70,7 @@ public class SupplierOrderMDB implements MessageDrivenBean, MessageListener {
 
   private TransitionDelegate transitionDelegate;
 
-  EjbHandler ejbHandler = new EjbHandler();
+  ProcesspoEjbHandler processpoEjbHandler = new ProcesspoEjbHandler();
   
   public SupplierOrderMDB() {}
 
@@ -85,11 +85,11 @@ public class SupplierOrderMDB implements MessageDrivenBean, MessageListener {
       transitionDelegate = tdf.getTransitionDelegate(tdClassName);
       transitionDelegate.setup();
     } catch (CreateException ce) {
-        ejbHandler.ejbExceptionHandler(ce);
+    	processpoEjbHandler.throwEjbExceptionHandler(ce);
     } catch (TransitionException te) {
-        ejbHandler.ejbExceptionHandler(te);
+    	processpoEjbHandler.throwEjbExceptionHandler(te);
     } catch (ServiceLocatorException se) {
-        ejbHandler.ejbExceptionHandler(se);
+    	processpoEjbHandler.throwEjbExceptionHandler(se);
     }
   }
 
@@ -114,13 +114,13 @@ public class SupplierOrderMDB implements MessageDrivenBean, MessageListener {
         doTransition(invoice);
       } //else wait for the inventory to arrive at the inventory receiver
     } catch (TransitionException te) {
-        ejbHandler.ejbExceptionHandler(te);
+    	processpoEjbHandler.throwEjbExceptionHandler(te);
     } catch  (CreateException ce) {
-    	  ejbHandler.ejbExceptionHandler(ce);
+    	processpoEjbHandler.throwEjbExceptionHandler(ce);
     } catch  (XMLDocumentException xe) {
-        ejbHandler.onMessageHandler(xe);
+    	processpoEjbHandler.onMessageHandler(xe);
     } catch  (JMSException je) {
-    	ejbHandler.ejbExceptionHandler(je);
+    	processpoEjbHandler.throwEjbExceptionHandler(je);
     }
   }
 

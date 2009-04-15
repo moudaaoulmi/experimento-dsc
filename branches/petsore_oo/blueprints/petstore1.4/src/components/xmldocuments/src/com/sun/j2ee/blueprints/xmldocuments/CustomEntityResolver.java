@@ -67,7 +67,7 @@ public class CustomEntityResolver implements EntityResolver {
 			try {
 				entityCatalog.load(stream);
 			} catch (IOException exception) {
-				xmlHandler.customEntityResolverHandler(exception,
+				xmlHandler.customEntityResolver1Handler(exception,
 						ENTITY_CATALOG);
 			}
 		} else {
@@ -91,7 +91,7 @@ public class CustomEntityResolver implements EntityResolver {
 			try {
 				entityCatalog.load(entityCatalogURL.openStream());
 			} catch (IOException exception) {
-				xmlHandler.customEntityResolverHandler(entityCatalogURL,
+				xmlHandler.customEntityResolver2Handler(entityCatalogURL,
 						exception);
 			}
 		}
@@ -118,13 +118,15 @@ public class CustomEntityResolver implements EntityResolver {
 		try { // Is it a wellformed URL?
 			entityURLURL = new URL(entityURL);
 		} catch (Exception exception) {
-			xmlHandler.resolveEntityFromURL1Handler(entityURL, TRACE);
+			String msg = ": not a URL";
+			xmlHandler.resolveEntityFromURL1Handler(entityURL, TRACE,msg);
 		}
 		if (entityURLURL != null) { // Is a wellformed URL
 			try {
 				entityURLStream = entityURLURL.openStream(); // Try to open the URL
 			} catch (Exception exception) {
-				xmlHandler.resolveEntityFromURL2Handler(entityURL, TRACE);
+				String msg = ": not a readable URL";
+				xmlHandler.resolveEntityFromURL1Handler(entityURL, TRACE,msg);
 			}
 		}
 		if (entityURLStream == null) { // Not a URL or could not be open
@@ -144,7 +146,7 @@ public class CustomEntityResolver implements EntityResolver {
 					}
 				}
 			} catch (Exception exception1) {
-				xmlHandler.resolveEntityFromURL3Handler(exception1, TRACE);
+				xmlHandler.resolveEntityFromURL2Handler(exception1, TRACE);
 			}
 		}
 		if (entityURLStream != null) { // Is a readable URL or resource

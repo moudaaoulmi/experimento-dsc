@@ -10,7 +10,7 @@ public class TransitionsHandler {
 	/**
 	 *O nome do método é genérico pois há reuso de código!
 	 */
-	public void transitionExceptionHanlder(Exception e) throws TransitionException{
+	public void throwTransitionExceptionHanlder(Exception e) throws TransitionException{
 		 throw new TransitionException(e);		
 	}
 	

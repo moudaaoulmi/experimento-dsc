@@ -56,7 +56,7 @@ public class InventoryPopulator {
   private InventoryLocalHome inventoryHome = null;
   private String rootTag;
 
-  PopulateHandler populateHandler = new PopulateHandler();
+  ToolsPopulateHandler toolsPopulateHandler = new ToolsPopulateHandler();
 
   public InventoryPopulator() {
     this(XML_INVENTORYLIST);
@@ -90,7 +90,7 @@ public class InventoryPopulator {
         return false;
       }
     } catch (Exception e) {
-    	populateHandler.checkHandler();
+    	toolsPopulateHandler.checkHandler();
     }
     return true;
   }
@@ -106,12 +106,12 @@ public class InventoryPopulator {
         inventory = inventoryHome.findByPrimaryKey(id);
         inventory.remove();
       } catch (Exception exception) {
-    	  populateHandler.createInventoryHandler(exception);
+    	  toolsPopulateHandler.createInventoryHandler(exception);
       }
       inventory = inventoryHome.create(id, quantity);
       return inventory;
     } catch (Exception exception) {
-    	populateHandler.createInventory2Handler(exception);
+    	toolsPopulateHandler.createInventory2Handler(exception);
     }
     return null;
   }

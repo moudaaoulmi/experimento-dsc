@@ -64,7 +64,7 @@ public class SupplierOrderTD implements TransitionDelegate {
       topic = servicelocator.getTopic(JNDINames.INVOICE_MDB_TOPIC);
       invoiceTopicSender = new TopicSender(topicFactory, topic);
     } catch(ServiceLocatorException se) {
-    	transitionsHandler.transitionExceptionHanlder(se);
+    	transitionsHandler.throwTransitionExceptionHanlder(se);
     }
   }
 
@@ -79,7 +79,7 @@ public class SupplierOrderTD implements TransitionDelegate {
     try {
       invoiceTopicSender.sendMessage(xmlInvoice);
     } catch(JMSException je) {
-        transitionsHandler.transitionExceptionHanlder(je);
+        transitionsHandler.throwTransitionExceptionHanlder(je);
     }
   }
 

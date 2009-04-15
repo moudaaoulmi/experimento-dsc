@@ -102,7 +102,9 @@ public class InputTag extends BodyTagSupport {
             return EVAL_PAGE;
         }
         catch (IOException e) {
-            smartHandler.doEndTag2Handler(e);
+        	String msg ="InputTag: ";
+        	Exception ex = e.getMessage();
+            smartHandler.doEndTag1Handler(msg,e);           
         }
         return 0;
     }

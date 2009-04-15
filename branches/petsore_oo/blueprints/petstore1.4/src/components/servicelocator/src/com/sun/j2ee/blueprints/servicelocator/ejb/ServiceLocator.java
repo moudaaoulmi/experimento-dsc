@@ -69,9 +69,9 @@ public class ServiceLocator {
       try {
         ic = new InitialContext();
       } catch (NamingException ne) {
-            ejbHandler.serviceLocatorExceptionHandler(ne);
+            ejbHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-    	  ejbHandler.serviceLocatorExceptionHandler(e);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(e);
       }
     }
 
@@ -87,9 +87,9 @@ public class ServiceLocator {
       try {
           home = (EJBLocalHome) ic.lookup(jndiHomeName);
        } catch (NamingException ne) {
-    	   ejbHandler.serviceLocatorExceptionHandler(ne);
+    	   ejbHandler.throwServiceLocatorExceptionHandler(ne);
        } catch (Exception e) {
-    	   ejbHandler.serviceLocatorExceptionHandler(e);
+    	   ejbHandler.throwServiceLocatorExceptionHandler(e);
        }
        return home;
     }
@@ -107,9 +107,9 @@ public class ServiceLocator {
             Object obj = PortableRemoteObject.narrow(objref, className);
             home = (EJBHome)obj;
       } catch (NamingException ne) {
-    	  ejbHandler.serviceLocatorExceptionHandler(ne);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-    	  ejbHandler.serviceLocatorExceptionHandler(e);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(e);
       }
        return home;
     }
@@ -124,9 +124,9 @@ public class ServiceLocator {
       try {
          factory = (QueueConnectionFactory) ic.lookup(qConnFactoryName);
       } catch (NamingException ne) {
-    	  ejbHandler.serviceLocatorExceptionHandler(ne);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-    	  ejbHandler.serviceLocatorExceptionHandler(e);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(e);
       }
       return factory;
     }
@@ -140,9 +140,9 @@ public class ServiceLocator {
       try {
         queue =(Queue)ic.lookup(queueName);
       } catch (NamingException ne) {
-    	  ejbHandler.serviceLocatorExceptionHandler(ne);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-    	  ejbHandler.serviceLocatorExceptionHandler(e);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(e);
       }
       return queue;
     }
@@ -156,9 +156,9 @@ public class ServiceLocator {
       try {
         factory = (TopicConnectionFactory) ic.lookup(topicConnFactoryName);
       } catch (NamingException ne) {
-    	  ejbHandler.serviceLocatorExceptionHandler(ne);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-    	  ejbHandler.serviceLocatorExceptionHandler(e);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(e);
       }
       return factory;
     }
@@ -172,9 +172,9 @@ public class ServiceLocator {
       try {
           topic = (Topic)ic.lookup(topicName);
       } catch (NamingException ne) {
-    	  ejbHandler.serviceLocatorExceptionHandler(ne);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-    	  ejbHandler.serviceLocatorExceptionHandler(e);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(e);
       }
       return topic;
     }
@@ -188,9 +188,9 @@ public class ServiceLocator {
       try {
           dataSource = (DataSource)ic.lookup(dataSourceName);
       } catch (NamingException ne) {
-    	  ejbHandler.serviceLocatorExceptionHandler(ne);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-    	  ejbHandler.serviceLocatorExceptionHandler(e);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(e);
       }
       return dataSource;
     }
@@ -204,9 +204,9 @@ public class ServiceLocator {
       try {
         url = (URL)ic.lookup(envName);
       } catch (NamingException ne) {
-    	  ejbHandler.serviceLocatorExceptionHandler(ne);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-    	  ejbHandler.serviceLocatorExceptionHandler(e);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(e);
       }
 
       return url;
@@ -221,9 +221,9 @@ public class ServiceLocator {
       try {
         bool = (Boolean)ic.lookup(envName);
       } catch (NamingException ne) {
-    	  ejbHandler.serviceLocatorExceptionHandler(ne);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-    	  ejbHandler.serviceLocatorExceptionHandler(e);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(e);
       }
       return bool.booleanValue();
     }
@@ -237,9 +237,9 @@ public class ServiceLocator {
       try {
         envEntry = (String)ic.lookup(envName);
       } catch (NamingException ne) {
-    	  ejbHandler.serviceLocatorExceptionHandler(ne);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-    	  ejbHandler.serviceLocatorExceptionHandler(e);
+    	  ejbHandler.throwServiceLocatorExceptionHandler(e);
       }
       return envEntry ;
     }

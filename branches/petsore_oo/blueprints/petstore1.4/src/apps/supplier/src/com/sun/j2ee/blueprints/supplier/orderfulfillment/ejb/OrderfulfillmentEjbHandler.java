@@ -7,7 +7,7 @@ import javax.ejb.EJBException;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 
 
-public class EjbHandler {
+public class OrderfulfillmentEjbHandler {
 	
 	public void ejbCreateHandler(Exception e) {
 		throw new EJBException(e);	
