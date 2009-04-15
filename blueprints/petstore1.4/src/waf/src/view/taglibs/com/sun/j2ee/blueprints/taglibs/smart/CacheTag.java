@@ -129,7 +129,8 @@ public class CacheTag extends BodyTagSupport {
                     out.print(content);
                 }
                 catch (IOException ioe) {
-                    smartHandler.doEndTag7Handler();
+                	String msg = "ChacheTag: Problems with writing...";
+                	smartHandler.doEndTag2Handler(msg);
                 }
             }
         } else {
@@ -137,7 +138,8 @@ public class CacheTag extends BodyTagSupport {
                 JspWriter out = pageContext.getOut();
                 out.print(entry.getContent());
             } catch (IOException ioe) {
-            	smartHandler.doEndTag7Handler();
+            	String msg = "ChacheTag: Problems with writing...";
+            	smartHandler.doEndTag2Handler(msg);
             }
         }
         // reset everything

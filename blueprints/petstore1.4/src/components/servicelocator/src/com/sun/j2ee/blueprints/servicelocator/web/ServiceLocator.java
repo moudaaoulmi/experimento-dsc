@@ -86,9 +86,9 @@ public class ServiceLocator {
         ic = new InitialContext();
         cache = Collections.synchronizedMap(new HashMap());
       } catch (NamingException ne) {
-            webHandler.serviceLocatorExceptionHandler(ne);
+            webHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-            webHandler.serviceLocatorExceptionHandler(e);
+            webHandler.throwServiceLocatorExceptionHandler(e);
        }
     }
 
@@ -114,9 +114,9 @@ public class ServiceLocator {
             cache.put(jndiHomeName, home);
         }
        } catch (NamingException ne) {
-    	   webHandler.serviceLocatorExceptionHandler(ne);
+    	   webHandler.throwServiceLocatorExceptionHandler(ne);
        } catch (Exception e) {
-    	   webHandler.serviceLocatorExceptionHandler(e);
+    	   webHandler.throwServiceLocatorExceptionHandler(e);
        }
        return home;
     }
@@ -139,9 +139,9 @@ public class ServiceLocator {
             cache.put(jndiHomeName, home);
         }
        } catch (NamingException ne) {
-    	   webHandler.serviceLocatorExceptionHandler(ne);
+    	   webHandler.throwServiceLocatorExceptionHandler(ne);
        } catch (Exception e) {
-    	   webHandler.serviceLocatorExceptionHandler(e);
+    	   webHandler.throwServiceLocatorExceptionHandler(e);
        }
 
        return home;
@@ -162,9 +162,9 @@ public class ServiceLocator {
             cache.put(qConnFactoryName, factory);
         }
       } catch (NamingException ne) {
-    	   webHandler.serviceLocatorExceptionHandler(ne);
+    	   webHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-   	   	   webHandler.serviceLocatorExceptionHandler(e);
+   	   	   webHandler.throwServiceLocatorExceptionHandler(e);
       }
       return factory;
     }
@@ -183,9 +183,9 @@ public class ServiceLocator {
             cache.put(queueName, queue);
         }
       } catch (NamingException ne) {
-    	  webHandler.serviceLocatorExceptionHandler(ne);
+    	  webHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-    	  webHandler.serviceLocatorExceptionHandler(e);
+    	  webHandler.throwServiceLocatorExceptionHandler(e);
       }
 
       return queue;
@@ -206,9 +206,9 @@ public class ServiceLocator {
             cache.put(topicConnFactoryName, factory);
         }
       } catch (NamingException ne) {
-    	   webHandler.serviceLocatorExceptionHandler(ne);
+    	   webHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-   	   	   webHandler.serviceLocatorExceptionHandler(e);
+   	   	   webHandler.throwServiceLocatorExceptionHandler(e);
       }
       return factory;
     }
@@ -227,9 +227,9 @@ public class ServiceLocator {
             cache.put(topicName, topic);
         }
       } catch (NamingException ne) {
-    	   webHandler.serviceLocatorExceptionHandler(ne);
+    	   webHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-   	       webHandler.serviceLocatorExceptionHandler(e);
+   	       webHandler.throwServiceLocatorExceptionHandler(e);
       }
       return topic;
     }
@@ -248,9 +248,9 @@ public class ServiceLocator {
             cache.put(dataSourceName, dataSource );
         }
       } catch (NamingException ne) {
-    	  webHandler.serviceLocatorExceptionHandler(ne);
+    	  webHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-   	   	  webHandler.serviceLocatorExceptionHandler(e);
+   	   	  webHandler.throwServiceLocatorExceptionHandler(e);
       }
       return dataSource;
     }
@@ -264,9 +264,9 @@ public class ServiceLocator {
       try {
         url = (URL)ic.lookup(envName);
       } catch (NamingException ne) {
-    	   webHandler.serviceLocatorExceptionHandler(ne);
+    	   webHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-   	   	   webHandler.serviceLocatorExceptionHandler(e);
+   	   	   webHandler.throwServiceLocatorExceptionHandler(e);
       }
 
       return url;
@@ -281,9 +281,9 @@ public class ServiceLocator {
       try {
         bool = (Boolean)ic.lookup(envName);
       } catch (NamingException ne) {
-    	  webHandler.serviceLocatorExceptionHandler(ne);
+    	  webHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-   	   	  webHandler.serviceLocatorExceptionHandler(e);
+   	   	  webHandler.throwServiceLocatorExceptionHandler(e);
       }
       return bool.booleanValue();
     }
@@ -297,9 +297,9 @@ public class ServiceLocator {
       try {
         envEntry = (String)ic.lookup(envName);
       } catch (NamingException ne) {
-    	  webHandler.serviceLocatorExceptionHandler(ne);
+    	  webHandler.throwServiceLocatorExceptionHandler(ne);
       } catch (Exception e) {
-   	   	  webHandler.serviceLocatorExceptionHandler(e);
+   	   	  webHandler.throwServiceLocatorExceptionHandler(e);
       }
       return envEntry ;
     }

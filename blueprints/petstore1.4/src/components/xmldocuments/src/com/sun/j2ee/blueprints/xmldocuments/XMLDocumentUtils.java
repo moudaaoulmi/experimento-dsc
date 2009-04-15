@@ -565,7 +565,7 @@ public final class XMLDocumentUtils {
 					try {
 						source.setSystemId(SCHEMAS_DIRECTORY_PATH);
 					} catch (Throwable e) {
-						xmlHandler.transformHandler(SCHEMAS_DIRECTORY_PATH);
+						xmlHandler.transform1Handler(SCHEMAS_DIRECTORY_PATH);
 					}
 				}
 				CustomEntityResolver entityResolver = new CustomEntityResolver(
@@ -589,7 +589,7 @@ public final class XMLDocumentUtils {
 					try {
 						saxSource.setXMLReader(reader);
 					} catch (org.w3c.dom.DOMException dex) {
-						xmlHandler.transformHandler(dex);
+						xmlHandler.transform2Handler(dex);
 					}
 				}
 				source = saxSource;
@@ -646,7 +646,7 @@ public final class XMLDocumentUtils {
 							entityCatalogURL));
 			document = builder.parse(source);
 		} catch (Exception exception) {
-			xmlHandler.fromXMLHandler(exception);
+			xmlHandler.fromXML1Handler(exception);
 		}
 		if (!validating
 				|| XMLDocumentUtils.checkDocumentType(document, dtdPublicId)) {

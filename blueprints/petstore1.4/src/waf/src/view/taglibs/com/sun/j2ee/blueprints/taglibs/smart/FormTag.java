@@ -119,7 +119,9 @@ public class FormTag extends BodyTagSupport {
             return EVAL_PAGE;
         }
         catch (IOException e) {
-            smartHandler.doEndTag3Handler(e);
+        	String msg ="FormTag: ";
+        	Exception ex = e.getMessage();
+            smartHandler.doEndTag1Handler(msg,e);
         }
         return 0;
     }

@@ -7,7 +7,7 @@ public class WebHandler {
 	/**
 	 * O nome do método é genérico pois há reuso de código!
 	 */
-	public void serviceLocatorExceptionHandler(Exception e) throws ServiceLocatorException{
+	public void throwServiceLocatorExceptionHandler(Exception e) throws ServiceLocatorException{
 		 throw new ServiceLocatorException(e);
 	}
 	

@@ -17,21 +17,17 @@ public class WebHandler {
 		System.err.println("SignonFilter: malformed URL exception: " + ex);
 	}
 
-	public void getSignOnEjbHandler(CreateException cx) throws ServletException {
+	public void getSignOnEjbHandler(Exception cx) throws ServletException {
 		throw new ServletException("Failed to Create SignOn EJB: caught " + cx);
 	}
 
-	public void getSignOnEjbHandler(NamingException nx) throws ServletException {
-		throw new ServletException("Failed to Create SignOn EJB: caught " + nx);
-	}
-
-	public void loadDocumentHandler(SAXParseException err){
+	public void loadDocument1Handler(SAXParseException err){
 		System.err.println ("SignOnDAO ** Parsing error" + ", line " +
 				err.getLineNumber () + ", uri " + err.getSystemId ());
 		System.err.println("SignOnDAO error: " + err.getMessage ());
 	}
 
-	public void loadDocumentHandler(Exception e){
+	public void loadDocument2Handler(Exception e){
 		System.err.println("SignOnDAO error: " + e);
 	}
 

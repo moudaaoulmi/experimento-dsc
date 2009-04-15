@@ -8,7 +8,7 @@ public class TemplateHandler {
 		System.err.println("TemplateServlet: malformed URL exception: " + ex);
 	}
 	
-	public void insertTemplateHandler(Exception e){
+	public void printStackTraceHandler(Exception e){
 		e.printStackTrace();
 	}
 

@@ -82,7 +82,7 @@ public class OrderFulfillmentFacadeEJB implements SessionBean {
   private InventoryLocalHome invHome;
   private SessionContext sc;
   
-  EjbHandler ejbHandler = new EjbHandler();
+  OrderfulfillmentEjbHandler orderfulfillmentEjbHandler = new OrderfulfillmentEjbHandler();
 
   public OrderFulfillmentFacadeEJB() {}
 
@@ -101,9 +101,9 @@ public class OrderFulfillmentFacadeEJB implements SessionBean {
       invHome
         = (InventoryLocalHome) serviceLocator.getLocalHome(JNDINames.INV_EJB);
     } catch (XMLDocumentException xe) {
-      ejbHandler.ejbCreateHandler(xe);
+    	orderfulfillmentEjbHandler.ejbCreateHandler(xe);
     } catch (ServiceLocatorException se) {
-      ejbHandler.ejbCreateHandler(se);
+    	orderfulfillmentEjbHandler.ejbCreateHandler(se);
     }
   }
 
@@ -135,7 +135,7 @@ public class OrderFulfillmentFacadeEJB implements SessionBean {
       // swallow the finder exception because this means
       // supplier has not been populated; So we cant fulfill
       // this part of the order now
-      ejbHandler.checkInventoryHandler();
+    	orderfulfillmentEjbHandler.checkInventoryHandler();
     }
     return(true);
   }
@@ -204,7 +204,7 @@ public class OrderFulfillmentFacadeEJB implements SessionBean {
         } catch (XMLDocumentException xe) {
           //so order wont be fullfilled but po is persisted
           //and can be fullfilled later.
-          ejbHandler.processAnOrderHandler(xe);
+        	orderfulfillmentEjbHandler.processAnOrderHandler(xe);
           
         }
       }
@@ -260,7 +260,7 @@ public class OrderFulfillmentFacadeEJB implements SessionBean {
           newInvoice = processAnOrder(order);
         } catch (XMLDocumentException xe) {
           // ignore since means we cant fulfill this order now
-          ejbHandler.processPendingPOHandler(xe);
+        	orderfulfillmentEjbHandler.processPendingPOHandler(xe);
         }
         if(newInvoice != null) {
           invoices.add(newInvoice);

@@ -2,12 +2,12 @@ package com.sun.j2ee.blueprints.supplier.processpo.ejb;
 
 import javax.ejb.EJBException;
 
-public class EjbHandler {
+public class ProcesspoEjbHandler {
 	
 	/**
 	 * O nome do método é genérico pois há reuso de código!
 	 */
-	public void ejbExceptionHandler(Exception e) {
+	public void throwEjbExceptionHandler(Exception e) {
 		 throw new EJBException(e);	
 	}
 	
