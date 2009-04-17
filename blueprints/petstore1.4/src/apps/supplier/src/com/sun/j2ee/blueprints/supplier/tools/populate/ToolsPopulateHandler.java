@@ -27,11 +27,11 @@ public class ToolsPopulateHandler {
 		throw new PopulateException(e);		
 	}
 	
-	public String getResourceHandler(String path, PopulateServlet classe) throws IOException {
+	public String getResourceHandler(String path, PopulateServlet populateServlet) throws IOException {
 
         String url;
 
-        URL u = classe.getServletContext().getResource(path);
+        URL u = populateServlet.getServletContext().getResource(path);
 
         url = u != null ? u.toString() : path;
 
