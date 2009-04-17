@@ -1,5 +1,8 @@
 package com.sun.j2ee.blueprints.supplier.tools.populate;
 
+import java.io.IOException;
+import java.net.URL;
+
 
 
 public class ToolsPopulateHandler {
@@ -24,4 +27,15 @@ public class ToolsPopulateHandler {
 		throw new PopulateException(e);		
 	}
 	
+	public String getResourceHandler(String path, PopulateServlet classe) throws IOException {
+
+        String url;
+
+        URL u = classe.getServletContext().getResource(path);
+
+        url = u != null ? u.toString() : path;
+
+        return url;
+
+  }
 }
