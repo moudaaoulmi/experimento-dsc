@@ -132,8 +132,7 @@ public class PopulateServlet extends HttpServlet {
     try {
       url = new URL(path).toString();
     } catch (MalformedURLException exception) {
-      URL u = getServletContext().getResource(path);
-      url = u != null ? u.toString() : path;
+    	url = toolsPopulateHandler.getResourceHandler(path, this);
     }
     //System.err.println("Made " + url + " from " + path);
     return url;
