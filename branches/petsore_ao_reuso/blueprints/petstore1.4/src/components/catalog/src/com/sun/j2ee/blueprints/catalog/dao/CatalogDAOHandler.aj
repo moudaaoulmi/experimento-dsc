@@ -165,22 +165,32 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 	pointcut searchItemsPointBaseHandler() : 
 		execution(public Page PointbaseCatalogDAO.searchItems(String, int, int, Locale));
 	
-	after() throwing(Exception se) throws CatalogDAOSysException : 
+	
+	
+	CatalogDAO around() throws CatalogDAOSysException : 
 		getDAOHandler() {
-		if (se instanceof NamingException) {
-            throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:  NamingException while getting DAO type : \n" + se.getMessage());
-        } else  {
-            throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:  Exception while getting DAO type : \n" + se.getMessage());
-        }		
+		try{
+			return proceed();
+		}catch (Exception se){
+			if (se instanceof NamingException) {
+				throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:  NamingException while getting DAO type : \n" + se.getMessage());
+			} else  {
+				throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:  Exception while getting DAO type : \n" + se.getMessage());
+			}		
+		}
 	}
-
-	after() throwing(Exception exception) throws CatalogDAOSysException :
+	
+	void around() throws CatalogDAOSysException :
 		newGenericCatalogDAOHandler() {
-		if (thisJoinPoint.getArgs() != null) 
-			exception.printStackTrace(System.err);
-		System.err.println(exception);
-		throw new CatalogDAOSysException(exception.getMessage());
-    }
+		try{
+			proceed();
+		}catch(Exception exception){
+			if (thisJoinPoint.getArgs() != null) 
+				exception.printStackTrace(System.err);
+			System.err.println(exception);
+			throw new CatalogDAOSysException(exception.getMessage());
+		}
+	}
 
 	DataSource around() throws CatalogDAOSysException : getDataSourceHandler(){
 		try{
