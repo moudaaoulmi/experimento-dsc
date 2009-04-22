@@ -25,7 +25,9 @@ import com.sun.j2ee.blueprints.util.aspect.EJBExceptionGenericAspect;
  * @author Raquel Maranhao
  */
 public aspect OPCHandler extends EJBExceptionGenericAspect {
-	
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
 	declare soft : TransitionException : onMessageHandler() || 
 		orderApprovalMDBOnMessageHandler() || 
 		purchaseOrderMDBOnMessageHandler();
@@ -41,7 +43,9 @@ public aspect OPCHandler extends EJBExceptionGenericAspect {
 	declare soft : IOException : getDocumentHandler();
 	declare soft : SAXException : getDocumentHandler();
 	declare soft : ParserConfigurationException : getDocumentBuilderHandler();
-	
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	
 	/*** InvoiceMDB ***/
 	pointcut onMessageHandler() : 
@@ -68,7 +72,9 @@ public aspect OPCHandler extends EJBExceptionGenericAspect {
 		purchaseOrderMDBOnMessageHandler();
 	
 
-	
+	// ---------------------------
+    // Advice's
+    // ---------------------------
 	
 	/*
 	after() throwing (Exception e) throws EJBException :
