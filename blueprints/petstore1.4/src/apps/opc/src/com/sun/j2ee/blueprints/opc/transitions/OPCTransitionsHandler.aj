@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.jms.JMSException;
 import javax.jms.QueueConnection;
 import javax.jms.QueueConnectionFactory;
+import javax.jms.QueueSender;
+import javax.jms.QueueSession;
 
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionInfo;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
@@ -19,10 +21,24 @@ import com.sun.j2ee.blueprints.util.aspect.TransitionExceptionGenericAspect;
  */
 public aspect OPCTransitionsHandler extends TransitionExceptionGenericAspect {
 	
-	/*** QueueHelper (Solution2) ***/
-	//private QueueConnection qConnect;
-	private Map qConnect = new HashMap();
-	
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
+	declare soft : ServiceLocatorException : setupHandler() || 
+											 mailCompletedOrderTDSetupHandler() || 
+											 mailInvoiceTransitionDelegateSetupHandler() || 
+											 mailOrderApprovalTransitionDelegateSetupHandler() || 
+											 orderApprovalTDSetupHandler() || 
+											 purchaseOrderTDSetupHandler();
+	declare soft : JMSException : doTransitionHandler() || 
+								  mailCompletedOrderTDDoTransitionHandler() || 
+								  mailInvoiceTransitionDelegateDoTransitionHandler() || 
+								  mailOrderApprovalTransitionDelegateDoTransitionHandler() || 
+								  orderApprovalTDDoTransitionHandler() || 
+								  purchaseOrderTDDoTransitionHandler();
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** InvoiceTD ***/
 	pointcut setupHandler() : 
 		execution(public void InvoiceTD.setup());
@@ -67,11 +83,8 @@ public aspect OPCTransitionsHandler extends TransitionExceptionGenericAspect {
 	
 	/*** QueueHelper ***/
 	pointcut sendMessageHandler() : 
-		execution(public void QueueHelper.sendMessage(String));
+		execution(* QueueHelper.internalSendMessage(..));
 
-	pointcut createQueueConnectionHandler() : 
-		call(* QueueConnectionFactory.createQueueConnection()) && within(QueueHelper);
-	
     public pointcut afterServiceLocatorExceptionHandler() : 
         setupHandler() || 
 		mailCompletedOrderTDSetupHandler() || 
@@ -88,85 +101,28 @@ public aspect OPCTransitionsHandler extends TransitionExceptionGenericAspect {
 		orderApprovalTDDoTransitionHandler() ||
 		purchaseOrderTDDoTransitionHandler();
 	
-	
-	
-	declare soft : ServiceLocatorException : setupHandler() || 
-		mailCompletedOrderTDSetupHandler() || 
-		mailInvoiceTransitionDelegateSetupHandler() || 
-		mailOrderApprovalTransitionDelegateSetupHandler() || 
-		orderApprovalTDSetupHandler() || 
-		purchaseOrderTDSetupHandler();
-	declare soft : JMSException : doTransitionHandler() || 
-		mailCompletedOrderTDDoTransitionHandler() || 
-		mailInvoiceTransitionDelegateDoTransitionHandler() || 
-		mailOrderApprovalTransitionDelegateDoTransitionHandler() || 
-		orderApprovalTDDoTransitionHandler() || 
-		purchaseOrderTDDoTransitionHandler();
-	
-	/*
-	after() throwing(ServiceLocatorException se) throws TransitionException : 
-		setupHandler() || 
-		mailCompletedOrderTDSetupHandler() || 
-		mailInvoiceTransitionDelegateSetupHandler() ||
-		mailOrderApprovalTransitionDelegateSetupHandler() ||
-		orderApprovalTDSetupHandler() || 
-		purchaseOrderTDSetupHandler() {
-		throw new TransitionException(se);
-	}
-	*/
-	
-	/*
-	after() throwing(JMSException je) throws TransitionException : 
-		doTransitionHandler() || 
-		mailCompletedOrderTDDoTransitionHandler() ||
-		mailInvoiceTransitionDelegateDoTransitionHandler() || 
-		mailOrderApprovalTransitionDelegateDoTransitionHandler() ||
-		orderApprovalTDDoTransitionHandler() ||
-		purchaseOrderTDDoTransitionHandler() {
-		throw new TransitionException(je);
-	}
-	*/
-	
-/*	//Solution1: /It was necessary to refactor the local variable  QueueConnection qConnect to be a class variable
- 	//Similar to a try-finally block around the method QueueHelper.sendMessage
-	after(QueueHelper qh) : 
-		sendMessageHandler() && target(qh) {
-        try {
-            if(qh.getQConnect() != null) {
-                qh.getQConnect().close();
-            }
-        } catch(Exception e) {
-        	System.err.println("OPC.QueueHelper GOT EXCEPTION closing connection" + e);
-        }		
-	}
-*/	
-	
-	//Solution2: It was necessary to create an aspect  local variable QueueConnection qConnect to save temporarily the method local variable value
-	//Auxiliary: to save temporarily QueueConnection value into aspect local qConnect variable
-	after() returning(QueueConnection q) : 
-		createQueueConnectionHandler() {
-    	//Save inner method variable to local(multi-thread)
-	    qConnect.put(Thread.currentThread().getName(), q);
-		//qConnect = q;
-	}
-	
-	//Similar to a try-finally block around the method QueueHelper.sendMessage
-	void around() : 
-		sendMessageHandler() {
+	// ---------------------------
+    // Advice's
+    // --------------------------- 
+	void around(String xmlMessage,
+			QueueConnection qConnect, QueueSession session, QueueSender qSender) 
+	throws JMSException : 
+		sendMessageHandler()  &&
+		args(xmlMessage, qConnect, session, qSender){
 		try {
-			proceed();
+			proceed(xmlMessage, qConnect, session, qSender);
 		} finally {
-	        try {
-	            //Uses aspect local qConnect variable, fed above
-	            QueueConnection qConnectAux = (QueueConnection)qConnect.get(Thread.currentThread().getName());	            
-	        	if(qConnectAux != null) {
-	        	    qConnectAux.close();
-	            }
-	        } catch(Exception e) {
-	        	System.err.println("OPC.QueueHelper GOT EXCEPTION closing connection" + e);
-	        }		
-		}
+	            try {
+	                if(qConnect != null) {
+	                    qConnect.close();
+	                }
+	            } catch(Exception e) {
+	            System.err.println("OPC.QueueHelper GOT EXCEPTION closing connection" + e);
+	          }
+	   }	
 	}
+}
 		
 	
-}
+
+
