@@ -39,11 +39,14 @@ package com.sun.j2ee.blueprints.opc.transitions;
 
 import javax.jms.*;
 
+
+
+
+
 /**
  * A helper class which takes care of sending a JMS message to a queue
  */
 public class QueueHelper implements java.io.Serializable {
-
     private Queue q;
     private QueueConnectionFactory qFactory;
 
@@ -63,18 +66,23 @@ public class QueueHelper implements java.io.Serializable {
      * 
      * EH - Refactored to aspect OPCTransitionsHandler.
      */
-    public void sendMessage(String xmlMessage) throws JMSException {      
-    	QueueConnection qConnect = null;
-    	QueueSession session = null;
-    	QueueSender qSender = null;    	      
+	public void sendMessage(String xmlMessage) throws JMSException {
+		QueueConnection qConnect = null;
+		QueueSession session = null;
+		QueueSender qSender = null;
+		internalSendMessage(xmlMessage, qConnect, session, qSender);
+	}
+	private void internalSendMessage(String xmlMessage,
+			QueueConnection qConnect, QueueSession session, QueueSender qSender)
+			throws JMSException {
+			qConnect = qFactory.createQueueConnection();
+			session = qConnect.createQueueSession(true, 0);
+			qSender = session.createSender(q);
+			TextMessage jmsMsg = session.createTextMessage();
+			jmsMsg.setText(xmlMessage);
+			qSender.send(jmsMsg);
 
-    	qConnect = qFactory.createQueueConnection();
-    	session = qConnect.createQueueSession(true, 0);
-    	qSender = session.createSender(q);
-    	TextMessage jmsMsg = session.createTextMessage();
-    	jmsMsg.setText(xmlMessage);
-    	qSender.send(jmsMsg);
-    }
+	}
     
 }
 
