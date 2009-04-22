@@ -29,6 +29,9 @@ import org.xml.sax.SAXException;
  */
 public aspect AdminClientHandler {
 
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
 	declare soft : ParseException : updateModelDatesBarChartPanelHandler() ||  
 									updateModelDatesHandler();
 	declare soft : ClassNotFoundException : dataSourceHandler();
@@ -41,9 +44,12 @@ public aspect AdminClientHandler {
 	declare soft : ProtocolException : internalDoHttpPostHandler();
 	declare soft : SAXException : internalDoHttpPostHandler();
 
+	
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** BarChartPanel ***/
-	// Not Necessary!!! Indicates whether execution in target must continue or
-	// not
+	// Not Necessary!!! Indicates whether execution in target must continue or not
 	// public boolean BarChartPanel.bContinue = true;
 	/*** BarChartPanel ***/
 	pointcut updateModelDatesBarChartPanelHandler() : 		
@@ -123,7 +129,9 @@ public aspect AdminClientHandler {
 	 * bcp.bContinue = false; return null; } }
 	 */
 
-
+	// ---------------------------
+    // Advice's
+    // ---------------------------
 	// Create an "around" advice because the exception is catched but not
 	// throwed
 	void around() : dataSourceHandler() {
