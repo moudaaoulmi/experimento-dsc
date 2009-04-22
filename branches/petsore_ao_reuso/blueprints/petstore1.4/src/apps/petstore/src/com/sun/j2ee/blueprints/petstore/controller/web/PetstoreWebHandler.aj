@@ -21,13 +21,22 @@ import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
  * @author Raquel Maranhao
  */
 public aspect PetstoreWebHandler {
-	
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
 	declare soft : Exception : getCustomerHandler();
+	
 	declare soft : CreateException : getShoppingControllerHandler();
+	
 	declare soft : ServiceLocatorException : getShoppingControllerHandler();
+	
 	declare soft : RemoveException : destroyHandler();
+	
 	declare soft : EventException : internalHandleEventHandler();
 
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	//NumberFormatException is already a RuntimeException
 	//declare soft : NumberFormatException : internalGetQuantityHandler();
 	/*** PetstoreComponentManager ***/
@@ -49,6 +58,9 @@ public aspect PetstoreWebHandler {
 	pointcut internalGetQuantityHandler() : 
 		execution(private Integer com.sun.j2ee.blueprints.petstore.controller.web.actions.CartHTMLAction.internalGetQuantity(String));
 	
+	// ---------------------------
+    // Advice's
+    // ---------------------------
 	CustomerLocal around() : 
 		getCustomerHandler() {
 	    try {
