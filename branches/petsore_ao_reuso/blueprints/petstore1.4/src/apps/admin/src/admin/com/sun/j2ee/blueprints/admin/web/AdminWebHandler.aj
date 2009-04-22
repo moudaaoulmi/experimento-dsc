@@ -16,7 +16,9 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
  * @author Raquel Maranhao
  */
 public aspect AdminWebHandler {
-	
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
 	declare soft : ServiceLocatorException : adminRequestBDHandler() || 
 	 										 updateOrdersHandler();
 	declare soft : CreateException : adminRequestBDHandler() || 
@@ -36,6 +38,9 @@ public aspect AdminWebHandler {
 									  internalUpdateOrdersHandler() || 
 									  getChartInfoARPHandler();
 
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** Class AdminRequestBD ***/
 	pointcut adminRequestBDHandler() : 
 		execution(public AdminRequestBD.new(..));
@@ -71,6 +76,9 @@ public aspect AdminWebHandler {
 	pointcut getChartInfoARPHandler(): 
 	  	execution(String ApplRequestProcessor.getChartInfo(..));
 
+	// ---------------------------
+    // Advice's
+    // ---------------------------
 	void around() throws AdminBDException : 
 		  adminRequestBDHandler() || 
 		  updateOrdersHandler(){
