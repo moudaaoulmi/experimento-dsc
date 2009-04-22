@@ -15,6 +15,9 @@ import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
  */
 public aspect PetstoreEjbHandler {
 
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
 	declare soft : ServiceLocatorException : getCustomerHandler() || 
 									         createCustomerHandler() || 
 									         getShoppingCartHandler() || 
@@ -22,7 +25,9 @@ public aspect PetstoreEjbHandler {
 	declare soft : javax.ejb.CreateException : createCustomerHandler() || 
 											   getShoppingCartHandler() || 
 											   getShoppingClientFacadeHandler();
-
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** ShoppingClientFacadeLocalEJB ***/
 	pointcut getCustomerHandler() : 
 		execution(public CustomerLocal ShoppingClientFacadeLocalEJB.getCustomer());
@@ -37,6 +42,9 @@ public aspect PetstoreEjbHandler {
 	pointcut getShoppingClientFacadeHandler() :  
 		execution(public ShoppingClientFacadeLocal ShoppingControllerEJB.getShoppingClientFacade());
 
+	// ---------------------------
+    // Advice's
+    // ---------------------------
 	CustomerLocal around() throws GeneralFailureException : getCustomerHandler()||createCustomerHandler(){
 		try {
 			return proceed();
