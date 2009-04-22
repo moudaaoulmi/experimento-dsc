@@ -24,7 +24,9 @@ import com.sun.j2ee.blueprints.util.aspect.EJBExceptionGenericAspect;
  * @author Raquel Maranhao
  */
 public aspect OPCCustomerrelationsHandler extends EJBExceptionGenericAspect {
-
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
 	declare soft: XMLDocumentException : onMessageHandler() || 
 										 mailInvoiceMDBOnMessageHandler() || 
 										 mailOrderApprovalMDBOnMessageHandler();
@@ -46,7 +48,9 @@ public aspect OPCCustomerrelationsHandler extends EJBExceptionGenericAspect {
 	declare soft : FormatterException : getDocumentHandler() || 
 										getDocumentAsStringHandler();
 
-
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 
 	/*** MailCompletedOrderMDB ***/
 	pointcut onMessageHandler() : 
@@ -80,9 +84,9 @@ public aspect OPCCustomerrelationsHandler extends EJBExceptionGenericAspect {
 	    mailInvoiceMDBOnMessageHandler() || 
 	    mailOrderApprovalMDBOnMessageHandler();
 	    
-	    
-
-	
+	// ---------------------------
+    // Advice's
+    // ---------------------------
 	void around() throws EJBException : onMessageHandler(){
 		try{
 			proceed();
