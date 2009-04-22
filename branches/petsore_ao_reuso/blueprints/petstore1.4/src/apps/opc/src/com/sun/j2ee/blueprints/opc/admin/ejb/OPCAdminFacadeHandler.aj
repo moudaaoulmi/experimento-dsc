@@ -12,10 +12,14 @@ import javax.ejb.FinderException;
  * @author Raquel Maranhao
  */
 public aspect OPCAdminFacadeHandler {
-	
+	// ---------------------------
+    // Declare soft
+    // ---------------------------
 	declare soft: FinderException : getOrdersByStatusHandler() || getChartInfoHandler();
 	
-	
+	// ---------------------------
+    // Pointcut's 
+    // ---------------------------
 	/*** OPCAdminFacadeEJB ***/
 	pointcut getOrdersByStatusHandler() :
 		execution(public OrdersTO OPCAdminFacadeEJB.getOrdersByStatus(String));
@@ -23,8 +27,9 @@ public aspect OPCAdminFacadeHandler {
 	pointcut getChartInfoHandler() :
 		execution(public Map OPCAdminFacadeEJB.getChartInfo(String,Date,Date,String));	
 	
-
-	
+	// ---------------------------
+    // Advice
+    // ---------------------------
 	Object around() throws OPCAdminFacadeException : 
 		getOrdersByStatusHandler() ||
 		getChartInfoHandler(){
@@ -36,7 +41,5 @@ public aspect OPCAdminFacadeHandler {
 	                                           " of given status : " +
 	                                           fe.getMessage());	  	
 		}
-		
 	}
-        
 }
