@@ -21,6 +21,9 @@ import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
  * @author Raquel Maranhao
  */
 public aspect PetstoreEjbActionHandler {
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
 	declare soft : ServiceLocatorException : performHandler() || 
 											 getUniqueIdGeneratorHandler() || 
 											 internalSendAMessageHandler();
@@ -32,6 +35,9 @@ public aspect PetstoreEjbActionHandler {
 									 performSignOnHandler();
 	declare soft : XMLDocumentException : internalSendAMessageHandler();
 
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** CreateUserEJBAction ***/
 	pointcut performHandler() :
 		execution(public EventResponse CreateUserEJBAction.perform(Event));
@@ -54,6 +60,9 @@ public aspect PetstoreEjbActionHandler {
 	pointcut performSignOnHandler() : 
 		execution(public EventResponse SignOnEJBAction.perform(Event));
 
+	// ---------------------------
+    // Advice's
+    // ---------------------------
 	EventResponse around() throws EventException : performHandler(){
 		try {
 			return proceed();
