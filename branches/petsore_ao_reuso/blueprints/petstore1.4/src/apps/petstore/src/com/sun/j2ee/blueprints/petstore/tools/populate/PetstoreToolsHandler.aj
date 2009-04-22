@@ -40,6 +40,64 @@ import org.xml.sax.XMLReader;
  */
 public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 	
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
+	declare soft : NamingException : createCreditCardHandler() || 
+	checkHandler() ||
+	createCustomerHandler() ||
+	getConnectionHandler() || 
+	createProfileHandler() ||
+	userPopulatorCheckHandler() ||
+	createAccountHandler() || 
+	createAddressHandler() || 
+	createContactInfoHandler() || 
+	createCreditCardHandler() || 
+	createUserHandler();
+declare soft : CreateException : createCreditCardHandler() || 
+	createCustomerHandler() || 
+	createProfileHandler() ||
+	createAccountHandler() || 
+	createAddressHandler() || 
+	createContactInfoHandler() || 
+	createCreditCardHandler() || 
+	createUserHandler();
+declare soft : FinderException : checkHandler() || 
+	internalRemoveExistingUserHandler() ||
+	userPopulatorCheckHandler() ||
+	aroundExceptionDoNothingHandler();
+declare soft : RemoveException : createCustomerHandler() || 
+	internalRemoveExistingUserHandler() ||
+	aroundExceptionDoNothingHandler();
+declare soft : IOException : initHandler() || 
+	internalSetupHandler() ||
+	mainUserPopulatorHandler();
+declare soft : ParserConfigurationException : initHandler() || 
+	internalGetReaderHandler() ||
+	mainUserPopulatorHandler();
+declare soft : SAXException : initHandler() || 
+	internalGetReaderHandler() ||
+	internalSetupHandler() || 
+	mainUserPopulatorHandler();
+declare soft : PopulateException : internalItemPopulatorDropTablesHandler() || 
+	internalProductPopulatorDropTablesHandler() || 
+	internalCategoryPopulatorDropTablesHandler() || 
+	internalCategoryDetailsPopulatorHandler() || 
+	internalItemDetailsPopulatorDropTablesHandler() || 
+	internalPopulateHandler() || 
+	internalCheckHandler() || 
+	internalProductDetailsPopulatorDropTablesHandler() || 
+	startElementHandler() || 
+	endElementHandler() || 
+	mainUserPopulatorHandler();
+declare soft : MalformedURLException : getResourceHandler();
+declare soft : ParsingDoneException : loadSQLStatementsHandler();
+declare soft : SQLException : executeSQLStatementHandler() || 
+	getConnectionHandler();
+
+	// ---------------------------
+	// Pointcut's
+	// ---------------------------
 	/*** AccountPopulator ***/
 	pointcut createAccountHandler() : 
 		execution(private AccountLocal AccountPopulator.createAccount(ContactInfoLocal, CreditCardLocal));
@@ -135,59 +193,10 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 		execution(public int XMLDBHandler.getValue(String, int));
 		
 	
-	
-	declare soft : NamingException : createCreditCardHandler() || 
-		checkHandler() ||
-		createCustomerHandler() ||
-		getConnectionHandler() || 
-		createProfileHandler() ||
-		userPopulatorCheckHandler() ||
-		createAccountHandler() || 
-		createAddressHandler() || 
-		createContactInfoHandler() || 
-		createCreditCardHandler() || 
-		createUserHandler();
-	declare soft : CreateException : createCreditCardHandler() || 
-		createCustomerHandler() || 
-		createProfileHandler() ||
-		createAccountHandler() || 
-		createAddressHandler() || 
-		createContactInfoHandler() || 
-		createCreditCardHandler() || 
-		createUserHandler();
-	declare soft : FinderException : checkHandler() || 
-		internalRemoveExistingUserHandler() ||
-		userPopulatorCheckHandler() ||
-		aroundExceptionDoNothingHandler();
-	declare soft : RemoveException : createCustomerHandler() || 
-		internalRemoveExistingUserHandler() ||
-		aroundExceptionDoNothingHandler();
-	declare soft : IOException : initHandler() || 
-		internalSetupHandler() ||
-		mainUserPopulatorHandler();
-	declare soft : ParserConfigurationException : initHandler() || 
-		internalGetReaderHandler() ||
-		mainUserPopulatorHandler();
-	declare soft : SAXException : initHandler() || 
-		internalGetReaderHandler() ||
-		internalSetupHandler() || 
-		mainUserPopulatorHandler();
-	declare soft : PopulateException : internalItemPopulatorDropTablesHandler() || 
-		internalProductPopulatorDropTablesHandler() || 
-		internalCategoryPopulatorDropTablesHandler() || 
-		internalCategoryDetailsPopulatorHandler() || 
-		internalItemDetailsPopulatorDropTablesHandler() || 
-		internalPopulateHandler() || 
-		internalCheckHandler() || 
-		internalProductDetailsPopulatorDropTablesHandler() || 
-		startElementHandler() || 
-		endElementHandler() || 
-		mainUserPopulatorHandler();
-	declare soft : MalformedURLException : getResourceHandler();
-	declare soft : ParsingDoneException : loadSQLStatementsHandler();
-	declare soft : SQLException : executeSQLStatementHandler() || 
-		getConnectionHandler();
-	
+	// ---------------------------
+    // Advice's
+    // ---------------------------
+
 	
 	
 	after() throwing(Exception exception) throws PopulateException : 
