@@ -34,7 +34,6 @@ public privileged aspect GuiHandler
     declare soft: CheckstylePluginException:
                     CheckConfigurationPropertiesDialog_widgetSelectedHandler()|| 
                     CheckConfigurationPropertiesDialog_okPressedHandler() || 
-                    /*CheckConfigurationPropertiesDialog_setUniqueNameHandler() ||*/
                     CheckConfigurationPropertiesDialog_createDialogAreaHandler() ||
                     CheckConfigurationWorkingSetEditor_internalCheckConfigHandler() ||
                     CheckConfigurationWorkingSetEditor_internalConfigureCheckConfigHandler() ||
@@ -63,12 +62,6 @@ public privileged aspect GuiHandler
         within(CheckConfigurationPropertiesDialog) &&
         within(ISelectionChangedListener+);
     
-    /*pointcut CheckConfigurationPropertiesDialog_widgetSelectedHandler(): 
-        call(* CheckConfigurationPropertiesDialog.widgetSelected(..)) &&
-        within(CheckConfigurationPropertiesDialog) &&
-        within(SelectionListener+);*/
-
-    //TODO: tentar colocar como classe anonima
     pointcut CheckConfigurationPropertiesDialog_widgetSelectedHandler():
         execution(* CheckConfigurationPropertiesDialog.getEditedWorkingCopyInternal(..));
 
@@ -77,10 +70,6 @@ public privileged aspect GuiHandler
 
     pointcut CheckConfigurationPropertiesDialog_createConfigurationEditorHandler():
         execution(* CheckConfigurationPropertiesDialog.createConfigurationEditor(..));
-
-    /*TODO: romulo
-     * pointcut CheckConfigurationPropertiesDialog_setUniqueNameHandler():
-        execution(* CheckConfigurationPropertiesDialog.internalSetUniqueName(..));*/
 
     pointcut CheckConfigurationWorkingSetEditor_internalCheckConfigHandler():
         execution(* CheckConfigurationWorkingSetEditor.addCheckConfig(..)) ||
