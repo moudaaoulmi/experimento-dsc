@@ -28,6 +28,9 @@ import com.sun.j2ee.blueprints.util.aspect.ExceptionGenericAspect;
  */
 public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 	
+	// ---------------------------
+    // Declare soft's
+    // ---------------------------
 	declare soft : PopulateException : internalPopulateHandler() || 
 									   internalInventoryPopulatorCheckHandler() || 
 									   internalStartElementHandler() || 
@@ -44,7 +47,9 @@ public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 	declare soft : CreateException : createInventoryHandler();
 	declare soft : IOException : internalInventoryPopulatorHandler();
 
-	
+	// ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** InventoryPopulator ***/
 	pointcut checkHandler() : 
 		execution(public boolean InventoryPopulator.check());
@@ -82,6 +87,9 @@ public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 	pointcut getValueHandler() : 
 		execution(public int XMLDBHandler.getValue(String, int));
 	
+	// ---------------------------
+    // Advice's
+    // ---------------------------
 	boolean around() : checkHandler() {
 		try {
 			return proceed();
