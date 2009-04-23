@@ -5,22 +5,19 @@ package com.sun.j2ee.blueprints.opc.transitions;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.jms.JMSException;
-import javax.jms.QueueConnection;
-import javax.jms.QueueConnectionFactory;
-import javax.jms.QueueSender;
-import javax.jms.QueueSession;
-
-import com.sun.j2ee.blueprints.processmanager.transitions.TransitionInfo;
-import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import com.sun.j2ee.blueprints.util.aspect.TransitionExceptionGenericAspect;
-
+import javax.jms.QueueConnection;
+import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
+import javax.jms.JMSException;
+import javax.jms.QueueConnectionFactory;
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionInfo;
 /**
  * @author Raquel Maranhao
  */
 public aspect OPCTransitionsHandler extends TransitionExceptionGenericAspect {
-	
+	 //private QueueConnection qConnect;
+	private Map qConnect = new HashMap();
+	   
 	// ---------------------------
     // Declare soft's
     // ---------------------------
@@ -82,8 +79,12 @@ public aspect OPCTransitionsHandler extends TransitionExceptionGenericAspect {
 		execution(public void PurchaseOrderTD.doTransition(TransitionInfo));
 	
 	/*** QueueHelper ***/
+	pointcut createQueueConnectionHandler() : 
+		call(* QueueConnectionFactory.createQueueConnection()) && within(QueueHelper);
+	
 	pointcut sendMessageHandler() : 
-		execution(* QueueHelper.internalSendMessage(..));
+		execution(public void QueueHelper.sendMessage(String));
+
 
     public pointcut afterServiceLocatorExceptionHandler() : 
         setupHandler() || 
@@ -104,23 +105,31 @@ public aspect OPCTransitionsHandler extends TransitionExceptionGenericAspect {
 	// ---------------------------
     // Advice's
     // --------------------------- 
-	void around(String xmlMessage,
-			QueueConnection qConnect, QueueSession session, QueueSender qSender) 
-	throws JMSException : 
-		sendMessageHandler()  &&
-		args(xmlMessage, qConnect, session, qSender){
+		QueueConnection around(): createQueueConnectionHandler(){
+			QueueConnection q = proceed();
+		    qConnect.put(Thread.currentThread().getName(), q);
+		    return q;
+		}
+	
+	//Similar to a try-finally block around the method QueueHelper.sendMessage
+	void around() : 
+		sendMessageHandler() {
 		try {
-			proceed(xmlMessage, qConnect, session, qSender);
+			proceed();
 		} finally {
-	            try {
-	                if(qConnect != null) {
-	                    qConnect.close();
-	                }
-	            } catch(Exception e) {
-	            System.err.println("OPC.QueueHelper GOT EXCEPTION closing connection" + e);
-	          }
-	   }	
+	        try {
+	            //Uses aspect local qConnect variable, fed above
+	            QueueConnection qConnectAux = (QueueConnection)qConnect.get(Thread.currentThread().getName());	            
+	        	if(qConnectAux != null) {
+	        	  	qConnectAux.close();
+	            }
+	        } catch(Exception e) {
+	        	System.err.println("OPC.QueueHelper GOT EXCEPTION closing connection" + e);
+	        }		
+		}
 	}
+	
+	
 }
 		
 	
