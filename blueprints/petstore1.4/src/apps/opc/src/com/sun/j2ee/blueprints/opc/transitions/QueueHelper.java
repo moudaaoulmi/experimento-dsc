@@ -49,7 +49,6 @@ import javax.jms.*;
 public class QueueHelper implements java.io.Serializable {
     private Queue q;
     private QueueConnectionFactory qFactory;
-
     /**
      *
      * @param qFactory is the connection factory used to get a connection
@@ -70,19 +69,14 @@ public class QueueHelper implements java.io.Serializable {
 		QueueConnection qConnect = null;
 		QueueSession session = null;
 		QueueSender qSender = null;
-		internalSendMessage(xmlMessage, qConnect, session, qSender);
+		qConnect = qFactory.createQueueConnection();
+		session = qConnect.createQueueSession(true, 0);
+		qSender = session.createSender(q);
+		TextMessage jmsMsg = session.createTextMessage();
+		jmsMsg.setText(xmlMessage);
+		qSender.send(jmsMsg);
 	}
-	private void internalSendMessage(String xmlMessage,
-			QueueConnection qConnect, QueueSession session, QueueSender qSender)
-			throws JMSException {
-			qConnect = qFactory.createQueueConnection();
-			session = qConnect.createQueueSession(true, 0);
-			qSender = session.createSender(q);
-			TextMessage jmsMsg = session.createTextMessage();
-			jmsMsg.setText(xmlMessage);
-			qSender.send(jmsMsg);
 
-	}
     
 }
 
