@@ -72,18 +72,12 @@ public class AsyncSenderEJB implements SessionBean {
 		QueueSession session = null;
 		QueueConnection qConnect = null;
 		QueueSender qSender = null;
-
-		internalSendAMessage(msg, qConnect, session, qSender);
-	}
-
-	private void internalSendAMessage(String msg, QueueConnection qConnect,
-			QueueSession session, QueueSender qSender) {
-			qConnect = qFactory.createQueueConnection();
-			session = qConnect.createQueueSession(true, 0);
-			qSender = session.createSender(q);
-			TextMessage jmsMsg = session.createTextMessage();
-			jmsMsg.setText(msg);
-			qSender.send(jmsMsg);
+		qConnect = qFactory.createQueueConnection();
+		session = qConnect.createQueueSession(true, 0);
+		qSender = session.createSender(q);
+		TextMessage jmsMsg = session.createTextMessage();
+		jmsMsg.setText(msg);
+		qSender.send(jmsMsg);
 
 	}
 
