@@ -101,6 +101,7 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 	
 	pointcut getCategoryHandler() : 
 		execution(public Category GenericCatalogDAO.getCategory(String, Locale));
+	
 	pointcut getConnectionHandler() : 
 		call(Connection DataSource.getConnection()) && 
 		(withincode(public Category GenericCatalogDAO.getCategory(..)) || 
@@ -110,6 +111,7 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 	     withincode(public Item GenericCatalogDAO.getItem(..)) || 
 	     withincode(public Page GenericCatalogDAO.getItems(..)) || 
 	     withincode(public Page GenericCatalogDAO.searchItems(..)));	
+	
 	pointcut buildSQLStatementHandler() : 
 		call(PreparedStatement GenericCatalogDAO.buildSQLStatement(Connection, Map, String, String[])) && 
 		(withincode(public Category GenericCatalogDAO.getCategory(..)) || 
@@ -118,7 +120,8 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 	     withincode(public Page GenericCatalogDAO.getProducts(..)) || 
 	     withincode(public Item GenericCatalogDAO.getItem(..)) || 
 	     withincode(public Page GenericCatalogDAO.getItems(..)) || 
-	     withincode(public Page GenericCatalogDAO.searchItems(..)));	
+	     withincode(public Page GenericCatalogDAO.searchItems(..)));
+	
 	pointcut executeQueryHandler() : 
 		call(ResultSet PreparedStatement.executeQuery()) && 
 		(withincode(public Category GenericCatalogDAO.getCategory(..)) || 
@@ -127,9 +130,11 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 	     withincode(public Page GenericCatalogDAO.getProducts(..)) || 
 	     withincode(public Item GenericCatalogDAO.getItem(..)) || 
 	     withincode(public Page GenericCatalogDAO.getItems(..)) || 
-	     withincode(public Page GenericCatalogDAO.searchItems(..)));	
+	     withincode(public Page GenericCatalogDAO.searchItems(..)));
+	
 	pointcut getCategoriesHandler() :
 		execution(public Page GenericCatalogDAO.getCategories(int, int, Locale));
+	
 	pointcut getProductHandler() : 
 		execution(public Product GenericCatalogDAO.getProduct(String, Locale));
 	pointcut getProductsHandler() : 
@@ -201,44 +206,21 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 		}
 	}
 	
-//	after() throwing(NamingException exception) throws CatalogDAOSysException : 
-//		getDataSourceHandler() {
-//		throw new CatalogDAOSysException("NamingException while looking up DB context : " +
-//                                       exception.getMessage());
-//    }
-
-	/* GenericAspect
-	void around() : 
-		resultSetClose() ||
-		preparedStatementClose() || 
-		connectionClose() {
-		try {
-			proceed();
-		} catch(Exception exception) {
-			//Do nothing
-		}
-    }	
-    */
-	
-	after() returning(Connection con) : 
-		getConnectionHandler() {
-    	//Save inner method variable to local(multi-thread)
-	    connection.put(Thread.currentThread().getName(), con);
-		//connection = con;
+	Connection around(): getConnectionHandler(){
+        Connection con = proceed();
+        connection.put(Thread.currentThread().getName(), con);
+        return con;
+	}
+	PreparedStatement around(): buildSQLStatementHandler(){
+		PreparedStatement st = proceed();
+		statement.put(Thread.currentThread().getName(), st);
+        return st;
 	}
 
-	after() returning(PreparedStatement st) : 
-		buildSQLStatementHandler() {
-    	//Save inner method variable to local(multi-thread)
-	    statement.put(Thread.currentThread().getName(), st);
-		//statement = st;
-	}
-	
-	after() returning(ResultSet rs) : 
-		executeQueryHandler() {
-    	//Save inner method variable to local(multi-thread)
-	    resultSet.put(Thread.currentThread().getName(), rs);
-		//resultSet = rs;
+	ResultSet around(): executeQueryHandler(){
+		ResultSet rs = proceed();
+		resultSet.put(Thread.currentThread().getName(), rs);
+        return rs;
 	}
 	
 	Object around() : getCategoryHandler() || 
