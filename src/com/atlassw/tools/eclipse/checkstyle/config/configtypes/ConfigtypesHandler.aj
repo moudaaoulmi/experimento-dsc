@@ -35,6 +35,8 @@ import java.net.MalformedURLException;
 import java.net.Authenticator;
 
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.MissingResourceException;
 import org.eclipse.swt.events.SelectionListener;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
@@ -42,6 +44,8 @@ import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy
 //@ExceptionHandler
 public privileged aspect ConfigtypesHandler
 {
+    Map inputStream = new HashMap();
+    
     // ---------------------------
     // Declare soft's
     // ---------------------------
@@ -127,6 +131,10 @@ public privileged aspect ConfigtypesHandler
      pointcut RemoteConfigurationType_internalGetBytesFromURLConnectionHandler():
         execution(* RemoteConfigurationType.internalGetBytesFromURLConnection(..));
 
+     pointcut RemoteConfigurationType_getInputStreamHandler() : 
+         call(InputStream URLConnection.getInputStream()) && 
+         (withincode(private byte[] RemoteConfigurationType.internalGetBytesFromURLConnection(..)));
+     
     // ---------------------------
     // Advice's
     // ---------------------------
@@ -230,9 +238,15 @@ public privileged aspect ConfigtypesHandler
         }
         finally
         {
-            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly((InputStream)inputStream.get(Thread.currentThread().getName()));
         }
         return result;
+    }
+    
+    InputStream around(): RemoteConfigurationType_getInputStreamHandler(){
+        InputStream in = proceed();
+        inputStream.put(Thread.currentThread().getName(), in);
+        return in;
     }
 
     Object around(Object checkConfiguration, boolean isConfigurable): 
