@@ -93,7 +93,9 @@ public class WindowMenu extends CommandMenu {
 						frame.setSelected(true);
 					}
 					catch (PropertyVetoException e) {
-						e.printStackTrace();
+//						e.printStackTrace();
+						//XXX Verificar se houve refatoração
+						//contribHandler.printStackTraceException(e);
 					}
 				}
 			});

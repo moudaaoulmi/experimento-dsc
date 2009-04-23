@@ -28,6 +28,9 @@ public class StorableInput {
 
 	private StreamTokenizer fTokenizer;
 	private List            fMap;
+	
+	
+	//ExceptionHandler refactored
 
 	/**
 	 * Initializes a Storable input with the given input stream.
@@ -138,23 +141,8 @@ public class StorableInput {
 	}
 
 	private Object makeInstance(String className) throws IOException {
-		try {
-			Class cl = Class.forName(className);
-			return cl.newInstance();
-		}
-		catch (NoSuchMethodError e) {
-			throw new IOException("Class " + className
-				+ " does not seem to have a no-arg constructor");
-		}
-		catch (ClassNotFoundException e) {
-			throw new IOException("No class: " + className);
-		}
-		catch (InstantiationException e) {
-			throw new IOException("Cannot instantiate: " + className);
-		}
-		catch (IllegalAccessException e) {
-			throw new IOException("Class (" + className + ") not accessible");
-		}
+		Class cl = Class.forName(className);
+		return cl.newInstance();
 	}
 
 	private void map(Storable storable) {

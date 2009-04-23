@@ -24,7 +24,7 @@ public class SelectAreaTracker extends AbstractTool {
     /** Selected rectangle in physical coordinates space */
 	private Rectangle fSelectGroup;
     private Color fRubberBandColor;
-
+    
 	public SelectAreaTracker(DrawingEditor newDrawingEditor) {
         this(newDrawingEditor, Color.black);
     }
@@ -80,7 +80,9 @@ public class SelectAreaTracker extends AbstractTool {
 				g.drawRect(r.x, r.y, r.width, r.height);
 			}
 			finally {
-				g.dispose(); // SF bugtracker id: #490663
+				//XXX Verificar se houve refatoração
+				//standardHandler.selectAreaTrackerDrawXORRect(g);
+				//g.dispose(); // SF bugtracker id: #490663
 			}
 		}
 	}

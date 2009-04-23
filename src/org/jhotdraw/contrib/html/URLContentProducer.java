@@ -62,22 +62,16 @@ public class URLContentProducer extends FigureDataContentProducer
 	 * @return              the contents of the URL pointed object as a string
 	 */
 	public Object getContent(ContentProducerContext context, String ctxAttrName, Object ctxAttrValue) {
-		try {
-			// if we have our own URL then use it
-			// otherwise use the one supplied
-			URL url = (getURL() != null) ? new URL(getURL().toExternalForm()) : new URL(((URL)ctxAttrValue).toExternalForm());
+		// if we have our own URL then use it
+		// otherwise use the one supplied
+		URL url = (getURL() != null) ? new URL(getURL().toExternalForm()) : new URL(((URL)ctxAttrValue).toExternalForm());
 
-			InputStream reader = url.openStream();
-			int available = reader.available();
-			byte contents[] = new byte[available];
-			reader.read(contents, 0, available);
-			reader.close();
-			return new String(contents);
-		}
-		catch (Exception ex) {
-			ex.printStackTrace();
-			return ex.toString();
-		}
+		InputStream reader = url.openStream();
+		int available = reader.available();
+		byte contents[] = new byte[available];
+		reader.read(contents, 0, available);
+		reader.close();
+		return new String(contents);
 	}
 
 	/**

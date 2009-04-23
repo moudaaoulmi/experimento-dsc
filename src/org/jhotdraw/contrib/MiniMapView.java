@@ -161,7 +161,10 @@ public class MiniMapView extends JComponent {
 			at = getViewToMiniMapTransform(getMappedComponent()).createInverse();
 		}
 		catch (NoninvertibleTransformException nite) {
-			nite.printStackTrace();
+//			nite.printStackTrace();
+			//TODO o return nao pode ser refatorado -- cenario
+			//XXX Verificar se houve refatoração
+//			contribHandler.printStackTraceException(nite);
 			return;
 		}
 

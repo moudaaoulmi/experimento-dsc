@@ -11,14 +11,18 @@
 
 package org.jhotdraw.figures;
 
-import org.jhotdraw.util.*;
-import org.jhotdraw.framework.*;
-
 import java.awt.Color;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Iterator;
+import java.util.Map;
+
+import org.jhotdraw.framework.Figure;
+import org.jhotdraw.framework.FigureAttributeConstant;
+import org.jhotdraw.util.CollectionsFactory;
+import org.jhotdraw.util.Storable;
+import org.jhotdraw.util.StorableInput;
+import org.jhotdraw.util.StorableOutput;
 
 /**
  * A container for a figure's attributes. The attributes are stored
@@ -79,14 +83,20 @@ public  class   FigureAttributes
 	 * Clones the attributes.
 	 */
    public Object clone() {
+		FigureAttributes a = null;
 		try {
-			FigureAttributes a = (FigureAttributes) super.clone();
+			a = (FigureAttributes)
+			//XXX Criar aspecto para essa exceção de clone
+			super.clone();
 			a.fMap = CollectionsFactory.current().createMap(fMap);
-			return a;
+		} catch (CloneNotSupportedException e) {
+			//Verifica a exceção que deveria fazer
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		catch (CloneNotSupportedException e) {
-			throw new InternalError();
-		}
+		
+		
+		return a;
 	}
 
 	/**

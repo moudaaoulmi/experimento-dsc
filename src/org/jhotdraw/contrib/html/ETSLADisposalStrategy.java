@@ -127,8 +127,11 @@ public class ETSLADisposalStrategy implements ResourceDisposabilityStrategy {
 		}
 		catch (InterruptedException ex) {
 			// ignore
+			//XXX Verificar se houve refatoração
+			//htmlHandler.eTSLADisposalStrategyStopDisposing1();
 		}
 		finally {
+			//TODO NÃO PODE SER REFATORADO PQ É PASSAGEM POR VALOR
 			disposingActive = false;
 		}
 	}
@@ -225,6 +228,8 @@ class DisposalThread extends Thread {
 			}
 			catch (Exception ex) {
 				// just exit
+				//XXX Verificar se houve refatoração
+				//htmlHandler.eTSLADisposalStrategyDisposalThreadRun();
 				break;
 			}
 			strategy.dispose();
