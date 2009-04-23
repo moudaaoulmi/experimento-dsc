@@ -75,15 +75,6 @@ public class TopicSender implements java.io.Serializable {
 		TopicSession pubSession = null;
 		TopicPublisher topicPublisher = null;
 
-		internalSendMessage(xmlMessage, topicConnect, pubSession,
-				topicPublisher);
-		return;
-	}
-
-	private void internalSendMessage(String xmlMessage,
-			TopicConnection topicConnect, TopicSession pubSession,
-			TopicPublisher topicPublisher) throws JMSException {
-
 		topicConnect = topicFactory.createTopicConnection();
 		pubSession = topicConnect.createTopicSession(false,
 				Session.AUTO_ACKNOWLEDGE);
@@ -92,7 +83,9 @@ public class TopicSender implements java.io.Serializable {
 		TextMessage jmsMsg = pubSession.createTextMessage();
 		jmsMsg.setText(xmlMessage);
 		topicPublisher.publish(jmsMsg);
+		return;
 	}
-        
+
+       
 }
 
