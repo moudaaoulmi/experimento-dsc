@@ -43,6 +43,10 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
     //PreparedStatement statement = null;
     Map resultSet = new HashMap();
     //ResultSet resultSet = null;
+    
+    // ---------------------------
+    // Declare soft's
+    // ---------------------------
     declare soft : NamingException : getDataSourceHandler() || 
 							 		 getDAOHandler() || 
 							 		 newGenericCatalogDAOHandler();
@@ -74,7 +78,9 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
     declare soft : SAXException : newGenericCatalogDAOHandler();
     declare soft : IOException : newGenericCatalogDAOHandler();
 
-	
+    // ---------------------------
+    // Pointcut's
+    // ---------------------------
 	/*** CatalogDAOFactory ***/
 	pointcut getDAOHandler() :  
 		execution(public CatalogDAO CatalogDAOFactory.getDAO());
@@ -82,14 +88,19 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 	/*** GenericCatalogDAO ***/
 	pointcut newGenericCatalogDAOHandler() :
 		execution(GenericCatalogDAO.new(..));
+	
 	pointcut getDataSourceHandler() : 
 		execution(DataSource GenericCatalogDAO.getDataSource());
+	
 	pointcut closeAll() : 
 		withincode(protected static void GenericCatalogDAO.closeAll(Connection, PreparedStatement, ResultSet));
+	
 	pointcut resultSetClose() : 
 		closeAll() && call(* ResultSet.close());
+	
 	pointcut preparedStatementClose() : 
 		closeAll() && call(* Statement.close());
+	
 	pointcut connectionClose() : 
 		closeAll() && call(* Connection.close());
 	
@@ -137,41 +148,56 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 	
 	pointcut getProductHandler() : 
 		execution(public Product GenericCatalogDAO.getProduct(String, Locale));
+	
 	pointcut getProductsHandler() : 
 		execution(public Page GenericCatalogDAO.getProducts(String, int, int, Locale));
+
 	pointcut getItemHandler() : 
 		execution(public Item GenericCatalogDAO.getItem(String, Locale));
+
 	pointcut getItemsHandler() : 
 		execution(public Page GenericCatalogDAO.getItems(String, int, int, Locale));
+	
 	pointcut searchItemsHandler() : 
 		execution(public Page GenericCatalogDAO.searchItems(String, int, int, Locale));	
+	
 	pointcut parseIntHandler() : 
 		execution(private int GenericCatalogDAO.internalParseInt(String)); 
+	
 	pointcut loadSQLStatementsHandler() : 
 		execution(private void GenericCatalogDAO.loadSQLStatements(SAXParser, String, InputSource));
+	
 	pointcut mainHandler() : 
 		execution(public static void GenericCatalogDAO.main(String[]));
 	
 	/*** PointbaseCatalogDAO ***/
 	pointcut getDataSourcePointBaseHandler() : 
 		execution(protected static DataSource PointbaseCatalogDAO.getDataSource());
+	
 	pointcut getCategoryPointBaseHandler() : 
 		execution(public Category PointbaseCatalogDAO.getCategory(String, Locale));
+	
 	pointcut getCategoriesPointBaseHandler() : 
 		execution(public Page PointbaseCatalogDAO.getCategories(int, int, Locale));	
+	
 	pointcut getProductPointBaseHandler() : 
 		execution(public Product PointbaseCatalogDAO.getProduct(String, Locale));
+	
 	pointcut getProductsPointBaseHandler() : 
 		execution(public Page PointbaseCatalogDAO.getProducts(String, int, int, Locale));
+	
 	pointcut getItemPointBaseHandler() : 
 		execution(public Item PointbaseCatalogDAO.getItem(String, Locale));
+	
 	pointcut getItemsPointBaseHandler() : 
 		execution(public Page PointbaseCatalogDAO.getItems(String, int, int, Locale));
+	
 	pointcut searchItemsPointBaseHandler() : 
 		execution(public Page PointbaseCatalogDAO.searchItems(String, int, int, Locale));
 	
-	
-	
+    // ---------------------------
+    // Advice's
+    // ---------------------------
 	CatalogDAO around() throws CatalogDAOSysException : 
 		getDAOHandler() {
 		try{
@@ -230,8 +256,9 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 		getItemHandler() || 
 		getItemsHandler() ||
 		searchItemsHandler() {
+		Object result = null;
 		try {
-			return proceed();
+			result= proceed();
 		} catch (SQLException exception) {
 			throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
 		} finally {
@@ -239,6 +266,7 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 			        (PreparedStatement)statement.get(Thread.currentThread().getName()), 
 			        (ResultSet)resultSet.get(Thread.currentThread().getName()));
 		}
+		return result;
 		
 	}
 	
@@ -268,7 +296,6 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 		    System.exit(2);
 		}
 	}
-	
 	DataSource around() throws CatalogDAOSysException : getDataSourcePointBaseHandler(){
 		try{
 			return proceed();
