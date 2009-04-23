@@ -696,6 +696,8 @@ public class HTMLTextAreaFigure extends TextAreaFigure
 		}
 		catch (InvalidAttributeMarker ex) {
 			// invalid marker, ignore
+			//XXX Verificar se houve refatoração
+			//htmlHandler.hTMLTextAreaFigureSubstituteEntityKeywords();
 		}
 
 		// append whatever is left

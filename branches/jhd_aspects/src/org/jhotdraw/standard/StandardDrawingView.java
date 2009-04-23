@@ -940,14 +940,15 @@ public class StandardDrawingView
      * the mouse event handlers of the tools. Subclass may override it
      * to provide other action.
      */
-    protected void handleMouseEventException(Throwable t) {
-		JOptionPane.showMessageDialog(
-			this,
-            t.getClass().getName() + " - " + t.getMessage(),
-			"Error",
-			JOptionPane.ERROR_MESSAGE);
-		t.printStackTrace();
-    }
+//    protected void shandleMouseEventException(Throwable t)
+//    
+//    	JOptionPane.showMessageDialog(
+//			this,
+//            t.getClass().getName() + " - " + t.getMessage(),
+//			"Error",
+//			JOptionPane.ERROR_MESSAGE);
+//		t.printStackTrace();
+//    }
 
 	public class DrawingViewMouseListener extends MouseAdapter {
 		 /**
@@ -963,7 +964,8 @@ public class StandardDrawingView
 				checkDamage();
 			}
 			catch (Throwable t) {
-				handleMouseEventException(t);
+				//XXX Verificar se houve refatoração
+				//				standardHandler.handleMouseEventException(t, this);
 			}
 		}
 
@@ -978,7 +980,8 @@ public class StandardDrawingView
 				checkDamage();
 			}
 			catch (Throwable t) {
-				handleMouseEventException(t);
+				//XXX Verificar se houve refatoração
+				//standardHandler.handleMouseEventException(t, this);
 			}
 		}
 	}
@@ -989,14 +992,9 @@ public class StandardDrawingView
 		 * currently active tool.
 		 */
 		public void mouseDragged(MouseEvent e) {
-			try {
-				Point p = constrainPoint(new Point(e.getX(), e.getY()));
-				tool().mouseDrag(e, p.x, p.y);
-				checkDamage();
-			}
-			catch (Throwable t) {
-				handleMouseEventException(t);
-			}
+			Point p = constrainPoint(new Point(e.getX(), e.getY()));
+			tool().mouseDrag(e, p.x, p.y);
+			checkDamage();
 		}
 
 		/**
@@ -1008,7 +1006,8 @@ public class StandardDrawingView
 				tool().mouseMove(e, e.getX(), e.getY());
 			}
 			catch (Throwable t) {
-				handleMouseEventException(t);
+				//XXX Verificar se houve refatoração
+				//standardHandler.handleMouseEventException(t, this);
 			}
 		}
 	}

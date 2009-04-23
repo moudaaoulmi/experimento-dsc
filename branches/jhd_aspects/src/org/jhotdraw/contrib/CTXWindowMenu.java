@@ -164,7 +164,9 @@ public class CTXWindowMenu extends CTXCommandMenu {
 							frame.setSelected(true);
 						}
 						catch (PropertyVetoException e) {
-							e.printStackTrace();
+							//XXX Verificar se houve refatoração
+//							e.printStackTrace();
+//							contribHandler.printStackTraceException(e);
 						}
 					}
 				});

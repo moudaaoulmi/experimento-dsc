@@ -21,6 +21,7 @@ import org.jhotdraw.standard.AbstractTool;
  * @version <$CURRENT_VERSION$>
  */
 class FollowURLTool extends AbstractTool {
+	
 	 private JApplet         fApplet;
 
 	 FollowURLTool(DrawingEditor newDrawingEditor, JApplet applet) {
@@ -64,7 +65,9 @@ class FollowURLTool extends AbstractTool {
 			fApplet.getAppletContext().showDocument(url);
 		}
 		catch (MalformedURLException exception) {
-			fApplet.showStatus(exception.toString());
+			//XXX Verificar se houve refatoração
+			//javadrawHandler.showStatusApplet(fApplet, exception.toString());
+			// fApplet.showStatus(exception.toString());
 		}
 	}
 }

@@ -95,26 +95,22 @@ public class VersionManagement {
 	 * @param versionFileName name of the jar file containing version information
 	 */
 	public static String readVersionFromFile(String applicationName, String versionFileName) {
-		try {
-			FileInputStream fileInput = new FileInputStream(versionFileName);
-			Manifest manifest = new Manifest();
-			manifest.read(fileInput);
+		
+		FileInputStream fileInput = new FileInputStream(versionFileName);
+		Manifest manifest = new Manifest();
+		manifest.read(fileInput);
 
-			Map entries = manifest.getEntries();
-			// Now write out the pre-entry attributes
-			Iterator entryIterator = entries.entrySet().iterator();
-			while (entryIterator.hasNext()) {
-				Map.Entry currentEntry = (Map.Entry)entryIterator.next();
-				String packageName = currentEntry.getKey().toString();
-				packageName = normalizePackageName(packageName);
-				Attributes attributes = (Attributes)currentEntry.getValue();
-				String packageSpecVersion = attributes.getValue(Attributes.Name.SPECIFICATION_VERSION);
-				packageSpecVersion = extractVersionInfo(packageSpecVersion);
-				return packageSpecVersion;
-			}
-		}
-		catch (IOException exception) {
-			exception.printStackTrace();
+		Map entries = manifest.getEntries();
+		// Now write out the pre-entry attributes
+		Iterator entryIterator = entries.entrySet().iterator();
+		while (entryIterator.hasNext()) {
+			Map.Entry currentEntry = (Map.Entry)entryIterator.next();
+			String packageName = currentEntry.getKey().toString();
+			packageName = normalizePackageName(packageName);
+			Attributes attributes = (Attributes)currentEntry.getValue();
+			String packageSpecVersion = attributes.getValue(Attributes.Name.SPECIFICATION_VERSION);
+			packageSpecVersion = extractVersionInfo(packageSpecVersion);
+			return packageSpecVersion;
 		}
 		
 		// no version found

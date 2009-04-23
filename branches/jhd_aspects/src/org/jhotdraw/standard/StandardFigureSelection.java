@@ -80,7 +80,9 @@ public class StandardFigureSelection implements FigureSelection, Serializable {
 				}
 			}
 			catch (IOException e) {
-				System.err.println(e.toString());
+				//XXX Verificar se houve refatoração
+				//standardHandler.errPrintln(e.toString());
+				//System.err.println(e.toString());
 			}
 			return new FigureEnumerator(result);
 		}

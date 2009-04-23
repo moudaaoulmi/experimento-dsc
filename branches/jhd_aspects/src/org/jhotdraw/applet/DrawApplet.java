@@ -452,6 +452,7 @@ public class DrawApplet
 			fDrawing = (Drawing)input.readStorable();
 			view().setDrawing(fDrawing);
 		}
+		//TODO não pode ser refatorado pois o initDrawing() é private
 		catch (IOException e) {
 			initDrawing();
 			showStatus("Error:" + e);
@@ -467,10 +468,12 @@ public class DrawApplet
 			fDrawing = (Drawing)input.readObject();
 			view().setDrawing(fDrawing);
 		}
+		//TODO não pode ser refatorado pois o initDrawing() é private
 		catch (IOException e) {
 			initDrawing();
 			showStatus("Error: " + e);
 		}
+		//TODO não pode ser refatorado pois o initDrawing() é private
 		catch (ClassNotFoundException e) {
 			initDrawing();
 			showStatus("Class not found: " + e);
@@ -532,15 +535,9 @@ public class DrawApplet
 	 * page is derived as follows: codeBase+appletClassname+Help.html"
 	 */
 	protected void showHelp() {
-		try {
-			String appletPath = getClass().getName().replace('.', '/');
-			URL url = new URL(getCodeBase(), appletPath + "Help.html");
-			getAppletContext().showDocument(url, "Help");
-		}
-		catch (IOException e) {
-			showStatus("Help file not found");
-		}
-
+		String appletPath = getClass().getName().replace('.', '/');
+		URL url = new URL(getCodeBase(), appletPath + "Help.html");
+		getAppletContext().showDocument(url, "Help");
 	}
 
 	protected void setUndoManager(UndoManager newUndoManager) {

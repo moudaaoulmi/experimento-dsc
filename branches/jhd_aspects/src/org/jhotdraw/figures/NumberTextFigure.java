@@ -11,6 +11,7 @@
 
 package org.jhotdraw.figures;
 
+
 import org.jhotdraw.framework.Figure;
 
 /**
@@ -40,12 +41,7 @@ public  class NumberTextFigure extends TextFigure {
 	 */
 	public int getValue() {
 		int value = 0;
-		try {
-			value = Integer.parseInt(getText());
-		}
-		catch (NumberFormatException e) {
-			value = 0;
-		}
+		value = Integer.parseInt(getText());
 		return value;
 	}
 

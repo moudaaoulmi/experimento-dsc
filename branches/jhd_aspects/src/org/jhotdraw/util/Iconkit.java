@@ -37,12 +37,15 @@ import java.util.Hashtable;
  * @version <$CURRENT_VERSION$>
  */
 public class Iconkit {
+	
 	private Map                 fMap;
 	private List                fRegisteredImages;
 	private Component           fComponent;
 	private final static int    ID = 123;
 	private static Iconkit      fgIconkit = null;
 	private static boolean      fgDebug = false;
+	
+	//ExceptionHandler Refactored
 
 	/**
 	 * Constructs an Iconkit that uses the given editor to
@@ -88,6 +91,8 @@ public class Iconkit {
 		}
 		catch (Exception e) {
 			// ignore: do nothing
+			//XXX Verificar se houve refatoração
+			//utilHandler.iconkitLoadRegisteredImages();
 		}
 	}
 
@@ -134,16 +139,11 @@ public class Iconkit {
 
 	public Image loadImageResource(String resourcename) {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		try {
-			URL url = getClass().getResource(resourcename);
-			if (fgDebug) {
-				System.out.println(resourcename);
-			}
-			return toolkit.createImage((ImageProducer) url.getContent());
+		URL url = getClass().getResource(resourcename);
+		if (fgDebug) {
+			System.out.println(resourcename);
 		}
-		catch (Exception ex) {
-			return null;
-		}
+		return toolkit.createImage((ImageProducer) url.getContent());
 	}
 
 	/**

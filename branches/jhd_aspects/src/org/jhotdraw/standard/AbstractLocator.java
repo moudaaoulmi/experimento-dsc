@@ -11,10 +11,13 @@
 
 package org.jhotdraw.standard;
 
-import org.jhotdraw.util.*;
-import org.jhotdraw.framework.*;
-
 import java.io.IOException;
+
+import org.jhotdraw.framework.Handle;
+import org.jhotdraw.framework.Locator;
+import org.jhotdraw.util.Storable;
+import org.jhotdraw.util.StorableInput;
+import org.jhotdraw.util.StorableOutput;
 
 
 /**
@@ -32,17 +35,13 @@ public abstract class AbstractLocator implements Locator, Storable, Cloneable {
 	 * Serialization support.
 	 */
 	private static final long serialVersionUID = -7742023180844048409L;
-
+	
+	
 	protected AbstractLocator() {
 	}
 
 	public Object clone() {
-		try {
-			return super.clone();
-		}
-		catch (CloneNotSupportedException e) {
-			throw new InternalError();
-		}
+		return super.clone();
 	}
 
 	/**
