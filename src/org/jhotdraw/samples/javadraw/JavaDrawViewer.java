@@ -54,20 +54,10 @@ public  class JavaDrawViewer extends JApplet implements DrawingEditor {
 	}
 
 	private void loadDrawing(String filename) {
-		try {
-			URL url = new URL(getCodeBase(), filename);
-			InputStream stream = url.openStream();
-			StorableInput reader = new StorableInput(stream);
-			fDrawing = (Drawing)reader.readStorable();
-		}
-		catch (IOException e) {
-			
-			//XXX Verificar se houve refatoração. Comparar com o codigo original e ver a diferenca
-			//javadrawHandler.javaDrawViewerLoadDrawing(fDrawing, this, e);
-			// fDrawing = createDrawing();
-			// System.err.println("Error when Loading: " + e);
-			// showStatus("Error when Loading: " + e);
-		}
+		URL url = new URL(getCodeBase(), filename);
+		InputStream stream = url.openStream();
+		StorableInput reader = new StorableInput(stream);
+		fDrawing = (Drawing)reader.readStorable();
 	}
 
 	protected Drawing createDrawing() {

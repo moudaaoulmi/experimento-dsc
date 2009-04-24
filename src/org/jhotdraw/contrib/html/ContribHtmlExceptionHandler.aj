@@ -5,43 +5,54 @@ public privileged aspect ContribHtmlExceptionHandler {
 	
 	// pointuts
 	
-	pointcut ETSLADisposalStrategy_stopDisposingPartOne(): execution(private void ETSLADisposalStrategy.stopDisposingPartOne(..)); 
-	pointcut ContentProducerRegistry_readPartOneHandler(): execution(private void ContentProducerRegistry.readPartOne(..) );
+	pointcut ETSLADisposalStrategy_stopDisposingHandler(): execution(public void ETSLADisposalStrategy.stopDisposing(..));
+	pointcut ETSLADisposalStrategy_internalRunHandler(): execution(private void DisposalThread.internalRun(..));
+	pointcut ContentProducerRegistry_internalReadHandler(): execution(private void ContentProducerRegistry.internalRead(..) );
 	pointcut DisposalThread_internalRunHandler(): execution (private void DisposalThread.internalRun(..));
 	pointcut DisposalThread_internalWhileHandler(): execution (private void DisposalThread.internalWhile(..));
-	pointcut DisposableResourceManagerFactory_initManagerPartOneHandler(): execution(private static void DisposableResourceManagerFactory.initManagerPartOne());
+	pointcut DisposableResourceManagerFactory_initManagerPartOneHandler(): execution(protected static void DisposableResourceManagerFactory.initManager());
 	pointcut HTMLTextAreaFigure_internalSubstituteEntityKeywordsPartOne(): execution(private int HTMLTextAreaFigure.internalSubstituteEntityKeywordsPartOne(..));	
 	pointcut ResourceContentProducer_getContentHandler(): execution(public Object ResourceContentProducer.getContent(..));
 	pointcut URLContentProducer_getContent(): execution(public Object URLContentProducer.getContent(..));
 		 
 	// intertypes
 	
-	declare soft: InterruptedException: ETSLADisposalStrategy_stopDisposingPartOne();
-	declare soft: ClassNotFoundException: ContentProducerRegistry_readPartOneHandler();
+	declare soft: InterruptedException: ETSLADisposalStrategy_stopDisposingHandler() || ETSLADisposalStrategy_internalRunHandler();
+	declare soft: ClassNotFoundException: ContentProducerRegistry_internalReadHandler();
 	declare soft: ResourceManagerNotSetException: DisposableResourceManagerFactory_initManagerPartOneHandler();
     declare soft: HTMLTextAreaFigure.InvalidAttributeMarker: HTMLTextAreaFigure_internalSubstituteEntityKeywordsPartOne(); 
-    declare soft: Exception : ResourceContentProducer_getContentHandler()||URLContentProducer_getContent()|| DisposalThread_internalWhileHandler();
+    declare soft: Exception : ResourceContentProducer_getContentHandler() || 
+    							URLContentProducer_getContent()|| DisposalThread_internalWhileHandler();
 	 
 	
     // advices
     
-	 void around(): ETSLADisposalStrategy_stopDisposingPartOne() {
-		 ETSLADisposalStrategy objeto = (ETSLADisposalStrategy) thisJoinPoint.getThis();
-			try {
-				proceed();
-			}
-			catch (InterruptedException ex) {
-				// ignore
-			}
-			finally {
-				
-				objeto.disposingActive = false;
-			}
-		} 
+    void around(): ETSLADisposalStrategy_stopDisposingHandler() {
+    	try {
+    		proceed();
+    	}
+    	catch (InterruptedException ex) {
+    		// ignore
+    	}
+    	finally {
+    		ETSLADisposalStrategy objeto = (ETSLADisposalStrategy) thisJoinPoint.getThis();
+    		objeto.disposingActive = false;
+    	}
+    } 
+    
+    void around():ETSLADisposalStrategy_internalRunHandler(){
+    	try {
+			proceed();
+		}
+		catch (Exception ex) {
+			//break;
+			//TODO verificar depois. Faz nada. Apenas espera acabar o while
+		}
+    }
 	
 	 
 	 
-	 void around(): ContentProducerRegistry_readPartOneHandler(){
+	 void around(): ContentProducerRegistry_internalReadHandler(){
 			try {
 			    proceed();
 			}
@@ -64,11 +75,11 @@ public privileged aspect ContribHtmlExceptionHandler {
 	}
 	 
 	
-	 int around(String template, StringBuffer finalText, int startPos,
-				int chunkEnd): HTMLTextAreaFigure_internalSubstituteEntityKeywordsPartOne() && args(template, finalText, startPos,
-						chunkEnd){
+	 int around(String template,
+				int endPos, StringBuffer finalText, int startPos, int chunkEnd): HTMLTextAreaFigure_internalSubstituteEntityKeywordsPartOne() 
+				&& args(template, endPos, finalText, startPos, chunkEnd){
 			try {
-				return proceed(template, finalText, startPos,chunkEnd);
+				return proceed(template, endPos, finalText, startPos, chunkEnd);
 			}
 			catch (HTMLTextAreaFigure.InvalidAttributeMarker ex) {
 				// invalid marker, ignore
@@ -99,18 +110,5 @@ public privileged aspect ContribHtmlExceptionHandler {
 		   // nada
 	    }
 	}
-	
-	
-	void around() : DisposalThread_internalWhileHandler(){
-		try{
-			proceed(); 
-		}catch (Exception ex) {
-		// just exit
-		 //break;
-			throw new BreakException();
-	    }
-	}
-	
-
 	
 }

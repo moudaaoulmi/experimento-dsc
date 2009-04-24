@@ -651,60 +651,60 @@ public class HTMLTextAreaFigure extends TextAreaFigure
 	 * @return          The resulting string with its attributes replaced
 	 */
 	protected String substituteEntityKeywords(String template) {
-		int endPos;
+		int endPos = 0;
 		StringBuffer finalText = new StringBuffer();
 
 		int startPos = 0;
 		int chunkEnd = startPos;
-		try {
-			while ((startPos = template.indexOf(START_ENTITY_CHAR, startPos)) != -1) {
-				if (startPos != 0 && template.charAt(startPos - 1) == ESCAPE_CHAR) {
-					// found an escaped parameter starter
-					startPos++;
-					continue;
-				}
-
-				// get the end of the parameter
-				endPos = startPos + 1;
-				while ((endPos = template.indexOf(END_ENTITY_CHAR, endPos)) != -1) {
-					if (endPos == 0 || template.charAt(endPos - 1) != ESCAPE_CHAR) {
-						// found a valid non escaped group stopper
-						break;
-					}
-					// invalid entity, error? probably not, anyway we consider
-					// this as not being an attribute replacement
-					throw new InvalidAttributeMarker();
-				}
-
-				// OK, we now have an attribute
-				String attrName = template.substring(startPos + 1, endPos);
-
-				// replace it if present, otherwise leave as is
-				String attrValue = getEntityHTMLRepresentation(attrName);
-				if (attrValue != null) {
-					finalText.append(template.substring(chunkEnd, startPos));
-					// append the entity's value after performing
-					// entity keyword substitution on its contents
-					finalText.append(substituteEntityKeywords(attrValue));
-					startPos = endPos + 1;
-					chunkEnd = startPos;
-				}
-				else {
-					startPos++;
-				}
-			}
-		}
-		catch (InvalidAttributeMarker ex) {
-			// invalid marker, ignore
-			//XXX Verificar se houve refatoração
-			//htmlHandler.hTMLTextAreaFigureSubstituteEntityKeywords();
-		}
+		chunkEnd = internalSubstituteEntityKeywordsPartOne(template, endPos,
+				finalText, startPos, chunkEnd);
 
 		// append whatever is left
 		finalText.append(template.substring(chunkEnd));
 
 		// and return it
 		return finalText.toString();
+	}
+
+	private int internalSubstituteEntityKeywordsPartOne(String template,
+			int endPos, StringBuffer finalText, int startPos, int chunkEnd) {
+		while ((startPos = template.indexOf(START_ENTITY_CHAR, startPos)) != -1) {
+			if (startPos != 0 && template.charAt(startPos - 1) == ESCAPE_CHAR) {
+				// found an escaped parameter starter
+				startPos++;
+				continue;
+			}
+
+			// get the end of the parameter
+			endPos = startPos + 1;
+			while ((endPos = template.indexOf(END_ENTITY_CHAR, endPos)) != -1) {
+				if (endPos == 0 || template.charAt(endPos - 1) != ESCAPE_CHAR) {
+					// found a valid non escaped group stopper
+					break;
+				}
+				// invalid entity, error? probably not, anyway we consider
+				// this as not being an attribute replacement
+				throw new InvalidAttributeMarker();
+			}
+
+			// OK, we now have an attribute
+			String attrName = template.substring(startPos + 1, endPos);
+
+			// replace it if present, otherwise leave as is
+			String attrValue = getEntityHTMLRepresentation(attrName);
+			if (attrValue != null) {
+				finalText.append(template.substring(chunkEnd, startPos));
+				// append the entity's value after performing
+				// entity keyword substitution on its contents
+				finalText.append(substituteEntityKeywords(attrValue));
+				startPos = endPos + 1;
+				chunkEnd = startPos;
+			}
+			else {
+				startPos++;
+			}
+		}
+		return chunkEnd;
 	}
 
 	/**

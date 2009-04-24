@@ -57,7 +57,6 @@ public aspect DndHandler {
 	void around(java.awt.dnd.DropTargetDropEvent dtde): JHDDropTargetListener_internalDrop() && args(dtde){
 		try {
 			proceed(dtde);
-		
 		}catch (NullPointerException npe) {
 			npe.printStackTrace();
 			dtde.dropComplete(false);

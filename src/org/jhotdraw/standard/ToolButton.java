@@ -49,12 +49,7 @@ public class ToolButton extends PaletteButton implements ToolListener {
 		for (int i = 0; i < 3; i++) {
 			tracker.addImage(im[i], i);
 		}
-		try {
-			tracker.waitForAll();
-		}
-		catch (Exception e) {
-			// ignore exception
-		}
+		internalToolButton(tracker);
 
 		setPaletteIcon(new PaletteIcon(new Dimension(24,24), im[0], im[1], im[2]));
 		setTool(tool);
@@ -71,6 +66,10 @@ public class ToolButton extends PaletteButton implements ToolListener {
 			setSelectedIcon(new ImageIcon(im[2]));
 		}
 		setToolTipText(name);
+	}
+
+	private void internalToolButton(MediaTracker tracker) {
+		tracker.waitForAll();
 	}
 
 	public Tool tool() {

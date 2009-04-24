@@ -381,33 +381,20 @@ public abstract class AbstractFigure implements Figure {
 	public Object clone() {
 		Object clone = null;
 		ByteArrayOutputStream output = new ByteArrayOutputStream(200);
-		try {
-			ObjectOutput writer = new ObjectOutputStream(output);
-			writer.writeObject(this);
-			writer.close();
-		}
-		catch (IOException e) {
-			//XXX Verificar se houve refatoração
-			//standardHandler.errPrintln("Class not found: " + e);
-			//System.err.println("Class not found: " + e);
-		}
+		cloneWrite(output);
 
 		InputStream input = new ByteArrayInputStream(output.toByteArray());
-		try {
-			ObjectInput reader = new ObjectInputStream(input);
-			clone = reader.readObject();
-		}
-		catch (IOException e) {
-			//XXX Verificar se houve refatoração
-			//standardHandler.errPrintln(e.toString());
-			//System.err.println(e.toString());
-		}
-		catch (ClassNotFoundException e) {
-			//XXX Verificar se houve refatoração
-			//standardHandler.errPrintln("Class not found: " + e);
-			//System.err.println("Class not found: " + e);
-		}
+		
+		ObjectInput reader = new ObjectInputStream(input);
+		clone = reader.readObject();
+		
 		return clone;
+	}
+
+	private void cloneWrite(ByteArrayOutputStream output) {
+		ObjectOutput writer = new ObjectOutputStream(output);
+		writer.writeObject(this);
+		writer.close();
 	}
 
 	/**

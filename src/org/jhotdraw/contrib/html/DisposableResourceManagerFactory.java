@@ -87,14 +87,7 @@ public abstract class DisposableResourceManagerFactory {
 			}
 
 			// start the whole thing
-			try {
-				currentManager.startDisposing();
-			}
-			catch (ResourceManagerNotSetException ex) {
-				// we set it so we shouldn't get here
-				//XXX Verificar se houve refatoração
-				//htmlHandler.disposableResourceManagerFactoryInitManager();
-			}
+			currentManager.startDisposing();
 		}
 	}
 }

@@ -121,19 +121,8 @@ public class ETSLADisposalStrategy implements ResourceDisposabilityStrategy {
 			return;
 		}
 		// request the thread to stop and wait for it
-		try {
-			disposalThread.interruptDisposalPending = true;
-			disposalThread.join(millis);
-		}
-		catch (InterruptedException ex) {
-			// ignore
-			//XXX Verificar se houve refatoração
-			//htmlHandler.eTSLADisposalStrategyStopDisposing1();
-		}
-		finally {
-			//TODO NÃO PODE SER REFATORADO PQ É PASSAGEM POR VALOR
-			disposingActive = false;
-		}
+		disposalThread.interruptDisposalPending = true;
+		disposalThread.join(millis);
 	}
 
 	/**
@@ -222,19 +211,15 @@ class DisposalThread extends Thread {
 	 */
 	public void run() {
 		interruptDisposalPending = false;
+		internalRun();
+		interruptDisposalPending = false;
+	}
+
+	private void internalRun() {
 		while (!interruptDisposalPending) {
-			try {
-				sleep(periodicity);
-			}
-			catch (Exception ex) {
-				// just exit
-				//XXX Verificar se houve refatoração
-				//htmlHandler.eTSLADisposalStrategyDisposalThreadRun();
-				break;
-			}
+			sleep(periodicity);
 			strategy.dispose();
 		}
-		interruptDisposalPending = false;
 	}
 
 	/**
