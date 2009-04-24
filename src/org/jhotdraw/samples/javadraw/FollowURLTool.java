@@ -60,14 +60,7 @@ class FollowURLTool extends AbstractTool {
 			return;
 		}
 
-		try {
-			URL url = new URL(fApplet.getDocumentBase(), urlstring);
-			fApplet.getAppletContext().showDocument(url);
-		}
-		catch (MalformedURLException exception) {
-			//XXX Verificar se houve refatoração
-			//javadrawHandler.showStatusApplet(fApplet, exception.toString());
-			// fApplet.showStatus(exception.toString());
-		}
+		URL url = new URL(fApplet.getDocumentBase(), urlstring);
+		fApplet.getAppletContext().showDocument(url);
 	}
 }

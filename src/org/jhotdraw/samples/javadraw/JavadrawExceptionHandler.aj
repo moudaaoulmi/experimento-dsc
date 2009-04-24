@@ -1,9 +1,12 @@
 package org.jhotdraw.samples.javadraw;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Iterator;
+
+import org.jhotdraw.util.CommandMenu;
 
 
 public privileged aspect JavadrawExceptionHandler {
@@ -23,12 +26,15 @@ public privileged aspect JavadrawExceptionHandler {
 		 && withincode(void FollowURLTool.mouseUp(..));
 
 	pointcut JavaDrawApp_executeComandMenu1Handler():
-		execution(void JavaDrawApp.executeComandMenu1(..));
+		execution(private static void JavaDrawApp.internalExecuteCommandMenu(Iterator));
+	
+	pointcut JavaDrawApp_internalCreateImagesMenuHandler():
+		execution(private void JavaDrawApp.internalCreateImagesMenu(..));
 	
 	pointcut  JavaDrawViewer_openStreamHandler():
 		execution(void JavaDrawViewer.loadDrawing(..));
 
-    pointcut Animator_runHandler(): execution(void Animator.extracaoBreak(..));
+    pointcut Animator_runHandler(): execution(private void Animator.internalRun(long));
     				
 
 	// ---------------------------
@@ -74,6 +80,17 @@ public privileged aspect JavadrawExceptionHandler {
 		}
 	}
 	
+	void around(CommandMenu menu, File imagesDirectory): JavaDrawApp_internalCreateImagesMenuHandler()
+				&& args( menu, imagesDirectory)
+	{
+		try{
+			proceed( menu, imagesDirectory);
+		}catch( Exception e){
+			//do nothing
+		}
+		
+	}
+	
 	void around(): JavaDrawViewer_openStreamHandler(){
 		try {
 			proceed();
@@ -85,14 +102,11 @@ public privileged aspect JavadrawExceptionHandler {
 		}
 	}
 	
-	void around(): Animator_runHandler(){
+	void around(long tm): Animator_runHandler() && args(tm){
 		try {
-			 proceed();
+			 proceed(tm);
 		}  catch (InterruptedException e) {
 				//break;
 		}
 	}
-    
-	
-	
 }
