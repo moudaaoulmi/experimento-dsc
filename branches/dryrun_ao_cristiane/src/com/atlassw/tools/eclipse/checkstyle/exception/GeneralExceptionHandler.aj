@@ -1,13 +1,21 @@
 
 package com.atlassw.tools.eclipse.checkstyle.exception;
+import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileNotFoundException;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.MissingResourceException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.prefs.BackingStoreException;
-import java.io.IOException;
+
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jdt.core.JavaModelException;
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
@@ -37,10 +45,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalConfigura
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.migration.CheckConfigurationMigrator;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationTester;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
+
 import java.net.Authenticator;
 
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
@@ -70,7 +75,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.SelectionListener;
 import org.osgi.service.prefs.Preferences;
 import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
-import java.io.FileNotFoundException;
+
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
@@ -79,6 +84,8 @@ import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationWriter;
 @ExceptionHandler
 public aspect GeneralExceptionHandler
 {
+    
+    private Map inStream = new HashMap();
     // ---------------------------
     // Declare soft's
     // ---------------------------
@@ -166,6 +173,10 @@ public aspect GeneralExceptionHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
+    pointcut getInput():
+        call(* IFile.getContents(..)) &&
+        withincode (* ProjectConfigurationFactory.internalLoadFromPersistence(..));
+    
     pointcut metadataFactory_resolveEntityHandler() : 
         execution(* MetadataFactory.MetaDataHandler.resolveEntity(..));
     
@@ -356,6 +367,12 @@ public aspect GeneralExceptionHandler
     // Advice's
     // ---------------------------
 
+    Object around(): getInput(){
+        Object input = proceed();
+        inStream.put(Thread.currentThread().getName(), input);
+        return input;
+    }
+    
     Object around(): ResourceBundlePropertyResolver_resolveHandle() ||
                      metadataFactory_getMetadataI18NBundleHandler(){
         Object result = null;
@@ -450,18 +467,19 @@ public aspect GeneralExceptionHandler
         }
     }
 
-    IProjectConfiguration around(IProject project, IProjectConfiguration configuration, IFile file,
-            InputStream inStream) throws CheckstylePluginException : 
-                    ProjectConfigurationFactory_internalLoadFromPersistenceHandler() && 
-                    args(project,configuration, file, inStream){
+    IProjectConfiguration around(IProject project,
+            IProjectConfiguration configuration, IFile file, InputStream inStream) 
+    throws CheckstylePluginException : 
+                    ProjectConfigurationFactory_internalLoadFromPersistenceHandler()
+                    && args(project, configuration,  file,  inStream){
         IProjectConfiguration result = configuration;
         try
         {
-            result = proceed(project, configuration, file, inStream);
+            result = proceed(project, configuration,  file,  inStream);
         }
         finally
         {
-            IOUtils.closeQuietly(inStream);
+            IOUtils.closeQuietly((InputStream)this.inStream.get(Thread.currentThread().getName()));
         }
         return result;
     }
