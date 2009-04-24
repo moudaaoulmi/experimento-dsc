@@ -203,11 +203,7 @@ public abstract class DNDHelper {
 				// );
 				// System.err.println(npe);
 				// npe.printStackTrace();
-				dndHandler.errPrintln("View Failed to initialize to DND.");
-				dndHandler
-						.errPrintln("Container likely did not have peer before the DropTarget was added");
-				dndHandler.errPrintln(npe);
-				dndHandler.printStackTraceException(npe);
+				dndHandler.dNDCreateDropTarget(npe);
 			}
 		}
 		return dt;

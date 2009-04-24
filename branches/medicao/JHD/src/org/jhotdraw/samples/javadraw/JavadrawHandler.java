@@ -16,7 +16,7 @@ public class JavadrawHandler extends GeneralException {
 	public void javaDrawViewerLoadDrawing(Drawing fDrawing, JavaDrawViewer jDV,
 			IOException e) {
 		fDrawing = jDV.createDrawing();
-		System.err.println("Error when Loading: " + e);
+		super.errPrintln("Error when Loading: " + e);
 		jDV.showStatus("Error when Loading: " + e);
 	}
 

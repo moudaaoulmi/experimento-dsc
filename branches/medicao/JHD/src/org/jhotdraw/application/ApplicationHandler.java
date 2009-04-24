@@ -6,7 +6,8 @@ import org.jhotdraw.exception.GeneralException;
 @ExceptionHandler
 public class ApplicationHandler extends GeneralException {
 
-	public void DrawApplicationOpen(DrawApplication dA) {
+	public void DrawApplicationOpen(DrawApplication dA, Object o) {
+		super.errPrintln(o);
 		dA.exit();
 	}
 
