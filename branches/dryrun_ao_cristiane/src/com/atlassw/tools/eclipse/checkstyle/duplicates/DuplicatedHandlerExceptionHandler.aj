@@ -25,7 +25,7 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 @ExceptionHandler
-public privileged aspect DuplicatedHandler
+public privileged aspect DuplicatedHandlerExceptionHandler
 {
 
     // ---------------------------
@@ -80,11 +80,6 @@ public privileged aspect DuplicatedHandler
 
     pointcut DuplicatedCodeView_runHandler(): 
          execution(* DuplicatedCodeView.internal(..));
-
-//     pointcut DuplicatedCodeView_runHandler():
-//     withincode(* DuplicatedCodeView.createOpenSourceFileAction()) &&
-//     within(Action+) &&
-//     execution(* run(..));
 
     pointcut DuplicatedCodeView_internal2Handler() :
         execution (* DuplicatedCodeView.internal2(..));
