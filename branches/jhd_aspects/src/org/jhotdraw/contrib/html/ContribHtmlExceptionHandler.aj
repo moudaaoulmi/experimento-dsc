@@ -46,7 +46,6 @@ public privileged aspect ContribHtmlExceptionHandler {
 		}
 		catch (Exception ex) {
 			//break;
-			//TODO verificar depois. Faz nada. Apenas espera acabar o while
 		}
     }
 	

@@ -443,41 +443,22 @@ public class DrawApplet
 	}
 
 	private void readFromStorableInput(String filename) {
-		try {
-			URL url = new URL(getCodeBase(), filename);
-			InputStream stream = url.openStream();
-			StorableInput input = new StorableInput(stream);
-			fDrawing.release();
+		URL url = new URL(getCodeBase(), filename);
+		InputStream stream = url.openStream();
+		StorableInput input = new StorableInput(stream);
+		fDrawing.release();
 
-			fDrawing = (Drawing)input.readStorable();
-			view().setDrawing(fDrawing);
-		}
-		//TODO não pode ser refatorado pois o initDrawing() é private
-		catch (IOException e) {
-			initDrawing();
-			showStatus("Error:" + e);
-		}
+		fDrawing = (Drawing)input.readStorable();
+		view().setDrawing(fDrawing);
 	}
 
 	private void readFromObjectInput(String filename) {
-		try {
-			URL url = new URL(getCodeBase(), filename);
-			InputStream stream = url.openStream();
-			ObjectInput input = new ObjectInputStream(stream);
-			fDrawing.release();
-			fDrawing = (Drawing)input.readObject();
-			view().setDrawing(fDrawing);
-		}
-		//TODO não pode ser refatorado pois o initDrawing() é private
-		catch (IOException e) {
-			initDrawing();
-			showStatus("Error: " + e);
-		}
-		//TODO não pode ser refatorado pois o initDrawing() é private
-		catch (ClassNotFoundException e) {
-			initDrawing();
-			showStatus("Class not found: " + e);
-		}
+		URL url = new URL(getCodeBase(), filename);
+		InputStream stream = url.openStream();
+		ObjectInput input = new ObjectInputStream(stream);
+		fDrawing.release();
+		fDrawing = (Drawing)input.readObject();
+		view().setDrawing(fDrawing);
 	}
 
 	private String guessType(String file) {

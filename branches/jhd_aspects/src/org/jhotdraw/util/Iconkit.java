@@ -86,14 +86,7 @@ public class Iconkit {
 		fRegisteredImages.clear();
 
 		// block until all images are loaded
-		try {
-			tracker.waitForAll();
-		}
-		catch (Exception e) {
-			// ignore: do nothing
-			//XXX Verificar se houve refatoração
-			//utilHandler.iconkitLoadRegisteredImages();
-		}
+		tracker.waitForAll();
 	}
 
 	/**

@@ -47,17 +47,15 @@ public  class Animator extends Thread {
 			fAnimatable.animationStep();
 			fView.checkDamage();
 			fView.unfreezeView();
-
 			// Delay for a while
-			try {
-				tm += DELAY;
-				Thread.sleep(Math.max(0, tm - System.currentTimeMillis()));
-			}
-			catch (InterruptedException e) {
-				//TODO não pode ser refatorado
-				break;
-			}
+			internalRun(tm);
+			
 		}
+	}
+	
+	private void internalRun(long time){
+		time += DELAY;
+		Thread.sleep(Math.max(0, time - System.currentTimeMillis()));
 	}
 }
 

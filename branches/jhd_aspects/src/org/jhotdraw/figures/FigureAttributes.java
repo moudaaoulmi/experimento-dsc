@@ -84,17 +84,9 @@ public  class   FigureAttributes
 	 */
    public Object clone() {
 		FigureAttributes a = null;
-		try {
-			a = (FigureAttributes)
-			//XXX Criar aspecto para essa exceção de clone
-			super.clone();
-			a.fMap = CollectionsFactory.current().createMap(fMap);
-		} catch (CloneNotSupportedException e) {
-			//Verifica a exceção que deveria fazer
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		a = (FigureAttributes)
+		super.clone();
+		a.fMap = CollectionsFactory.current().createMap(fMap);
 		
 		return a;
 	}

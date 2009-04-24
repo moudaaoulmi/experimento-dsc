@@ -11,23 +11,61 @@
 
 package org.jhotdraw.samples.javadraw;
 
-import org.jhotdraw.framework.*;
-import org.jhotdraw.standard.*;
-import org.jhotdraw.figures.*;
-import org.jhotdraw.util.*;
-import org.jhotdraw.application.*;
-import org.jhotdraw.contrib.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.io.File;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JToolBar;
+
+import org.jhotdraw.application.DrawApplication;
+import org.jhotdraw.contrib.ClippingUpdateStrategy;
+import org.jhotdraw.contrib.ComponentFigure;
+import org.jhotdraw.contrib.CompositeFigureCreationTool;
+import org.jhotdraw.contrib.DiamondFigure;
+import org.jhotdraw.contrib.GraphicalCompositeFigure;
+import org.jhotdraw.contrib.MDIDesktopPane;
+import org.jhotdraw.contrib.MDI_DrawApplication;
+import org.jhotdraw.contrib.PolygonTool;
+import org.jhotdraw.contrib.SimpleLayouter;
+import org.jhotdraw.contrib.SplitConnectionTool;
+import org.jhotdraw.contrib.TextAreaFigure;
+import org.jhotdraw.contrib.TextAreaTool;
+import org.jhotdraw.contrib.TriangleFigure;
+import org.jhotdraw.contrib.WindowMenu;
 import org.jhotdraw.contrib.html.HTMLTextAreaFigure;
 import org.jhotdraw.contrib.html.HTMLTextAreaTool;
 import org.jhotdraw.contrib.zoom.ZoomDrawingView;
 import org.jhotdraw.contrib.zoom.ZoomTool;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.*;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
+import org.jhotdraw.figures.BorderTool;
+import org.jhotdraw.figures.ConnectedTextTool;
+import org.jhotdraw.figures.ElbowConnection;
+import org.jhotdraw.figures.EllipseFigure;
+import org.jhotdraw.figures.InsertImageCommand;
+import org.jhotdraw.figures.LineConnection;
+import org.jhotdraw.figures.LineFigure;
+import org.jhotdraw.figures.RectangleFigure;
+import org.jhotdraw.figures.RoundRectangleFigure;
+import org.jhotdraw.figures.ScribbleTool;
+import org.jhotdraw.figures.TextFigure;
+import org.jhotdraw.figures.TextTool;
+import org.jhotdraw.framework.Drawing;
+import org.jhotdraw.framework.DrawingView;
+import org.jhotdraw.framework.JHotDrawRuntimeException;
+import org.jhotdraw.framework.Tool;
+import org.jhotdraw.standard.AbstractCommand;
+import org.jhotdraw.standard.ConnectionTool;
+import org.jhotdraw.standard.CreationTool;
+import org.jhotdraw.util.Animatable;
+import org.jhotdraw.util.Command;
+import org.jhotdraw.util.CommandMenu;
+import org.jhotdraw.util.UndoableCommand;
+import org.jhotdraw.util.UndoableTool;
 
 /**
  * @version <$CURRENT_VERSION$>
@@ -226,20 +264,18 @@ public class JavaDrawApp extends MDI_DrawApplication {
 		}
 		File imagesDirectory = new File(url.getFile());
 
-		try {
-			String[] list = imagesDirectory.list();
-			for (int i = 0; i < list.length; i++) {
-				String name = list[i];
-				String path = fgSampleImagesResourcePath + name;
-				menu.add(new UndoableCommand(new InsertImageCommand(name, path,
-						this)));
-			}
-		} catch (Exception e) {
-			// do nothing
-			//XXX Verificar se houve refatoração
-			//javadrawHandler.javaDrawAppCreateImagesMenu();
-		}
+		internalCreateImagesMenu(menu, imagesDirectory);
 		return menu;
+	}
+
+	private void internalCreateImagesMenu(CommandMenu menu, File imagesDirectory) {
+		String[] list = imagesDirectory.list();
+		for (int i = 0; i < list.length; i++) {
+			String name = list[i];
+			String path = fgSampleImagesResourcePath + name;
+			menu.add(new UndoableCommand(new InsertImageCommand(name, path,
+					this)));
+		}
 	}
 
 	protected Drawing createDrawing() {
@@ -313,17 +349,15 @@ public class JavaDrawApp extends MDI_DrawApplication {
 		HashMap comandos = menu.hm;
 		Iterator itComandos = comandos.values().iterator();
 		while (itComandos.hasNext()) {
-			try {
-				Command cmd = (Command) itComandos.next();
-				cmd.execute();
-				System.out.println("Comando: " + cmd.name());
-			} catch (Exception e) {
-				// e.printStackTrace();
-				//XXX Verificar se houve refatoração
-				//javadrawHandler.printStackTraceException(e);
-			}
+			internalExecuteCommandMenu(itComandos);
 		}
 
+	}
+
+	private static void internalExecuteCommandMenu(Iterator itComandos) {
+		Command cmd = (Command) itComandos.next();
+		cmd.execute();
+		System.out.println("Comando: " + cmd.name());
 	}
 
 }

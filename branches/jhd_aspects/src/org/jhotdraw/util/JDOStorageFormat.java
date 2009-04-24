@@ -317,18 +317,10 @@ public class JDOStorageFormat extends StandardStorageFormat {
 	public static void main(String[] args) {
 		DrawingSelector frame = new DrawingSelector();
 
-		// ExceptionHandler refactored
-		try {
-			Drawing newDrawing = new StandardDrawing();
-			newDrawing.setTitle("TestDrawingName"
-					+ new Random(System.currentTimeMillis()).nextLong());
-			new JDOStorageFormat().store("base.j2", newDrawing);
-			System.exit(0);
-		} catch (IOException e) {
-			// e.printStackTrace();
-			//XXX Verificar se houve refatoração
-			//utilHandler.printStackTraceException(e);
-		}
-		// frame.setVisible(true);
+		Drawing newDrawing = new StandardDrawing();
+		newDrawing.setTitle("TestDrawingName"
+				+ new Random(System.currentTimeMillis()).nextLong());
+		new JDOStorageFormat().store("base.j2", newDrawing);
+		System.exit(0);
 	}
 }

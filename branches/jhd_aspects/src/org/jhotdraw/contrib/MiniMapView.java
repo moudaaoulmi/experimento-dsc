@@ -157,16 +157,7 @@ public class MiniMapView extends JComponent {
 	 */
 	protected void scrollSubjectTo(int upperLeftX, int upperLeftY) {
 		AffineTransform at = null;
-		try {
-			at = getViewToMiniMapTransform(getMappedComponent()).createInverse();
-		}
-		catch (NoninvertibleTransformException nite) {
-//			nite.printStackTrace();
-			//TODO o return nao pode ser refatorado -- cenario
-			//XXX Verificar se houve refatoração
-//			contribHandler.printStackTraceException(nite);
-			return;
-		}
+		at = getViewToMiniMapTransform(getMappedComponent()).createInverse();
 
 		double [] srcPoints = new double[2];
 		double [] destPoints = new double[2];
