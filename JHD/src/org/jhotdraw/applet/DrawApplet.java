@@ -17,6 +17,8 @@ import java.awt.event.*;
 import java.util.*;
 import java.io.*;
 import java.net.*;
+
+import org.jhotdraw.exception.GeneralException;
 import org.jhotdraw.framework.*;
 import org.jhotdraw.standard.*;
 import org.jhotdraw.figures.*;
@@ -36,7 +38,7 @@ public class DrawApplet
 		extends JApplet
 		implements DrawingEditor, PaletteListener, VersionRequester {
 
-	private AppletHandler appletHandler = new AppletHandler();
+	private GeneralException generalException = new GeneralException();
 	private transient Drawing         fDrawing;
 	private transient Tool            fTool;
 
@@ -542,7 +544,7 @@ public class DrawApplet
 			getAppletContext().showDocument(url, "Help");
 		}
 		catch (IOException e) {
-			appletHandler.showStatusApplet(this, "Help file not found" );
+			generalException.showStatusApplet(this, "Help file not found" );
 //			showStatus("Help file not found");
 		}
 

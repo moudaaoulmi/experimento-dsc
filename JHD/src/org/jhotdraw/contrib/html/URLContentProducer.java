@@ -78,7 +78,6 @@ public class URLContentProducer extends FigureDataContentProducer
 		catch (Exception ex) {
 //			ex.printStackTrace();
 //			return ex.toString();
-			htmlHandler.printStackTraceException(ex);
 			return htmlHandler.resourceContentProducerGetContent(ex);
 		}
 	}

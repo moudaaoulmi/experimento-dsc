@@ -28,7 +28,7 @@ public  class NumberTextFigure extends TextFigure {
 	private static final long serialVersionUID = -4056859232918336475L;
 	private int numberTextFigureSerializedDataVersion = 1;
 
-	private UtilHandler utilHandler = new UtilHandler();
+	private FiguresHandler figuresHandler = new FiguresHandler();
 	/**
 	 * Gets the number of columns to be used by the text overlay.
 	 * @see org.jhotdraw.util.FloatingTextField
@@ -46,9 +46,9 @@ public  class NumberTextFigure extends TextFigure {
 		try {
 			value = Integer.parseInt(getText());
 		}
-		//TODO não pode ser refatorado pq é passagem por valor
 		catch (NumberFormatException e) {
-			value = 0;
+			//value = 0;
+			value = figuresHandler.figuresGetValueHandler(value);
 		}
 		return value;
 	}

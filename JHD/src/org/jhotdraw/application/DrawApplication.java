@@ -239,11 +239,9 @@ public class DrawApplication extends JFrame implements DrawingEditor,
 			} catch (java.lang.InterruptedException ie) {
 				// System.err.println(ie.getMessage());
 				// exit();
-				applicationHandler.errPrintln(ie.getMessage());
-				applicationHandler.DrawApplicationOpen(this);
+				applicationHandler.DrawApplicationOpen(this,ie.getMessage());
 			} catch (java.lang.reflect.InvocationTargetException ite) {
-				applicationHandler.errPrintln(ite.getMessage());
-				applicationHandler.DrawApplicationOpen(this);
+				applicationHandler.DrawApplicationOpen(this,ite.getMessage());
 			}
 		} else {
 			r.run();
