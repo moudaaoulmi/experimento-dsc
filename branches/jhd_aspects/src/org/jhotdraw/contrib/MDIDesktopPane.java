@@ -11,16 +11,24 @@
 
 package org.jhotdraw.contrib;
 
-import org.jhotdraw.framework.DrawingView;
-import org.jhotdraw.standard.NullDrawingView;
-import org.jhotdraw.application.DrawApplication;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.Point;
 
-import javax.swing.*;
-import javax.swing.event.InternalFrameListener;
+import javax.swing.DefaultDesktopManager;
+import javax.swing.JComponent;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import java.awt.*;
-import java.beans.*;
+import javax.swing.event.InternalFrameListener;
+
+import org.jhotdraw.application.DrawApplication;
+import org.jhotdraw.framework.DrawingView;
+import org.jhotdraw.standard.NullDrawingView;
 
 /**
  * An extension of JDesktopPane that supports often used MDI functionality. This
@@ -216,14 +224,11 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 		}
 		moveToFront(frame);
 		frame.setVisible(true);
-		try {
-			frame.setSelected(true);
-		}
-		catch (PropertyVetoException e) {
-//			frame.toBack();
-			//XXX Verificar se houve refatoração
-//			contribHandler.mDIDesktopPaneAddToDesktop(frame);
-		}
+		internalSetSelected(frame);
+	}
+
+	private void internalSetSelected(JInternalFrame frame) {
+		frame.setSelected(true);
 	}
 
 	public void removeFromDesktop(DrawingView dv, int location) {
@@ -313,14 +318,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 		int frameHeight = (getBounds().height - 5) - allFrames.length * FRAME_OFFSET;
 		int frameWidth = (getBounds().width - 5) - allFrames.length * FRAME_OFFSET;
 		for (int i = allFrames.length - 1; i >= 0; i--) {
-			try {
-				allFrames[i].setMaximum(false);
-			}
-			catch (PropertyVetoException e) {
-//				e.printStackTrace();
-				//XXX Verificar se houve refatoração
-				//contribHandler.printStackTraceException(e);
-			}
+			internalSetMaximum(allFrames[i]);
 
 			allFrames[i].setBounds(x, y, frameWidth, frameHeight);
 			x = x + FRAME_OFFSET;
@@ -328,6 +326,10 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 		}
 
 		checkDesktopSize();
+	}
+
+	private void internalSetMaximum(JInternalFrame frames) {
+			frames.setMaximum(false);
 	}
 
 	/**
@@ -353,14 +355,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 		int frameHeight = getBounds().height/allFrames.length;
 		int y = 0;
 		for (int i = 0; i < allFrames.length; i++) {
-			try {
-				((JInternalFrame)allFrames[i]).setMaximum(false);
-			}
-			catch (PropertyVetoException e) {
-//				e.printStackTrace();
-				//XXX Verificar se houve refatoração
-				//contribHandler.printStackTraceException(e);
-			}
+			internalSetMaximum((JInternalFrame)allFrames[i]);
 
 			allFrames[i].setBounds(0, y, getBounds().width,frameHeight);
 			y = y + frameHeight;
@@ -381,14 +376,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 		int frameWidth = getBounds().width/allFrames.length;
 		int x = 0;
 		for (int i = 0; i < allFrames.length; i++) {
-			try {
-				((JInternalFrame)allFrames[i]).setMaximum(false);
-			}
-			catch (PropertyVetoException e) {
-//				e.printStackTrace();
-				//XXX Verificar se houve refatoração
-				//contribHandler.printStackTraceException(e);
-			}
+			internalSetMaximum((JInternalFrame)allFrames[i]);
 
 			allFrames[i].setBounds(x, 0, frameWidth, getBounds().height);
 			x = x + frameWidth;
@@ -423,14 +411,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 		for (int horCnt = 0; horCnt < horFrames-1; horCnt++) {
 			y = 0;
 			for (int vertCnt = 0; vertCnt < vertFrames; vertCnt++) {
-				try {
-					((JInternalFrame)allFrames[frameIdx]).setMaximum(false);
-				}
-				catch (PropertyVetoException e) {
-//					e.printStackTrace();
-					//XXX Verificar se houve refatoração
-					//contribHandler.printStackTraceException(e);
-				}
+				internalSetMaximum((JInternalFrame)allFrames[frameIdx]);
 
 				allFrames[frameIdx].setBounds(x, y, frameWidth, frameHeight);
 				frameIdx++;
@@ -445,14 +426,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 		y = 0;
 		for (; frameIdx < allFrames.length; frameIdx++)
 		{
-			try {
-				((JInternalFrame)allFrames[frameIdx]).setMaximum(false);
-			}
-			catch (PropertyVetoException e) {
-//				e.printStackTrace();
-				//XXX Verificar se houve refatoração
-				//contribHandler.printStackTraceException(e);
-			}
+			internalSetMaximum((JInternalFrame)allFrames[frameIdx]);
 
 			allFrames[frameIdx].setBounds(x, y, frameWidth, frameHeight);
 			y = y + frameHeight;
@@ -487,14 +461,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 		for (int vertCnt = 0; vertCnt < vertFrames-1; vertCnt++) {
 			x = 0;
 			for (int horCnt = 0; horCnt < horFrames; horCnt++) {
-				try {
-					((JInternalFrame)allFrames[frameIdx]).setMaximum(false);
-				}
-				catch (PropertyVetoException e) {
-//					e.printStackTrace();
-					//XXX Verificar se houve refatoração
-//					contribHandler.printStackTraceException(e);
-				}
+				internalSetMaximum((JInternalFrame)allFrames[frameIdx]);
 
 				allFrames[frameIdx].setBounds(x, y, frameWidth, frameHeight);
 				frameIdx++;
@@ -508,14 +475,7 @@ public class MDIDesktopPane extends JDesktopPane implements Desktop {
 		frameWidth = getBounds().width / (allFrames.length - frameIdx);
 		x = 0;
 		for (; frameIdx < allFrames.length; frameIdx++) {
-			try {
-				((JInternalFrame)allFrames[frameIdx]).setMaximum(false);
-			}
-			catch (PropertyVetoException e) {
-//				e.printStackTrace();
-				//XXX Verificar se houve refatoração
-				//contribHandler.printStackTraceException(e);
-			}
+			internalSetMaximum((JInternalFrame)allFrames[frameIdx]);
 
 			allFrames[frameIdx].setBounds(x, y, frameWidth, frameHeight);
 			x = x + frameWidth;

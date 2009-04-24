@@ -11,7 +11,7 @@ public privileged aspect JavadrawExceptionHandler {
 	// ---------------------------
 	// Declare soft's
 	// ---------------------------
-	declare soft: MalformedURLException: FollowURLTool_getDocumentBaseHandler() || JavaDrawViewer_loadDrawingHandler();
+	declare soft: MalformedURLException: FollowURLTool_getDocumentBaseHandler();
 	declare soft: Exception: JavaDrawApp_executeComandMenu1Handler();
 	declare soft: IOException: JavaDrawViewer_openStreamHandler();
 	declare soft: InterruptedException: Animator_runHandler();
@@ -26,12 +26,8 @@ public privileged aspect JavadrawExceptionHandler {
 		execution(void JavaDrawApp.executeComandMenu1(..));
 	
 	pointcut  JavaDrawViewer_openStreamHandler():
-		call( InputStream URL.openStream(..)) && 
-		withincode(void JavaDrawViewer.loadDrawing(..));
+		execution(void JavaDrawViewer.loadDrawing(..));
 
-    pointcut JavaDrawViewer_loadDrawingHandler(): call( URL.new(..) )
-	 && withincode(void JavaDrawViewer.loadDrawing(..));
-    
     pointcut Animator_runHandler(): execution(void Animator.extracaoBreak(..));
     				
 
@@ -58,19 +54,6 @@ public privileged aspect JavadrawExceptionHandler {
 		}
 	}*/
 
-
-	URL around(): JavaDrawViewer_loadDrawingHandler(){
-		URL url = null;
-		try {
-			url = proceed();
-		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return url;
-	}
-    
-    
 	URL around(): FollowURLTool_getDocumentBaseHandler(){
 		URL url = null;
 		try {
@@ -91,17 +74,15 @@ public privileged aspect JavadrawExceptionHandler {
 		}
 	}
 	
-	InputStream around(): JavaDrawViewer_openStreamHandler(){
-		InputStream in = null;
+	void around(): JavaDrawViewer_openStreamHandler(){
 		try {
-			in =  proceed();
+			proceed();
 		}catch (IOException e) {
 			JavaDrawViewer obj = (JavaDrawViewer) thisJoinPoint.getThis();
 			obj.fDrawing = obj.createDrawing();
 			System.err.println("Error when Loading: " + e);
 			obj.showStatus("Error when Loading: " + e);
 		}
-		return in;
 	}
 	
 	void around(): Animator_runHandler(){

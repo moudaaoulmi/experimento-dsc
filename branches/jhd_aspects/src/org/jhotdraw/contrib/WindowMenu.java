@@ -89,19 +89,18 @@ public class WindowMenu extends CommandMenu {
 				public void actionPerformed(ActionEvent ae) {
 					JInternalFrame frame = ((ChildMenuItem)ae.getSource()).getFrame();
 					frame.moveToFront();
-					try {
-						frame.setSelected(true);
-					}
-					catch (PropertyVetoException e) {
-//						e.printStackTrace();
-						//XXX Verificar se houve refatoração
-						//contribHandler.printStackTraceException(e);
-					}
+					internalBuildChildMenus(frame);
 				}
+
+				
 			});
 			menu.setIcon(array[i].getFrameIcon());
 			add(menu);
 		}
+	}
+	
+	private static void internalBuildChildMenus(JInternalFrame frame) {
+		frame.setSelected(true);
 	}
 
 	/* This JCheckBoxMenuItem descendant is used to track the child frame that corresponds

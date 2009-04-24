@@ -11,11 +11,20 @@
 
 package org.jhotdraw.standard;
 
-import org.jhotdraw.framework.*;
-import org.jhotdraw.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.List;
 
-import java.util.*;
-import java.io.*;
+import org.jhotdraw.framework.Figure;
+import org.jhotdraw.framework.FigureEnumeration;
+import org.jhotdraw.framework.FigureSelection;
+import org.jhotdraw.util.Clipboard;
+import org.jhotdraw.util.CollectionsFactory;
+import org.jhotdraw.util.StorableInput;
+import org.jhotdraw.util.StorableOutput;
 
 /**
  * FigureSelection enables to transfer the selected figures
@@ -71,22 +80,19 @@ public class StandardFigureSelection implements FigureSelection, Serializable {
 			List result = CollectionsFactory.current().createList(10);
 			StorableInput reader = new StorableInput(input);
 			int numRead = 0;
-			try {
-				int count = reader.readInt();
-				while (numRead < count) {
-					Figure newFigure = (Figure) reader.readStorable();
-					result.add(newFigure);
-					numRead++;
-				}
-			}
-			catch (IOException e) {
-				//XXX Verificar se houve refatoração
-				//standardHandler.errPrintln(e.toString());
-				//System.err.println(e.toString());
-			}
+			internalGetData(result, reader, numRead);
 			return new FigureEnumerator(result);
 		}
 		return null;
+	}
+
+	private void internalGetData(List result, StorableInput reader, int numRead) {
+		int count = reader.readInt();
+		while (numRead < count) {
+			Figure newFigure = (Figure) reader.readStorable();
+			result.add(newFigure);
+			numRead++;
+		}
 	}
 
 	public static FigureEnumeration duplicateFigures(FigureEnumeration toBeCloned, int figureCount) {

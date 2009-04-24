@@ -940,9 +940,9 @@ public class StandardDrawingView
      * the mouse event handlers of the tools. Subclass may override it
      * to provide other action.
      */
-//    protected void shandleMouseEventException(Throwable t)
-//    
-//    	JOptionPane.showMessageDialog(
+	//Code aspectized
+//    protected void handleMouseEventException(Throwable t) {
+//		JOptionPane.showMessageDialog(
 //			this,
 //            t.getClass().getName() + " - " + t.getMessage(),
 //			"Error",
@@ -951,22 +951,16 @@ public class StandardDrawingView
 //    }
 
 	public class DrawingViewMouseListener extends MouseAdapter {
-		 /**
+		/**
 		 * Handles mouse down events. The event is delegated to the
 		 * currently active tool.
 		 */
 		public void mousePressed(MouseEvent e) {
-			try {
-				requestFocus(); // JDK1.1
-				Point p = constrainPoint(new Point(e.getX(), e.getY()));
-				setLastClick(new Point(e.getX(), e.getY()));
-				tool().mouseDown(e, p.x, p.y);
-				checkDamage();
-			}
-			catch (Throwable t) {
-				//XXX Verificar se houve refatoração
-				//				standardHandler.handleMouseEventException(t, this);
-			}
+			requestFocus(); // JDK1.1
+			Point p = constrainPoint(new Point(e.getX(), e.getY()));
+			setLastClick(new Point(e.getX(), e.getY()));
+			tool().mouseDown(e, p.x, p.y);
+			checkDamage();
 		}
 
 		/**
@@ -974,15 +968,9 @@ public class StandardDrawingView
 		 * currently active tool.
 		 */
 		public void mouseReleased(MouseEvent e) {
-			try {
-				Point p = constrainPoint(new Point(e.getX(), e.getY()));
-				tool().mouseUp(e, p.x, p.y);
-				checkDamage();
-			}
-			catch (Throwable t) {
-				//XXX Verificar se houve refatoração
-				//standardHandler.handleMouseEventException(t, this);
-			}
+			Point p = constrainPoint(new Point(e.getX(), e.getY()));
+			tool().mouseUp(e, p.x, p.y);
+			checkDamage();
 		}
 	}
 
@@ -1002,13 +990,7 @@ public class StandardDrawingView
 		 * currently active tool.
 		 */
 		public void mouseMoved(MouseEvent e) {
-			try {
-				tool().mouseMove(e, e.getX(), e.getY());
-			}
-			catch (Throwable t) {
-				//XXX Verificar se houve refatoração
-				//standardHandler.handleMouseEventException(t, this);
-			}
+			tool().mouseMove(e, e.getX(), e.getY());
 		}
 	}
 

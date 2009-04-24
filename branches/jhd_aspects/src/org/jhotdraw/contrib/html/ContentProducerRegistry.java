@@ -293,17 +293,12 @@ public class ContentProducerRegistry implements Serializable, Storable {
 		for (int cnt = 0; cnt < prodCount; cnt++) {
 			prodClass = dr.readString();
 			producer = (ContentProducer)dr.readStorable();
-			try {
-				registerContentProducer(Class.forName(prodClass), producer);
-			}
-			catch (ClassNotFoundException ex) {
-				// the class does not exist in this application
-				// cannot do much about it so ignore it, the entities of
-				// this class will get their toString() value instead
-				//XXX Verificar se houve refatoração
-//				htmlHandler.contentProducerRegistryRead();
-			}
+			internalRead(prodClass, producer);
 		}
 
+	}
+
+	private void internalRead(String prodClass, ContentProducer producer) {
+		registerContentProducer(Class.forName(prodClass), producer);
 	}
 }

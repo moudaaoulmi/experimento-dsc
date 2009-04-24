@@ -160,21 +160,20 @@ public class CTXWindowMenu extends CTXCommandMenu {
 					public void actionPerformed(ActionEvent ae) {
 						JInternalFrame frame = ((ChildMenuItem)ae.getSource()).getFrame();
 						frame.moveToFront();
-						try {
-							frame.setSelected(true);
-						}
-						catch (PropertyVetoException e) {
-							//XXX Verificar se houve refatoração
-//							e.printStackTrace();
-//							contribHandler.printStackTraceException(e);
-						}
+						internalBuildChildMenus(frame);
 					}
+
+					
 				});
 			menu.setIcon(array[i].getFrameIcon());
 			add(menu);
 		}
 	}
-
+	
+	private static void internalBuildChildMenus(JInternalFrame frame) {
+		frame.setSelected(true);
+	}
+	
 	/*
 	 *  This JCheckBoxMenuItem descendant is used to track the child frame that corresponds
 	 *  to a give menu.

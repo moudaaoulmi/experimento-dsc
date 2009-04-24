@@ -4,14 +4,17 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
+import org.jhotdraw.util.StorableInput;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 import org.aspectj.lang.SoftException;
 
 public privileged aspect StandardExceptionHandler {
 	
 	// Declare Soft
-	declare soft : IOException : AbstractFigure_internalClone2Hander() || AbstractFigure_internalCloneHandler() || StandardFigureSelection_internalGetDataHandler();
-	declare soft : ClassNotFoundException:	AbstractFigure_internalClone2Hander();
+	declare soft : IOException : AbstractFigure_cloneHander() || AbstractFigure_internalCloneHandler() || StandardFigureSelection_internalGetDataHandler();
+	declare soft : ClassNotFoundException:	AbstractFigure_cloneHander();
 	declare soft : CloneNotSupportedException  :AbstractLocator_cloneHandler();
 	declare soft : Exception: SelectAreaTracker_internaldrawXORRectHandler() || ToolButton_internalToolButtonHandler();
 	declare soft : InterruptedException :  StandardDrawing_internalLockHandler();
@@ -22,13 +25,13 @@ public privileged aspect StandardExceptionHandler {
 	
 	
 	//Pointcuts
-	pointcut AbstractFigure_internalClone2Hander(): execution( Object AbstractFigure.internalClone2(..));
+	pointcut AbstractFigure_cloneHander(): execution( Object AbstractFigure.clone(..));
 
-	pointcut AbstractFigure_internalCloneHandler(): execution( void AbstractFigure.internalClone(..));
+	pointcut AbstractFigure_internalCloneHandler(): execution( void AbstractFigure.cloneWrite(..));
 
 	pointcut AbstractLocator_cloneHandler(): execution ( Object AbstractLocator.clone());
 
-	pointcut SelectAreaTracker_internaldrawXORRectHandler(): execution( void SelectAreaTracker.internaldrawXORRect(..));
+	pointcut SelectAreaTracker_internaldrawXORRectHandler(): execution( void SelectAreaTracker.InternalDrawXORRect(..));
 
 	pointcut StandardDrawing_internalLockHandler() : execution( void StandardDrawing.internalLock(..));
 	
@@ -46,15 +49,16 @@ public privileged aspect StandardExceptionHandler {
 
 	
 
-	Object around(Object clone, InputStream input):  AbstractFigure_internalClone2Hander() && args(clone,input){
+	Object around():  AbstractFigure_cloneHander(){
+		Object result = null;
 		try {
-			return proceed(clone, input);
+			result = proceed();
 		} catch (IOException e) {
 			System.err.println(e.toString());
 		} catch (ClassNotFoundException e) {
 			System.err.println("Class not found: " + e);
 		}
-		return clone;
+		return result;
 	}
 
 	void around():  AbstractFigure_internalCloneHandler(){
@@ -103,13 +107,16 @@ public privileged aspect StandardExceptionHandler {
 					StandardDrawingView_DrawingViewMouseMotionListener_mouseDraggedHanlder() || 
 					StandardDrawingView_DrawingViewMouseMotionListener_mouseMovedHandler() {
 		
-		StandardDrawingView obj = (StandardDrawingView) thisJoinPoint.getThis();
-		
 		try{
 			proceed();
-		}catch(Throwable e){
-			//TODO Verificar codigo
-			//obj.handleMouseEventException(e);
+		}catch(Throwable t){
+			StandardDrawingView currentObject = (StandardDrawingView) thisJoinPoint.getThis();
+			JOptionPane.showMessageDialog(
+					currentObject,
+		            t.getClass().getName() + " - " + t.getMessage(),
+					"Error",
+					JOptionPane.ERROR_MESSAGE);
+				t.printStackTrace();
 		}
 	}
 	
