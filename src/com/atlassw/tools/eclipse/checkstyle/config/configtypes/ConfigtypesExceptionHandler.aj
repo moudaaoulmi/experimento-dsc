@@ -42,7 +42,7 @@ import org.eclipse.swt.events.SelectionListener;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 
 //@ExceptionHandler
-public privileged aspect ConfigtypesHandler
+public privileged aspect ConfigtypesExceptionHandler
 {
     Map inputStream = new HashMap();
     
