@@ -22,7 +22,7 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 import org.eclipse.swt.events.SelectionListener;
 
 @ExceptionHandler
-public privileged aspect GuiHandler
+public privileged aspect GuiExceptionHandler
 {
 
     // ---------------------------
