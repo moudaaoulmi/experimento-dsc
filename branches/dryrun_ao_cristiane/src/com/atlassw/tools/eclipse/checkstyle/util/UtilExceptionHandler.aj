@@ -19,7 +19,7 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 
 @ExceptionHandler
-public privileged aspect UtilHandler
+public privileged aspect UtilExceptionHandler
 {
     // ---------------------------
     // Declare soft's

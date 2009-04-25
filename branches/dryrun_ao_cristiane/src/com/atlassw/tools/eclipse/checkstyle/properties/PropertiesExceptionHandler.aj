@@ -20,7 +20,7 @@ import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
  * @author Cristiane Queiroz
  */
 @ExceptionHandler
-public privileged aspect PropertiesHandler
+public privileged aspect PropertiesExceptionHandler
 {
     // ---------------------------
     // Declare soft's

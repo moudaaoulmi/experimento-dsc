@@ -12,6 +12,7 @@ import org.eclipse.text.edits.MalformedTreeException;
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.exception.GeneralExceptionHandler;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.resources.IMarker;
@@ -22,7 +23,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.ui.IEditorPart;
 
 @ExceptionHandler
-public privileged aspect QuickFixesHandler {
+public privileged aspect QuickFixesExceptionHandler {
     
     declare soft : BadLocationException : abstractASTResolution_getLineInformationOfOffsetHandler();
     declare soft : CoreException : abstractASTResolution_getLineInformationOfOffsetHandler() ||

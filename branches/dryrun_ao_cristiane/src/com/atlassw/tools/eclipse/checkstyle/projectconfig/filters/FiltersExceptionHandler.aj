@@ -9,8 +9,9 @@ import org.eclipse.team.internal.ccvs.core.CVSException;
 import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
+
 @ExceptionHandler
-public privileged aspect FiltersHandler
+public privileged aspect FiltersExceptionHandler
 {
 
     // ---------------------------
@@ -46,9 +47,9 @@ public privileged aspect FiltersHandler
     // Advices's
     // ---------------------------
 
-    List around() : SourceFolderContentProvider_handleProjectHandler() || 
+    List<Object> around() : SourceFolderContentProvider_handleProjectHandler() || 
                     SourceFolderContentProvider_handleContainerHandler() {
-        List c = null;
+        List<Object> c = null;
         try
         {
             c = proceed();
