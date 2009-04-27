@@ -6,17 +6,8 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import org.eclipse.osgi.framework.internal.core.MessageResourceBundle.*;
 
-@ExceptionHandler
-public privileged aspect CoreHandler
+public privileged aspect CoreExceptionHandler
 {
-    // ---------------------------
-    // Declare soft's
-    // ---------------------------
-    declare soft: Exception: Core_putHandle() ||
-                             Core_internalComputeMissingMessagesHandler();
-
-    declare soft: IOException: Core_internalLoadHandler();
-
     // ---------------------------
     // Pointcut's
     // ---------------------------
@@ -29,6 +20,14 @@ public privileged aspect CoreHandler
 
     pointcut Core_internalLoadHandler(): 
         execution (* MessageResourceBundle.internalLoad(..));
+    
+    // ---------------------------
+    // Declare soft's
+    // ---------------------------
+    declare soft: Exception: Core_putHandle() ||
+                             Core_internalComputeMissingMessagesHandler();
+
+    declare soft: IOException: Core_internalLoadHandler();
 
     // ---------------------------
     // Advice's

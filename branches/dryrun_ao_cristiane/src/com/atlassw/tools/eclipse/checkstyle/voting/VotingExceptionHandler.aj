@@ -5,20 +5,19 @@ import java.io.IOException;
 import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
-@ExceptionHandler
-public privileged aspect VotingHandler
+public privileged aspect VotingExceptionHandler
 {
-    // ---------------------------
-    // Declare soft
-    // ---------------------------
-    declare soft : IOException : VotingPreferencePage_castHandler();
-
     // ---------------------------
     // Pointcut
     // ---------------------------
     pointcut VotingPreferencePage_castHandler(): 
         call(* Vote.cast(..)) &&
         withincode(* VotingPreferencePage.PageController.widgetSelected(..)) ;
+    
+    // ---------------------------
+    // Declare soft
+    // ---------------------------
+    declare soft : IOException : VotingPreferencePage_castHandler();
 
     // ---------------------------
     // Advice

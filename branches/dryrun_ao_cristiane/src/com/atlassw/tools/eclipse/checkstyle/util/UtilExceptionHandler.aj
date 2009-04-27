@@ -18,14 +18,8 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 
 import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 
-@ExceptionHandler
 public privileged aspect UtilExceptionHandler
 {
-    // ---------------------------
-    // Declare soft's
-    // ---------------------------
-    declare soft: Exception : SWTUtil_internalShellActivatedHandler();
-
     // ---------------------------
     // Pointcut's
     // ---------------------------
@@ -48,6 +42,11 @@ public privileged aspect UtilExceptionHandler
     pointcut XMLUtil_internalWriteWithSaxHandler() : 
         call(* XMLUtil.internalWriteWithSax(..)) &&
         withincode  (* XMLUtil.writeWithSax(..));
+    
+    // ---------------------------
+    // Declare soft's
+    // ---------------------------
+    declare soft: Exception : SWTUtil_internalShellActivatedHandler();
 
     // ---------------------------
     // Advice's

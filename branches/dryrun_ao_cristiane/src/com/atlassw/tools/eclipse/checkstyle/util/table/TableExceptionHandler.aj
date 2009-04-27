@@ -5,8 +5,7 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Table;
 
-@ExceptionHandler
-public privileged aspect TableHandler
+public privileged aspect TableExceptionHandler
 {
     // ---------------------------
     // Pointcut's
