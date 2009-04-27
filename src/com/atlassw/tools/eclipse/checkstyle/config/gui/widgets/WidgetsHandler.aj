@@ -13,12 +13,6 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public aspect WidgetsHandler
 {
     // ---------------------------
-    // Declare soft's
-    // ---------------------------
-    declare soft: Exception: ConfigPropertyWidgetInteger_validateIntegerHandler() || 
-                             ConfigPropertyWidgetRegex_validateRegexHandler();
-
-    // ---------------------------
     // Pointcut's
     // ---------------------------
     pointcut ConfigPropertyWidgetInteger_validateIntegerHandler() : 
@@ -32,6 +26,12 @@ public aspect WidgetsHandler
 
     pointcut ConfigPropertyWidgetRegex_testRegexHandler() : 
         execution(* ConfigPropertyWidgetRegex.testRegex(..));
+    
+    // ---------------------------
+    // Declare soft's
+    // ---------------------------
+    declare soft: Exception: ConfigPropertyWidgetInteger_validateIntegerHandler() || 
+                             ConfigPropertyWidgetRegex_validateRegexHandler();
 
     // ---------------------------
     // Advice's
