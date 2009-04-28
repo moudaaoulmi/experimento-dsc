@@ -173,8 +173,6 @@ public class CustomSelectionTool extends SelectionTool {
 				// apparently isn't showing on the
 				// screen (huh?). Never mind - don't
 				// show the popup..
-				//TODO CASO QUE TEM RETURN E NAO PODE SER REFATORADO -- CENARIO
-				contribHandler.customSelectionToolShowPopupMenu();
 				return; 
 			}
 			// If this is a ZoomDrawingView, we'll need to

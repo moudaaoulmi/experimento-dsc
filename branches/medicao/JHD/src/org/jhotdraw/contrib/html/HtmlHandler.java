@@ -33,4 +33,7 @@ public class HtmlHandler extends GeneralException {
 		return ex.toString();
 	}
 	
+	public boolean stopDisposing(boolean disposingActive){
+		return disposingActive = false;
+	}
 }
