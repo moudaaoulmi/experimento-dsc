@@ -121,9 +121,8 @@ public class CheckConfigurationTester
         }
         finally
         {
-            configHandler.closeQuietlyInputStream(in);
             // restore the original classloader
-            configHandler.restoreClassLoader(contextClassloader);
+            configHandler.restoreClassLoader(contextClassloader, in);
         }
 
         return collector.getUnresolvedProperties();

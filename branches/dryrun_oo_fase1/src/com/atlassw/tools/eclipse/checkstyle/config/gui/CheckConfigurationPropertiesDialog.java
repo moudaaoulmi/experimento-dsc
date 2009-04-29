@@ -379,8 +379,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         }
         catch (CheckstylePluginException e)
         {
-            generalException.checkstyleLog(e);
-            generalException.setErrorMessage(this, e.getLocalizedMessage());
+            guiHandler.guiHandler_okPressed(e, this);
         }
     }
 

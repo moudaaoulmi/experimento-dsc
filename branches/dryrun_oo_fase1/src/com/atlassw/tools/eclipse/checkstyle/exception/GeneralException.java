@@ -15,7 +15,7 @@ import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
-@ExceptionHandler
+@ExceptionHandler 
 public class GeneralException
 {
 
@@ -45,8 +45,26 @@ public class GeneralException
         IOUtils.closeQuietly(in);
     }
     
+    public void closeQuietlyInputStream(InputStream inStream, InputStream defaultConfigStream)
+    {
+        IOUtils.closeQuietly(inStream);
+        IOUtils.closeQuietly(defaultConfigStream);
+    }
+    
     public void closeQuietlyOutputStream(OutputStream out)
     {
+        IOUtils.closeQuietly(out);
+    }
+    
+    public void closeQuietlyOutputStream(OutputStream byteOut, OutputStream out)
+    {
+        IOUtils.closeQuietly(byteOut);
+        IOUtils.closeQuietly(out);
+    }
+    
+    public void closeQuietlyInputOutputStream(InputStream in,OutputStream out)
+    {
+        IOUtils.closeQuietly(in);
         IOUtils.closeQuietly(out);
     }
     

@@ -341,10 +341,7 @@ public class DuplicatedCodeView extends ViewPart
                             }
                             catch (CoreException e)
                             {
-                                duplicatesHandler.checkstyleLog_E_MSG(e, NLS.bind(ErrorMessages.errorWhileBuildingProject,
-                                                project.getName()));
-                                return duplicatesHandler.newStatus(e, NLS.bind(ErrorMessages.errorWhileBuildingProject, 
-                                                project.getName()));
+                                return duplicatesHandler.contributeToActionBars(e, project);
                             }
                         }
                         Display.getDefault().asyncExec(new Runnable()
