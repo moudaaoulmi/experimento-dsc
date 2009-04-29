@@ -30,7 +30,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  * 
  * @author Lars Ködderitzsch
  */
-class ResourceBundlePropertyResolver implements PropertyResolver
+public class ResourceBundlePropertyResolver implements PropertyResolver
 {
 
     //
