@@ -1,6 +1,9 @@
 
 package com.atlassw.tools.eclipse.checkstyle.config;
 
+import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
 import org.xml.sax.SAXException;
 
 import com.atlassw.tools.eclipse.checkstyle.builder.PackageObjectFactory;
@@ -12,12 +15,6 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 @ExceptionHandler
 public class ConfigHandler extends GeneralException
 {
-     
-    public Object createModuleHandler(String aName, PackageObjectFactory instance)
-        throws CheckstyleException
-    {
-        return instance.packageObjectFactory_createModuleHandler(aName);
-    }
 
     public Object rethrowSAXException_MSG(String msg, Exception e) throws SAXException
     {
@@ -29,7 +26,8 @@ public class ConfigHandler extends GeneralException
         module.setSeverity(SeverityLevel.WARNING);
     }
     
-    public void restoreClassLoader(ClassLoader classloader){
+    public void restoreClassLoader(ClassLoader classloader, InputStream in){
+        IOUtils.closeQuietly(in);
         Thread.currentThread().setContextClassLoader(classloader);
     }
     

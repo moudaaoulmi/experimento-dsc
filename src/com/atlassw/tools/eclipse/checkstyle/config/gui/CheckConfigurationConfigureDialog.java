@@ -157,6 +157,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
     
     /**The variable was introduced here because modularization of Exception Handling*/
     private GeneralException generalException = new GeneralException();
+    
+    private GuiHandler guiHandler = new GuiHandler();
 
     //
     // constructors
@@ -475,8 +477,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog
         }
         catch (CheckstylePluginException e)
         {
-            mModules = new ArrayList();
-            generalException.errorDialogCheckstyleLog(e, getShell(), true);
+            guiHandler.guiHandler_initialize(mModules, e, getShell(), true);
         }
         mTableViewer.setInput(mModules);
 

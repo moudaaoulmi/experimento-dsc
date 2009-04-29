@@ -251,8 +251,7 @@ public final class CheckConfigurationFactory
         }
         finally
         {
-            configHandler.closeQuietlyInputStream(in);
-            configHandler.closeQuietlyOutputStream(out);
+            configHandler.closeQuietlyInputOutputStream(in,out);
         }
     }
 
@@ -378,8 +377,7 @@ public final class CheckConfigurationFactory
 
         finally
         {
-            configHandler.closeQuietlyInputStream(inStream);
-            configHandler.closeQuietlyInputStream(defaultConfigStream);
+            configHandler.closeQuietlyInputStream(inStream, defaultConfigStream);
         }
     }
 

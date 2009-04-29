@@ -434,8 +434,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         }
         finally
         {
-            generalException.closeQuietlyInputStream(pipeIn);
-            generalException.closeQuietlyOutputStream(pipeOut);
+            generalException.closeQuietlyInputOutputStream(pipeIn, pipeOut);
         }
     }
 

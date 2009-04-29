@@ -344,8 +344,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
         }
         finally
         {
-            configHandler.closeQuietlyOutputStream(byteOut);
-            configHandler.closeQuietlyOutputStream(out);
+            configHandler.closeQuietlyOutputStream(byteOut, out);
         }
     }
 
