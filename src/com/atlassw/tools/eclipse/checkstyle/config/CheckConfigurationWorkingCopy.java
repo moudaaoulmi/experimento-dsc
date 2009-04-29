@@ -291,16 +291,8 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
      */
     public void setModules(List modules) throws CheckstylePluginException
     {
-
         OutputStream out = null;
         ByteArrayOutputStream byteOut = null;
-        internalSetModules(modules, out, byteOut);
-
-    }
-
-    public void internalSetModules(List modules, OutputStream out, ByteArrayOutputStream byteOut)
-        throws CheckstylePluginException
-    {
 
         // First write to a byte array outputstream
         // because otherwise in an error case the original
