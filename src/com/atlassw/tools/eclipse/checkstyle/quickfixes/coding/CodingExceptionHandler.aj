@@ -1,12 +1,9 @@
 package com.atlassw.tools.eclipse.checkstyle.quickfixes.coding;
 
-import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import  java.lang.reflect.InvocationTargetException;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 
-@ExceptionHandler
-public aspect CodingHandler
+public privileged aspect CodingExceptionHandler
 {
     // ---------------------------
     // Declare soft's
@@ -21,9 +18,7 @@ public aspect CodingHandler
     // Pointcut's
     // ---------------------------   
     pointcut StringLiteralEqualityQuickfix_replaceNodeHandler():  
-        execution(private void replaceNode(..)) && 
-        within(StringLiteralEqualityQuickfix) && 
-        within(ASTVisitor+);
+        execution(* StringLiteralEqualityQuickfix.ASTVisitorImplementation.replaceNode(..));
     
     // ---------------------------
     // Advice's

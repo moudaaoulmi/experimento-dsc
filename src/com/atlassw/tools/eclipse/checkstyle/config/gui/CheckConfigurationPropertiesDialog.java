@@ -213,34 +213,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
                 return ((IConfigurationType) element).getTypeImage();
             }
         });
-        mConfigType.addSelectionChangedListener(new ISelectionChangedListener()
-        {
-            /**
-             * @see ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
-             */
-            public void selectionChanged(SelectionChangedEvent event)
-            {
-                if (event.getSelection() instanceof IStructuredSelection)
-                {
-                    IConfigurationType type = (IConfigurationType) ((IStructuredSelection) event
-                            .getSelection()).getFirstElement();
-
-                    if (mConfigType.getCombo().isEnabled())
-                    {
-
-                        String oldName = mCheckConfig.getName();
-                        String oldDescr = mCheckConfig.getDescription();
-
-                        mCheckConfig = mWorkingSet.newWorkingCopy(type);
-
-                        mCheckConfig.setName(oldName);
-                        mCheckConfig.setDescription(oldDescr);
-                    }
-
-                    createConfigurationEditor(mCheckConfig);
-                }
-            }
-        });
+        mConfigType.addSelectionChangedListener(new ISelectionChangedListenerImplementation());
 
         mEditorPlaceHolder = new Composite(contents, SWT.NULL);
         GridLayout layout = new GridLayout(1, true);
@@ -254,12 +227,6 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         return composite;
     }
 
-//    private void internalSelectionChanged(String oldName)
-//    {
-//
-//
-//
-//    }
 
     /**
      * {@inheritDoc}
@@ -480,9 +447,31 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog
         }
     }
 
-    /*private void internalSetUniqueName(CheckConfigurationWorkingCopy config,
-            String checkConfigName, String uniqueName, int counter)
-    {
-        config.setName(uniqueName);
-    }*/
+    private class ISelectionChangedListenerImplementation implements ISelectionChangedListener {
+        /**
+         * @see ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
+         */
+        public void selectionChanged(SelectionChangedEvent event)
+        {
+            if (event.getSelection() instanceof IStructuredSelection)
+            {
+                IConfigurationType type = (IConfigurationType) ((IStructuredSelection) event
+                        .getSelection()).getFirstElement();
+
+                if (mConfigType.getCombo().isEnabled())
+                {
+
+                    String oldName = mCheckConfig.getName();
+                    String oldDescr = mCheckConfig.getDescription();
+
+                    mCheckConfig = mWorkingSet.newWorkingCopy(type);
+
+                    mCheckConfig.setName(oldName);
+                    mCheckConfig.setDescription(oldDescr);
+                }
+
+                createConfigurationEditor(mCheckConfig);
+            }
+        }
+    }
 }

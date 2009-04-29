@@ -96,9 +96,7 @@ public privileged aspect ConfigtypesExceptionHandler
         execution(* ExternalFileConfigurationType.resolveLocation(..));
 
     pointcut InternalConfigurationEditor_widgetSelectedHandler():
-        execution(* widgetSelected(..)) &&
-        within(InternalConfigurationEditor) && 
-        within(SelectionListener+);
+        execution(* InternalConfigurationEditor.SelectionListenerImplementation.widgetSelected(..));
 
     pointcut InternalConfigurationEditor_internalGetEditedWorkingCopyHandler2():
         execution(* InternalConfigurationEditor.internalGetEditedWorkingCopy(..));

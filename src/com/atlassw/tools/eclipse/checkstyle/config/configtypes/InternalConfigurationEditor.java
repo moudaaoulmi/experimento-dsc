@@ -148,30 +148,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
         gd.horizontalAlignment = GridData.END;
         mBtnImport.setLayoutData(gd);
 
-        mBtnImport.addSelectionListener(new SelectionListener()
-        {
-
-            public void widgetSelected(SelectionEvent e)
-            {
-                ICheckConfiguration targetConfig = getEditedWorkingCopy();
-                FileDialog fileDialog = new FileDialog(mConfigName.getShell());
-                fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
-                fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
-                String configFileString = fileDialog.open();
-                if (configFileString != null && new File(configFileString).exists())
-                {
-                    ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", //$NON-NLS-1$
-                            configFileString, null, new ExternalFileConfigurationType(), true, null, null);
-
-                    CheckConfigurationFactory.copyConfiguration(tmpSourceConfig, targetConfig);
-                }
-            }
-
-            public void widgetDefaultSelected(SelectionEvent e)
-            {
-            // NOOP
-            }
-        });
+        mBtnImport.addSelectionListener(new SelectionListenerImplementation());
 
         if (mWorkingCopy.getName() != null)
         {
@@ -250,6 +227,31 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor
         out = new BufferedOutputStream(new FileOutputStream(file));
         ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
 
+    }
+    
+    private class SelectionListenerImplementation implements SelectionListener{
+
+        public void widgetSelected(SelectionEvent e)
+        {
+            ICheckConfiguration targetConfig = getEditedWorkingCopy();
+            FileDialog fileDialog = new FileDialog(mConfigName.getShell());
+            fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
+            fileDialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
+            String configFileString = fileDialog.open();
+            if (configFileString != null && new File(configFileString).exists())
+            {
+                ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", //$NON-NLS-1$
+                        configFileString, null, new ExternalFileConfigurationType(), true, null, null);
+
+                CheckConfigurationFactory.copyConfiguration(tmpSourceConfig, targetConfig);
+            }
+        }
+
+        public void widgetDefaultSelected(SelectionEvent e)
+        {
+        // NOOP
+        }
+        
     }
 
 }
