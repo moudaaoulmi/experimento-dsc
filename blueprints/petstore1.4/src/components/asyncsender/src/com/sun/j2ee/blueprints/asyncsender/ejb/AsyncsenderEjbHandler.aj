@@ -57,7 +57,9 @@ public aspect AsyncsenderEjbHandler {
                       qConnectAux.close();
 
                   }
-			} catch(Exception e) {}
+			} catch(Exception e) {
+				
+			}
          }		
 	}
 
