@@ -61,8 +61,7 @@ public aspect SupplierTransitionsHandler extends TransitionExceptionGenericAspec
     	return tc;
     }
     
-    void around() : 
-		sendMessageHandler() {
+    void around() : sendMessageHandler() {
 		try {
 			proceed();
 		} finally {
