@@ -6,11 +6,12 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileNotFoundException;
-
+import java.io.BufferedOutputStream;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -26,8 +27,12 @@ import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
-import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
-import com.atlassw.tools.eclipse.checkstyle.builder.Auditor;
+import com.atlassw.tools.eclipse.checkstyle.util.CustomLibrariesClassLoader;
+
+
+
+
+import com.atlassw.tools.eclipse.checkstyle.properties.FileSetEditDialog;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationWorkingSetEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.meta.MetadataFactory;
 import com.atlassw.tools.eclipse.checkstyle.config.savefilter.SaveFilters;
@@ -36,40 +41,42 @@ import com.atlassw.tools.eclipse.checkstyle.config.gui.RuleConfigurationEditDial
 import com.atlassw.tools.eclipse.checkstyle.preferences.PrefsInitializer;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.PluginFilters;
-import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileMatchPattern;
+import com.atlassw.tools.eclipse.checkstyle.builder.Auditor;
+import com.atlassw.tools.eclipse.checkstyle.builder.Auditor.CheckstyleAuditListener;
+import com.atlassw.tools.eclipse.checkstyle.builder.CheckerFactory;
+import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
 import com.atlassw.tools.eclipse.checkstyle.builder.PackageNamesLoader;
-import com.atlassw.tools.eclipse.checkstyle.util.CustomLibrariesClassLoader;
+import com.atlassw.tools.eclipse.checkstyle.builder.ProjectClassLoader;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationType;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ConfigurationTypes;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ExternalFileConfigurationEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.InternalConfigurationEditor;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ProjectConfigurationEditor;
+import com.atlassw.tools.eclipse.checkstyle.config.configtypes.ResourceBundlePropertyResolver;
 import com.atlassw.tools.eclipse.checkstyle.config.migration.CheckConfigurationMigrator;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationTester;
-
-import java.net.Authenticator;
-
-import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleBuilder;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckstyleConfigurationFile;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationReader;
 import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationFactory;
-
-import org.xml.sax.SAXException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
-
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
-import com.atlassw.tools.eclipse.checkstyle.builder.ProjectClassLoader;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.PackageFilterEditor;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.NonSrcDirsFilter;
-import com.atlassw.tools.eclipse.checkstyle.properties.FileSetEditDialog;
-import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.CheckFileOnOpenPartListener;
 import com.atlassw.tools.eclipse.checkstyle.config.configtypes.RemoteConfigurationType;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.AbstractFilter;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.FileSet;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationWorkingCopy;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.CheckFileOnOpenPartListener;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.PackageFilterEditor;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.filters.NonSrcDirsFilter;
+import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
+import java.net.Authenticator;
+
+
+import org.xml.sax.SAXException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+
 import java.net.UnknownHostException;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.SelectionListener;
@@ -85,6 +92,11 @@ public privileged aspect GeneralExceptionHandler
 {
     
     private Map inStream = new HashMap();
+    private Map byteOut = new HashMap();
+    private Map outStream = new HashMap();
+    private Map checker = new HashMap();
+    private Map list = new HashMap();
+    
     // ---------------------------
     // Declare soft's
     // ---------------------------
@@ -108,7 +120,8 @@ public privileged aspect GeneralExceptionHandler
                                  RemoteConfigurationType_storeCredentialsHandler() ||
                                  auditor_runAuditHandle() ||
                                  FileSetEditDialog_runHandler() ||
-                                 RemoteConfigurationType_removeCachedAuthInfoHandler();
+                                 RemoteConfigurationType_removeCachedAuthInfoHandler()||
+                                 setModules2();
 
     declare soft: CheckstylePluginException: internalSelectionChanged_2Handler() || 
                                              RemoteConfigurationType_secInternalGetBytesFromURLConnectionHandler() || 
@@ -173,9 +186,44 @@ public privileged aspect GeneralExceptionHandler
     // Pointcut's
     // ---------------------------
     pointcut getInput():
-        call(* IFile.getContents(..)) &&
-        withincode (* ProjectConfigurationFactory.internalLoadFromPersistence(..));
+        ((  call(* IFile.getContents(..)) &&
+            withincode (* ProjectConfigurationFactory.internalLoadFromPersistence(..))) ||
+         (  call (* ICheckConfiguration.getCheckstyleConfiguration(..)) &&
+            withincode(* CheckConfigurationFactory.internalExportConfiguration(..))) ||
+         (  call(* CheckstyleConfigurationFile.getCheckConfigFileStream(..)) &&
+            withincode(* CheckConfigurationTester.getUnresolvedPropertiesIteration(..)))  );
     
+    pointcut getOutStream():
+        ((  call(BufferedOutputStream.new(..)) &&
+            withincode(* CheckConfigurationWorkingCopy.setModules(..))  ) ||
+        (   call(BufferedOutputStream.new(..)) &&
+            withincode(* ProjectConfigurationEditor.internalEnsureFileExists(..))   ) ||
+        (   call(BufferedOutputStream.new(..)) &&
+            withincode(* ExternalFileConfigurationEditor.internalEnsureFileExists(..))  ) ||   
+        (   call(BufferedOutputStream.new(..)) &&
+            withincode(* InternalConfigurationEditor.internalEnsureFileExists(..))   )  ||
+        (   call(BufferedOutputStream.new(..)) &&
+            withincode(* CheckConfigurationMigrator.OldConfigurationHandler.internalEnsureFileExists(..))   )   ||
+        (   call(BufferedOutputStream.new(..)) &&
+            withincode(* CheckConfigurationFactory.internalExportConfiguration(..)))
+            );
+    
+    pointcut getByteOut():
+        call(ByteArrayOutputStream.new(..)) &&
+        withincode(* CheckConfigurationWorkingCopy.setModules(..)); 
+    
+    pointcut getChecker():
+        call(* CheckerFactory.createChecker(..)) &&
+        withincode(* Auditor.internalRunAudit(..));
+    
+    pointcut getList():
+        call(CheckstyleAuditListener.new(..)) &&
+        withincode(* Auditor.internalRunAudit(..));
+    
+    pointcut setModules2():
+        call(* IResource.refreshLocal(..)) && 
+        withincode(* CheckConfigurationWorkingCopy.setModules(..));
+        
     pointcut metadataFactory_resolveEntityHandler() : 
         execution(* MetadataFactory.MetaDataHandler.resolveEntity(..));
     
@@ -312,7 +360,7 @@ public privileged aspect GeneralExceptionHandler
         execution(* CustomLibrariesClassLoader.get(..));
 
     pointcut RetrowException_setModulesHandle(): 
-        execution (* CheckConfigurationWorkingCopy.internalSetModules(..)) ;
+        execution (* CheckConfigurationWorkingCopy.setModules(..)) ;
 
     pointcut RetrowException_exportConfigurationHandle(): 
         execution (* CheckConfigurationFactory.internalExportConfiguration(..)) ;
@@ -362,13 +410,44 @@ public privileged aspect GeneralExceptionHandler
     // ---------------------------
     // Advice's
     // ---------------------------
-
+    
+    Object around(): getByteOut() {
+        Object byteout = proceed();
+        byteOut.put(Thread.currentThread().getName(), byteout);
+        return byteout;
+    }
+    
+    Object around (): getOutStream(){
+        Object out = proceed();
+        outStream.put(Thread.currentThread().getName(), out);
+        return out;
+    }
+    
     Object around(): getInput(){
         Object input = proceed();
         inStream.put(Thread.currentThread().getName(), input);
         return input;
     }
     
+    Object around(): getChecker(){
+        Object check = proceed();
+        checker.put(Thread.currentThread().getName(), check);
+        return check;
+    }
+    
+    Object around(): getList(){
+        Object listener = proceed();
+        list.put(Thread.currentThread().getName(), listener);
+        return listener;
+    }
+    Object around(): setModules2(){
+        try{
+            return proceed();
+        }catch(CoreException e){
+         // NOOP - just ignore
+        }
+        return null;
+    }
     Object around(): ResourceBundlePropertyResolver_resolveHandle() ||
                      metadataFactory_getMetadataI18NBundleHandler(){
         Object result = null;
@@ -410,17 +489,15 @@ public privileged aspect GeneralExceptionHandler
         return result;
     }
 
-    void around(Object modules, OutputStream out, ByteArrayOutputStream byteOut)
-        throws CheckstylePluginException: RetrowException_setModulesHandle() &&
-    args(modules, out, byteOut){
+    void around() throws CheckstylePluginException: RetrowException_setModulesHandle(){
         try
         {
-            proceed(modules, out, byteOut);
+            proceed();
         }
         finally
         {
-            IOUtils.closeQuietly(byteOut);
-            IOUtils.closeQuietly(out);
+            IOUtils.closeQuietly((ByteArrayOutputStream)this.byteOut.get(Thread.currentThread().getName()));
+            IOUtils.closeQuietly((OutputStream)this.outStream.get(Thread.currentThread().getName()));
         }
     }
 
@@ -435,31 +512,30 @@ public privileged aspect GeneralExceptionHandler
         }
         finally
         {
+            Checker check = (Checker)this.checker.get(Thread.currentThread().getName());
             monitor.done();
             // Cleanup listener and filter
-            if (checker != null)
+            if (check != null)
             {
-                checker.removeListener(listener);
-                checker.removeFilter(runtimeExceptionFilter);
+                check.removeListener((AuditListener)this.list.get(Thread.currentThread().getName()));
+                check.removeFilter(runtimeExceptionFilter);
             }
             // restore the original classloader
             Thread.currentThread().setContextClassLoader(contextClassloader);
         }
     }
 
-    void around(Object file, OutputStream out) throws CheckstylePluginException: 
+    void around() throws CheckstylePluginException: 
         (   ProjectConfigurationEditor_internalEnsureFileExistsHandler() ||
             ExternalFileConfiguration_internalEnsureFileExistsHandler() ||
-            checkConfigurationMigrator_ensureFileExistsHandler() ) && 
-        args(file, out){
-
+            checkConfigurationMigrator_ensureFileExistsHandler() ) {
         try
         {
-            proceed(file, out);
+            proceed();
         }
         finally
         {
-            IOUtils.closeQuietly(out);
+            IOUtils.closeQuietly((OutputStream)this.outStream.get(Thread.currentThread().getName()));
         }
     }
 
@@ -626,18 +702,16 @@ public privileged aspect GeneralExceptionHandler
         }
     }
 
-    void around(ICheckConfiguration config, File file, InputStream in, OutputStream out)
-        throws CheckstylePluginException: RetrowException_exportConfigurationHandle()
-        && args(config, file, in, out)
+    void around() throws CheckstylePluginException: RetrowException_exportConfigurationHandle()
     {
         try
         {
-            proceed(config, file, in, out);
+            proceed();
         }
         finally
         {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(out);
+            IOUtils.closeQuietly((InputStream)this.inStream.get(Thread.currentThread().getName()));
+            IOUtils.closeQuietly((OutputStream)this.outStream.get(Thread.currentThread().getName()));
         }
     }
 
@@ -759,7 +833,7 @@ public privileged aspect GeneralExceptionHandler
         }
         finally
         {
-            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly((InputStream)this.inStream.get(Thread.currentThread().getName()));
             // restore the original classloader
             Thread.currentThread().setContextClassLoader(contextClassloader);
         }
