@@ -307,16 +307,13 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor
     private void internalEnsureFileExists(IFile file, OutputStream out)
         throws CheckstylePluginException
     {
-
         File trueFile = file.getLocation().toFile();
-
         if (trueFile.getParentFile() != null)
         {
             trueFile.getParentFile().mkdirs();
         }
         out = new BufferedOutputStream(new FileOutputStream(trueFile));
         ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
-
         file.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 
     }
