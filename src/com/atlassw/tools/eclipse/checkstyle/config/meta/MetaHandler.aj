@@ -11,11 +11,9 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.XMLTags;
 import java.io.InputStream;
-import java.util.ResourceBundle;
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.Attributes;
 import org.eclipse.osgi.util.NLS;
-import org.xml.sax.InputSource;
 
 @ExceptionHandler
 public privileged aspect MetaHandler
