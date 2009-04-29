@@ -222,26 +222,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         IPreferencesService prefStore = Platform.getPreferencesService();
         mBtnTranslate.setSelection(prefStore.getBoolean(CheckstylePlugin.PLUGIN_ID,
                 CheckstylePlugin.PREF_TRANSLATE_TOKENS, true, null));
-        mBtnTranslate.addSelectionListener(new SelectionListener()
-        {
-
-            public void widgetSelected(SelectionEvent e)
-            {
-                // store translation preference
-                IEclipsePreferences prefStore = new InstanceScope()
-                        .getNode(CheckstylePlugin.PLUGIN_ID);
-                prefStore.putBoolean(CheckstylePlugin.PREF_TRANSLATE_TOKENS, ((Button) e.widget)
-                        .getSelection());
-
-                prefStore.flush();
-
-            }
-
-            public void widgetDefaultSelected(SelectionEvent e)
-            {
-            // NOOP
-            }
-        });
+        mBtnTranslate.addSelectionListener(new SelectionListenerImplementation());
 
         mBtnSort = new Button(composite, SWT.CHECK);
         mBtnSort.setText(Messages.RuleConfigurationEditDialog_btnSortTokens);
@@ -529,5 +510,24 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog
         super.configureShell(shell);
 
         shell.setText(mTitle);
+    }
+    
+    private class SelectionListenerImplementation implements SelectionListener{
+        public void widgetSelected(SelectionEvent e)
+        {
+            // store translation preference
+            IEclipsePreferences prefStore = new InstanceScope()
+                    .getNode(CheckstylePlugin.PLUGIN_ID);
+            prefStore.putBoolean(CheckstylePlugin.PREF_TRANSLATE_TOKENS, ((Button) e.widget)
+                    .getSelection());
+
+            prefStore.flush();
+
+        }
+
+        public void widgetDefaultSelected(SelectionEvent e)
+        {
+        // NOOP
+        }
     }
 }

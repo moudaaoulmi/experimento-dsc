@@ -81,8 +81,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.ResolvableProperty;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigurationWriter;
 
-@ExceptionHandler
-public aspect GeneralExceptionHandler
+public privileged aspect GeneralExceptionHandler
 {
     
     private Map inStream = new HashMap();
@@ -248,11 +247,8 @@ public aspect GeneralExceptionHandler
     pointcut internalCreateButtonBarHandler():
         execution(* CheckConfigurationConfigureDialog.internalCreateButtonBar(..));
 
-    // TODO DOCUMENTAR
     pointcut internalWidgetSelectedHandler():
-        (call(* Preferences.flush()) &&
-        within(RuleConfigurationEditDialog) &&
-        within(SelectionListener+)) ||
+        (execution(* RuleConfigurationEditDialog.SelectionListenerImplementation.widgetSelected(..)) ) ||
         (execution(* RuleConfigurationEditDialog.internalFlush(..)));
 
     pointcut PrefsInitializer_internalinitializeDefaultPreferencesHandler() : 

@@ -58,9 +58,7 @@ public privileged aspect GuiExceptionHandler
          withincode(* CheckConfigurationConfigureDialog.okPressed(..)) );
 
     pointcut CheckConfigurationPropertiesDialog_createDialogAreaHandler(): 
-        call(* CheckConfigurationWorkingCopy.setName(..)) &&
-        within(CheckConfigurationPropertiesDialog) &&
-        within(ISelectionChangedListener+);
+        execution(* CheckConfigurationPropertiesDialog.ISelectionChangedListenerImplementation.selectionChanged(..));
     
     pointcut CheckConfigurationPropertiesDialog_widgetSelectedHandler():
         execution(* CheckConfigurationPropertiesDialog.getEditedWorkingCopyInternal(..));
