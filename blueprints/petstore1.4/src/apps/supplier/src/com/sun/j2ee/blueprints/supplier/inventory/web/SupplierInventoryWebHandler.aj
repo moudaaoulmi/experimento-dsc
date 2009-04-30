@@ -24,13 +24,10 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
  */
 public aspect SupplierInventoryWebHandler {
 
-	declare soft : ServiceLocatorException : getInventoryHandler() || 
-											 initHandler() ||
-											 sendInvoicesHandler();
+
 	declare soft : FinderException : getInventoryHandler() || 
 									 updateInventoryHandler() ||
 									 doPostHandler();
-	declare soft : CreateException : initHandler();
 	declare soft : TransitionException : sendInvoicesHandler();
 	declare soft : NamingException : doPostHandler();
 	declare soft : NotSupportedException : doPostHandler();
@@ -47,9 +44,6 @@ public aspect SupplierInventoryWebHandler {
 		execution(public Collection DisplayInventoryBean.getInventory());
 
 	/*** RcvrRequestProcessor ***/
-	pointcut initHandler() : 
-		execution(public void RcvrRequestProcessor.init());
-
 	pointcut updateInventoryHandler() : 
 		execution(private void RcvrRequestProcessor.updateInventory(HttpServletRequest));
 
@@ -59,15 +53,6 @@ public aspect SupplierInventoryWebHandler {
 	pointcut doPostHandler() : 
 		execution(public void RcvrRequestProcessor.doPost(HttpServletRequest, HttpServletResponse));
 
-	
-	void around() :  
-		initHandler() {
-		try {
-			proceed();
-		} catch (CreateException ce) {
-			ce.printStackTrace();
-		}
-	}
 	Object around() :  
 		updateInventoryHandler() || getInventoryHandler()  || doPostHandler() {
 		Object result = null;
@@ -79,17 +64,6 @@ public aspect SupplierInventoryWebHandler {
 		return result;
 	}
 	
-	Object around() :  
-		sendInvoicesHandler()|| initHandler() || getInventoryHandler(){
-		Object result = null;
-		try {
-			result = proceed();
-		} catch (ServiceLocatorException se) {
-			se.printStackTrace();
-		}
-		return result;
-	}
-
 	void around() :  
 		sendInvoicesHandler() {
 		try {
