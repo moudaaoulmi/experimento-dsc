@@ -26,9 +26,9 @@ public aspect PetstoreWebHandler {
     // ---------------------------
 	declare soft : Exception : getCustomerHandler();
 	
-	declare soft : CreateException : getShoppingControllerHandler();
+//	declare soft : CreateException : getShoppingControllerHandler();
 	
-	declare soft : ServiceLocatorException : getShoppingControllerHandler();
+//	declare soft : ServiceLocatorException : getShoppingControllerHandler();
 	
 	declare soft : RemoveException : destroyHandler();
 	
@@ -43,9 +43,9 @@ public aspect PetstoreWebHandler {
 	pointcut getCustomerHandler() : 
 		execution(public CustomerLocal PetstoreComponentManager.getCustomer(HttpSession));
 	
-	pointcut getShoppingControllerHandler() :
-		execution(public ShoppingControllerLocal PetstoreComponentManager.getShoppingController(HttpSession));
-	
+//	pointcut getShoppingControllerHandler() :
+//		execution(public ShoppingControllerLocal PetstoreComponentManager.getShoppingController(HttpSession));
+//	
 	/*** ShoppingWebController ***/
 	pointcut destroyHandler() : 
 		execution(public void ShoppingWebController.destroy(HttpSession));
@@ -71,16 +71,16 @@ public aspect PetstoreWebHandler {
         }
 	}
 	
-	ShoppingControllerLocal around() throws GeneralFailureException : 
-		getShoppingControllerHandler() {
-		try{
-			return proceed();
-		}catch(CreateException ce){
-			throw new GeneralFailureException(ce.getMessage());			
-		}catch(ServiceLocatorException ne){
-			throw new GeneralFailureException(ne.getMessage());			
-		}
-	}
+//	ShoppingControllerLocal around() throws GeneralFailureException : 
+//		getShoppingControllerHandler() {
+//		try{
+//			return proceed();
+//		}catch(CreateException ce){
+//			throw new GeneralFailureException(ce.getMessage());			
+//		}catch(ServiceLocatorException ne){
+//			throw new GeneralFailureException(ne.getMessage());			
+//		}
+//	}
 	
 	void around() : 
 		destroyHandler() {
