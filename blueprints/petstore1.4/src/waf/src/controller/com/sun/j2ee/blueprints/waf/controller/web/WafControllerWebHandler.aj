@@ -14,12 +14,9 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSessionEvent;
-import javax.ejb.CreateException;
-import javax.ejb.RemoveException;
 import javax.servlet.http.HttpSession;
 import javax.xml.parsers.ParserConfigurationException;
 import com.sun.j2ee.blueprints.util.aspect.ExceptionGenericAspect;
-import com.sun.j2ee.blueprints.util.tracer.Debug;
 import com.sun.j2ee.blueprints.waf.controller.ejb.EJBControllerLocal;
 import com.sun.j2ee.blueprints.waf.event.EventException;
 import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
@@ -48,7 +45,7 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 		screenFlowManager_flowInitGetResourceHandler();
 	declare soft : EventException : mainServlet_internalDoProcessHandler();
 	declare soft : HTMLActionException : mainServlet_internalDoProcessHandler();
-	declare soft : RemoveException : defaultWebController_destroyHandler();
+//	declare soft : RemoveException : defaultWebController_destroyHandler();
 	declare soft : SAXParseException : URLMappingsXmlDAO_loadDocumentHandler();
 	declare soft : SAXException : URLMappingsXmlDAO_loadDocumentHandler();
 	declare soft : IOException : URLMappingsXmlDAO_loadDocumentHandler() || 
@@ -91,8 +88,8 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 		execution(private HTMLAction RequestProcessor.internalGetAction(String));
 	
 	/*** DefaultWebController ***/
-	pointcut defaultWebController_destroyHandler() : 
-		execution(public synchronized void destroy(HttpSession));
+//	pointcut defaultWebController_destroyHandler() : 
+//		execution(public synchronized void destroy(HttpSession));
 	
 	/*** URLMappingsXmlDAO ***/
 	pointcut URLMappingsXmlDAO_loadDocumentHandler() : 	
@@ -168,15 +165,15 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 	        context.getRequestDispatcher(nextScreen).forward(request, response);
 		}
 	}
-	
-    void around() :  defaultWebController_destroyHandler() {
-	    try {
-	        proceed();
-	    } catch(RemoveException re){
-	        // ignore, after all its only a remove() call!
-	        Debug.print(re);
-	    }
-    }
+//	
+//    void around() :  defaultWebController_destroyHandler() {
+//	    try {
+//	        proceed();
+//	    } catch(RemoveException re){
+//	        // ignore, after all its only a remove() call!
+//	        Debug.print(re);
+//	    }
+//    }
 
     Element around() : URLMappingsXmlDAO_loadDocumentHandler() { 
     	try {
