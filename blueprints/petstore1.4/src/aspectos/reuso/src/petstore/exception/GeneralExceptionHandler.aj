@@ -1,6 +1,5 @@
 package petstore.exception;
 
-
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 import com.sun.j2ee.blueprints.opc.customerrelations.ejb.MailContentXDE;
 import com.sun.j2ee.blueprints.opc.customerrelations.ejb.MailContentXDE.FormatterException;
@@ -21,8 +20,9 @@ import com.sun.j2ee.blueprints.uidgen.ejb.UniqueIdGeneratorLocal;
 import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrder;
 import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
 import com.sun.j2ee.blueprints.petstore.controller.web.PetstoreComponentManager;
+import com.sun.j2ee.blueprints.util.tracer.Debug;
 import com.sun.j2ee.blueprints.waf.controller.web.DefaultComponentManager;
-
+import javax.ejb.RemoveException;
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 import javax.servlet.http.HttpSession;
@@ -34,16 +34,19 @@ import javax.xml.transform.Source;
 import java.io.InputStream;
 import java.util.Collection;
 
+import com.sun.j2ee.blueprints.petstore.controller.web.ShoppingWebController;
 
-public aspect GeneralExceptionHandler {
-	
+
+public privileged aspect GeneralExceptionHandler {
+
 	// ---------------------------
 	// Declare Soft's
 	// ---------------------------
 
+
 	declare soft : FormatterException : getDocumentHandler() || 
 										getDocumentAsStringHandler();
-	
+
 	declare soft : TransformerConfigurationException : internalGetTransformerHandler();
 
 	declare soft : TransformerConfigurationException : internalGetTransformerHandler();
@@ -51,7 +54,7 @@ public aspect GeneralExceptionHandler {
 	declare soft : FinderException : signOnEJB_authenticateHandler() ||
 									 internalGetCustomerHandler() || 
 									 performSignOnHandler();
-	
+
 	declare soft : ServiceLocatorException : getInventoryHandler() || 
 	 										 initHandler() ||
 	 										 sendInvoicesHandler() ||
@@ -59,21 +62,25 @@ public aspect GeneralExceptionHandler {
 	 										 getUniqueIdGeneratorHandler() ||
 	 										 getShoppingControllerHandler() ||
 	 										 defaultComponentManager_getEJBControllerHandler();
-	
+
 	declare soft : CreateException : getUniqueIdGeneratorHandler() ||
 									 initHandler() ||
 									 getShoppingControllerHandler() ||
 									 defaultComponentManager_getEJBControllerHandler();
-	
+
+	declare soft : RemoveException : destroyHandler() ||
+									 defaultWebController_destroyHandler();
+
 	// ---------------------------
 	// Pointcut's
 	// ---------------------------
+	
 	pointcut getShoppingControllerHandler() :
 		execution(public ShoppingControllerLocal PetstoreComponentManager.getShoppingController(HttpSession));
-	
+
 	pointcut defaultComponentManager_getEJBControllerHandler() : 
 		execution(public EJBControllerLocal DefaultComponentManager.getEJBController(HttpSession));
-	
+
 	pointcut internalGetTransformerHandler() : 
 		execution(private Transformer TPASupplierOrderXDE.internalGetTransformer(InputStream));
 
@@ -85,46 +92,64 @@ public aspect GeneralExceptionHandler {
 
 	pointcut getDocumentAsStringHandler() :
 		execution(public String MailContentXDE.getDocumentAsString());
-	
+
 	pointcut signOnEJB_authenticateHandler() : 
 		execution(public boolean SignOnEJB.authenticate(String, String));
 
 	pointcut performSignOnHandler() : 
 		execution(public EventResponse SignOnEJBAction.perform(Event));
-	
+
 	pointcut internalGetCustomerHandler() : 
 		execution(private CustomerLocal CustomerEJBAction.internalGetCustomer());
-	
+
 	pointcut sendInvoicesHandler() : 
 		execution(private void RcvrRequestProcessor.sendInvoices(Collection));
-	
+
 	pointcut initHandler() : 
 		execution(public void RcvrRequestProcessor.init());
-	
+
 	pointcut getInventoryHandler() : 
 		execution(public Collection DisplayInventoryBean.getInventory());
-	
+
 	pointcut getUniqueIdGeneratorHandler() : 
 		execution(private UniqueIdGeneratorLocal OrderEJBAction.getUniqueIdGenerator());
-	
+
 	pointcut internalSendAMessageHandler() : 
 		execution(private void OrderEJBAction.internalSendAMessage(PurchaseOrder));
+
+	pointcut destroyHandler() : 
+		execution(public void ShoppingWebController.destroy(HttpSession));
+
+	pointcut defaultWebController_destroyHandler() : 
+		execution(public synchronized void destroy(HttpSession));
 
 	// ---------------------------
 	// Advice's
 	// ---------------------------
+
+
+	void around() :  defaultWebController_destroyHandler() ||
+    				 destroyHandler(){
+		try {
+			proceed();
+		} catch (RemoveException re) {
+			// ignore, after all its only a remove() call!
+			Debug.print(re);
+		}
+	}
+
 	Object around() throws GeneralFailureException : 
 		getShoppingControllerHandler() ||
 		defaultComponentManager_getEJBControllerHandler(){
-		try{
+		try {
 			return proceed();
-		}catch(CreateException ce){
-			throw new GeneralFailureException(ce.getMessage());			
-		}catch(ServiceLocatorException ne){
-			throw new GeneralFailureException(ne.getMessage());			
+		} catch (CreateException ce) {
+			throw new GeneralFailureException(ce.getMessage());
+		} catch (ServiceLocatorException ne) {
+			throw new GeneralFailureException(ne.getMessage());
 		}
 	}
-	
+
 	Object around() : getUniqueIdGeneratorHandler() ||
 					  initHandler(){
 		try {
@@ -134,7 +159,7 @@ public aspect GeneralExceptionHandler {
 			return null;
 		}
 	}
-	
+
 	Object around() :  sendInvoicesHandler()|| 
 					   initHandler() || 
 					   getInventoryHandler() ||
@@ -148,7 +173,7 @@ public aspect GeneralExceptionHandler {
 		}
 		return result;
 	}
-	
+
 	Object around() throws XMLDocumentException : 
 				getDocumentHandler() || 
 				getDocumentAsStringHandler() ||
@@ -160,14 +185,14 @@ public aspect GeneralExceptionHandler {
 			throw new XMLDocumentException(exception);
 		}
 	}
-	
+
 	Object around() : signOnEJB_authenticateHandler() ||
 					  internalGetCustomerHandler() || 
 					  performSignOnHandler(){
 		try {
 			return proceed();
 		} catch (FinderException fe) {
-			return null; 
+			return null;
 		}
 	}
 }
