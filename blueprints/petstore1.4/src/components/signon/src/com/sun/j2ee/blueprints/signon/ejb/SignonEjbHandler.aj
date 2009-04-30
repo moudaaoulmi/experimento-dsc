@@ -22,29 +22,18 @@ public aspect SignonEjbHandler {
 	// ---------------------------
     // Declare soft's
     // ---------------------------
-	declare soft : FinderException : signOnEJB_authenticateHandler();
 	declare soft : NamingException : signOnEJB_ejbCreateHandler();
-	
+
 	// ---------------------------
     // Pointcut's
     // ---------------------------
 	/*** SignOnEJB ***/
-	pointcut signOnEJB_authenticateHandler() : 
-		execution(public boolean SignOnEJB.authenticate(String, String));
-	
 	pointcut signOnEJB_ejbCreateHandler() : 
 		execution(void SignOnEJB.ejbCreate());
 	
 	// ---------------------------
     // Advice's
     // ---------------------------		
-	boolean around() : signOnEJB_authenticateHandler() {
-		try {
-			return proceed();
-		} catch (FinderException fe) {
-			return false; 
-		}
-	}
 	void around() throws CreateException : signOnEJB_ejbCreateHandler() {
 		try {
 			proceed();
