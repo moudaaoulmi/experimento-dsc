@@ -25,7 +25,7 @@ public aspect SupplierOrderfulfillmentEjbHandler {
 	declare soft : XMLDocumentException : internalCreateInvoiceHandler() || 
 										  internalProcessAnOrderHandler();
 	declare soft : IOException : internalLoadHandler();
-	declare soft : TransformerConfigurationException : internalGetTransformerHandler();
+//	declare soft : TransformerConfigurationException : internalGetTransformerHandler();
 
 	/*** OrderFulfillmentFacadeEJB ***/
 	pointcut checkInventoryHandler() : 
@@ -41,11 +41,11 @@ public aspect SupplierOrderfulfillmentEjbHandler {
 	pointcut internalLoadHandler() :  
 		execution(private void TPASupplierOrderXDE.internalLoad(Properties, InputStream));
 
-	pointcut internalGetTransformerHandler() : 
-		execution(private Transformer TPASupplierOrderXDE.internalGetTransformer(InputStream));
+//	pointcut internalGetTransformerHandler() : 
+//		execution(private Transformer TPASupplierOrderXDE.internalGetTransformer(InputStream));
 
-	pointcut internalCreateTransformerHandler() : 
-		execution(private Transformer TPASupplierOrderXDE.internalCreateTransformer());
+//	pointcut internalCreateTransformerHandler() : 
+//		execution(private Transformer TPASupplierOrderXDE.internalCreateTransformer());
 
 	boolean around() : 
 		checkInventoryHandler() {
@@ -81,15 +81,15 @@ public aspect SupplierOrderfulfillmentEjbHandler {
 		}
 	}
 
-	Object around() throws XMLDocumentException :
-		internalGetTransformerHandler() || 
-		internalCreateTransformerHandler(){
-		try {
-			return proceed();
-		} catch (Exception exception) {
-			throw new XMLDocumentException(exception);
-		}
-	
-	}
+//	Object around() throws XMLDocumentException :
+//		internalGetTransformerHandler() || 
+//		internalCreateTransformerHandler(){
+//		try {
+//			return proceed();
+//		} catch (Exception exception) {
+//			throw new XMLDocumentException(exception);
+//		}
+//	
+//	}
 
 }
