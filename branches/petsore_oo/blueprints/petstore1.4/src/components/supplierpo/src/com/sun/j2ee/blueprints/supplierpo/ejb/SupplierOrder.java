@@ -150,7 +150,7 @@ public class SupplierOrder {
       }
       return stream.toString(XMLDocumentUtils.DEFAULT_ENCODING);
     } catch (Exception exception) {
-      ejbHandler.toXMLHandler(exception);
+      ejbHandler.throwXMLDocumentExceptiontHandler(exception);
     }
     return null;
   }

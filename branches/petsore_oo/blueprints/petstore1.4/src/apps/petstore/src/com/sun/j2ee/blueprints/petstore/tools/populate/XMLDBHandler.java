@@ -154,7 +154,6 @@ public abstract class XMLDBHandler extends XMLFilterImpl {
           }
         } catch (PopulateException exception) {
         tooPopulateHandler.startElementHandler(exception);
-        	// throw new SAXException(exception.getMessage(), exception.getRootCause());
         }
         state = READY;
       } else {

@@ -148,7 +148,7 @@ public class TPAInvoiceXDE extends XMLDocumentEditor.DefaultXDE {
 			copyDocument(new StreamResult(stream));
 			return stream.toString(XMLDocumentUtils.DEFAULT_ENCODING);
 		} catch (Exception exception) {
-			tpaHandler.throwXMLDocumentExceptionHandler(exception);
+			tpaHandler.throwXMLDocumentExceptiontHandler(exception);
 		}
 		return null;
 	}

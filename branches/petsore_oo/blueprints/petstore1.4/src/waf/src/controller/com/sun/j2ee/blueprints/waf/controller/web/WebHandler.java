@@ -7,7 +7,11 @@ import org.xml.sax.SAXParseException;
 import com.sun.j2ee.blueprints.util.tracer.Debug;
 import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
 
-public class WebHandler {
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
+@ExceptionHandler
+public class WebHandler extends GeneralException{
 
 	public void destroyHandler(RemoveException re) {
 		// ignore, after all its only a remove() call!

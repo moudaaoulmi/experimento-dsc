@@ -141,6 +141,6 @@
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/xalan.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/xsdlib.jar"/>
-	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/aspectjlib-1.5.3.jar"/>
+	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/aspectjlib.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

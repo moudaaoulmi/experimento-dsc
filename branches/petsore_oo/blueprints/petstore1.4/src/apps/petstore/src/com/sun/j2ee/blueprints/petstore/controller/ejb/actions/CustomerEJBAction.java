@@ -103,9 +103,8 @@ public class CustomerEJBAction extends EJBActionSupport {
           CustomerLocal customer = null;
           try {
               customer = scf.getCustomer();
-          } catch (FinderException fe) {
-
-          }
+          } catch (FinderException fe) {}
+          
 
           AccountLocal account = customer.getAccount();
           // deep copy of Contact info to Local EJBs

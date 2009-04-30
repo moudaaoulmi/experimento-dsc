@@ -5,18 +5,15 @@ import javax.jms.TopicConnection;
 
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 
-public class TransitionsHandler {
-	
-	/**
-	 *O nome do método é genérico pois há reuso de código!
-	 */
-	public void throwTransitionExceptionHanlder(Exception e) throws TransitionException{
-		 throw new TransitionException(e);		
-	}
-	
-	public void sendMessage(TopicConnection topicConnect) throws JMSException{
-		if( topicConnect != null )
-	        topicConnect.close();
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
+@ExceptionHandler
+public class TransitionsHandler extends GeneralException {
+
+	public void sendMessage(TopicConnection topicConnect) throws JMSException {
+		if (topicConnect != null)
+			topicConnect.close();
 	}
 
 }

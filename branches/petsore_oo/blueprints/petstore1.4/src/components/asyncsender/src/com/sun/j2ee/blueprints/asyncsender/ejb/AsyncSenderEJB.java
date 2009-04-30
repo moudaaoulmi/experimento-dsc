@@ -79,7 +79,6 @@ public class AsyncSenderEJB implements SessionBean {
 			jmsMsg.setText(msg);
 			qSender.send(jmsMsg);
 		} catch (Exception e) {
-			this.ejbHandler.sendAMessageHandler(e);
 			this.ejbHandler.throwEJBExceptionHandler(
 					"askMDBToSendAMessage: Error!", e);
 		} finally {

@@ -108,7 +108,6 @@ public class ShoppingWebController implements WebController {
         try {
             scEjb.remove();
         } catch(RemoveException re){
-            // ignore, after all its only a remove() call!
         	webHandler.destroyHandler(re);
         }
     }

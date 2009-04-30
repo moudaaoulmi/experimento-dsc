@@ -2,7 +2,13 @@ package com.sun.j2ee.blueprints.xmldocuments.tpa;
 
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 
-public class TPAHandler {
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
+@ExceptionHandler
+
+
+public class TPAHandler extends GeneralException{
 
 	public void printStackTraceThrowXMLDocumentExceptionHandler(Exception exception)
 			throws XMLDocumentException {
@@ -10,9 +16,9 @@ public class TPAHandler {
 		throw new XMLDocumentException(exception);
 	}
 
-	public void throwXMLDocumentExceptionHandler(Exception exception)
-			throws XMLDocumentException {
-		throw new XMLDocumentException(exception);
-	}	
+//	public void throwXMLDocumentExceptionHandler(Exception exception)
+//			throws XMLDocumentException {
+//		throw new XMLDocumentException(exception);
+//	}	
 
 }

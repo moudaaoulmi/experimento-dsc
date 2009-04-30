@@ -161,7 +161,8 @@ public class OPCAdminFacadeEJB implements SessionBean {
 						podate, po.getPoValue(), status));
 			}
 		} catch (FinderException fe) {
-			this.adminEjbHandler.getOrdersByStatusHandler(fe);
+			this.adminEjbHandler.getOrdersHandler(fe,
+					"finder Ex while getOrdByStat :", " of given status : ");
 		}
 		return (retVal);
 	}
@@ -261,7 +262,8 @@ public class OPCAdminFacadeEJB implements SessionBean {
 				}
 			}
 		} catch (FinderException fe) {
-			this.adminEjbHandler.getChartInfoHandler(fe);
+			this.adminEjbHandler.getOrdersHandler(fe,
+					"finder Ex while getChart :", " in given period : ");
 		}
 		return (chartDetails);
 	}

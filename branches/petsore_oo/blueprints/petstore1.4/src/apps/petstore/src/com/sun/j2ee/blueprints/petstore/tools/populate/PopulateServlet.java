@@ -158,7 +158,7 @@ public class PopulateServlet extends HttpServlet {
         try {
           alreadyPopulated = catalogPopulator.check(connection) && customerPopulator.check() && userPopulator.check();
         } catch (PopulateException exception) {
-        	toolPopulateHandler.ignoreHandler();
+        	toolPopulateHandler.ignoreHandler(exception);
         }
         //System.err.println("Already populated: " + alreadyPopulated);
       }
@@ -289,7 +289,7 @@ public class PopulateServlet extends HttpServlet {
 
       });
     } catch (ParsingDoneException exception) {
-    	toolPopulateHandler.ignoreHandler();
+    	toolPopulateHandler.ignoreHandler(exception);
     } // Ignored
     return;
   }

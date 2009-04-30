@@ -18,13 +18,21 @@ import com.sun.j2ee.blueprints.catalog.model.Page;
 import com.sun.j2ee.blueprints.catalog.model.Product;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
 
-public class DaoHandler {
+
+@ExceptionHandler
+
+
+public class DaoHandler extends GeneralException{
 	
 	//catch (NamingException ne)
 	public void getDAOHandler(Exception ne) throws CatalogDAOSysException{
         throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:"+ ne.getClass().getName() + "while getting DAO type : \n" + ne.getMessage());
     } 
+	
+	public static void ignore(Exception e){}
 	
 	/**
 	 * Reusado
@@ -47,43 +55,16 @@ public class DaoHandler {
 	                                       exception.getMessage());
 	}
 	
-	//catch (Exception exception) 
-	public static void closeAllHandler(Exception exception){
-		//ignore
-	}
-	
-	//catch (SQLException exception) 
-	public Category getCategoryHandler(SQLException exception) throws CatalogDAOSysException {
-	      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
-	} 
 	
 	public void getCategoryFINALLYHandler(Connection connection, PreparedStatement statement, ResultSet resultSet) {
 		GenericCatalogDAO.closeAll(connection, statement, resultSet);
 	}
 	
-	public Page getCategories1Handler(SQLException exception) throws CatalogDAOSysException {
+	public void getHandler(SQLException exception) throws CatalogDAOSysException {
 	      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
 	} 
 	
-	public Product getProductHandler(SQLException exception) throws CatalogDAOSysException {
-	      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
-	} 
-	
-	public Item getItemHandler(SQLException exception) throws CatalogDAOSysException {
-	      throw new CatalogDAOSysException("SQLException: " + exception.getMessage());
-	} 
-	
-	
-	 //catch (NumberFormatException exception)
-	public void parseIntHandler(NumberFormatException exception){
-         //throw new SAXException(exception);
-    }
-	
-//	catch (ParsingDoneException exception) 
-	public void loadSQLStatementsHandler(SAXException exception){
-		// Ignored
-	} 
-	
+
 	//catch (Exception exception)
 	public static void mainHandler(Exception exception) { 
         exception.printStackTrace(System.err);

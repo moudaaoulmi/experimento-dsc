@@ -19,63 +19,27 @@ import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
 import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileLocal;
 import com.sun.j2ee.blueprints.signon.user.ejb.UserLocal;
 
-public class ToolPopulateHandler {
-	
-	
-	 //catch (Exception exception) 
-	public AccountLocal createAccountHandler(Exception exception) throws PopulateException{
-	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
-	}
-	
-	public AddressLocal createAddressHandler(Exception exception) throws PopulateException{
-	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
-	}
-	
-	public ContactInfoLocal createContactInfoHandler(Exception exception) throws PopulateException{
-	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
-	}
-	
-	public CreditCardLocal createCreditCardHandler(Exception exception) throws PopulateException{
-	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
-	}
-	
-	public CustomerLocal createCustomerHandler(Exception exception) throws PopulateException{
-	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
-	}
-	public ProfileLocal createProfileHandler(Exception exception) throws PopulateException{
-	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
-	}
-	
-	public UserLocal createUserHandler(Exception exception) throws PopulateException{
-	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
-	}
-	
-	
-	/**
-	 * MÉTODO criado para reusar, pois haviam vários catchs 
-	 * não tinham nada como tratamento
-	 */
-	//catch (PopulateException exception)
-	public void ignoreHandler(){
-	      // System.err.println(exception.getRootCause().getMessage());
-	}
-	
-	//catch (PopulateException exception)
-//	public void dropTablesHandler(){
-//	      // System.err.println(exception.getRootCause().getMessage());
-//	}
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
 
-	//catch (Exception e)
+@ExceptionHandler
+
+
+public class ToolPopulateHandler extends GeneralException{
+	
+
+	
+	public void throwPopulateExceptionHandler(Exception exception) throws PopulateException{
+	      throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+	}
+	
+	
+	
 	public boolean checkHandler(){
         return false;
    }
 	
-//	//catch (Exception exception) 
-//	public void createCustomerHandler(){
-//  	  //ignore
-//    }
-	
-	//catch (Exception exception) 
+
 	public void initHandler(Exception exception) throws ServletException{	
 	   throw new ServletException(exception);
 	}

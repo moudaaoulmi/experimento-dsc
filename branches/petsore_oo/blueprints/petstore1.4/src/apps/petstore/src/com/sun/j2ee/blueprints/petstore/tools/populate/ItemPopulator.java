@@ -91,7 +91,7 @@ public class ItemPopulator {
     } catch (PopulateException exception) {
 	/**  Exception Handler  */
  	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
- 	 toolPopulateHandler.ignoreHandler();
+ 	 toolPopulateHandler.ignoreHandler(exception);
     }
     PopulateUtils.executeSQLStatement(connection, sqlStatements, PopulateUtils.makeSQLStatementKey(PopulateUtils.DROP_OPERATION, "item"), null, null);
     return;

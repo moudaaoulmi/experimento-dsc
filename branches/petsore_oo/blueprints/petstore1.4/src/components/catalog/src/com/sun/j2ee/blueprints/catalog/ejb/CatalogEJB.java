@@ -56,98 +56,101 @@ import com.sun.j2ee.blueprints.util.tracer.Debug;
 
 /**
  * Session Bean implementation of Catalog
- *
+ * 
  */
 public class CatalogEJB implements SessionBean {
-	
+
 	EjbHandler ejbHandler = new EjbHandler();
-	
-    protected CatalogDAO dao;
 
-    public void ejbCreate() {
-        try {
-            dao = CatalogDAOFactory.getDAO();
-        }
-        catch (CatalogDAOSysException se) {
-        	ejbHandler.createHandler(se);
-        }
-    }
+	protected CatalogDAO dao;
 
-    public void setSessionContext(SessionContext sc) {}
-    public void ejbRemove() {}
+	public void ejbCreate() {
+		try {
+			dao = CatalogDAOFactory.getDAO();
+		} catch (CatalogDAOSysException se) {
+			ejbHandler.createHandler(se);
+		}
+	}
 
-    //activate is empty for StateLess Session EJBs
-    public void ejbActivate() { }
-    //passivate is empty for StateLess Session EJBs
-    public void ejbPassivate() { }
+	public void setSessionContext(SessionContext sc) {
+	}
 
-    public void destroy() { dao = null; }
+	public void ejbRemove() {
+	}
 
-    public Category getCategory(String categoryID, Locale l) {
-        try {
-            return dao.getCategory(categoryID, l);
-        }
-        catch (CatalogDAOSysException se) {
-        	return ejbHandler.getCategoryHandler(se);
-        	
-        }
-    }
+	// activate is empty for StateLess Session EJBs
+	public void ejbActivate() {
+	}
 
-    public Page getCategories(int start, int count, Locale l) {
-        try {
-            return dao.getCategories(start, count, l);
-        }
-        catch (CatalogDAOSysException se) {
-        	return ejbHandler.getCategoriesHandler(se);
-        }
-    }
+	// passivate is empty for StateLess Session EJBs
+	public void ejbPassivate() {
+	}
 
-    public Page getProducts(String categoryID, int start,
-                            int count, Locale l) {
-        try {
-            return dao.getProducts(categoryID, start, count, l);
-        }
-        catch (CatalogDAOSysException se) {
-        	return ejbHandler.getCategoriesHandler(se);
-        }
-    }
+	public void destroy() {
+		dao = null;
+	}
 
-    public Product getProduct(String productID, Locale l) {
-        try {
-            return dao.getProduct(productID, l);
-        }
-        catch (CatalogDAOSysException se) {
-        	return ejbHandler.getProductHandler(se);
-        }
-    }
+	public Category getCategory(String categoryID, Locale l) {
+		try {
+			return dao.getCategory(categoryID, l);
+		} catch (CatalogDAOSysException se) {
+			ejbHandler.throwEJBExceptionHandler(se);
+			return null;
 
-    public Page getItems(String productID, int start,
-                         int count, Locale l) {
-        try {
-            return dao.getItems(productID, start, count, l);
-        }
-        catch (CatalogDAOSysException se) {
-        	return ejbHandler.getCategoriesHandler(se);
-        }
-    }
+		}
+	}
 
-    public Item getItem(String itemID, Locale l) {
-        try {
-            return dao.getItem(itemID, l);
-        }
-        catch (CatalogDAOSysException se) {
-        	return ejbHandler.getItemHandler(se);
-        }
-    }
+	public Page getCategories(int start, int count, Locale l) {
+		try {
+			return dao.getCategories(start, count, l);
+		} catch (CatalogDAOSysException se) {
+			ejbHandler.throwEJBExceptionHandler(se);
+			return null;
+		}
+	}
 
-    public Page searchItems(String searchQuery, int start,
-                            int count, Locale l) {
-        try {
-            return dao.searchItems(searchQuery, start, count, l);
-        }
-        catch (CatalogDAOSysException se) {
-        	return ejbHandler.getCategoriesHandler(se);
-        }
-    }
+	public Page getProducts(String categoryID, int start, int count, Locale l) {
+		try {
+			return dao.getProducts(categoryID, start, count, l);
+		} catch (CatalogDAOSysException se) {
+			ejbHandler.throwEJBExceptionHandler(se);
+			return null;
+		}
+	}
+
+	public Product getProduct(String productID, Locale l) {
+		try {
+			return dao.getProduct(productID, l);
+		} catch (CatalogDAOSysException se) {
+			ejbHandler.throwEJBExceptionHandler(se);
+			return null;
+		}
+	}
+
+	public Page getItems(String productID, int start, int count, Locale l) {
+		try {
+			return dao.getItems(productID, start, count, l);
+		} catch (CatalogDAOSysException se) {
+			ejbHandler.throwEJBExceptionHandler(se);
+			return null;
+		}
+	}
+
+	public Item getItem(String itemID, Locale l) {
+		try {
+			return dao.getItem(itemID, l);
+		} catch (CatalogDAOSysException se) {
+			ejbHandler.throwEJBExceptionHandler(se);
+			return null;
+		}
+	}
+
+	public Page searchItems(String searchQuery, int start, int count, Locale l) {
+		try {
+			return dao.searchItems(searchQuery, start, count, l);
+		} catch (CatalogDAOSysException se) {
+			ejbHandler.throwEJBExceptionHandler(se);
+			return null;
+		}
+	}
 }
-

@@ -7,15 +7,21 @@ import javax.ejb.EJBException;
 import com.sun.j2ee.blueprints.mailer.exceptions.MailerAppException;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 
-public class EjbHandler {
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
 
-	public void byteArrayDataSourceHandler(UnsupportedEncodingException uex){
-		
-	}
+@ExceptionHandler
+
+
+public class EjbHandler extends GeneralException{
+
+//	public void byteArrayDataSourceHandler(UnsupportedEncodingException uex){
+//		
+//	}
 	
-	public void toXMLHandler(Exception e) throws XMLDocumentException{
-		throw new XMLDocumentException(e);
-	}
+//	public void toXMLHandler(Exception e) throws XMLDocumentException{
+//		throw new XMLDocumentException(e);
+//	}
 	
 	public void fromXMLHandler(XMLDocumentException e) throws XMLDocumentException{
 		 System.err.println(e.getRootCause().getMessage());
@@ -27,9 +33,9 @@ public class EjbHandler {
         System.exit(2);
 	}
 	
-	public void onMessageHandler(MailerAppException me){
-		
-	}
+//	public void onMessageHandler(MailerAppException me){
+//		
+//	}
 	
 	public void onMessage2Handler(Exception e){
 		throw new EJBException("MailerMDB.onMessage" + e);

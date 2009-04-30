@@ -93,7 +93,8 @@ public class AccountPopulator {
     	
     	/** Exception Handler */
     	ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
-    	return toolPopulateHandler.createAccountHandler(exception);
+    	toolPopulateHandler.throwPopulateExceptionHandler(exception);
+    	return null;
     	// throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
     }
   }

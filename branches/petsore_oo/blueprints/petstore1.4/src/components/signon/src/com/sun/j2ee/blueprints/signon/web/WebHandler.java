@@ -11,7 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-public class WebHandler {
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
+@ExceptionHandler
+
+
+public class WebHandler extends GeneralException{
 
 	public void initHandler(MalformedURLException ex){
 		System.err.println("SignonFilter: malformed URL exception: " + ex);

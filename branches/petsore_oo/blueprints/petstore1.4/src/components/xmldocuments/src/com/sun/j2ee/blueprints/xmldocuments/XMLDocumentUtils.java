@@ -176,8 +176,7 @@ public final class XMLDocumentUtils {
 					|| child.getNodeType() == Node.CDATA_SECTION_NODE) {
 				try {
 					buffer.append(((Text) child).getData());
-				} catch (DOMException e) {
-				}
+				} catch (DOMException e) {}
 			}
 		}
 		if (!optional && buffer.length() == 0) {
@@ -646,7 +645,7 @@ public final class XMLDocumentUtils {
 							entityCatalogURL));
 			document = builder.parse(source);
 		} catch (Exception exception) {
-			xmlHandler.fromXML1Handler(exception);
+			xmlHandler.throwXMLDocumentExceptiontHandler(exception);
 		}
 		if (!validating
 				|| XMLDocumentUtils.checkDocumentType(document, dtdPublicId)) {
@@ -700,8 +699,7 @@ public final class XMLDocumentUtils {
 			XMLReader reader = parser.getXMLReader();
 			try {
 				reader.setFeature(SAX_NS_PREFIXES, true);
-			} catch (SAXException exception) {
-			}
+			} catch (SAXException exception) {}
 			reader.setErrorHandler(new ErrorHandler() {
 				public void warning(SAXParseException exception) {
 					System.err.println("[Warning]: " + exception.getMessage());

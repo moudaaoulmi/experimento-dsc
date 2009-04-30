@@ -83,9 +83,7 @@ public class MailerMDB implements MessageDrivenBean, MessageListener {
       recMail = Mail.fromXML(xmlMailMessage);
       sendMail(recMail.getAddress(), recMail.getSubject(), recMail.getContent(),  Locale.getDefault());
     } catch (MailerAppException me) {
-      //throw new EJBException("MailerMDB.onMessage" + me);
-      //ignore since user probably forgot to set up mail server
-      ejbHandler.onMessageHandler(me);
+      ejbHandler.ignoreHandler(me);
     } catch (XMLDocumentException xde) {
     	ejbHandler.onMessage2Handler(xde);
     } catch(JMSException je) {

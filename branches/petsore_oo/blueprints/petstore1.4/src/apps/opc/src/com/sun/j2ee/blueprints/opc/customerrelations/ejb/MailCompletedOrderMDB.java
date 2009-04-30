@@ -37,7 +37,6 @@
 
 package com.sun.j2ee.blueprints.opc.customerrelations.ejb;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
@@ -105,8 +104,7 @@ public class MailCompletedOrderMDB implements MessageDrivenBean,
 		} catch (TransitionException te) {
 			this.ejbHandler.throwEJBExceptionHandler(te);
 		} catch (MailContentXDE.FormatterException mfe) {
-			this.ejbHandler.errPrintlnHandler(mfe);
-			this.ejbHandler.throwEJBExceptionHandler(mfe);
+			this.ejbHandler.throwErrAndEjbExceptionHandler(mfe);
 		}
 	}
 
@@ -134,8 +132,7 @@ public class MailCompletedOrderMDB implements MessageDrivenBean,
 		} catch (JMSException je) {
 			this.ejbHandler.throwEJBExceptionHandler(je);
 		} catch (MailContentXDE.FormatterException mfe) {
-			this.ejbHandler.errPrintlnHandler(mfe);
-			this.ejbHandler.throwEJBExceptionHandler(mfe);
+			this.ejbHandler.throwErrAndEjbExceptionHandler(mfe);
 		} catch (FinderException fe) {
 			this.ejbHandler.throwEJBExceptionHandler(fe);
 		}

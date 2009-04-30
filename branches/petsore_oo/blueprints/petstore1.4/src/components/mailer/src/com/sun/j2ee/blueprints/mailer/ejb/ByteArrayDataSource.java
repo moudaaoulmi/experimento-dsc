@@ -67,7 +67,7 @@ class ByteArrayDataSource implements DataSource {
         try {
            this.data = data.getBytes("UTF-8");
         } catch (UnsupportedEncodingException uex) {
-        	ejbHandler.byteArrayDataSourceHandler(uex);
+        	ejbHandler.ignoreHandler(uex);
         }
         this.type = type;
     }

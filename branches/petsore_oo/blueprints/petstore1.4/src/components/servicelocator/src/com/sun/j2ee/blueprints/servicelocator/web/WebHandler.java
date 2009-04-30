@@ -2,7 +2,13 @@ package com.sun.j2ee.blueprints.servicelocator.web;
 
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
-public class WebHandler {
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
+@ExceptionHandler
+
+
+public class WebHandler extends GeneralException{
 
 	/**
 	 * O nome do método é genérico pois há reuso de código!

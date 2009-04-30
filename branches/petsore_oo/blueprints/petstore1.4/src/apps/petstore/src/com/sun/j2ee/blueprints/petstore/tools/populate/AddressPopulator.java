@@ -45,74 +45,74 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 import com.sun.j2ee.blueprints.address.ejb.*;
 
-
 public class AddressPopulator {
-  public static final String JNDI_ADDRESS_HOME = "java:comp/env/ejb/Address";
-  private static final String XML_ADDRESS = "Address";
-  private static final String XML_STREETNAME1 = "StreetName[0]";
-  private static final String XML_STREETNAME2 = "StreetName[1]";
-  private static final String XML_CITY = "City";
-  private static final String XML_STATE = "State";
-  private static final String XML_ZIPCODE = "ZipCode";
-  private static final String XML_COUNTRY = "Country";
-  private String rootTag;
-  private AddressLocalHome addressHome = null;
-  private AddressLocal address ;
+	public static final String JNDI_ADDRESS_HOME = "java:comp/env/ejb/Address";
+	private static final String XML_ADDRESS = "Address";
+	private static final String XML_STREETNAME1 = "StreetName[0]";
+	private static final String XML_STREETNAME2 = "StreetName[1]";
+	private static final String XML_CITY = "City";
+	private static final String XML_STATE = "State";
+	private static final String XML_ZIPCODE = "ZipCode";
+	private static final String XML_COUNTRY = "Country";
+	private String rootTag;
+	private AddressLocalHome addressHome = null;
+	private AddressLocal address;
 
-  public AddressPopulator(String rootTag) {
-    this.rootTag = rootTag;
-    return;
-  }
-  
-  public XMLFilter setup(XMLReader reader) throws PopulateException {
-    return new XMLDBHandler(reader, rootTag, XML_ADDRESS) {
+	public AddressPopulator(String rootTag) {
+		this.rootTag = rootTag;
+		return;
+	}
 
-      public void update() throws PopulateException {}
+	public XMLFilter setup(XMLReader reader) throws PopulateException {
+		return new XMLDBHandler(reader, rootTag, XML_ADDRESS) {
 
-      public void create() throws PopulateException {
-        address = createAddress(getValue(XML_STREETNAME1),
-                                getValue(XML_STREETNAME2),
-                                getValue(XML_CITY),
-                                getValue(XML_STATE),
-                                getValue(XML_ZIPCODE),
-                                getValue(XML_COUNTRY));
-        return;
-      }
-    };
-  }
+			public void update() throws PopulateException {
+			}
 
-  public boolean check() throws PopulateException {
-    return true;
-  }
+			public void create() throws PopulateException {
+				address = createAddress(getValue(XML_STREETNAME1),
+						getValue(XML_STREETNAME2), getValue(XML_CITY),
+						getValue(XML_STATE), getValue(XML_ZIPCODE),
+						getValue(XML_COUNTRY));
+				return;
+			}
+		};
+	}
 
-  private AddressLocal createAddress(String streetName1, String streetName2, String city, String state, String zipCode, String country) throws PopulateException {
-    try {
-      if (addressHome == null) {
-        InitialContext context = new InitialContext();
-        addressHome = (AddressLocalHome) context.lookup(JNDI_ADDRESS_HOME);
-      }
-      AddressLocal address = addressHome.create();
-      address.setStreetName1(streetName1);
-      address.setStreetName2(streetName2);
-      address.setCity(city);
-      address.setState(state);
-      address.setZipCode(zipCode);
-      address.setCountry(country);
-      return address;
-    } catch (Exception exception) {
-    	
-	/** Exception Handler */
-	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
-	 return toolPopulateHandler.createAddressHandler(exception); 
-      //throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
-    }
+	public boolean check() throws PopulateException {
+		return true;
+	}
 
-  }
+	private AddressLocal createAddress(String streetName1, String streetName2,
+			String city, String state, String zipCode, String country)
+			throws PopulateException {
+		try {
+			if (addressHome == null) {
+				InitialContext context = new InitialContext();
+				addressHome = (AddressLocalHome) context
+						.lookup(JNDI_ADDRESS_HOME);
+			}
+			AddressLocal address = addressHome.create();
+			address.setStreetName1(streetName1);
+			address.setStreetName2(streetName2);
+			address.setCity(city);
+			address.setState(state);
+			address.setZipCode(zipCode);
+			address.setCountry(country);
+			return address;
+		} catch (Exception exception) {
 
-  public AddressLocal getAddress() {
-    return address;
-  }
+			/** Exception Handler */
+			ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+			toolPopulateHandler.throwPopulateExceptionHandler(exception);
+			return null;
+			// throw new PopulateException ("Could not create: " +
+			// exception.getMessage(), exception);
+		}
+
+	}
+
+	public AddressLocal getAddress() {
+		return address;
+	}
 }
-
-
-

@@ -138,8 +138,6 @@ public class DefaultComponentManager implements ComponentManager,
 			if (wcc != null) {
 				wcc.destroy(session);
 			}
-		} catch (Exception exe) {
-			// ignore the exception
-		}
+		} catch (Exception exe) {}
 	}
 }

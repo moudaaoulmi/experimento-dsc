@@ -48,97 +48,98 @@ import com.sun.j2ee.blueprints.customer.ejb.*;
 import com.sun.j2ee.blueprints.customer.account.ejb.*;
 import com.sun.j2ee.blueprints.customer.profile.ejb.*;
 
-
 public class CustomerPopulator {
-  public static final String JNDI_CUSTOMER_HOME = "java:comp/env/ejb/Customer";
-  public static final String XML_CUSTOMERS = "Customers";
-  private static final String XML_CUSTOMER = "Customer";
-  private static final String XML_ID = "Customer/@id";
-  private String rootTag;
-  private CustomerLocalHome customerHome = null;
-  private AccountPopulator accountPopulator;
-  private ProfilePopulator profilePopulator;
+	public static final String JNDI_CUSTOMER_HOME = "java:comp/env/ejb/Customer";
+	public static final String XML_CUSTOMERS = "Customers";
+	private static final String XML_CUSTOMER = "Customer";
+	private static final String XML_ID = "Customer/@id";
+	private String rootTag;
+	private CustomerLocalHome customerHome = null;
+	private AccountPopulator accountPopulator;
+	private ProfilePopulator profilePopulator;
 
+	public CustomerPopulator() throws PopulateException {
+		this(XML_CUSTOMERS);
+		return;
+	}
 
-  public CustomerPopulator() throws PopulateException {
-    this(XML_CUSTOMERS);
-    return;
-  }
+	public CustomerPopulator(String rootTag) throws PopulateException {
+		this.rootTag = rootTag;
+		accountPopulator = new AccountPopulator(rootTag);
+		profilePopulator = new ProfilePopulator(rootTag);
+		return;
+	}
 
-  public CustomerPopulator(String rootTag) throws PopulateException {
-    this.rootTag = rootTag;
-    accountPopulator = new AccountPopulator(rootTag);
-    profilePopulator = new ProfilePopulator(rootTag);
-    return;
-  }
+	public XMLFilter setup(XMLReader reader) throws PopulateException {
+		return new XMLDBHandler(profilePopulator.setup(accountPopulator
+				.setup(reader)), rootTag, XML_CUSTOMER) {
 
-  public XMLFilter setup(XMLReader reader) throws PopulateException {
-    return new XMLDBHandler(profilePopulator.setup(accountPopulator.setup(reader)), rootTag, XML_CUSTOMER) {
+			public void update() throws PopulateException {
+			}
 
-      public void update() throws PopulateException {}
+			public void create() throws PopulateException {
+				createCustomer(getValue(XML_ID), accountPopulator.getAccount(),
+						profilePopulator.getProfile());
+				return;
+			}
+		};
+	}
 
-      public void create() throws PopulateException {
-        createCustomer(getValue(XML_ID), accountPopulator.getAccount(), profilePopulator.getProfile());
-        return;
-      }
-    };
-  }
+	public boolean check() throws PopulateException {
+		try {
+			InitialContext context = new InitialContext();
+			customerHome = (CustomerLocalHome) context
+					.lookup(JNDI_CUSTOMER_HOME);
+			Collection customers = customerHome.findAllCustomers();
+			if ((customers == null) || (customers.size() == 0)) {
+				return false;
+			}
+		} catch (Exception e) {
+			/** Exception Handler */
+			ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+			toolPopulateHandler.checkHandler();
+			// return false;
+		}
+		return true;
+	}
 
-  public boolean check() throws PopulateException {
-    try {
-          InitialContext context = new InitialContext();
-          customerHome = (CustomerLocalHome) context.lookup(JNDI_CUSTOMER_HOME);
-          Collection customers = customerHome.findAllCustomers();
-          if ((customers == null) || (customers.size() == 0)) {
-        return false;
-      }
-    } catch (Exception e) {
-	 /**  Exception Handler  */
-  	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
-  	 toolPopulateHandler.checkHandler();
-         // return false;
-    }
-    return true;
-  }
+	private CustomerLocal createCustomer(String id, AccountLocal account,
+			ProfileLocal profile) throws PopulateException {
+		/** Exception Handler */
+		ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
 
-  private CustomerLocal createCustomer(String id, AccountLocal account, ProfileLocal profile) throws PopulateException {
-  /**  Exception Handler  */
-   	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
-   	 
-	try {
-      if (customerHome == null) {
-        InitialContext context = new InitialContext();
-        customerHome = (CustomerLocalHome) context.lookup(JNDI_CUSTOMER_HOME);
-      }
-      try {
-        CustomerLocal customer = customerHome.findByPrimaryKey(id);
-        customer.remove();
-      } catch (Exception exception) {
-	     toolPopulateHandler.ignoreHandler();
-    	  //ignore
-      }
-      CustomerLocal customer = customerHome.create(id);
-      if (account != null) {
-        AccountLocal acct = customer.getAccount();
-        acct.setStatus(account.getStatus());
-        acct.setContactInfo(account.getContactInfo());
-        acct.setCreditCard(account.getCreditCard());
-        account.remove();
-      }
-      if (profile != null) {
-        ProfileLocal prof = customer.getProfile();
-        prof.setPreferredLanguage(profile.getPreferredLanguage());
-        prof.setFavoriteCategory(profile.getFavoriteCategory());
-        prof.setMyListPreference(profile.getMyListPreference());
-        prof.setBannerPreference(profile.getBannerPreference());
-        profile.remove();
-      }
-      return customer;
-    } catch (Exception exception) {
-        return toolPopulateHandler.createCustomerHandler(exception);
-    	//throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
-    }
-  }
+		try {
+			if (customerHome == null) {
+				InitialContext context = new InitialContext();
+				customerHome = (CustomerLocalHome) context
+						.lookup(JNDI_CUSTOMER_HOME);
+			}
+			try {
+				CustomerLocal customer = customerHome.findByPrimaryKey(id);
+				customer.remove();
+			} catch (Exception exception) {
+				toolPopulateHandler.ignoreHandler(exception);
+			}
+			CustomerLocal customer = customerHome.create(id);
+			if (account != null) {
+				AccountLocal acct = customer.getAccount();
+				acct.setStatus(account.getStatus());
+				acct.setContactInfo(account.getContactInfo());
+				acct.setCreditCard(account.getCreditCard());
+				account.remove();
+			}
+			if (profile != null) {
+				ProfileLocal prof = customer.getProfile();
+				prof.setPreferredLanguage(profile.getPreferredLanguage());
+				prof.setFavoriteCategory(profile.getFavoriteCategory());
+				prof.setMyListPreference(profile.getMyListPreference());
+				prof.setBannerPreference(profile.getBannerPreference());
+				profile.remove();
+			}
+			return customer;
+		} catch (Exception exception) {
+			toolPopulateHandler.throwPopulateExceptionHandler(exception);
+			return null;
+		}
+	}
 }
-
-
