@@ -8,7 +8,13 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXNotRecognizedException;
 
-public class XMLDocumentsHandler {
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
+@ExceptionHandler
+
+
+public class XMLDocumentsHandler extends GeneralException{
 
 	public void getAttributeAsIntHandler(Element element, String name,
 			NumberFormatException exception) throws XMLDocumentException {
@@ -38,9 +44,9 @@ public class XMLDocumentsHandler {
 		System.out.println("XMLDocumentUtils:caught " + dex);
 	}
 
-	public void fromXML1Handler(Exception exception) throws XMLDocumentException {
-		throw new XMLDocumentException(exception);
-	}
+//	public void fromXML1Handler(Exception exception) throws XMLDocumentException {
+//		throw new XMLDocumentException(exception);
+//	}
 
 	public void fromXML2Handler(XMLDocumentException exception)
 		throws XMLDocumentException {
@@ -63,9 +69,9 @@ public class XMLDocumentsHandler {
 				exception);
 	}
 
-	public void toXMLHandler(Exception exception) throws XMLDocumentException {
-		throw new XMLDocumentException(exception);
-	}
+//	public void toXMLHandler(Exception exception) throws XMLDocumentException {
+//		throw new XMLDocumentException(exception);
+//	}
 
 	public void customEntityResolver1Handler(IOException exception,
 			String message) {

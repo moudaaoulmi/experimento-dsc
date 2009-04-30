@@ -6,31 +6,26 @@ import javax.ejb.EJBException;
 
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
 
-public class OrderfulfillmentEjbHandler {
-	
-	public void ejbCreateHandler(Exception e) {
-		throw new EJBException(e);	
+@ExceptionHandler
+public class OrderfulfillmentEjbHandler extends GeneralException {
+
+	public boolean checkInventoryHandler() {
+		return false;
 	}
 
-	public boolean checkInventoryHandler(){
-		return(false);
-	}
-	
-	public String processAnOrderHandler(Exception e ){
+	public String processAnOrderHandler(Exception e) {
 		System.out.println("OrderFulfillmentFacade**" + e);
 		return null;
 	}
-	
-	public void processPendingPOHandler(Exception e){
+
+	public void processPendingPOHandler(Exception e) {
 		System.out.println("OrderFulfillmentFacade:" + e);
 	}
-	
+
 	public void TPASupplierOrderXDE1Handler(Exception e, String s) {
-	    System.err.println("Can't load from resource: " + s + ": " + e);      
-	}
-	
-	public void TPASupplierOrderXDE2Handler(Exception e) throws XMLDocumentException {
-		throw new XMLDocumentException(e);
+		System.err.println("Can't load from resource: " + s + ": " + e);
 	}
 }

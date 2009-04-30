@@ -130,8 +130,7 @@ public class SignOnNotifier
               try {
                   wc.handleEvent(soe, session);
               } catch (EventException e) {
-            	  String msg = "SignOnNotifier Error handling event ";
-              	  webHandler.SystemErrHandler(msg,e);
+              	  webHandler.SystemErrHandler("SignOnNotifier Error handling event ",e);
               }
               CustomerLocal customer =  sl.getCustomer(session);
               // ensure the customer object is put in the session

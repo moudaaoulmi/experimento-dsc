@@ -101,9 +101,9 @@ public class OrderFulfillmentFacadeEJB implements SessionBean {
       invHome
         = (InventoryLocalHome) serviceLocator.getLocalHome(JNDINames.INV_EJB);
     } catch (XMLDocumentException xe) {
-    	orderfulfillmentEjbHandler.ejbCreateHandler(xe);
+    	orderfulfillmentEjbHandler.throwEJBExceptionHandler(xe);
     } catch (ServiceLocatorException se) {
-    	orderfulfillmentEjbHandler.ejbCreateHandler(se);
+    	orderfulfillmentEjbHandler.throwEJBExceptionHandler(se);
     }
   }
 

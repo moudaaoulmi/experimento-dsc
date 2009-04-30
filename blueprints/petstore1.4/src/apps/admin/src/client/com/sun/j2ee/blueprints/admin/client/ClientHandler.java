@@ -6,11 +6,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.Date;
-
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class ClientHandler {
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
+
+@ExceptionHandler
+
+public class ClientHandler extends GeneralException{
 
 	public void updateModelDatesHandler(JPanel panel) {
 		JOptionPane.showMessageDialog(panel, PetStoreAdminClient
@@ -19,9 +24,6 @@ public class ClientHandler {
 				JOptionPane.ERROR_MESSAGE);
 	}
 
-	public void printStackTraceHandler(Exception e) {
-		e.printStackTrace();
-	}
 
 	public Object getValueAtHandler() {
 		return new Integer(-1);
@@ -68,9 +70,6 @@ public class ClientHandler {
 		return -1.0f;
 	}
 
-	public static void staticPrintStackTraceHandler(Exception e) {
-		e.printStackTrace();
-	}
 
 	public void actionPerformedHandler(final Exception e, final ServerAction serverAction) {
 		Runnable doHandleException = new Runnable() {
@@ -79,6 +78,10 @@ public class ClientHandler {
 			}
 		};
 		EventQueue.invokeLater(doHandleException);
+	}
+	
+	public static void staticPrintStackTraceHandler(Exception e) {
+		e.printStackTrace();
 	}
 	
 	public boolean workerThreadHandler(){

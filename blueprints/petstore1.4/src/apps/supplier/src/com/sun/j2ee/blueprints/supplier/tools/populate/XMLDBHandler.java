@@ -56,6 +56,8 @@ public abstract class XMLDBHandler extends XMLFilterImpl {
   private String rootElementTag;
   private String elementTag;
   private boolean lazyInstantiation;
+  
+  private ToolsPopulateHandler toolsPopulateHandler = new ToolsPopulateHandler();
 
 
   public XMLDBHandler(XMLReader parent, String rootElementTag, String elementTag) {
@@ -92,7 +94,7 @@ public abstract class XMLDBHandler extends XMLFilterImpl {
             create();
           }
         } catch (PopulateException exception) {
-          throw new SAXException(exception.getMessage(), exception.getRootCause());
+          this.toolsPopulateHandler.throwPopulateExceptionHandler(exception);
         }
         return;
       }
@@ -143,7 +145,7 @@ public abstract class XMLDBHandler extends XMLFilterImpl {
             update();
           }
         } catch (PopulateException exception) {
-          throw new SAXException(exception.getMessage(), exception.getRootCause());
+          this.toolsPopulateHandler.throwPopulateExceptionHandler(exception);
         }
         state = READY;
       } else {

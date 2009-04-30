@@ -104,9 +104,9 @@ public class OrderEJBAction extends EJBActionSupport {
         (UniqueIdGeneratorLocalHome)sl.getLocalHome(JNDINames.UIDG_EJBHOME);
       uidgen = home.create();
     } catch (javax.ejb.CreateException cx) {
-    	actionsHandler.perform3Handler(cx);
+    	actionsHandler.errPrintlnHandler(cx);
     } catch (ServiceLocatorException slx) {
-    	actionsHandler.perform3Handler(slx);
+    	actionsHandler.errPrintlnHandler(slx);
     }
     orderIdString = uidgen.getUniqueId("1001");
     // get ther userId
@@ -154,7 +154,7 @@ public class OrderEJBAction extends EJBActionSupport {
       sender.sendAMessage(purchaseOrder.toXML());
 
     } catch (ServiceLocatorException sle) {
-    	actionsHandler.perform3Handler(sle);
+    	actionsHandler.errPrintlnHandler(sle);
     } catch (XMLDocumentException xde) {
     	actionsHandler.perform4Handler(xde);
     }  catch (CreateException ce) {

@@ -106,7 +106,7 @@ public class InventoryPopulator {
         inventory = inventoryHome.findByPrimaryKey(id);
         inventory.remove();
       } catch (Exception exception) {
-    	  toolsPopulateHandler.createInventoryHandler(exception);
+    	  toolsPopulateHandler.throwCreateExceptionHandler();
       }
       inventory = inventoryHome.create(id, quantity);
       return inventory;

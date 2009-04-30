@@ -63,37 +63,40 @@ import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
 import com.sun.j2ee.blueprints.petstore.util.JNDINames;
 
 /**
- * Session Bean implementation for EJBController EJB.
- * See the StateMachine for more details.
+ * Session Bean implementation for EJBController EJB. See the StateMachine for
+ * more details.
  */
 public class ShoppingControllerEJB extends EJBControllerLocalEJB {
 
-    EjbHandler ejbHandler = new EjbHandler();
+	EjbHandler ejbHandler = new EjbHandler();
 	private ShoppingClientFacadeLocal clientFacade = null;
 
-    public void ejbCreate() {
-        sm = new StateMachine(this, sc);
-        sm.setAttribute(PetstoreKeys.SHOPPING_CLIENT_FACADE, getShoppingClientFacade());
-    }
+	public void ejbCreate() {
+		sm = new StateMachine(this, sc);
+		sm.setAttribute(PetstoreKeys.SHOPPING_CLIENT_FACADE,
+				getShoppingClientFacade());
+	}
 
-    public ShoppingClientFacadeLocal getShoppingClientFacade() {
-        if (clientFacade == null) {
-            try {
-                ServiceLocator sl = new ServiceLocator();
-                ShoppingClientFacadeLocalHome home =
-                    (ShoppingClientFacadeLocalHome)sl.getLocalHome(JNDINames.SHOPPING_CLIENT_FACADE_EJBHOME);
-                clientFacade = home.create();
-            } catch (javax.ejb.CreateException cx) {
-            	String msg ="ShoppingControllerEJB: Failed to Create ShoppingClientFacade: caught ";
-            	ejbHandler.throwGeneralFailureExceptionHandler(msg,cx)	;
-            } catch (ServiceLocatorException slx) {
-            	String msg ="ShoppingControllerEJB: Failed to Create ShoppingClientFacade: caught ";
-            	ejbHandler.throwGeneralFailureExceptionHandler(msg,slx)	;
-            }
-        }
-        return clientFacade;
-    }
+	public ShoppingClientFacadeLocal getShoppingClientFacade() {
+		if (clientFacade == null) {
+			try {
+				ServiceLocator sl = new ServiceLocator();
+				ShoppingClientFacadeLocalHome home = (ShoppingClientFacadeLocalHome) sl
+						.getLocalHome(JNDINames.SHOPPING_CLIENT_FACADE_EJBHOME);
+				clientFacade = home.create();
+			} catch (javax.ejb.CreateException cx) {
+				ejbHandler
+						.throwGeneralFailureExceptionHandler(
+								"ShoppingControllerEJB: Failed to Create ShoppingClientFacade: caught ",
+								cx);
+			} catch (ServiceLocatorException slx) {
+				ejbHandler
+						.throwGeneralFailureExceptionHandler(
+								"ShoppingControllerEJB: Failed to Create ShoppingClientFacade: caught ",
+								slx);
+			}
+		}
+		return clientFacade;
+	}
 
 }
-
-

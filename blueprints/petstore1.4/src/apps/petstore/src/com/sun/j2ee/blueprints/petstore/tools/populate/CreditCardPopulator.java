@@ -89,7 +89,8 @@ public class CreditCardPopulator {
     } catch (Exception exception) {
     /**  Exception Handler  */
    	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
-   	 return toolPopulateHandler.createCreditCardHandler(exception);
+   	toolPopulateHandler.throwPopulateExceptionHandler(exception);
+	return null;
     }
 
   }

@@ -48,10 +48,12 @@ import com.sun.j2ee.blueprints.address.ejb.Address;
 import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
 
 public abstract class ContactInfoEJB implements javax.ejb.EntityBean {
 
-  EjbHandler ejbHandler = new EjbHandler();
+  GeneralException generalException = new GeneralException();
   private EntityContext context = null;
 
   // getters and setters for CMP fields
@@ -87,7 +89,7 @@ public abstract class ContactInfoEJB implements javax.ejb.EntityBean {
       AddressLocal address = adh.create();
       setAddress(address);
     } catch (ServiceLocatorException ne) {
-    	ejbHandler.throwCreateExceptionHandler();
+    	generalException.throwCreateExceptionHandler();
     }
   }
 
@@ -123,7 +125,7 @@ public abstract class ContactInfoEJB implements javax.ejb.EntityBean {
       AddressLocal address = adh.create(contactInfo.getAddress());
       setAddress(address);
     } catch (ServiceLocatorException ne) {
-    	ejbHandler.throwCreateExceptionHandler();
+    	generalException.throwCreateExceptionHandler();
     }
   }
 

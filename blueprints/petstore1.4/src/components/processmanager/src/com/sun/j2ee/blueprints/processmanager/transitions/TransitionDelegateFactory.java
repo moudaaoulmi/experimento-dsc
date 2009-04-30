@@ -37,12 +37,14 @@
 
 package com.sun.j2ee.blueprints.processmanager.transitions;
 
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
 /**
  * Used to get the required type of TransitionDelegate
  */
 public class TransitionDelegateFactory {
 
-  TransitionsHandler transitionsHandler = new TransitionsHandler();	
+  GeneralException generalException = new GeneralException();	
 	
   public TransitionDelegateFactory() { }
 
@@ -51,7 +53,7 @@ public class TransitionDelegateFactory {
     try {
       td = (TransitionDelegate)Class.forName(className).newInstance();
     } catch(Exception e) {
-    	transitionsHandler.getTransitionDelegateHandler(e);
+    	generalException.throwsTransitionExceptionHandler(e);
     }
     return td;
   }

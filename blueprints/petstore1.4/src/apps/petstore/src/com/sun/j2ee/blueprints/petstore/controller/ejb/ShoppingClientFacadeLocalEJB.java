@@ -69,93 +69,105 @@ import com.sun.j2ee.blueprints.petstore.util.JNDINames;
 
 /**
  * Session Bean implementation for ShoppingClientFacadeLocal EJB.
- *
+ * 
  * Provide a facade to all of the ejbs related to a shopping client
  */
 public class ShoppingClientFacadeLocalEJB implements SessionBean {
 
-    EjbHandler ejbHandler = new EjbHandler();
+	EjbHandler ejbHandler = new EjbHandler();
 	private SessionContext sc = null;
 
-    private ShoppingCartLocal cart = null;
-    private CustomerLocal customer = null;
-    private String userId = null;
+	private ShoppingCartLocal cart = null;
+	private CustomerLocal customer = null;
+	private String userId = null;
 
-    public ShoppingClientFacadeLocalEJB() {}
+	public ShoppingClientFacadeLocalEJB() {
+	}
 
+	public void ejbCreate() {
+	}
 
-    public void ejbCreate() {
-    }
+	public void setSessionContext(SessionContext sc) {
+		this.sc = sc;
+	}
 
-    public void setSessionContext(SessionContext sc) {
-        this.sc = sc;
-    }
+	public String getUserId() {
+		return userId;
+	}
 
-    public String getUserId() {
-         return userId;
-    }
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+	/*
+	 * Asume that the customer userId has been set
+	 */
+	public CustomerLocal getCustomer() throws FinderException {
+		if (userId == null) {
+			throw new GeneralFailureException(
+					"ShoppingClientFacade: failed to look up name of customer: userId is not set");
+		}
+		try {
+			ServiceLocator sl = new ServiceLocator();
+			CustomerLocalHome home = (CustomerLocalHome) sl
+					.getLocalHome(JNDINames.CUSTOMER_EJBHOME);
+			customer = home.findByPrimaryKey(userId);
+		} catch (ServiceLocatorException slx) {
+			ejbHandler
+					.throwGeneralFailureExceptionHandler(
+							"ShoppingClientFacade: failed to look up name of customer: caught ",
+							slx);
+		}
+		return customer;
+	}
 
-    /*
-     * Asume that the customer userId has been set
-     */
-    public CustomerLocal getCustomer() throws FinderException {
-            if (userId == null) {
-                throw new GeneralFailureException("ShoppingClientFacade: failed to look up name of customer: userId is not set" );
-            }
-            try {
-                ServiceLocator sl = new ServiceLocator();
-                CustomerLocalHome home =(CustomerLocalHome)sl.getLocalHome(JNDINames.CUSTOMER_EJBHOME);
-                customer = home.findByPrimaryKey(userId);
-            } catch (ServiceLocatorException slx) {
-            	String msg ="ShoppingClientFacade: failed to look up name of customer: caught ";
-            	ejbHandler.throwGeneralFailureExceptionHandler(msg,slx)	;	
-            }
-        return customer;
-    }
+	public CustomerLocal createCustomer(String userId) {
+		try {
+			ServiceLocator sl = new ServiceLocator();
+			CustomerLocalHome home = (CustomerLocalHome) sl
+					.getLocalHome(JNDINames.CUSTOMER_EJBHOME);
+			customer = home.create(userId);
+			this.userId = userId;
+		} catch (javax.ejb.CreateException ce) {
+			ejbHandler.throwGeneralFailureExceptionHandler(
+					"ShoppingClientFacade: failed to create customer: caught ",
+					ce);
+		} catch (ServiceLocatorException slx) {
+			ejbHandler
+					.throwGeneralFailureExceptionHandler(
+							"ShoppingClientFacade: failed to look up name of customer: caught ",
+							slx);
+		}
+		return customer;
+	}
 
-    public CustomerLocal createCustomer(String userId) {
-            try {
-                ServiceLocator sl = new ServiceLocator();
-                CustomerLocalHome home =(CustomerLocalHome)sl.getLocalHome(JNDINames.CUSTOMER_EJBHOME);
-                customer = home.create(userId);
-                this.userId = userId;
-            } catch (javax.ejb.CreateException ce) {
-            	String msg ="ShoppingClientFacade: failed to create customer: caught ";
-            	ejbHandler.throwGeneralFailureExceptionHandler(msg,ce)	;
-            } catch (ServiceLocatorException slx) {
-            	String msg ="ShoppingClientFacade: failed to look up name of customer: caught ";
-            	ejbHandler.throwGeneralFailureExceptionHandler(msg,slx)	;
-            }
-        return customer;
-    }
+	public ShoppingCartLocal getShoppingCart() {
+		if (cart == null) {
+			try {
+				ServiceLocator sl = new ServiceLocator();
+				ShoppingCartLocalHome home = (ShoppingCartLocalHome) sl
+						.getLocalHome(JNDINames.SHOPPING_CART_EJBHOME);
+				cart = home.create();
+			} catch (javax.ejb.CreateException cx) {
+				ejbHandler.throwGeneralFailureExceptionHandler(
+						"ShoppingClientFacade: failed to create cart: caught ",
+						cx);
+			} catch (ServiceLocatorException slx) {
+				ejbHandler
+						.throwGeneralFailureExceptionHandler(
+								"ShoppingClientFacade: failed to look up name of cart: caught ",
+								slx);
+			}
+		}
+		return cart;
+	}
 
-    public ShoppingCartLocal getShoppingCart() {
-        if (cart == null) {
-            try {
-                ServiceLocator sl = new ServiceLocator();
-                ShoppingCartLocalHome home =(ShoppingCartLocalHome)sl.getLocalHome(JNDINames.SHOPPING_CART_EJBHOME);
-                cart = home.create();
-            } catch (javax.ejb.CreateException cx) {
-            	String msg ="ShoppingClientFacade: failed to create cart: caught ";
-            	ejbHandler.throwGeneralFailureExceptionHandler(msg,cx)	;
-            } catch (ServiceLocatorException slx) {
-            	String msg ="ShoppingClientFacade: failed to look up name of cart: caught ";
-            	ejbHandler.throwGeneralFailureExceptionHandler(msg,slx)	;          
-            }
-        }
-        return cart;
-    }
+	public void ejbRemove() {
+	}
 
-    public void ejbRemove() {
-    }
+	public void ejbActivate() {
+	}
 
-    public void ejbActivate() {}
-
-    public void ejbPassivate() {}
+	public void ejbPassivate() {
+	}
 }
-
-

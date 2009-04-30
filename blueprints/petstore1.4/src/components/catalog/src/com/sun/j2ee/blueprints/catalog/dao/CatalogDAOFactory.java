@@ -61,10 +61,8 @@ public class CatalogDAOFactory {
             catDao = (CatalogDAO) Class.forName(className).newInstance();
         } catch (NamingException ne) {
         	daoHandler.getDAOHandler(ne);
-           // throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:  NamingException while getting DAO type : \n" + ne.getMessage());
         } catch (Exception se) {
         	daoHandler.getDAOHandler(se);
-        	//throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:  Exception while getting DAO type : \n" + se.getMessage());
         }
         return catDao;
     }

@@ -79,19 +79,19 @@ public class CatalogPopulator {
     try {
       itemPopulator.dropTables(connection);
     } catch (PopulateException exception) {
-       toolPopulateHandlere.ignoreHandler();	
+       toolPopulateHandlere.ignoreHandler(exception);	
     }
     
     try {
       productPopulator.dropTables(connection);
     } catch (PopulateException exception) {
-       toolPopulateHandlere.ignoreHandler();	
+       toolPopulateHandlere.ignoreHandler(exception);	
     }
     
     try {
       categoryPopulator.dropTables(connection);
     } catch (PopulateException exception) {
-       toolPopulateHandlere.ignoreHandler();		
+       toolPopulateHandlere.ignoreHandler(exception);		
     }
     
     return;

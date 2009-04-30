@@ -113,7 +113,7 @@ public class OrderApproval {
 			toXML(new StreamResult(stream), entityCatalogURL);
 			return stream.toString(XMLDocumentUtils.DEFAULT_ENCODING);
 		} catch (Exception exception) {
-			xmlHandler.toXMLHandler(exception);
+			xmlHandler.throwXMLDocumentExceptiontHandler(exception);
 		}
 		return null;
 	}

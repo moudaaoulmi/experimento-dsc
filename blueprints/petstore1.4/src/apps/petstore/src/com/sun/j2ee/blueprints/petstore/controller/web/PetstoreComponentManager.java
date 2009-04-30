@@ -36,7 +36,6 @@
  */
 package com.sun.j2ee.blueprints.petstore.controller.web;
 
-
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionEvent;
@@ -66,7 +65,6 @@ import com.sun.j2ee.blueprints.petstore.util.JNDINames;
 import com.sun.j2ee.blueprints.cart.ejb.ShoppingCartLocal;
 import com.sun.j2ee.blueprints.cart.ejb.ShoppingCartLocalHome;
 
-
 // customer component imports
 import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
 
@@ -75,78 +73,79 @@ import com.sun.j2ee.blueprints.servicelocator.web.ServiceLocator;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
 /**
- * This implmentation class of the ServiceLocator provides
- * access to services in the web tier and ejb tier.
- *
+ * This implmentation class of the ServiceLocator provides access to services in
+ * the web tier and ejb tier.
+ * 
  */
-public class PetstoreComponentManager extends DefaultComponentManager implements HttpSessionListener {
+public class PetstoreComponentManager extends DefaultComponentManager implements
+		HttpSessionListener {
 
 	WebHandler webHandler = new WebHandler();
 	private ServiceLocator serviceLocator;
 
-    public PetstoreComponentManager () {
-            serviceLocator = ServiceLocator.getInstance();
-    }
+	public PetstoreComponentManager() {
+		serviceLocator = ServiceLocator.getInstance();
+	}
 
-    /**
-     *
-     * Initialize another service locator programtically
-     *
-     */
-    public void init(HttpSession session) {
-        session.setAttribute(PetstoreKeys.COMPONENT_MANAGER, this);
-        session.setAttribute(PetstoreKeys.CART, getShoppingCart(session));
-    }
-    /**
-     *
-     * Create the WebClientController which in turn should create the
-     * EJBClientController.
-     *
-     */
-    public void sessionCreated(HttpSessionEvent se) {
-        super.sessionCreated(se);
-        se.getSession().setAttribute(PetstoreKeys.CART, getShoppingCart(se.getSession()));
-    }
+	/**
+	 * 
+	 * Initialize another service locator programtically
+	 * 
+	 */
+	public void init(HttpSession session) {
+		session.setAttribute(PetstoreKeys.COMPONENT_MANAGER, this);
+		session.setAttribute(PetstoreKeys.CART, getShoppingCart(session));
+	}
 
-    public CustomerLocal  getCustomer(HttpSession session) {
-        ShoppingControllerLocal scEjb = getShoppingController(session);
-        try {
-            ShoppingClientFacadeLocal scf = scEjb.getShoppingClientFacade();
-            //scf.setUserId(userId);
-            return scf.getCustomer();
-        } catch (FinderException e) {
-        	String msg = "PetstoreComponentManager finder error: ";
-        	webHandler.SystemErrHandler(msg,e);
-        	
-        } catch (Exception e) {
-        	String msg = "PetstoreComponentManager  error: ";
-        	webHandler.SystemErrHandler(msg,e);
-        }
-        return null;
-    }
+	/**
+	 * 
+	 * Create the WebClientController which in turn should create the
+	 * EJBClientController.
+	 * 
+	 */
+	public void sessionCreated(HttpSessionEvent se) {
+		super.sessionCreated(se);
+		se.getSession().setAttribute(PetstoreKeys.CART,
+				getShoppingCart(se.getSession()));
+	}
 
-    public  ShoppingControllerLocal getShoppingController(HttpSession session) {
-        ShoppingControllerLocal scEjb = (ShoppingControllerLocal)session.getAttribute(PetstoreKeys.EJB_CONTROLLER);
-        if (scEjb == null) {
-            try {
-                ShoppingControllerLocalHome scEjbHome =
-                   (ShoppingControllerLocalHome)serviceLocator.getLocalHome(JNDINames.SHOPPING_CONTROLLER_EJBHOME);
-                scEjb = scEjbHome.create();
-                session.setAttribute(PetstoreKeys.EJB_CONTROLLER, scEjb);
-            } catch (CreateException ce) {
-            	webHandler.getShoppingControllerHandler(ce);
-            } catch (ServiceLocatorException ne) {
-            	webHandler.getShoppingControllerHandler(ne);
-            }
-        }
-        return scEjb;
-    }
+	public CustomerLocal getCustomer(HttpSession session) {
+		ShoppingControllerLocal scEjb = getShoppingController(session);
+		try {
+			ShoppingClientFacadeLocal scf = scEjb.getShoppingClientFacade();
+			// scf.setUserId(userId);
+			return scf.getCustomer();
+		} catch (FinderException e) {
+			webHandler.SystemErrHandler(
+					"PetstoreComponentManager finder error: ", e);
 
-    public ShoppingCartLocal getShoppingCart(HttpSession session) {
-        ShoppingControllerLocal scEjb = getShoppingController(session);
-        ShoppingClientFacadeLocal scf = scEjb.getShoppingClientFacade();
-        return  scf.getShoppingCart();
-    }
+		} catch (Exception e) {
+			webHandler.SystemErrHandler("PetstoreComponentManager  error: ", e);
+		}
+		return null;
+	}
+
+	public ShoppingControllerLocal getShoppingController(HttpSession session) {
+		ShoppingControllerLocal scEjb = (ShoppingControllerLocal) session
+				.getAttribute(PetstoreKeys.EJB_CONTROLLER);
+		if (scEjb == null) {
+			try {
+				ShoppingControllerLocalHome scEjbHome = (ShoppingControllerLocalHome) serviceLocator
+						.getLocalHome(JNDINames.SHOPPING_CONTROLLER_EJBHOME);
+				scEjb = scEjbHome.create();
+				session.setAttribute(PetstoreKeys.EJB_CONTROLLER, scEjb);
+			} catch (CreateException ce) {
+				webHandler.getShoppingControllerHandler(ce);
+			} catch (ServiceLocatorException ne) {
+				webHandler.getShoppingControllerHandler(ne);
+			}
+		}
+		return scEjb;
+	}
+
+	public ShoppingCartLocal getShoppingCart(HttpSession session) {
+		ShoppingControllerLocal scEjb = getShoppingController(session);
+		ShoppingClientFacadeLocal scf = scEjb.getShoppingClientFacade();
+		return scf.getShoppingCart();
+	}
 }
-
-

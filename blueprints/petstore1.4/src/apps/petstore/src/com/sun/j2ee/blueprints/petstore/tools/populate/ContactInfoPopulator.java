@@ -95,8 +95,8 @@ public class ContactInfoPopulator {
     } catch (Exception exception) {
      /** Exception Handler  */
    	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
-     return toolPopulateHandler.createContactInfoHandler(exception);
-    //throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
+   	toolPopulateHandler.throwPopulateExceptionHandler(exception);
+	return null;
     }
 
   }

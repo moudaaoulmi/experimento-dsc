@@ -52,6 +52,8 @@ import com.sun.j2ee.blueprints.supplier.inventory.web.JNDINames;
 import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 import  com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
 /**
  * This class has an accessor method that allows the "receiver" application
  * obtain all inventory items along with their current quantity. This is to
@@ -63,7 +65,7 @@ public class DisplayInventoryBean {
 
     private InventoryLocalHome inventoryHomeRef = null;
     
-    WebHandler webHandler = new WebHandler();
+   GeneralException generalException = new GeneralException();
     
     public DisplayInventoryBean() {}
 
@@ -83,9 +85,9 @@ public class DisplayInventoryBean {
             }
             invColl = inventoryHomeRef.findAllInventoryItems();
         } catch(ServiceLocatorException ne) {
-        	webHandler.printStackTraceHandler(ne);
+        	generalException.printStackTraceHandler(ne);
         } catch(FinderException fe) {
-        	webHandler.printStackTraceHandler(fe);
+        	generalException.printStackTraceHandler(fe);
         }
         return invColl;
     }

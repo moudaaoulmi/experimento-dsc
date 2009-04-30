@@ -165,7 +165,7 @@ public class TPAInvoiceXDE extends XMLDocumentEditor.DefaultXDE {
 
                 });
             } catch ( javax.xml.parsers.ParserConfigurationException pce) {
-                this.ejbHandler.getDocument1Handler(pce);
+                this.ejbHandler.errPrintlnHandler(pce);
             }
           //InputSource is =  new InputSource(new StringReader(xmlText));
             doc = db.parse(src);

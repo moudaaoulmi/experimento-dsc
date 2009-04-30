@@ -1,6 +1,12 @@
 package com.sun.j2ee.blueprints.waf.controller.web.flow;
 
-public class WebFlowHandler {
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
+@ExceptionHandler
+
+
+public class WebFlowHandler extends GeneralException{
 
 	public void initHandler(java.net.MalformedURLException ex) {
 		System.err.println("ScreenFlowManager: initializing ScreenFlowManager malformed URL exception: " + ex);

@@ -1,16 +1,11 @@
 package com.sun.j2ee.blueprints.opc.ejb;
 
-import javax.ejb.EJBException;
 
-public class EjbHandler {
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
 
-	public void throwEJBExceptionHandler(Exception e) throws EJBException {
-		throw new EJBException(e);
-	}
-
-	public void getDocument1Handler(Exception e) {
-		System.err.println(e.toString());
-	}
+@ExceptionHandler
+public class EjbHandler extends GeneralException {
 
 	public void getDocument2Handler(Exception e) {
 		System.err

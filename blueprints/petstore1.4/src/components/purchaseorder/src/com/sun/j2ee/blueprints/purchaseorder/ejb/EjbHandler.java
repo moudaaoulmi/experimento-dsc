@@ -7,12 +7,15 @@ import javax.ejb.CreateException;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 
-public class EjbHandler {
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
+@ExceptionHandler
+
+
+public class EjbHandler extends GeneralException {
 	
-	public String toXMLHandler(Exception e) throws XMLDocumentException {
-		throw new XMLDocumentException(e);		
-	}
-	
+		
 	public PurchaseOrder fromXMLHandler(XMLDocumentException e) throws XMLDocumentException{ 
 		System.err.println(e.getRootCause().getMessage());	       
 		throw new XMLDocumentException(e);

@@ -77,6 +77,8 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
 import com.sun.j2ee.blueprints.processmanager.transitions.*;
 
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
 /**
  * This servlet processes requests from receiver of the supplier component
  * The user is expected to have logged in as "supplier"
@@ -88,7 +90,7 @@ public class RcvrRequestProcessor extends HttpServlet {
   private OrderFulfillmentFacadeLocalHome orderFacadeHomeRef = null;
   private OrderFulfillmentFacadeLocal procPO = null;
   
-  WebHandler webHandler = new WebHandler();
+  GeneralException generalException = new GeneralException();
 
   public void init() {
     try {
@@ -99,9 +101,9 @@ public class RcvrRequestProcessor extends HttpServlet {
           serviceLocator.getLocalHome(JNDINames.ORDERFACADE_EJB);
       procPO = orderFacadeHomeRef.create();
     } catch(ServiceLocatorException se) {
-      webHandler.printStackTraceHandler(se);
+      generalException.printStackTraceHandler(se);
     } catch(CreateException ce) {
-      webHandler.printStackTraceHandler(ce);
+      generalException.printStackTraceHandler(ce);
     }
   }
 
@@ -134,7 +136,7 @@ public class RcvrRequestProcessor extends HttpServlet {
         }
       }
     } catch (FinderException ne) {
-    	webHandler.printStackTraceHandler(ne);
+    	generalException.printStackTraceHandler(ne);
     }
   }
 
@@ -152,9 +154,9 @@ public class RcvrRequestProcessor extends HttpServlet {
         transitionDelegate.doTransition(info);
       }
     } catch(ServiceLocatorException se) {
-    	webHandler.printStackTraceHandler(se);
+    	generalException.printStackTraceHandler(se);
     } catch(TransitionException te) {
-    	webHandler.printStackTraceHandler(te);
+    	generalException.printStackTraceHandler(te);
     }
   }
 
@@ -190,21 +192,21 @@ public class RcvrRequestProcessor extends HttpServlet {
             ut.commit();        // end xaction
             getServletConfig().getServletContext().getRequestDispatcher("/back.jsp").forward(req, resp);
           } catch (FinderException fe) {
-            webHandler.printStackTraceHandler(fe);
+            generalException.printStackTraceHandler(fe);
           } catch (NamingException ne) {
-            webHandler.printStackTraceHandler(ne);
+            generalException.printStackTraceHandler(ne);
           } catch (NotSupportedException nse) {
-            webHandler.printStackTraceHandler(nse);
+            generalException.printStackTraceHandler(nse);
           } catch (IllegalStateException re) {
-            webHandler.printStackTraceHandler(re);
+            generalException.printStackTraceHandler(re);
           } catch (RollbackException re) {
-            webHandler.printStackTraceHandler(re);
+            generalException.printStackTraceHandler(re);
           } catch (HeuristicMixedException hme) {
-            webHandler.printStackTraceHandler(hme);
+            generalException.printStackTraceHandler(hme);
           } catch (HeuristicRollbackException hre) {
-            webHandler.printStackTraceHandler(hre);
+            generalException.printStackTraceHandler(hre);
           } catch (SystemException se) {
-        	webHandler.printStackTraceHandler(se);
+        	generalException.printStackTraceHandler(se);
           }
         }
       }

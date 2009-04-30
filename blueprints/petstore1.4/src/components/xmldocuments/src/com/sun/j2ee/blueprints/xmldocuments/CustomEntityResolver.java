@@ -118,15 +118,13 @@ public class CustomEntityResolver implements EntityResolver {
 		try { // Is it a wellformed URL?
 			entityURLURL = new URL(entityURL);
 		} catch (Exception exception) {
-			String msg = ": not a URL";
-			xmlHandler.resolveEntityFromURL1Handler(entityURL, TRACE,msg);
+			xmlHandler.resolveEntityFromURL1Handler(entityURL, TRACE,": not a URL");
 		}
 		if (entityURLURL != null) { // Is a wellformed URL
 			try {
 				entityURLStream = entityURLURL.openStream(); // Try to open the URL
 			} catch (Exception exception) {
-				String msg = ": not a readable URL";
-				xmlHandler.resolveEntityFromURL1Handler(entityURL, TRACE,msg);
+				xmlHandler.resolveEntityFromURL1Handler(entityURL, TRACE,": not a readable URL");
 			}
 		}
 		if (entityURLStream == null) { // Not a URL or could not be open

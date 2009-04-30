@@ -192,7 +192,7 @@ public class ApplRequestProcessor extends HttpServlet {
             return responseBuffer.toString();
         }
         catch (AdminBDException e) {
-          return this.webHandler.printStackTraceHandler(e);
+          return this.webHandler.printStackTraceNullHandler(e);
         }
     }
 
@@ -291,7 +291,7 @@ public class ApplRequestProcessor extends HttpServlet {
             return responseBuffer.toString();
         }
         catch (AdminBDException e) {
-        	 return this.webHandler.printStackTraceHandler(e);
+        	 return this.webHandler.printStackTraceNullHandler(e);
         }
     }
 

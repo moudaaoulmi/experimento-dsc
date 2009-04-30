@@ -2,7 +2,13 @@ package com.sun.j2ee.blueprints.admin.web;
 
 import javax.ejb.CreateException;
 
-public class WebHandler {
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
+
+@ExceptionHandler
+
+public class WebHandler extends GeneralException{
 
 	public void printStackTraceThrowAdminBDExceptionHandler(Exception e) throws AdminBDException {
 		e.printStackTrace();
@@ -18,9 +24,10 @@ public class WebHandler {
 				+ e.getMessage() + ". Please try again</Error>\n</Response>\n";
 	}
 	
-	public String printStackTraceHandler(Exception e){
+	public String printStackTraceNullHandler(Exception e){
 		 e.printStackTrace();
          return null;
 	}
+	
 
 }

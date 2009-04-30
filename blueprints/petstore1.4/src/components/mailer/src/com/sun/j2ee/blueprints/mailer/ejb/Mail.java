@@ -111,7 +111,7 @@ public class Mail {
       //System.err.println("toXML: " + stream.toString(XMLDocumentUtils.DEFAULT_ENCODING));
       return stream.toString(XMLDocumentUtils.DEFAULT_ENCODING);
     } catch (Exception exception) {
-      ejbHandler.toXMLHandler(exception);
+      ejbHandler.throwXMLDocumentExceptiontHandler(exception);
     }
     return null;
   }
@@ -176,8 +176,7 @@ public class Mail {
       } catch (IOException exception) {
     	 ejbHandler.mainHandler(exception);
       } catch (XMLDocumentException exception) {
-    	  Exception e = exception.getRootCause();
-    	  ejbHandler.mainHandler(e);
+    	  ejbHandler.mainHandler(exception.getRootCause());
       }
     }
     System.err.println("Usage: " + Mail.class.getName() + " [file-name]");

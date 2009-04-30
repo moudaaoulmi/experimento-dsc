@@ -49,96 +49,102 @@ import com.sun.j2ee.blueprints.catalog.dao.DaoHandler;
 import com.sun.j2ee.blueprints.signon.ejb.*;
 import com.sun.j2ee.blueprints.signon.user.ejb.*;
 
-
 public class UserPopulator {
-  public static final String JNDI_USER_HOME = "java:comp/env/ejb/User";
-  public static final String XML_USERS = "Users";
-  private static final String XML_USER = "User";
-  private static final String XML_ID = "User/@id";
-  private static final String XML_PASSWORD = "Password";
-  private UserLocalHome userHome = null;
-  private String rootTag;
+	public static final String JNDI_USER_HOME = "java:comp/env/ejb/User";
+	public static final String XML_USERS = "Users";
+	private static final String XML_USER = "User";
+	private static final String XML_ID = "User/@id";
+	private static final String XML_PASSWORD = "Password";
+	private UserLocalHome userHome = null;
+	private String rootTag;
 
+	public UserPopulator() {
+		this(XML_USERS);
+		return;
+	}
 
-  public UserPopulator() {
-    this(XML_USERS);
-    return;
-  }
+	public UserPopulator(String rootTag) {
+		this.rootTag = rootTag;
+		return;
+	}
 
-  public UserPopulator(String rootTag) {
-    this.rootTag = rootTag;
-    return;
-  }
-  
-  /** Exception Handler  */
-  ToolPopulateHandler tooPopulateHandler = new ToolPopulateHandler();
+	/** Exception Handler */
+	ToolPopulateHandler tooPopulateHandler = new ToolPopulateHandler();
 
-  public XMLFilter setup(XMLReader reader) throws PopulateException {
-    return new XMLDBHandler(reader, rootTag, XML_USER) {
+	public XMLFilter setup(XMLReader reader) throws PopulateException {
+		return new XMLDBHandler(reader, rootTag, XML_USER) {
 
-      public void update() throws PopulateException {}
+			public void update() throws PopulateException {
+			}
 
-      public void create() throws PopulateException {
-        createUser(getValue(XML_ID), getValue(XML_PASSWORD));
-        return;
-      }
-    };
+			public void create() throws PopulateException {
+				createUser(getValue(XML_ID), getValue(XML_PASSWORD));
+				return;
+			}
+		};
 
-  }
+	}
 
-  public boolean check() throws PopulateException {
-    try {
-          InitialContext context = new InitialContext();
-          UserLocalHome userHome = (UserLocalHome) context.lookup(JNDI_USER_HOME);
-          Collection users = userHome.findAllUsers();
-          if ((users == null) || (users.size() == 0)) {
-        return false;
-      }
-    } catch (Exception exception) {
-         tooPopulateHandler.checkHandler();
-    	//return false;
-    }
-    return true;
-  }
+	public boolean check() throws PopulateException {
+		try {
+			InitialContext context = new InitialContext();
+			UserLocalHome userHome = (UserLocalHome) context
+					.lookup(JNDI_USER_HOME);
+			Collection users = userHome.findAllUsers();
+			if ((users == null) || (users.size() == 0)) {
+				return false;
+			}
+		} catch (Exception exception) {
+			tooPopulateHandler.checkHandler();
+		}
+		return true;
+	}
 
-  private UserLocal createUser(String id, String password) throws PopulateException {
-    try {
-      if (userHome == null) {
-        InitialContext context = new InitialContext();
-        userHome = (UserLocalHome) context.lookup(JNDI_USER_HOME);
-      }
-      UserLocal user;
-      try {
-        user = userHome.findByPrimaryKey(id);
-        user.remove();
-      } catch (Exception exception) {
-    	  return tooPopulateHandler.createUserHandler(exception);
-      }
-      user = userHome.create(id, password);
-      return user;
-    } catch (Exception exception) {
-    	return tooPopulateHandler.createUserHandler(exception);
-      //throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
-    }
-  }
+	private UserLocal createUser(String id, String password)
+			throws PopulateException {
+		try {
+			if (userHome == null) {
+				InitialContext context = new InitialContext();
+				userHome = (UserLocalHome) context.lookup(JNDI_USER_HOME);
+			}
+			UserLocal user;
+			try {
+				user = userHome.findByPrimaryKey(id);
+				user.remove();
+			} catch (Exception exception) {
+				tooPopulateHandler.throwPopulateExceptionHandler(exception);
+				return null;
+			}
+			user = userHome.create(id, password);
+			return user;
+		} catch (Exception exception) {
+			tooPopulateHandler.throwPopulateExceptionHandler(exception);
+			return null;
+			// throw new PopulateException ("Could not create: " +
+			// exception.getMessage(), exception);
+		}
+	}
 
-  public static void main(String[] args) {
-    if (args.length <= 1) {
-      String fileName = args.length > 0 ? args[0] : "User.xml";
-      try {
-        UserPopulator userPopulator = new UserPopulator();
-        SAXParserFactory parserFactory = SAXParserFactory.newInstance();
-        parserFactory.setValidating(true);
-        userPopulator.setup(parserFactory.newSAXParser().getXMLReader()).parse(new InputSource(fileName));
-        System.exit(0);
-      } catch (Exception exception) {
-    	  DaoHandler.mainHandler(exception);
-//        System.err.println(exception.getMessage() + ": " + exception);
-//        System.exit(2);
-      }
-    }
-    System.err.println("Usage: " + UserPopulator.class.getName() + " [file-name]");
-    System.exit(1);
-  }
+	public static void main(String[] args) {
+		if (args.length <= 1) {
+			String fileName = args.length > 0 ? args[0] : "User.xml";
+			try {
+				UserPopulator userPopulator = new UserPopulator();
+				SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+				parserFactory.setValidating(true);
+				userPopulator
+						.setup(parserFactory.newSAXParser().getXMLReader())
+						.parse(new InputSource(fileName));
+				System.exit(0);
+			} catch (Exception exception) {
+				DaoHandler.mainHandler(exception);
+				// System.err.println(exception.getMessage() + ": " +
+				// exception);
+				// System.exit(2);
+			}
+		}
+		System.err.println("Usage: " + UserPopulator.class.getName()
+				+ " [file-name]");
+		System.exit(1);
+	}
 }
-

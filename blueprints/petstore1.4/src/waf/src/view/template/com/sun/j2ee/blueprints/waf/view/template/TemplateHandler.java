@@ -2,15 +2,18 @@ package com.sun.j2ee.blueprints.waf.view.template;
 
 import org.xml.sax.SAXParseException;
 
-public class TemplateHandler {
+import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
+import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+
+@ExceptionHandler
+
+
+public class TemplateHandler extends GeneralException{
 
 	public void initScreensHandler(java.net.MalformedURLException ex) {
 		System.err.println("TemplateServlet: malformed URL exception: " + ex);
 	}
 	
-	public void printStackTraceHandler(Exception e){
-		e.printStackTrace();
-	}
 
 	public void loadDocument1Handler(SAXParseException err) {
 		System.err.println ("ScreenFlowXmlDAO ** Parsing error" + ", line " +

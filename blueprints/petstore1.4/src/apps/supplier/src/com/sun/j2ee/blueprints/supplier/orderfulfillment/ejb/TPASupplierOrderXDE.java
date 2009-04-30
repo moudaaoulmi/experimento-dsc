@@ -93,7 +93,7 @@ public class TPASupplierOrderXDE extends XMLDocumentEditor.DefaultXDE {
           try {
             transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(stream));
           } catch (Exception exception) {
-        	  orderfulfillmentEjbHandler.TPASupplierOrderXDE2Handler(exception);
+        	  orderfulfillmentEjbHandler.throwXMLDocumentExceptiontHandler(exception);
           }
         } else {
           throw new XMLDocumentException("Can't access style sheet: " + styleSheetPath);
@@ -102,7 +102,7 @@ public class TPASupplierOrderXDE extends XMLDocumentEditor.DefaultXDE {
         try {
           transformer = XMLDocumentUtils.createTransformer();
         } catch (Exception exception) {
-        	orderfulfillmentEjbHandler.TPASupplierOrderXDE2Handler(exception);
+        	orderfulfillmentEjbHandler.throwXMLDocumentExceptiontHandler(exception);
         }
       }
       return;
