@@ -40,8 +40,8 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 	// ---------------------------
     // Declare soft's
     // ---------------------------
-	declare soft : CreateException : defaultComponentManager_getEJBControllerHandler();
-	declare soft : ServiceLocatorException : defaultComponentManager_getEJBControllerHandler() || 
+//	declare soft : CreateException : defaultComponentManager_getEJBControllerHandler();
+	declare soft : ServiceLocatorException : 
 		defaultComponentManager_getWebControllerHandler();
 	declare soft : MalformedURLException : mainServlet_initGetResourceHandler() || 
 		URLMappingsXmlDAO_loadDocumentHandler() ||
@@ -75,8 +75,6 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 	/*** DefaultComponentManager ***/
 	pointcut defaultComponentManager_getWebControllerHandler() :  
 		execution(public WebController DefaultComponentManager.getWebController(HttpSession));
-	pointcut defaultComponentManager_getEJBControllerHandler() : 
-		execution(public EJBControllerLocal DefaultComponentManager.getEJBController(HttpSession));
 	
 	public pointcut aroundExceptionDoNothingHandler() : 
 		execution(public void DefaultComponentManager.sessionDestroyed(HttpSessionEvent));
@@ -128,16 +126,16 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 			throw new RuntimeException ("Cannot create bean of class WebController: " + exc);
 		}
 	}
-		
-	EJBControllerLocal around() throws GeneralFailureException : defaultComponentManager_getEJBControllerHandler(){
-		try{
-			return proceed();
-		}catch(CreateException ce){
-			throw new GeneralFailureException(ce.getMessage());
-		}catch(ServiceLocatorException slx){
-			throw new GeneralFailureException(slx.getMessage());
-		}
-	}
+//		
+//	EJBControllerLocal around() throws GeneralFailureException : defaultComponentManager_getEJBControllerHandler(){
+//		try{
+//			return proceed();
+//		}catch(CreateException ce){
+//			throw new GeneralFailureException(ce.getMessage());
+//		}catch(ServiceLocatorException slx){
+//			throw new GeneralFailureException(slx.getMessage());
+//		}
+//	}
 	
 
 	/*
