@@ -26,11 +26,7 @@ public aspect PetstoreWebHandler {
     // ---------------------------
 	declare soft : Exception : getCustomerHandler();
 	
-//	declare soft : CreateException : getShoppingControllerHandler();
-	
-//	declare soft : ServiceLocatorException : getShoppingControllerHandler();
-	
-	declare soft : RemoveException : destroyHandler();
+//	declare soft : RemoveException : destroyHandler();
 	
 	declare soft : EventException : internalHandleEventHandler();
 
@@ -43,12 +39,9 @@ public aspect PetstoreWebHandler {
 	pointcut getCustomerHandler() : 
 		execution(public CustomerLocal PetstoreComponentManager.getCustomer(HttpSession));
 	
-//	pointcut getShoppingControllerHandler() :
-//		execution(public ShoppingControllerLocal PetstoreComponentManager.getShoppingController(HttpSession));
-//	
 	/*** ShoppingWebController ***/
-	pointcut destroyHandler() : 
-		execution(public void ShoppingWebController.destroy(HttpSession));
+//	pointcut destroyHandler() : 
+//		execution(public void ShoppingWebController.destroy(HttpSession));
 	
 	/*** SignOnNotifier ***/
 	pointcut internalHandleEventHandler() : 
@@ -71,26 +64,15 @@ public aspect PetstoreWebHandler {
         }
 	}
 	
-//	ShoppingControllerLocal around() throws GeneralFailureException : 
-//		getShoppingControllerHandler() {
-//		try{
-//			return proceed();
-//		}catch(CreateException ce){
-//			throw new GeneralFailureException(ce.getMessage());			
-//		}catch(ServiceLocatorException ne){
-//			throw new GeneralFailureException(ne.getMessage());			
-//		}
+//	void around() : 
+//		destroyHandler() {
+//	    try {
+//	        proceed();
+//        } catch(RemoveException re){
+//            // ignore, after all its only a remove() call!
+//            Debug.print(re);
+//        }
 //	}
-	
-	void around() : 
-		destroyHandler() {
-	    try {
-	        proceed();
-        } catch(RemoveException re){
-            // ignore, after all its only a remove() call!
-            Debug.print(re);
-        }
-	}
 
 	void around() : 
 		internalHandleEventHandler() {
