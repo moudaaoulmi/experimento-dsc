@@ -24,15 +24,12 @@ public aspect PetstoreEjbActionHandler {
 	// ---------------------------
     // Declare soft's
     // ---------------------------
-	declare soft : ServiceLocatorException : performHandler() || 
-											 getUniqueIdGeneratorHandler() || 
-											 internalSendAMessageHandler();
+	declare soft : ServiceLocatorException : performHandler();
+	
 	declare soft : CreateException : performHandler() || 
 									 createUserHandler() || 
-									 getUniqueIdGeneratorHandler() || 
 									 internalSendAMessageHandler();
-	declare soft : FinderException : internalGetCustomerHandler() || 
-									 performSignOnHandler();
+
 	declare soft : XMLDocumentException : internalSendAMessageHandler();
 
 	// ---------------------------
@@ -45,20 +42,9 @@ public aspect PetstoreEjbActionHandler {
 	pointcut createUserHandler() : 
 		execution(private void CreateUserEJBAction.createUser(String, String, SignOnLocal));
 
-	/*** CustomerEJBAction ***/
-	pointcut internalGetCustomerHandler() : 
-		execution(private CustomerLocal CustomerEJBAction.internalGetCustomer());
-
 	/*** OrderEJBAction ***/
-	pointcut getUniqueIdGeneratorHandler() : 
-		execution(private UniqueIdGeneratorLocal OrderEJBAction.getUniqueIdGenerator());
-
 	pointcut internalSendAMessageHandler() : 
 		execution(private void OrderEJBAction.internalSendAMessage(PurchaseOrder));
-
-	/*** SignOnEJBAction ***/
-	pointcut performSignOnHandler() : 
-		execution(public EventResponse SignOnEJBAction.perform(Event));
 
 	// ---------------------------
     // Advice's
@@ -83,19 +69,6 @@ public aspect PetstoreEjbActionHandler {
 		}
 	}
 
-	// Two separate blocks try-catch into a method handling same exception
-	// CreateException in different ways.
-
-	Object around() : 
-		internalGetCustomerHandler() || 
-		performSignOnHandler() {
-		try {
-			return proceed();
-		} catch (FinderException fe) {
-			return null;
-		}
-	}
-
 	void around() : 
 		internalSendAMessageHandler() {
 		try {
@@ -108,24 +81,4 @@ public aspect PetstoreEjbActionHandler {
 			// throw new AdminBDException(ce.getMessage());
 		}
 	}
-
-	Object around(): getUniqueIdGeneratorHandler() || internalSendAMessageHandler(){
-		try {
-			return proceed();
-		} catch (ServiceLocatorException slx) {
-			slx.printStackTrace();
-			return null;
-		}
-	}
-
-	UniqueIdGeneratorLocal around() : 
-		getUniqueIdGeneratorHandler() {
-		try {
-			return proceed();
-		} catch (CreateException cx) {
-			cx.printStackTrace();
-			return null;
-		}
-	}
-
 }
