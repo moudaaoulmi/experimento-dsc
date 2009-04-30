@@ -45,8 +45,7 @@ public aspect OPCCustomerrelationsHandler extends EJBExceptionGenericAspect {
 	declare soft : TransformerConfigurationException : getTransformerHandler();
 	declare soft : TransformerException : formatHandler();
 	declare soft : UnsupportedEncodingException : formatHandler();
-	declare soft : FormatterException : getDocumentHandler() || 
-										getDocumentAsStringHandler();
+
 
 	// ---------------------------
     // Pointcut's
@@ -63,12 +62,6 @@ public aspect OPCCustomerrelationsHandler extends EJBExceptionGenericAspect {
 	pointcut getTransformerHandler() : 
 		execution(private Transformer MailContentXDE.getTransformer(Locale));
 	
-	pointcut getDocumentHandler() : 
-		execution(public Source MailContentXDE.getDocument());
-	
-	pointcut getDocumentAsStringHandler() :
-		execution(public String MailContentXDE.getDocumentAsString());		
-
 	pointcut formatHandler() : 
 		execution(private String MailContentXDE.format(Source, Locale));
 	
@@ -105,19 +98,4 @@ public aspect OPCCustomerrelationsHandler extends EJBExceptionGenericAspect {
 			throw new FormatterException(exception);
 		}
 	}
-//	after() throwing(Exception exception) throws FormatterException : 
-//		newMailContentXDEHandler() || getTransformerHandler() || formatHandler() {
-//        throw new FormatterException(exception);
-//	}
-
-	Object around() throws XMLDocumentException : 
-		getDocumentHandler() || getDocumentAsStringHandler(){
-		try{
-			return proceed();
-		}catch(Exception exception){
-			throw new XMLDocumentException(exception);
-		}
-	}
-	
-	
 }
