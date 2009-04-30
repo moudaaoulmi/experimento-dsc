@@ -99,7 +99,6 @@
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/appserv-rt_zh_CN.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/appserv-tags.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/appserv-upgrade.jar"/>
-	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/aspectjtools.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/commons-launcher.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/commons-launcher_es.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/commons-launcher_fr.jar"/>
@@ -144,5 +143,6 @@
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/xsdlib.jar"/>
 	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/eclipse-AspectJ/Workspace/RefactorPlugin/libs/aspectjtools-1.5.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
