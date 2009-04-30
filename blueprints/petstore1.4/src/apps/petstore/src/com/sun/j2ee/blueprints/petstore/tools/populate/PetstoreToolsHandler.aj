@@ -38,7 +38,7 @@ import org.xml.sax.XMLReader;
 /**
  * @author Raquel Maranhao
  */
-public aspect PetstoreToolsExceptionHandler extends ExceptionGenericAspect {
+public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 	private Map connect = new HashMap();
 	
 	// ---------------------------
