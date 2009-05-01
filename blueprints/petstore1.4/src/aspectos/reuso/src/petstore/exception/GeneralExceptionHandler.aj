@@ -26,35 +26,45 @@ import javax.ejb.RemoveException;
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 import javax.servlet.http.HttpSession;
-
+import com.sun.j2ee.blueprints.petstore.tools.populate.PopulateServlet;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.Source;
-
+import  com.sun.j2ee.blueprints.supplier.tools.populate.InventoryPopulator;
 import java.io.InputStream;
 import java.util.Collection;
-
+import javax.naming.NamingException;
+import com.sun.j2ee.blueprints.signon.user.ejb.UserLocal;
+import  com.sun.j2ee.blueprints.petstore.tools.populate.UserPopulator;
 import com.sun.j2ee.blueprints.petstore.controller.web.ShoppingWebController;
-
+import com.sun.j2ee.blueprints.petstore.tools.populate.CustomerPopulator;
+import com.sun.j2ee.blueprints.catalog.dao.GenericCatalogDAO.ParsingDoneException;
+import com.sun.j2ee.blueprints.catalog.dao.GenericCatalogDAO;
+import javax.xml.parsers.SAXParser;
+import org.xml.sax.InputSource;
 
 public privileged aspect GeneralExceptionHandler {
 
 	// ---------------------------
 	// Declare Soft's
 	// ---------------------------
-
-
 	declare soft : FormatterException : getDocumentHandler() || 
 										getDocumentAsStringHandler();
 
 	declare soft : TransformerConfigurationException : internalGetTransformerHandler();
 
-	declare soft : TransformerConfigurationException : internalGetTransformerHandler();
-
 	declare soft : FinderException : signOnEJB_authenticateHandler() ||
 									 internalGetCustomerHandler() || 
-									 performSignOnHandler();
-
+									 performSignOnHandler() ||
+									 checkHandler() ||
+									 internalRemoveExistingUserHandler() ||
+									 checkHandler2() ||
+									 userPopulatorCheckHandler(); 
+	
+	declare soft : NamingException : checkHandler() ||
+									 checkHandler2() ||
+									 userPopulatorCheckHandler();
+	
 	declare soft : ServiceLocatorException : getInventoryHandler() || 
 	 										 initHandler() ||
 	 										 sendInvoicesHandler() ||
@@ -69,11 +79,22 @@ public privileged aspect GeneralExceptionHandler {
 									 defaultComponentManager_getEJBControllerHandler();
 
 	declare soft : RemoveException : destroyHandler() ||
-									 defaultWebController_destroyHandler();
+									 defaultWebController_destroyHandler() ||
+									 internalRemoveExistingUserHandler();
 
+    declare soft : ParsingDoneException : loadSQLStatementsHandler() ||
+    									  loadSQLStatementsHandler2();
 	// ---------------------------
 	// Pointcut's
 	// ---------------------------
+    pointcut loadSQLStatementsHandler2() : 
+		execution(private void PopulateServlet.loadSQLStatements(SAXParser, String, InputSource));
+	
+	pointcut userPopulatorCheckHandler() : 
+		execution(public boolean UserPopulator.check());
+	
+	pointcut internalRemoveExistingUserHandler() :
+		execution(private UserLocal UserPopulator.internalRemoveExistingUser(String, UserLocal));
 	
 	pointcut getShoppingControllerHandler() :
 		execution(public ShoppingControllerLocal PetstoreComponentManager.getShoppingController(HttpSession));
@@ -123,10 +144,37 @@ public privileged aspect GeneralExceptionHandler {
 	pointcut defaultWebController_destroyHandler() : 
 		execution(public synchronized void destroy(HttpSession));
 
+	pointcut checkHandler() : 
+		execution(public boolean InventoryPopulator.check());
+	
+	pointcut checkHandler2() : 
+		execution(public boolean CustomerPopulator.check());
+	
+	pointcut loadSQLStatementsHandler() : 
+		execution(private void GenericCatalogDAO.loadSQLStatements(SAXParser, String, InputSource));
+	
 	// ---------------------------
 	// Advice's
 	// ---------------------------
-
+	void around() :  loadSQLStatementsHandler() ||
+					 loadSQLStatementsHandler2(){
+		try {
+			proceed();
+		} catch(ParsingDoneException exception) {
+			// Ignored		
+		}
+	}
+	
+	Object around() : checkHandler() ||
+					  checkHandler2() ||
+					  internalRemoveExistingUserHandler() ||
+					  userPopulatorCheckHandler(){
+		try {
+			return proceed();
+	    } catch (Exception e) {
+	        return null;
+	    }
+	}
 
 	void around() :  defaultWebController_destroyHandler() ||
     				 destroyHandler(){
