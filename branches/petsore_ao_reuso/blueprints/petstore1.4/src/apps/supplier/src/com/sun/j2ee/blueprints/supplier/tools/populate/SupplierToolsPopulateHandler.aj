@@ -35,26 +35,29 @@ public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 									   internalInventoryPopulatorCheckHandler() || 
 									   internalStartElementHandler() || 
 									   internalEndElementHandler();
+	
 	declare soft : MalformedURLException : getResourceHandler();
+	
 	declare soft : SAXException : populateHandler() || 
 								  internalInventoryPopulatorHandler();
+	
 	declare soft : ParserConfigurationException : populateHandler();
-	declare soft : NamingException : checkHandler() || 
-									 createInventoryHandler();
-	declare soft : FinderException : checkHandler() || 
-									 aroundExceptionDoNothingHandler();
+	
+	declare soft : NamingException :createInventoryHandler();
+	
+	declare soft : FinderException : aroundExceptionDoNothingHandler();
+	
 	declare soft : RemoveException : aroundExceptionDoNothingHandler();
+	
 	declare soft : CreateException : createInventoryHandler();
+	
 	declare soft : IOException : internalInventoryPopulatorHandler();
 
 	// ---------------------------
     // Pointcut's
     // ---------------------------
 	/*** InventoryPopulator ***/
-	pointcut checkHandler() : 
-		execution(public boolean InventoryPopulator.check());
 	
-	//GenericAspect
 	public pointcut aroundExceptionDoNothingHandler() :
 		execution(private void InventoryPopulator.internalRemoveExistingInventory(String));
 	
@@ -90,24 +93,7 @@ public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 	// ---------------------------
     // Advice's
     // ---------------------------
-	boolean around() : checkHandler() {
-		try {
-			return proceed();
-	    } catch (Exception e) {
-	        return false;
-	    }
-	}
-	
-	/* GenericAspect
-	void around() : 
-		internalRemoveExistingInventoryHandler() {		
-		try {
-			proceed();
-		} catch(Exception exception) {
-			//TODO: Do nothing!
-		}
-	}
-	*/
+
 	InventoryLocal around() throws PopulateException :
 		createInventoryHandler() {
 		try{
