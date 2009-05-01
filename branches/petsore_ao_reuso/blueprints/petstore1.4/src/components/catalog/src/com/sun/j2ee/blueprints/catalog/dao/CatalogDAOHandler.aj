@@ -31,10 +31,11 @@ import javax.xml.parsers.SAXParser;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 	
     Map connection = new HashMap();
