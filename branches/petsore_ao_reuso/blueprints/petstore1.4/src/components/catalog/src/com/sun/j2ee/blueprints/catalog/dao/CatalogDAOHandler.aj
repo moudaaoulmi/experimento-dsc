@@ -5,7 +5,7 @@ package com.sun.j2ee.blueprints.catalog.dao;
 
 import javax.naming.NamingException;
 
-import com.sun.j2ee.blueprints.catalog.dao.GenericCatalogDAO.ParsingDoneException;
+
 import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
 import com.sun.j2ee.blueprints.catalog.model.Item;
 import com.sun.j2ee.blueprints.util.aspect.ExceptionGenericAspect;
@@ -69,7 +69,7 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 								  connectionClose();
 
     //declare soft : NumberFormatException : parseIntHandler();
-    declare soft : ParsingDoneException : loadSQLStatementsHandler();
+
     declare soft : ServiceLocatorException : getDataSourcePointBaseHandler();
     declare soft : ClassNotFoundException : getDAOHandler();
     declare soft : IllegalAccessException : getDAOHandler();
@@ -163,9 +163,6 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 	
 	pointcut parseIntHandler() : 
 		execution(private int GenericCatalogDAO.internalParseInt(String)); 
-	
-	pointcut loadSQLStatementsHandler() : 
-		execution(private void GenericCatalogDAO.loadSQLStatements(SAXParser, String, InputSource));
 	
 	pointcut mainHandler() : 
 		execution(public static void GenericCatalogDAO.main(String[]));
@@ -278,15 +275,7 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 		  return 0;
 	    }
 	}
-	
-	void around() :  loadSQLStatementsHandler() {
-		try {
-			proceed();
-		} catch(ParsingDoneException exception) {
-			// Ignored		
-		}
-	}
-	
+
 	void around() : mainHandler() {
 		try {
 			proceed();
