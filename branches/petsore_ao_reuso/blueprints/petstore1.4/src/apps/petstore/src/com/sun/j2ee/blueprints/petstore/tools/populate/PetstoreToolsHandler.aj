@@ -45,16 +45,15 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
     // Declare soft's
     // ---------------------------
 	declare soft : NamingException : createCreditCardHandler() || 
-									 checkHandler() ||
 									 createCustomerHandler() ||
 									 getConnectionHandler() || 
 									 createProfileHandler() ||
-									 userPopulatorCheckHandler() ||
 									 createAccountHandler() || 
 									 createAddressHandler() || 
 									 createContactInfoHandler() || 
 									 createCreditCardHandler() || 
 									 createUserHandler();
+	
 	declare soft : CreateException : createCreditCardHandler() || 
 									 createCustomerHandler() || 
 									 createProfileHandler() ||
@@ -63,23 +62,25 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 									 createContactInfoHandler() || 
 									 createCreditCardHandler() || 
 									 createUserHandler();
-	declare soft : FinderException : checkHandler() || 
-									 internalRemoveExistingUserHandler() ||
-									 userPopulatorCheckHandler() ||
-									 aroundExceptionDoNothingHandler();
+	
+	declare soft : FinderException : aroundExceptionDoNothingHandler();
+	
 	declare soft : RemoveException : createCustomerHandler() || 
-									 internalRemoveExistingUserHandler() ||
 									 aroundExceptionDoNothingHandler();
+	
 	declare soft : IOException : initHandler() || 
 								 internalSetupHandler() ||
 								 mainUserPopulatorHandler();
+	
 		declare soft : ParserConfigurationException : initHandler() || 
 												  internalGetReaderHandler() ||
 												  mainUserPopulatorHandler();
+		
 	declare soft : SAXException : initHandler() || 
 								  internalGetReaderHandler() ||
 								  internalSetupHandler() || 
 								  mainUserPopulatorHandler();
+	
 	declare soft : PopulateException : internalItemPopulatorDropTablesHandler() || 
 									   internalProductPopulatorDropTablesHandler() || 
 									   internalCategoryPopulatorDropTablesHandler() || 
@@ -91,10 +92,14 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 									   startElementHandler() || 
 									   endElementHandler() || 
 									   mainUserPopulatorHandler();
+	
 	declare soft : MalformedURLException : getResourceHandler();
-	declare soft : ParsingDoneException : loadSQLStatementsHandler();
+	
+//	declare soft : ParsingDoneException : loadSQLStatementsHandler();
+	
 	declare soft : SQLException : executeSQLStatementHandler() || 
 								  getConnectionHandler();
+	
 	// ---------------------------
 	// Pointcut's
 	// ---------------------------
@@ -126,9 +131,6 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 		execution(private CreditCardLocal CreditCardPopulator.createCreditCard(String, String, String));
 	
 	/*** CustomerPopulator ***/
-	pointcut checkHandler() : 
-		execution(public boolean CustomerPopulator.check());
-	
 	public pointcut aroundExceptionDoNothingHandler() : 
 		execution(private void CustomerPopulator.internalRemoveExistingCustomer(String));
 		pointcut createCustomerHandler() : 
@@ -157,9 +159,9 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 		execution(protected Connection PopulateServlet.getConnection());
 	pointcut getResourceHandler() : 
 		execution(private String PopulateServlet.getResource(String));
-	pointcut loadSQLStatementsHandler() : 
-		execution(private void PopulateServlet.loadSQLStatements(SAXParser, String, InputSource));
-	
+//	pointcut loadSQLStatementsHandler() : 
+//		execution(private void PopulateServlet.loadSQLStatements(SAXParser, String, InputSource));
+//	
 	/*** PopulateUtils ***/
 	pointcut executeSQLStatementHandler() :
 		execution(* PopulateUtils.executeSQLStatement(Connection, String, String[], XMLDBHandler));
@@ -173,12 +175,8 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 		execution(private ProfileLocal ProfilePopulator.createProfile(String , String , boolean , boolean ));
 	
 	/*** UserPopulator ***/
-	pointcut userPopulatorCheckHandler() : 
-		execution(public boolean UserPopulator.check());
 	pointcut createUserHandler() :
 		execution(private UserLocal UserPopulator.createUser(String, String));
-	pointcut internalRemoveExistingUserHandler() :
-		execution(private UserLocal UserPopulator.internalRemoveExistingUser(String, UserLocal));
 	pointcut mainUserPopulatorHandler() : 
 		execution(* UserPopulator.main(String[]));
 	
@@ -246,25 +244,7 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
         }  	
 	}
 	
-	boolean around() : 
-		checkHandler() || 
-		userPopulatorCheckHandler() {
-		try {
-			return proceed();
-	    } catch (Exception e) {
-	        return false;
-	    }
-	}
-	
-	/*
-	void around() : 
-		internalRemoveExistingCustomerHandler() {
-		try {
-			proceed();
-	    } catch (Exception exception) {}  	
-	}
-	*/
-		void around()throws javax.servlet.ServletException : 
+	void around()throws javax.servlet.ServletException : 
 		initHandler()  {
 		try{
 			proceed();
@@ -307,20 +287,7 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 			throw new PopulateException(exception);
 		}
 	}
-//		boolean around(Connection connection, boolean forcefully, boolean alreadyPopulated, XMLReader reader) : 
-//			internalPopulateLogicHandler() && 
-//			args(connection, forcefully, alreadyPopulated, reader) {
-//			try {
-//				return proceed(connection, forcefully, alreadyPopulated, reader);
-//		    } finally {
-//		      try {
-//		        if (connection != null) {
-//		          connection.close();
-//		        }
-//		      } catch (Exception exception) {}
-//		    }
-//		}
-	
+
 	Connection around() throws PopulateException : 
 		getConnectionHandler() {
 		try{
@@ -342,12 +309,12 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 	    }
 	}
 	
-	void around() : 
-		loadSQLStatementsHandler() {
-		try {
-			proceed();
-		} catch (ParsingDoneException exception) {} // Ignored			
-	}	
+//	void around() : 
+//		loadSQLStatementsHandler() {
+//		try {
+//			proceed();
+//		} catch (ParsingDoneException exception) {} // Ignored			
+//	}	
 
 	Object around(Connection connection, String sqlStatement, String[] parameterNames, XMLDBHandler handler) throws PopulateException : 
 		executeSQLStatementHandler() && 
@@ -365,15 +332,6 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 	    try {
 	        proceed();
 	    } catch (PopulateException exception) {}	
-	}
-	
-	UserLocal around() : 
-		internalRemoveExistingUserHandler() {
-		try {
-			return proceed();
-		} catch (Exception exception) {
-			return null;
-		}
 	}
 	
 	void around() :
