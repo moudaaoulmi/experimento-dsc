@@ -19,10 +19,12 @@ import com.sun.j2ee.blueprints.opc.customerrelations.ejb.MailContentXDE.Formatte
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 import com.sun.j2ee.blueprints.util.aspect.EJBExceptionGenericAspect;
+import petstore.exception.ExceptionHandler;
 
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect OPCCustomerrelationsHandler extends EJBExceptionGenericAspect {
 	// ---------------------------
     // Declare soft's

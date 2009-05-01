@@ -31,6 +31,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.Source;
 import  com.sun.j2ee.blueprints.supplier.tools.populate.InventoryPopulator;
+
 import java.io.InputStream;
 import java.util.Collection;
 import javax.naming.NamingException;
@@ -42,7 +43,12 @@ import com.sun.j2ee.blueprints.catalog.dao.GenericCatalogDAO.ParsingDoneExceptio
 import com.sun.j2ee.blueprints.catalog.dao.GenericCatalogDAO;
 import javax.xml.parsers.SAXParser;
 import org.xml.sax.InputSource;
+import com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb.OrderFulfillmentFacadeEJB;
+import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocal;
+import petstore.exception.ExceptionHandler;
 
+
+@ExceptionHandler
 public privileged aspect GeneralExceptionHandler {
 
 	// ---------------------------
@@ -59,7 +65,8 @@ public privileged aspect GeneralExceptionHandler {
 									 checkHandler() ||
 									 internalRemoveExistingUserHandler() ||
 									 checkHandler2() ||
-									 userPopulatorCheckHandler(); 
+									 userPopulatorCheckHandler() ||
+									 checkInventoryHandler();
 	
 	declare soft : NamingException : checkHandler() ||
 									 checkHandler2() ||
@@ -84,6 +91,7 @@ public privileged aspect GeneralExceptionHandler {
 
     declare soft : ParsingDoneException : loadSQLStatementsHandler() ||
     									  loadSQLStatementsHandler2();
+    
 	// ---------------------------
 	// Pointcut's
 	// ---------------------------
@@ -152,6 +160,16 @@ public privileged aspect GeneralExceptionHandler {
 	
 	pointcut loadSQLStatementsHandler() : 
 		execution(private void GenericCatalogDAO.loadSQLStatements(SAXParser, String, InputSource));
+	
+	/*** OrderFulfillmentFacadeEJB ***/
+	pointcut checkInventoryHandler() : 
+		execution(private boolean OrderFulfillmentFacadeEJB.checkInventory(LineItemLocal));
+	
+	pointcut getValuePetStoreHandler() : 
+		execution(public int com.sun.j2ee.blueprints.petstore.tools.populate.XMLDBHandler.getValue(String, int));
+	
+	pointcut getValueSupplierHandler() : 
+		execution(public int com.sun.j2ee.blueprints.supplier.tools.populate.XMLDBHandler.getValue(String, int));
 	
 	// ---------------------------
 	// Advice's
@@ -236,11 +254,22 @@ public privileged aspect GeneralExceptionHandler {
 
 	Object around() : signOnEJB_authenticateHandler() ||
 					  internalGetCustomerHandler() || 
-					  performSignOnHandler(){
+					  performSignOnHandler() ||
+					  checkInventoryHandler() {
 		try {
 			return proceed();
 		} catch (FinderException fe) {
 			return null;
 		}
+	}
+	
+	int around(String name, int defaultValue) :
+		(getValuePetStoreHandler() || 
+		getValueSupplierHandler())  && args(name, defaultValue){
+		try {
+			return proceed(name, defaultValue);
+	    } catch (NumberFormatException exception) {
+	    	return defaultValue;
+	    }
 	}
 }

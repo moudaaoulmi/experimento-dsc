@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import com.sun.j2ee.blueprints.catalog.client.CatalogException;
 import com.sun.j2ee.blueprints.catalog.client.CatalogHelper;
 import com.sun.j2ee.blueprints.catalog.model.Item;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect CartEjbHandler {
 
 	/*** ShoppingCartLocalEJB ***/

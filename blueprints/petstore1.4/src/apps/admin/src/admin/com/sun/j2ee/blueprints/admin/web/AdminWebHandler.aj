@@ -11,10 +11,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
+import  petstore.exception.ExceptionHandler;
 
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect AdminWebHandler {
 	// ---------------------------
     // Declare soft's

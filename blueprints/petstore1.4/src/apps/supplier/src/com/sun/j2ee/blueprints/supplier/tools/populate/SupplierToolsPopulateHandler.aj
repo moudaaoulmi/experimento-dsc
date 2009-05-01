@@ -22,10 +22,11 @@ import org.xml.sax.XMLReader;
 import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocal;
 import com.sun.j2ee.blueprints.supplier.tools.populate.PopulateException;
 import com.sun.j2ee.blueprints.util.aspect.ExceptionGenericAspect;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author rmaranhao
  */
+@ExceptionHandler
 public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 	
 	// ---------------------------
@@ -87,8 +88,6 @@ public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 	pointcut internalEndElementHandler() : 
 		execution(private void XMLDBHandler.internalEndElement());	
 	
-	pointcut getValueHandler() : 
-		execution(public int XMLDBHandler.getValue(String, int));
 	
 	// ---------------------------
     // Advice's
@@ -158,15 +157,6 @@ public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 			proceed();
 		} catch(PopulateException exception) {
 			throw new SAXException(exception.getMessage(), exception);
-		}
-	}
-	
-	int around(String name, int defaultValue) : 
-		getValueHandler() && args(name, defaultValue) {
-		try {
-			return proceed(name, defaultValue);
-		} catch (NumberFormatException exception) {
-			return defaultValue;
 		}
 	}
 		

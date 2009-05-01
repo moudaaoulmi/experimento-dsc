@@ -8,9 +8,12 @@ import java.util.Map;
 
 import javax.ejb.FinderException;
 
+import petstore.exception.ExceptionHandler;
+
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect OPCAdminFacadeHandler {
 	// ---------------------------
     // Declare soft

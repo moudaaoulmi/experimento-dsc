@@ -9,10 +9,11 @@ import javax.ejb.FinderException;
 import javax.naming.NamingException;
 
 import com.sun.j2ee.blueprints.uidgen.counter.ejb.CounterLocal;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect UidgenEjbHandler {
 	
 	// ---------------------------

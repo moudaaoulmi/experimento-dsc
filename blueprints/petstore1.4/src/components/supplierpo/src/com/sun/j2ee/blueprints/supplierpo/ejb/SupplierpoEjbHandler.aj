@@ -15,10 +15,11 @@ import com.sun.j2ee.blueprints.util.aspect.XMLDocumentExceptionGenericAspect;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 import org.w3c.dom.Element;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect SupplierpoEjbHandler extends XMLDocumentExceptionGenericAspect {
 	
 	// ---------------------------

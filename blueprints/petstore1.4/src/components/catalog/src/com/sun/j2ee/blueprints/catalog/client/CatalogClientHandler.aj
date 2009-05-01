@@ -10,10 +10,11 @@ import com.sun.j2ee.blueprints.catalog.model.Page;
 import com.sun.j2ee.blueprints.catalog.model.Item;
 import com.sun.j2ee.blueprints.catalog.ejb.CatalogLocal;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect CatalogClientHandler {
 
 	// CatalogDAOSysException is already a RuntimeException

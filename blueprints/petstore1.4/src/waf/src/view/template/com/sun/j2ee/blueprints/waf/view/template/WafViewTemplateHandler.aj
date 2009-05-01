@@ -24,10 +24,11 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import com.sun.j2ee.blueprints.util.aspect.ExceptionGenericAspect;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
 	
 	// ---------------------------

@@ -11,13 +11,14 @@ import javax.jms.JMSException;
 
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  *
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
+@ExceptionHandler
 public abstract aspect TransitionExceptionGenericAspect {
 
     public abstract pointcut afterServiceLocatorExceptionHandler();
