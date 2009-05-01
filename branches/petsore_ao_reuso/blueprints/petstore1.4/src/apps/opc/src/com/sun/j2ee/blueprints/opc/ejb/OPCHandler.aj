@@ -17,6 +17,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import petstore.exception.ExceptionHandler;
+
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 import com.sun.j2ee.blueprints.util.aspect.EJBExceptionGenericAspect;
@@ -24,6 +26,7 @@ import com.sun.j2ee.blueprints.util.aspect.EJBExceptionGenericAspect;
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect OPCHandler extends EJBExceptionGenericAspect {
 	// ---------------------------
     // Declare soft's

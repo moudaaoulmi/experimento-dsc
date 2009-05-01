@@ -6,7 +6,7 @@ package com.sun.j2ee.blueprints.catalog.ejb;
 import com.sun.j2ee.blueprints.catalog.model.Item;
 import com.sun.j2ee.blueprints.catalog.model.Page;
 import com.sun.j2ee.blueprints.catalog.model.Product;
-
+import petstore.exception.ExceptionHandler;
 import java.util.Locale;
 
 import javax.ejb.EJBException;
@@ -17,6 +17,7 @@ import com.sun.j2ee.blueprints.catalog.model.Category;
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect CatalogEjbHandler {
 
 	/*** CatalogEJB ***/

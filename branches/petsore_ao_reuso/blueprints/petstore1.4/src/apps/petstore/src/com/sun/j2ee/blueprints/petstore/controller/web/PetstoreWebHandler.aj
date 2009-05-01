@@ -16,10 +16,12 @@ import com.sun.j2ee.blueprints.util.tracer.Debug;
 import com.sun.j2ee.blueprints.waf.controller.web.WebController;
 import com.sun.j2ee.blueprints.waf.event.EventException;
 import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+
+@ExceptionHandler
 public aspect PetstoreWebHandler {
 	// ---------------------------
     // Declare soft's

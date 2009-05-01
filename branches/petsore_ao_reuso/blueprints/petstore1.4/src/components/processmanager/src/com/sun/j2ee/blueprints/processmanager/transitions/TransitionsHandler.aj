@@ -2,10 +2,11 @@
  * Created on 26/09/2005
  */
 package com.sun.j2ee.blueprints.processmanager.transitions;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect TransitionsHandler {
 	
 	// ---------------------------

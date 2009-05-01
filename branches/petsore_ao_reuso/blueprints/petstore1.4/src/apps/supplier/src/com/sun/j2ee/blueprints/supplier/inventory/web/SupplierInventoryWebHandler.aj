@@ -18,10 +18,12 @@ import javax.transaction.SystemException;
 
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
+import petstore.exception.ExceptionHandler;
 
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect SupplierInventoryWebHandler {
 
 

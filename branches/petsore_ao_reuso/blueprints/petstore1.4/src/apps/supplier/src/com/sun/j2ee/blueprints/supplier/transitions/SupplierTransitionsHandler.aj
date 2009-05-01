@@ -13,10 +13,12 @@ import org.aspectj.lang.SoftException;
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionInfo;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import com.sun.j2ee.blueprints.util.aspect.TransitionExceptionGenericAspect;
+import petstore.exception.ExceptionHandler;
 
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect SupplierTransitionsHandler extends TransitionExceptionGenericAspect {
 	private Map topicConnect = new HashMap();
 	

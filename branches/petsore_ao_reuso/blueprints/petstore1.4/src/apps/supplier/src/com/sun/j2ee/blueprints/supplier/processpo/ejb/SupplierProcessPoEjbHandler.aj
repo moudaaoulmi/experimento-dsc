@@ -10,11 +10,12 @@ import javax.jms.JMSException;
 
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
-
+import petstore.exception.ExceptionHandler;
 
 /**
  * @author rmaranhao
  */
+@ExceptionHandler
 public aspect SupplierProcessPoEjbHandler {
 	
 	declare soft : TransitionException : onMessageHandler();

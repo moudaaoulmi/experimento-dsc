@@ -17,9 +17,12 @@ import org.xml.sax.SAXException;
 
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 import com.sun.j2ee.blueprints.util.aspect.XMLDocumentExceptionGenericAspect;
+import petstore.exception.ExceptionHandler;
+
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect PurchaseOrderEjbHandler extends XMLDocumentExceptionGenericAspect {
 	
 	declare soft : UnsupportedEncodingException : afterXMLDocumentExceptionHandler();

@@ -11,9 +11,11 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import javax.jms.JMSException;
 import javax.jms.QueueConnectionFactory;
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionInfo;
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect OPCTransitionsHandler extends TransitionExceptionGenericAspect {
 	 //private QueueConnection qConnect;
 	private Map qConnect = new HashMap();

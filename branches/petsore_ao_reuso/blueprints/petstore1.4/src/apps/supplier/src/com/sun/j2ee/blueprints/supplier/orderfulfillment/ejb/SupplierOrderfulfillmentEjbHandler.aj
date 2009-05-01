@@ -15,21 +15,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.HashMap;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect SupplierOrderfulfillmentEjbHandler {
 
-	declare soft : FinderException : checkInventoryHandler();
+	
 	declare soft : XMLDocumentException : internalCreateInvoiceHandler() || 
 										  internalProcessAnOrderHandler();
 	declare soft : IOException : internalLoadHandler();
 //	declare soft : TransformerConfigurationException : internalGetTransformerHandler();
-
-	/*** OrderFulfillmentFacadeEJB ***/
-	pointcut checkInventoryHandler() : 
-		execution(private boolean OrderFulfillmentFacadeEJB.checkInventory(LineItemLocal));
 
 	pointcut internalCreateInvoiceHandler() : 
 		execution(private String OrderFulfillmentFacadeEJB.internalCreateInvoice(SupplierOrderLocal, HashMap));
@@ -47,18 +44,7 @@ public aspect SupplierOrderfulfillmentEjbHandler {
 //	pointcut internalCreateTransformerHandler() : 
 //		execution(private Transformer TPASupplierOrderXDE.internalCreateTransformer());
 
-	boolean around() : 
-		checkInventoryHandler() {
-		try {
-			return proceed();
-		} catch (FinderException fe) {
-			// swallow the finder exception because this means
-			// supplier has not been populated; So we cant fulfill
-			// this part of the order now
-			return (false);
-		}
-	}
-
+	
 	String around() : 
 		internalCreateInvoiceHandler() || 
 		internalProcessAnOrderHandler() {

@@ -23,10 +23,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import petstore.exception.ExceptionHandler;
 
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect AdminClientHandler {
 
 	// ---------------------------

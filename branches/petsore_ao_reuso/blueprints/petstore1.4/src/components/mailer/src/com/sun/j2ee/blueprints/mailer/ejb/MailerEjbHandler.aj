@@ -17,10 +17,12 @@ import com.sun.j2ee.blueprints.mailer.exceptions.MailerAppException;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+
+@ExceptionHandler
 public aspect MailerEjbHandler extends XMLDocumentExceptionGenericAspect {
 
 	declare soft : UnsupportedEncodingException : internalByteArrayDataSource();

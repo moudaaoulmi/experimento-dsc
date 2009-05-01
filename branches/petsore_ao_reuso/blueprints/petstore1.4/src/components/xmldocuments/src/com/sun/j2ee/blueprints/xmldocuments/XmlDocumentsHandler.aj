@@ -29,10 +29,12 @@ import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
 
 import com.sun.j2ee.blueprints.util.aspect.XMLDocumentExceptionGenericAspect;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+
+@ExceptionHandler
 public aspect XmlDocumentsHandler extends XMLDocumentExceptionGenericAspect {
 	
 	// ---------------------------

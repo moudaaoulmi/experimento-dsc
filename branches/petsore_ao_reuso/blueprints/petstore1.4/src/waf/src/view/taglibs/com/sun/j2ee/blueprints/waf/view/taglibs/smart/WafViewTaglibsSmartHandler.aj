@@ -6,10 +6,11 @@ package com.sun.j2ee.blueprints.waf.view.taglibs.smart;
 import java.io.IOException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.BodyContent;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect WafViewTaglibsSmartHandler {
 
 	/*** FormTag ***/

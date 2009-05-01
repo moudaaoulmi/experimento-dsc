@@ -35,9 +35,13 @@ import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import petstore.exception.ExceptionHandler;
+
+
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 	private Map connect = new HashMap();
 	
@@ -185,8 +189,6 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 		execution(public void XMLDBHandler.startElement(String, String, String, Attributes));
 	pointcut endElementHandler() : 
 		execution(public void XMLDBHandler.endElement(String, String, String));
-	pointcut getValueHandler() : 
-		execution(public int XMLDBHandler.getValue(String, int));
 	
 	pointcut connectionHandler():
 		call(* PopulateServlet.getConnection()) && 
@@ -352,14 +354,4 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 			throw new SAXException(exception.getMessage(), exception.getRootCause());
 		}		
 	}
-	
-	int around(String name, int defaultValue) :
-		getValueHandler() && args(name, defaultValue){
-		try {
-			return proceed(name, defaultValue);
-	    } catch (NumberFormatException exception) {
-	    	return defaultValue;
-	    }
-	}
-	
 }

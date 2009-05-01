@@ -3,8 +3,9 @@ package com.sun.j2ee.blueprints.waf.util;
 import java.util.Locale;
 import java.util.Vector;
 import com.sun.j2ee.blueprints.util.tracer.Debug;
+import petstore.exception.ExceptionHandler;
 
-
+@ExceptionHandler
 public aspect UtilHandler {
 	
 	// ---------------------------

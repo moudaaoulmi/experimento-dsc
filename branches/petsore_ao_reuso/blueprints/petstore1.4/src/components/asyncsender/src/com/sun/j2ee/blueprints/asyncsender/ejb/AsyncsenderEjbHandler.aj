@@ -8,9 +8,13 @@ import javax.jms.QueueConnectionFactory;
 import javax.jms.QueueConnection;
 import java.util.HashMap;
 import java.util.Map;
+import petstore.exception.ExceptionHandler;
+
 /**
  * @author Raquel Maranhao
  */
+
+@ExceptionHandler 
 public aspect AsyncsenderEjbHandler {
 	
 	//QueueConnection qConnect = null;

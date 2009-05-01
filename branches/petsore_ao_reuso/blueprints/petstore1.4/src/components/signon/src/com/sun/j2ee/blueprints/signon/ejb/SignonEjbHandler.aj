@@ -10,13 +10,14 @@ import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 import javax.naming.NamingException;
-
+import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  *
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
+@ExceptionHandler
 public aspect SignonEjbHandler {
 	
 	// ---------------------------

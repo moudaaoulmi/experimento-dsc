@@ -16,10 +16,12 @@ import com.sun.j2ee.blueprints.waf.event.Event;
 import com.sun.j2ee.blueprints.waf.event.EventException;
 import com.sun.j2ee.blueprints.waf.event.EventResponse;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
+import petstore.exception.ExceptionHandler;
 
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect PetstoreEjbActionHandler {
 	// ---------------------------
     // Declare soft's

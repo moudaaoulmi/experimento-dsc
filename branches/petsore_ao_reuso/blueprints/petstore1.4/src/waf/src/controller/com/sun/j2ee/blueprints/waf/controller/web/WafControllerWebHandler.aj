@@ -28,10 +28,12 @@ import com.sun.j2ee.blueprints.waf.controller.web.flow.FlowHandlerException;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import petstore.exception.ExceptionHandler;
 
 /**
  * @author Raquel Maranhao
  */
+@ExceptionHandler
 public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 
 	// ---------------------------
