@@ -92,7 +92,7 @@ public class Iconkit {
 		}
 		catch (Exception e) {
 			// ignore: do nothing
-			utilHandler.iconkitLoadRegisteredImages();
+			utilHandler.emptyBlock();
 		}
 	}
 

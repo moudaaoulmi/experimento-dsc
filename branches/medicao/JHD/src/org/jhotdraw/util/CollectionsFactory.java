@@ -61,7 +61,7 @@ public abstract class CollectionsFactory {
 			return true;
 		} catch (ClassNotFoundException e) {
 			// ignore
-			utilHandler.ignore();
+			utilHandler.emptyBlock();
 		}
 		return false;
 	}
