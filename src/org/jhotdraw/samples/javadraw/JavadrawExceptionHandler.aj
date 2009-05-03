@@ -40,25 +40,6 @@ public privileged aspect JavadrawExceptionHandler {
 	// ---------------------------
 	// Advice's
 	// ---------------------------
-/**
- * Foi tratada j‡ pela persistencia
- * 
- *
-	void around(): loadDrawingHandler(){
-		JavaDrawViewer jDV = (JavaDrawViewer) thisJoinPoint.getThis();
-		try {
-			proceed();
-		} 
-		// @AJHD added
-		// catch the soft exception instead of the IO one, and get the wrapped
-		// one for report
-		catch (SoftException e) {
-			jDV.fDrawing = jDV.createDrawing();
-			System.err
-					.println("Error when Loading: " + e.getWrappedThrowable());
-			jDV.showStatus("Error when Loading: " + e.getWrappedThrowable());
-		}
-	}*/
 
 	URL around(): FollowURLTool_getDocumentBaseHandler(){
 		URL url = null;

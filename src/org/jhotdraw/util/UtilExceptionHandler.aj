@@ -2,7 +2,7 @@ package org.jhotdraw.util;
 
 import java.awt.Image;
 import java.io.IOException;
-
+import javax.jdo.PersistenceManager;
 import org.jhotdraw.framework.Drawing;
 import org.jhotdraw.framework.JHotDrawRuntimeException;
 
@@ -43,12 +43,12 @@ public privileged aspect  UtilExceptionHandler{
 	pointcut Iconkit_loadImageResourceHandler():
 		execution(Image Iconkit.loadImageResource(..));
 
-	/**
+	
 	pointcut storeInternalHandler():
-		execution(* JDOStorageFormat.storeInternal(..));
-
+		execution(* JDOStorageFormat.internalStore(..));
+	
 	 pointcut restoreInternalHandler():
-		execution(* JDOStorageFormat.restoreInternal(..)); */
+		execution(* JDOStorageFormat.internalRestore(..));
 
 	pointcut SerializationStorageFormat_restoreHandler():
 		execution(Drawing SerializationStorageFormat.restore(..)); 
@@ -102,34 +102,21 @@ public privileged aspect  UtilExceptionHandler{
 		return result;
 	}
 
-	/**
-	 * Cenário em que não dah pra refatorar pois tenta 
-	 * chamar um método privado da classe JDOStorageFormat
-	 * 
-	 * 
-	String around(Drawing storeDrawing, PersistenceManager pm,
-			Drawing txnDrawing, String drawingName): 
-		storeInternalHandler() &&
-		args(storeDrawing, pm, txnDrawing, drawingName){
+	String around(Drawing storeDrawing, PersistenceManager pm, Drawing txnDrawing): 
+				storeInternalHandler() &&
+		args(storeDrawing, pm, txnDrawing){
 
 		String result = null;
 
 		try {
-			result = proceed(storeDrawing, pm, txnDrawing, drawingName);
+			result = proceed(storeDrawing, pm, txnDrawing);
 		} finally {
-			JDOStorageFormat jDSF = (JDOStorageFormat) thisJoinPoint.getThis();
-			jDSF.endTransaction(pm, (drawingName != null));
+			JDOStorageFormat.endTransaction(pm, (result != null));
 		}
 		return result;
-	} */
+	} 
 
-	/**
-	 * 
-	 * Cenário em que não dah pra refatorar pois tenta 
-	 * chamar um método privado da classe JDOStorageFormat
-	 * 
-	 * 
-	 * 
+	
 	Drawing around(PersistenceManager pm, Drawing restoredDrawing): 
 		restoreInternalHandler() &&
 			args( pm, restoredDrawing){
@@ -138,11 +125,10 @@ public privileged aspect  UtilExceptionHandler{
 		try {
 			result = proceed(pm, restoredDrawing);
 		} finally {
-			JDOStorageFormat jDSF = (JDOStorageFormat) thisJoinPoint.getThis();
-			jDSF.endTransaction(pm, false);
+			JDOStorageFormat.endTransaction(pm, false);
 		}
 		return result;
-	}*/
+	}
 
 
 

@@ -3,9 +3,6 @@ package org.jhotdraw.standard;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.IOException;
-import java.io.InputStream;
-import org.jhotdraw.util.StorableInput;
-import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.aspectj.lang.SoftException;
@@ -93,15 +90,7 @@ public privileged aspect StandardExceptionHandler {
 		}
 	}
 	
-	/** REUSE ______
-	void around(): ToolButton_internalToolButtonHandler(){
-		try{
-			proceed();
-		}catch (Exception e) {
-			// ignore exception
-		}
-	}*/
-	
+		
 	void around() : StandardDrawingView_DrawingViewMouseListener_mousePressedHandler() || 
 					StandardDrawingView_DrawingViewMouseListener_mouseReleasedHandler() ||
 					StandardDrawingView_DrawingViewMouseMotionListener_mouseDraggedHanlder() || 

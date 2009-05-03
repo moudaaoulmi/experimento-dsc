@@ -5,8 +5,6 @@ package org.jhotdraw.figures;
 public privileged aspect FiguresExceptionHandler {
 	
 	declare soft : CloneNotSupportedException : FigureAttributes_cloneHandler();
-	//declare soft : NumberFormatException : NumberTextFigure_getValueHandler();
-	
 	
 	pointcut FigureAttributes_cloneHandler() : execution(Object FigureAttributes.clone(..));
 	pointcut NumberTextFigure_getValueHandler() : execution(int NumberTextFigure.getValue(..));

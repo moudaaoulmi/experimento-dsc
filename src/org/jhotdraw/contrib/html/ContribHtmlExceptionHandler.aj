@@ -51,7 +51,7 @@ public privileged aspect ContribHtmlExceptionHandler {
 	
 	 
 	 
-	 void around(): ContentProducerRegistry_internalReadHandler(){
+	 void around(): ContentProducerRegistry_internalReadHandler() || DisposableResourceManagerFactory_initManagerPartOneHandler(){
 			try {
 			    proceed();
 			}
@@ -59,21 +59,11 @@ public privileged aspect ContribHtmlExceptionHandler {
 				// the class does not exist in this application
 				// cannot do much about it so ignore it, the entities of
 				// this class will get their toString() value instead
+			}catch (ResourceManagerNotSetException ex) {
+				// we set it so we shouldn't get here
 			}
 		}
 		
-	
-	 
-	 void around(): DisposableResourceManagerFactory_initManagerPartOneHandler(){
-			try {
-				proceed();
-			}
-			catch (ResourceManagerNotSetException ex) {
-				// we set it so we shouldn't get here
-			}
-	}
-	 
-	
 	 int around(String template,
 				int endPos, StringBuffer finalText, int startPos, int chunkEnd): HTMLTextAreaFigure_internalSubstituteEntityKeywordsPartOne() 
 				&& args(template, endPos, finalText, startPos, chunkEnd){
