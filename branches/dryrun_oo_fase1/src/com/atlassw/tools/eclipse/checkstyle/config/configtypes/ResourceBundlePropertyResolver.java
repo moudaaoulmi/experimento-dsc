@@ -77,7 +77,7 @@ class ResourceBundlePropertyResolver implements PropertyResolver
             }
             catch (MissingResourceException e)
             {
-                configtyoesHandle.commentedCode2();
+                configtyoesHandle.emptyBlock();
             }
         }
 

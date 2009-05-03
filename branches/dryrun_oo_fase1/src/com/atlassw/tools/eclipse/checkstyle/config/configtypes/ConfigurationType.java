@@ -257,7 +257,7 @@ public abstract class ConfigurationType implements IConfigurationType
         }
         catch (IOException e)
         {
-            configtypesHandler.commentedCode();
+            configtypesHandler.emptyBlock();
         }
         return null;
     }

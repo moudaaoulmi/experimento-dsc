@@ -33,10 +33,10 @@ import org.eclipse.ui.part.FileEditorInput;
 
 import com.atlassw.tools.eclipse.checkstyle.builder.CheckstyleMarker;
 import com.atlassw.tools.eclipse.checkstyle.builder.RunCheckstyleOnFilesJob;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.nature.CheckstyleNature;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 /**
@@ -49,7 +49,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 public class CheckFileOnOpenPartListener implements IPartListener2
 {
 
-    FiltersHandler filtersHandle = new FiltersHandler();
+    GeneralException generalException = new GeneralException();
     
     /**
      * {@inheritDoc}
@@ -84,7 +84,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2
             }
             catch (CoreException e)
             {
-                filtersHandle.checkstyleLog(e);
+                generalException.checkstyleLog(e);
             }
         }
     }
@@ -216,11 +216,11 @@ public class CheckFileOnOpenPartListener implements IPartListener2
         {
             // should never happen, since editor cannot be open
             // when project isn't
-            filtersHandle.checkstyleLog(e);
+            generalException.checkstyleLog(e);
         }
         catch (CheckstylePluginException e)
         {
-            filtersHandle.checkstyleLog(e);
+            generalException.checkstyleLog(e);
         }
 
         return affected;

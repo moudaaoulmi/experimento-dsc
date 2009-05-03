@@ -56,7 +56,7 @@ public class FilesInSyncFilter extends AbstractFilter
             }
             catch (CVSException e)
             {
-                filtersHandle.checkstyleLog(e);
+                generalException.checkstyleLog(e);
             }
         }
         return passes;

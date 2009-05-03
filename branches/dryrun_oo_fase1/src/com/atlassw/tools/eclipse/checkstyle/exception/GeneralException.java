@@ -113,5 +113,9 @@ public class GeneralException
     {
         return result = false;
     }
+    
+    public void emptyBlock() {
+        //empty
+    }
 
 }

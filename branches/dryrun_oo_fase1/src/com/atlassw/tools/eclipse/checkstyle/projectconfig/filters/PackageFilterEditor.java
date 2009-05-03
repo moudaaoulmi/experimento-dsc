@@ -41,7 +41,7 @@ import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import com.atlassw.tools.eclipse.checkstyle.Messages;
-import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 
 /**
  * Editor dialog for the package filter.
@@ -59,7 +59,7 @@ public class PackageFilterEditor implements IFilterEditor
     // attributes
     //
 
-    FiltersHandler filtersHandle = new FiltersHandler();
+    GeneralException generalException = new GeneralException();
     
     /** the dialog for this editor. */
     private CheckedTreeSelectionDialog mDialog;
@@ -272,11 +272,11 @@ public class PackageFilterEditor implements IFilterEditor
                 }
                 catch (JavaModelException e)
                 {
-                    filtersHandle.checkstyleLog(e);
+                    generalException.checkstyleLog(e);
                 }
                 catch (CoreException e)
                 {
-                    filtersHandle.commentedCode();
+                    generalException.emptyBlock();
                 }
             }
             return children;
@@ -301,7 +301,7 @@ public class PackageFilterEditor implements IFilterEditor
                 }
                 catch (CoreException e)
                 {
-                    filtersHandle.commentedCode();
+                    generalException.emptyBlock();
                 }
             }
             return children;

@@ -90,23 +90,7 @@ public class ConfigtypesHandler extends GeneralException
         }
     }
 
-    public void commentedCode2()
-    {
-    // ignore
-    }
 
-    public void commentedCode()
-    {
-    // we won't load the bundle then
-    // disabled logging bug #1647602
-    // CheckstyleLog.log(ioe);
-    }
-
-    public void commentedCode4()
-    {
-    // ignore this since there simply might be no properties file
-    }
-    
     public void remoteConfigurationType_getCheckstyleConfiguration(String currentRedirects, Authenticator oldAuthenticator)
     {
         Authenticator.setDefault(oldAuthenticator);

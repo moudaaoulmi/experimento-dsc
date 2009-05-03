@@ -179,7 +179,7 @@ public final class ConfigurationReader
                 }
                 catch (Exception e)
                 {
-                    configHandler.configurationReader_getAdditionalConfigDataHandler();
+                    configHandler.emptyBlock();
                 }
             }
         }

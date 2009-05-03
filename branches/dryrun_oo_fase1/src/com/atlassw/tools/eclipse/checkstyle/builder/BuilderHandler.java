@@ -32,13 +32,6 @@ public class BuilderHandler extends GeneralException
         monitor.done();
     }
 
-    public void auditor_calculateMarkerOffset()
-    {
-    // seems to happen quite often so its no use to log since we
-    // can't do anything about it
-    // CheckstyleLog.log(e);
-    }
-
     public void auditor_runAudit(IProgressMonitor monitor, Checker checker, AuditListener listener,
             Filter runtimeExceptionFilter, ClassLoader contextClassloader)
     {
@@ -54,11 +47,6 @@ public class BuilderHandler extends GeneralException
         // restore the original classloader
         Thread.currentThread().setContextClassLoader(contextClassloader);
 
-    }
-
-    public void projectObjectFactory_doMakeObjectHandler()
-    {
-        ; // keep looking
     }
 
     public void builderHandlerRethrowCoreException(CheckstylePluginException e, String msg)
