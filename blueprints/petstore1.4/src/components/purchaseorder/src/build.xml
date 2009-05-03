@@ -45,6 +45,10 @@
 <project name="purchaseorder" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -85,7 +89,7 @@
     <property name="po.ejbclientjar" value="${po.build}/po-ejb-client.jar"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="po.classpath" value="${po.classbindir}:${po.xmldocuments.client}:${po.servicelocator.client}:${appserver.cpath}"/>
+    <property name="po.classpath" value="${po.classbindir}:${po.xmldocuments.client}:${po.servicelocator.client}:${appserver.cpath}:${exception.home}"/>
   </target>
 
   <target name="compile" depends="init">

@@ -1,7 +1,7 @@
 package com.sun.j2ee.blueprints.waf.controller.ejb;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
 @ExceptionHandler
 

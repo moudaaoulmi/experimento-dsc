@@ -2,8 +2,8 @@ package com.sun.j2ee.blueprints.supplier.processpo.ejb;
 
 import javax.ejb.EJBException;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
 
 @ExceptionHandler

@@ -45,6 +45,10 @@
 <project name="cart" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -78,7 +82,7 @@
     <property name="cart.javadocs.dir" value="${cart.build}/docs/api"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="cart.classpath" value="${cart.catalog.client}:${cart.tracer.client}:${cart.classbindir}:${appserver.cpath}"/>
+    <property name="cart.classpath" value="${cart.catalog.client}:${cart.tracer.client}:${cart.classbindir}:${appserver.cpath}:${exception.home}"/>
 
     <property name="cart.ejbjar" value="${cart.build}/cart-ejb.jar"/>
     <property name="cart.ejbclientjar" value="${cart.build}/cart-ejb-client.jar"/>

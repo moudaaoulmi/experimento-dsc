@@ -45,6 +45,9 @@
 <project name="petstoreadmin" default="core" basedir=".">
          
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	  	<property name="exception.home" value="../../../handler/build"/>
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -89,19 +92,17 @@
     <property name="client.jar" value="docroot/AdminApp.jar"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="admin.classpath" value="${admin.classbindir}:${admin.opc.ejbjar.client}:${admin.async.ejbjar.client}:${admin.servicelocator.client}:${admin.xmldocuments.client}:${appserver.cpath}"/>
+    <property name="admin.classpath" value="${admin.classbindir}:${admin.opc.ejbjar.client}:${admin.async.ejbjar.client}:${admin.servicelocator.client}:${admin.xmldocuments.client}:${appserver.cpath}:${exception.home}"/>
     <property name="admin.war" value="${admin.build}/petstoreadmin.war"/>
     <property name="petstoreadmin.ear" value="petstoreadmin.ear"/>
     <property name="admin.ear" value="${admin.build}/${petstoreadmin.ear}"/>
   	
-  	<property name="exception" value="${admin.build}/exception}"/>
-
+  	
   </target>
 
   <target name="compile" depends="init">
     <mkdir dir="${admin.classbindir}"/>
     <mkdir dir="${client.classbindir}"/>
-  	<mkdir dir="${exception}"/>  	
     <javac srcdir="${admin.src}"
            debug="${javac.debug}"
            destdir="${admin.classbindir}"
@@ -110,6 +111,7 @@
     <javac srcdir="${client.src}"
            debug="${javac.debug}"
            destdir="${client.classbindir}"
+    	classpath="${admin.classpath}"
 	   includes="**"/>
     <mkdir dir="${client.classbindir}/resources"/>
     <copy todir="${client.classbindir}/resources">

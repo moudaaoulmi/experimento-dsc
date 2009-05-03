@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
 @ExceptionHandler
 

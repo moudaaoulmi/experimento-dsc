@@ -45,6 +45,10 @@
 <project name="asyncsender" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+    <property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -70,7 +74,7 @@
     <property name="asyncSender.servicelocator.client" value="${asyncSender.servicelocator.home}/build/servicelocator.jar"/>
     
     <!-- The classpath used for building the workspace. -->
-    <property name="asyncSender.classpath" value="${asyncSender.classbindir}:${asyncSender.servicelocator.client}:${appserver.cpath}"/>
+    <property name="asyncSender.classpath" value="${asyncSender.classbindir}:${asyncSender.servicelocator.client}:${appserver.cpath}:${exception.home}"/>
 
     <property name="asyncSender.ejbjar" value="${asyncSender.build}/asyncsender-ejb.jar"/>
 

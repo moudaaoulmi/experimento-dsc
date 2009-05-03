@@ -5,8 +5,8 @@ import java.net.URL;
 
 import org.xml.sax.SAXException;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
 @ExceptionHandler
 public class ToolsPopulateHandler extends GeneralException {

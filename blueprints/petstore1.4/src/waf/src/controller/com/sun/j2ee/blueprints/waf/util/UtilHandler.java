@@ -2,8 +2,8 @@ package com.sun.j2ee.blueprints.waf.util;
 
 import com.sun.j2ee.blueprints.util.tracer.Debug;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 @ExceptionHandler
 
 

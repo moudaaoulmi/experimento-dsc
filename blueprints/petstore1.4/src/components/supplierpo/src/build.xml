@@ -45,6 +45,10 @@
 <project name="supplierpo" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -84,7 +88,7 @@
     <property name="suppPO.ejbclientjar" value="${suppPO.build}/supplierpo-ejb-client.jar"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="suppPO.classpath" value="${suppPO.classbindir}:${suppPO.xmldocuments.client}:${suppPO.servicelocator.client}:${appserver.cpath}"/>
+    <property name="suppPO.classpath" value="${suppPO.classbindir}:${suppPO.xmldocuments.client}:${suppPO.servicelocator.client}:${appserver.cpath}:${exception.home}"/>
 
   </target>
 

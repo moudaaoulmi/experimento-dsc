@@ -2,8 +2,8 @@ package com.sun.j2ee.blueprints.opc.admin.ejb;
 
 import javax.ejb.EJBException;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
 @ExceptionHandler
 public class AdminEjbHandler extends GeneralException {

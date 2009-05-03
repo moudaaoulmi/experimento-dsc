@@ -45,6 +45,11 @@
 <project name="xmldocuments" default="core" basedir=".">
 
   <target name="init">
+  	
+  	<!-- include exception home -->
+  	
+  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -52,7 +57,7 @@
     <property name="appserver.cpath" value="${com.sun.aas.installRoot}/lib/appserv-rt.jar"/>
 
     <!-- The root directory of the workspace -->
-    <property name="xmldocuments.home" value=".."/>
+    <property name="xmldocuments.home" value=".."/>	  	
 
     <!-- The destination directory for the build -->
     <property name="xmldocuments.build" value="${xmldocuments.home}/build"/>
@@ -68,7 +73,7 @@
     <property name="xmldocuments.client.jar" value="xmldocuments.jar"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="xmldocuments.classpath" value="${xmldocuments.classbindir}:${appserver.cpath}"/>
+    <property name="xmldocuments.classpath" value="${xmldocuments.classbindir}:${appserver.cpath}:${exception.home}"/>
   </target>
 
   <target name="compile" depends="init">

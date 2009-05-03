@@ -45,6 +45,9 @@
 <project name="lineitem" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	<property name="exception.home" value="../../../handler/build"/>
 
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
@@ -74,7 +77,7 @@
     <property name="lineitem.javadocs.dir" value="${lineitem.build}/docs/api"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="lineitem.classpath" value="${lineitem.classbindir}:${lineitem.xmldocuments.client}:${appserver.cpath}"/>
+    <property name="lineitem.classpath" value="${lineitem.classbindir}:${lineitem.xmldocuments.client}:${appserver.cpath}:${exception.home}"/>
 
   </target>
 

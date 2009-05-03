@@ -45,6 +45,10 @@
 <project name="encodingfilter" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -67,7 +71,7 @@
     <property name="encodingfilter.dstdocdir" value="${encodingfilter.build}/docs/api"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="encodingfilter.classpath" value="${encodingfilter.classbindir}:${appserver.cpath}"/>
+    <property name="encodingfilter.classpath" value="${encodingfilter.classbindir}:${appserver.cpath}:${exception.home}"/>
 
   </target>
 

@@ -7,8 +7,8 @@ import javax.ejb.CreateException;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 @ExceptionHandler
 
 

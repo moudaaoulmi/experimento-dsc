@@ -45,6 +45,10 @@
 <project name="creditcard" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -74,7 +78,7 @@
     <property name="creditcard.javadocs.dir" value="${creditcard.build}/docs/api"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="creditcard.classpath" value="${creditcard.classbindir}:${creditcard.xmldocuments.client}:${appserver.cpath}"/>
+    <property name="creditcard.classpath" value="${creditcard.classbindir}:${creditcard.xmldocuments.client}:${appserver.cpath}${exception.home}"/>
 
     <property name="creditcard.ejbjar" value="${creditcard.build}/creditcard-ejb.jar"/>
 

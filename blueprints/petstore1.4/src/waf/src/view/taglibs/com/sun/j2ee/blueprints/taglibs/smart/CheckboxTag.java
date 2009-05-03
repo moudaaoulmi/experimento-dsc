@@ -85,9 +85,7 @@ public class CheckboxTag extends BodyTagSupport {
             return EVAL_PAGE;
         }
         catch (IOException e) {
-        	String msg = "CheckboxTag: ";
-        	Exception ex = e.getMessage();
-            smartHandler.doEndTag1Handler(msg,ex);
+            smartHandler.doEndTag1Handler("CheckboxTag: ",e);
         }
         return 0;
     }

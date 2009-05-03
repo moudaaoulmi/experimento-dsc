@@ -110,8 +110,8 @@ public class ScreenDefinitionDAO {
             templateHandler.loadDocument2Handler(e);
         } catch (java.net.MalformedURLException mfx) {
             templateHandler.loadDocument2Handler(mfx);
-        } catch (java.io.IOException e) {
-            templateHandler.loadDocument2Handler(e);
+        } catch (java.io.IOException io) {
+            templateHandler.loadDocument2Handler(io);
         } catch (Exception pce) {
             templateHandler.loadDocument2Handler(pce);
         }

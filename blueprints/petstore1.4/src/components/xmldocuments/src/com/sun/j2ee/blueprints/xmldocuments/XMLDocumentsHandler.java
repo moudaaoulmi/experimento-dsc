@@ -8,8 +8,8 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXNotRecognizedException;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
 @ExceptionHandler
 

@@ -75,7 +75,7 @@ public class InsertTag extends TagSupport {
          try{
              pageContext.getOut().flush();
          } catch (Exception e){
-             // do nothing
+            tagsHandler.ignoreHandler(e);
          }
         // load the ScreenFlow
         try {

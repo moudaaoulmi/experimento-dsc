@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import com.sun.j2ee.blueprints.catalog.client.CatalogException;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
 @ExceptionHandler
 

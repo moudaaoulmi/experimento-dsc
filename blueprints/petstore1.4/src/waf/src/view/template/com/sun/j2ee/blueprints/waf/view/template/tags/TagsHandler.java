@@ -2,7 +2,14 @@ package com.sun.j2ee.blueprints.waf.view.template.tags;
 
 import javax.servlet.jsp.JspTagException;
 
-public class TagsHandler {
+import exception.ExceptionHandler;
+import exception.GeneralException;
+
+@ExceptionHandler
+
+
+
+public class TagsHandler extends GeneralException{
 
 	public void doStartTagHandler(NullPointerException e)
 			throws JspTagException {

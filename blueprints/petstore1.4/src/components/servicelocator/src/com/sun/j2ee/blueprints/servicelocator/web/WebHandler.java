@@ -2,8 +2,8 @@ package com.sun.j2ee.blueprints.servicelocator.web;
 
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
 @ExceptionHandler
 

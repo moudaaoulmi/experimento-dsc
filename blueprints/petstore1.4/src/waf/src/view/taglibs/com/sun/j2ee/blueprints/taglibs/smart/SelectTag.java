@@ -101,9 +101,7 @@ public class SelectTag extends BodyTagSupport {
             return EVAL_PAGE;
         }
         catch (IOException e) {
-        	String msg ="LinkTag: ";
-        	Exception ex = e.getMessage();
-        	smartHandler.doEndTag1Handler(msg,e);
+        	smartHandler.doEndTag1Handler("LinkTag: ",e);
         }
         return 0;
     }

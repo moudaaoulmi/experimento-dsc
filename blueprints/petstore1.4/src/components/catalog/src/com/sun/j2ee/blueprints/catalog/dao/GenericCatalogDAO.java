@@ -57,7 +57,7 @@ import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
 
 import com.sun.j2ee.blueprints.util.tracer.Debug;
 
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.GeneralException;
 
 /**
  * This class implements a generic CatalogDAO which loads the SQL statement

@@ -45,6 +45,10 @@
 <project name="customer" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -69,7 +73,7 @@
     <property name="customer.javadocs.dir" value="${customer.build}/docs/api"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="customer.classpath" value="${customer.classbindir}:${appserver.cpath}"/>
+    <property name="customer.classpath" value="${customer.classbindir}:${appserver.cpath}:${exception.home}"/>
 
     <property name="customer.ejbjar" value="${customer.build}/customer-ejb.jar"/>
 

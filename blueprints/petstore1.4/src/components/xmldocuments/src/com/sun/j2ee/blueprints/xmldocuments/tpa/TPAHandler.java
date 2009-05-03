@@ -2,8 +2,8 @@ package com.sun.j2ee.blueprints.xmldocuments.tpa;
 
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
 @ExceptionHandler
 

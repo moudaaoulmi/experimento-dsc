@@ -25,6 +25,7 @@
 	<classpathentry kind="src" path="blueprints/petstore1.4/src/components/xmldocuments/src"/>
 	<classpathentry kind="src" path="blueprints/petstore1.4/src/waf/src/controller"/>
 	<classpathentry kind="src" path="blueprints/petstore1.4/src/waf/src/view/template"/>
+	<classpathentry kind="src" path="blueprints/petstore1.4/src/handler/src/exception"/>
 	<classpathentry kind="lib" path="blueprints/petstore1.4/src/apps/admin/src/OrderProcessingCenterEARClient.jar"/>
 	<classpathentry kind="lib" path="blueprints/petstore1.4/src/apps/opc/build/opc-ejb.jar"/>
 	<classpathentry kind="lib" path="blueprints/petstore1.4/src/apps/opc/build/opc-ejb-client.jar"/>
