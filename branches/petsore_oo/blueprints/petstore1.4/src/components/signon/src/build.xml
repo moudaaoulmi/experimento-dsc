@@ -45,6 +45,10 @@
 <project name="signon" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -67,7 +71,7 @@
     <property name="signon.javadocs.dir" value="${signon.build}/docs/api"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="signon.classpath" value="${signon.classbindir}:${appserver.cpath}"/>
+    <property name="signon.classpath" value="${signon.classbindir}:${appserver.cpath}:${exception.home}"/>
 
     <property name="signon.ejbjar" value="${signon.build}/signon-ejb.jar"/>
 

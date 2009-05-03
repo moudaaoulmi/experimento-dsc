@@ -2,8 +2,11 @@ package com.sun.j2ee.blueprints.waf.view.taglibs.smart;
 
 import javax.servlet.jsp.JspTagException;
 
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
-public class SmartHandler {
+@ExceptionHandler
+public class SmartHandler extends GeneralException{
 
 	public void doEndTag1Handler(String msg,Exception e) throws JspTagException{
 		throw new JspTagException(msg + e);

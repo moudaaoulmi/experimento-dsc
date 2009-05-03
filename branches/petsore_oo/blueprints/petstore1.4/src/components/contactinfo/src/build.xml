@@ -45,6 +45,10 @@
 <project name="contactinfo" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -79,7 +83,7 @@
     <property name="contactinfo.javadocs.dir" value="${contactinfo.build}/docs/api"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="contactinfo.classpath" value="${contactinfo.classbindir}:${contactinfo.xmldocuments.client}:${contactinfo.servicelocator.client}:${appserver.cpath}"/>
+    <property name="contactinfo.classpath" value="${contactinfo.classbindir}:${contactinfo.xmldocuments.client}:${contactinfo.servicelocator.client}:${appserver.cpath}:${exception.home}"/>
 
     <property name="contactinfo.ejbjar" value="${contactinfo.build}/contactinfo-ejb.jar"/>
 

@@ -52,7 +52,7 @@ import com.sun.j2ee.blueprints.supplier.inventory.web.JNDINames;
 import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 import  com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.GeneralException;
 
 /**
  * This class has an accessor method that allows the "receiver" application

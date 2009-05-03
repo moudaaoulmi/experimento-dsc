@@ -48,7 +48,7 @@ import com.sun.j2ee.blueprints.address.ejb.Address;
 import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.GeneralException;
 
 
 public abstract class ContactInfoEJB implements javax.ejb.EntityBean {

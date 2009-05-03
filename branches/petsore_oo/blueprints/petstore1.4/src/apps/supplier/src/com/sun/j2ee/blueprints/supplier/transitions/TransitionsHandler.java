@@ -5,8 +5,8 @@ import javax.jms.TopicConnection;
 
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
 @ExceptionHandler
 public class TransitionsHandler extends GeneralException {

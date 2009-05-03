@@ -48,7 +48,7 @@ import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfoLocalHome;
 import com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocal;
 import com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocalHome;
 
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.GeneralException;
 
 public abstract class AccountEJB implements javax.ejb.EntityBean {
 

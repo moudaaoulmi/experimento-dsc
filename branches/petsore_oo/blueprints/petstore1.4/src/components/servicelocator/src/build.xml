@@ -45,6 +45,10 @@
 <project name="servicelocator" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -66,7 +70,7 @@
     <property name="servicelocator.client.jar" value="servicelocator.jar"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="servicelocator.classpath" value="${servicelocator.classbindir}:${appserver.cpath}"/>
+    <property name="servicelocator.classpath" value="${servicelocator.classbindir}:${appserver.cpath}:${exception.home}"/>
   </target>
 
   <target name="compile" depends="init">

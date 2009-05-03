@@ -9,8 +9,8 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
 
 @ExceptionHandler

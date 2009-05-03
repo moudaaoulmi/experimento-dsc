@@ -77,7 +77,7 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
 import com.sun.j2ee.blueprints.processmanager.transitions.*;
 
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.GeneralException;
 
 /**
  * This servlet processes requests from receiver of the supplier component

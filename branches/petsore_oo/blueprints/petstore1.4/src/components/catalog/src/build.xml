@@ -45,6 +45,10 @@
 <project name="catalog" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -78,7 +82,7 @@
     <property name="j2ee.classpath" value="${j2ee.home}/lib/j2ee.jar:${j2ee.home}/lib/locale"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="catalog.classpath" value="${catalog.tracer.client}:${catalog.servicelocator.client}:${catalog.classbindir}:${appserver.cpath}"/>
+    <property name="catalog.classpath" value="${catalog.tracer.client}:${catalog.servicelocator.client}:${catalog.classbindir}:${appserver.cpath}:${exception.home}"/>
 
     <property name="catalog.ejbjar" value="${catalog.build}/catalog-ejb.jar"/>
     <property name="catalog.ejbclientjar" value="${catalog.build}/catalog-ejb-client.jar"/>

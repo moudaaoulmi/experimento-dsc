@@ -37,7 +37,7 @@
 
 package com.sun.j2ee.blueprints.processmanager.transitions;
 
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.GeneralException;
 
 /**
  * Used to get the required type of TransitionDelegate

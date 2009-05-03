@@ -57,6 +57,7 @@
 <!-- ========================================== -->
 
   <target name="core" depends="init">
+  	<ant dir="handler/src" target="core"/>
     <ant dir="components" target="core"/>
     <ant dir="waf/src" target="core"/>
     <ant dir="apps" target="core"/>

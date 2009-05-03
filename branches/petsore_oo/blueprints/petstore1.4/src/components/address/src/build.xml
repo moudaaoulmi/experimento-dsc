@@ -45,6 +45,10 @@
 <project name="address" default="core" basedir=".">
 
   <target name="init">
+  	
+  	<!-- include exception home -->
+  	  	
+  	<property name="exception.home" value="../../../handler/build"/>
 
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
@@ -75,7 +79,7 @@
     <property name="address.javadocs.dir" value="${address.build}/docs/api"/>
    
     <!-- The classpath used for building the workspace. -->
-    <property name="address.classpath" value="${address.classbindir}:${address.xmldocuments.client}:${appserver.cpath}"/>
+    <property name="address.classpath" value="${address.classbindir}:${address.xmldocuments.client}:${appserver.cpath}:${exception.home}"/>
 
     <property name="address.ejbjar" value="${address.build}/address-ejb.jar"/>
 

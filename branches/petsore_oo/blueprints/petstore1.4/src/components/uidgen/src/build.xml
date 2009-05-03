@@ -45,6 +45,10 @@
 <project name="uidgen" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -67,7 +71,7 @@
     <property name="uidgen.javadocs.dir" value="${uidgen.build}/docs/api"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="uidgen.classpath" value="${uidgen.classbindir}:${appserver.cpath}"/>
+    <property name="uidgen.classpath" value="${uidgen.classbindir}:${appserver.cpath}:${exception.home}"/>
 
     <property name="uidgen.ejbjar" value="${uidgen.build}/uidgen-ejb.jar"/>
 

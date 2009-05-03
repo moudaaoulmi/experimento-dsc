@@ -45,6 +45,11 @@
 <project name="orderprocesscontroller" default="core" basedir=".">
   
   <target name="init">
+  	
+  	<!-- include exception home -->
+  	  	
+  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -112,7 +117,7 @@
     <property name="opc.war.classes" value="${opc.build.war}/WEB-INF/classes"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="opc.classpath" value="${opc.classbindir}:${opc.xmldocuments.client}:${opc.servicelocator.client}:${opc.po.ejbjar.client}:${opc.mailer.ejbjar.client}:${opc.processmanager.ejbjar.client}:${appserver.cpath}"/>
+    <property name="opc.classpath" value="${opc.classbindir}:${opc.xmldocuments.client}:${opc.servicelocator.client}:${opc.po.ejbjar.client}:${opc.mailer.ejbjar.client}:${opc.processmanager.ejbjar.client}:${appserver.cpath}:${exception.home}"/>
 
   </target>
 

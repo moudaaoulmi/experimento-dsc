@@ -45,6 +45,10 @@
 <project name="supplier" default="core" basedir=".">
   
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -94,7 +98,7 @@
     <property name="supplier.processmanager.ejbjar.client" value="${supplier.processmanager.home}/build/processmanager-ejb-client.jar"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="supplier.classpath" value="${supplier.classbindir}:${supplier.po.ejbjar.client}:${supplier.xmldocs.client}:${supplier.servicelocator.client}:${supplier.processmanager.ejbjar.client}:${appserver.cpath}"/>
+    <property name="supplier.classpath" value="${supplier.classbindir}:${supplier.po.ejbjar.client}:${supplier.xmldocs.client}:${supplier.servicelocator.client}:${supplier.processmanager.ejbjar.client}:${appserver.cpath}:${exception.home}"/>
 
     <property name="supplier.ejbjar" value="${supplier.build}/supplier-ejb.jar"/>
     <property name="supplier.war" value="${supplier.build}/supplier.war"/>

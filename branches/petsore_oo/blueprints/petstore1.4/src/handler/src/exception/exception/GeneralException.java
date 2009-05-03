@@ -1,10 +1,10 @@
-package com.sun.j2ee.blueprints.admin.exception;
+package exception;
 
-import javax.ejb.CreateException;
-import javax.ejb.EJBException;
 
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
+import javax.ejb.CreateException;
+import javax.ejb.EJBException;
 
 public class GeneralException {
 	

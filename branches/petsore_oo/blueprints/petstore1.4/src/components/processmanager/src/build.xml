@@ -45,6 +45,10 @@
 <project name="processmanager" default="core" basedir=".">
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -67,7 +71,7 @@
     <property name="processmanager.javadocs.dir" value="${processmanager.build}/docs/api"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="processmanager.classpath" value="${processmanager.classbindir}:${appserver.cpath}"/>
+    <property name="processmanager.classpath" value="${processmanager.classbindir}:${appserver.cpath}:${exception.home}"/>
 
     <property name="processmanager.ejbjar" value="${processmanager.build}/processmanager-ejb.jar"/>
 

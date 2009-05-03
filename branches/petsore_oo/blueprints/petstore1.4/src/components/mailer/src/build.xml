@@ -46,6 +46,10 @@
 
 
   <target name="init">
+  	<!-- include exception home -->
+  	  	
+  	  	<property name="exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -73,7 +77,7 @@
     <property name="mailer.xmldocuments.client" value="${mailer.xmldocuments.home}/build/xmldocuments.jar"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="mailer.classpath" value="${mailer.classbindir}:${mailer.xmldocuments.client}:${appserver.cpath}"/>
+    <property name="mailer.classpath" value="${mailer.classbindir}:${mailer.xmldocuments.client}:${appserver.cpath}:${exception.home}"/>
 
     <property name="mailer.ejbjar" value="${mailer.build}/mailer-ejb.jar"/>
 

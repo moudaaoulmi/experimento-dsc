@@ -19,8 +19,8 @@ import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
 import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileLocal;
 import com.sun.j2ee.blueprints.signon.user.ejb.UserLocal;
 
-import com.sun.j2ee.blueprints.admin.exception.ExceptionHandler;
-import com.sun.j2ee.blueprints.admin.exception.GeneralException;
+import exception.ExceptionHandler;
+import exception.GeneralException;
 
 @ExceptionHandler
 
