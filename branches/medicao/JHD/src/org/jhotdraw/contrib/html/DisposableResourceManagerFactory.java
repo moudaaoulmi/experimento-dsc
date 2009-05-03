@@ -93,7 +93,7 @@ public abstract class DisposableResourceManagerFactory {
 			}
 			catch (ResourceManagerNotSetException ex) {
 				// we set it so we shouldn't get here
-				htmlHandler.disposableResourceManagerFactoryInitManager();
+				htmlHandler.emptyBlock();
 			}
 		}
 	}

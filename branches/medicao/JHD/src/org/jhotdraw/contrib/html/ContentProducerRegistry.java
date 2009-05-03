@@ -301,7 +301,7 @@ public class ContentProducerRegistry implements Serializable, Storable {
 				// the class does not exist in this application
 				// cannot do much about it so ignore it, the entities of
 				// this class will get their toString() value instead
-				htmlHandler.contentProducerRegistryRead();
+				htmlHandler.emptyBlock();
 			}
 		}
 

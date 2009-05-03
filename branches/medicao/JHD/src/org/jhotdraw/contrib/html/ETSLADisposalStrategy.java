@@ -128,7 +128,7 @@ public class ETSLADisposalStrategy implements ResourceDisposabilityStrategy {
 		}
 		catch (InterruptedException ex) {
 			// ignore
-			htmlHandler.eTSLADisposalStrategyStopDisposing1();
+			htmlHandler.emptyBlock();
 		}
 		finally {
 			disposingActive = htmlHandler.stopDisposing(disposingActive);
@@ -228,7 +228,7 @@ class DisposalThread extends Thread {
 			}
 			catch (Exception ex) {
 				// just exit
-				htmlHandler.eTSLADisposalStrategyDisposalThreadRun();
+				htmlHandler.emptyBlock();
 				break;
 			}
 			strategy.dispose();
