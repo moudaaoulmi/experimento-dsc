@@ -237,7 +237,7 @@ public class JavaDrawApp extends MDI_DrawApplication {
 			}
 		} catch (Exception e) {
 			// do nothing
-			javadrawHandler.javaDrawAppCreateImagesMenu();
+			javadrawHandler.emptyBlock();
 		}
 		return menu;
 	}

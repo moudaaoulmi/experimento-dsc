@@ -20,12 +20,4 @@ public class UtilHandler extends GeneralException {
 	public void trowIOException (String msg) throws IOException {
 		throw new IOException(msg);
 	}
-	
-	public void iconkitLoadRegisteredImages(){
-		// ignore: do nothing
-	}
-	
-	public void ignore(){
-		//ignore
-	}
 }
