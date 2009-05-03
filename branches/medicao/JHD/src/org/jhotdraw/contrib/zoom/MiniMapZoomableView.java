@@ -12,6 +12,7 @@
 package org.jhotdraw.contrib.zoom;
 
 import org.jhotdraw.contrib.MiniMapView;
+import org.jhotdraw.exception.GeneralException;
 import org.jhotdraw.framework.DrawingView;
 
 import java.awt.geom.AffineTransform;
@@ -29,7 +30,7 @@ import javax.swing.JScrollPane;
  */
 public class MiniMapZoomableView extends MiniMapView {
 
-	private ZoomHandler zoomHandler = new ZoomHandler();
+	private GeneralException zoomHandler = new GeneralException();
 
 	public MiniMapZoomableView(DrawingView newMappedDrawingView,
 			JScrollPane subject) {
@@ -48,7 +49,7 @@ public class MiniMapZoomableView extends MiniMapView {
 										// view
 		} catch (NoninvertibleTransformException nte) {
 			// all scale-only transforms should be invertable
-			zoomHandler.miniMapZoomableViewGetInverseSubjectTransform();
+			zoomHandler.emptyBlock();
 		}
 
 		return at;
