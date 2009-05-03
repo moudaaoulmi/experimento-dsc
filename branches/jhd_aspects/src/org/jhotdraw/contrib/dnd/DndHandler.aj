@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.jhotdraw.exception.ExceptionHandler;
 
 
-
 @ExceptionHandler
 public aspect DndHandler {
 
@@ -61,7 +60,5 @@ public aspect DndHandler {
 			npe.printStackTrace();
 			dtde.dropComplete(false);
 		}
-		
-		
     }
 }

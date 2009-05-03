@@ -11,18 +11,34 @@
 
 package org.jhotdraw.util;
 
-import org.jhotdraw.framework.*;
-import org.jhotdraw.standard.StandardDrawing;
-
-import java.io.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
-import java.awt.*;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
 
-import javax.jdo.*;
-import javax.swing.*;
-import javax.swing.event.ListSelectionListener;
+import javax.jdo.Extent;
+import javax.jdo.JDOHelper;
+import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
+import javax.swing.AbstractListModel;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import org.jhotdraw.framework.Drawing;
+import org.jhotdraw.framework.Figure;
+import org.jhotdraw.framework.FigureEnumeration;
+import org.jhotdraw.standard.StandardDrawing;
 
 /**
  * @author Wolfram Kaiser <mrfloppy@users.sourceforge.net>
@@ -102,21 +118,26 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		endTransaction(pm, false);
 
 		startTransaction(pm);
-		try {
-			Extent extent = pm.getExtent(StandardDrawing.class, true);
-			DrawingListModel listModel = new DrawingListModel(extent.iterator());
-			drawingName = showStoreDialog(listModel, storeDrawing);
-			if (drawingName != null) {
-				storeDrawing.setTitle(drawingName);
-				txnDrawing.setTitle(drawingName);
-				pm.makePersistent(txnDrawing);
-			}
-		} finally {
-			 endTransaction(pm, (drawingName != null));
-		}
+		drawingName = internalStore(storeDrawing, pm, txnDrawing);
 
 		// there must be always a transaction running
 		startTransaction(pm);
+		return drawingName;
+	}
+
+	private String internalStore(Drawing storeDrawing, PersistenceManager pm,
+			Drawing txnDrawing) {
+		String drawingName = null;
+		
+		Extent extent = pm.getExtent(StandardDrawing.class, true);
+		DrawingListModel listModel = new DrawingListModel(extent.iterator());
+		drawingName = showStoreDialog(listModel, storeDrawing);
+		if (drawingName != null) {
+			storeDrawing.setTitle(drawingName);
+			txnDrawing.setTitle(drawingName);
+			pm.makePersistent(txnDrawing);
+		}
+		
 		return drawingName;
 	}
 
@@ -136,7 +157,15 @@ public class JDOStorageFormat extends StandardStorageFormat {
 		startTransaction(pm);
 		Drawing restoredDrawing = null;
 
-		try {
+		restoredDrawing = internalRestore(pm, restoredDrawing);
+
+		// there must be always a transaction running
+		startTransaction(pm);
+		return restoredDrawing;
+	}
+
+	private Drawing internalRestore(PersistenceManager pm,
+			Drawing restoredDrawing) {
 			Extent extent = pm.getExtent(StandardDrawing.class, true);
 			DrawingListModel listModel = new DrawingListModel(extent.iterator());
 			Drawing txnDrawing = showRestoreDialog(listModel);
@@ -146,12 +175,7 @@ public class JDOStorageFormat extends StandardStorageFormat {
 				// restoredDrawing = crossTxnBoundaries(txnDrawing);
 				restoredDrawing = txnDrawing;
 			}
-		} finally {
-			 endTransaction(pm, false);
-		}
-
-		// there must be always a transaction running
-		startTransaction(pm);
+		
 		return restoredDrawing;
 	}
 
