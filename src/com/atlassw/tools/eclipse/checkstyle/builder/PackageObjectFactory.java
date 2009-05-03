@@ -89,7 +89,7 @@ public class PackageObjectFactory implements ModuleFactory
         }
         catch (CheckstyleException ex)
         {
-            builderHandler.projectObjectFactory_doMakeObjectHandler();
+            builderHandler.emptyBlock();
         }
 
         // now try packages
@@ -103,7 +103,7 @@ public class PackageObjectFactory implements ModuleFactory
             }
             catch (CheckstyleException ex)
             {
-                builderHandler.projectObjectFactory_doMakeObjectHandler();
+                builderHandler.emptyBlock();
             }
         }
 

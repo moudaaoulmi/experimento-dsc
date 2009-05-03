@@ -6,10 +6,11 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Text;
 
 import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 
 @ExceptionHandler
-public class WidgetsHandler
+public class WidgetsHandler extends GeneralException
 {
     
     public String configPropertyWidgetsMultiCheck_getTextHandler(String translation, Object element){

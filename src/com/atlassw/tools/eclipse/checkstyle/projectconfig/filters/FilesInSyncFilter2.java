@@ -85,7 +85,7 @@ public class FilesInSyncFilter2 extends AbstractFilter
                     }
                     catch (TeamException e)
                     {
-                        filtersHandle.checkstyleLog(e);
+                        generalException.checkstyleLog(e);
                     }
                 }
             }

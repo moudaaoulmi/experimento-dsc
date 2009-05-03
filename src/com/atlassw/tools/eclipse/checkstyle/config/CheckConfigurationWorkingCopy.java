@@ -329,7 +329,7 @@ public class CheckConfigurationWorkingCopy implements ICheckConfiguration, Clone
                 }
                 catch (CoreException e)
                 {
-                    configHandler.checkConfigurationWorkingCopy_setModulesHandler();
+                    configHandler.emptyBlock();
                 }
             }
 

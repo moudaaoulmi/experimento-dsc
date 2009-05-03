@@ -480,7 +480,7 @@ public class Auditor
                 }
                 catch (BadLocationException e)
                 {
-                    builderHandler.auditor_calculateMarkerOffset();
+                    builderHandler.emptyBlock();
                 }
             }
         }

@@ -30,11 +30,4 @@ public class ConfigHandler extends GeneralException
         IOUtils.closeQuietly(in);
         Thread.currentThread().setContextClassLoader(classloader);
     }
-    
-    public void checkConfigurationWorkingCopy_setModulesHandler(){
-        // NOOP - just ignore
-    }
-    public void configurationReader_getAdditionalConfigDataHandler(){
-        // ignore
-    }
 }

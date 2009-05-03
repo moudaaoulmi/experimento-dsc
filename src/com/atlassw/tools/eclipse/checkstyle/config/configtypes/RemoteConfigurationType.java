@@ -271,7 +271,7 @@ public class RemoteConfigurationType extends ConfigurationType
         }
         catch (IOException e)
         {
-            staticConfigtypesHandle.commentedCode();
+            staticConfigtypesHandle.emptyBlock();
         }
         return null;
     }
@@ -313,7 +313,7 @@ public class RemoteConfigurationType extends ConfigurationType
             }
             catch (IOException e)
             {
-               staticConfigtypesHandle.commentedCode4();
+               staticConfigtypesHandle.emptyBlock();
             }
         }
     }

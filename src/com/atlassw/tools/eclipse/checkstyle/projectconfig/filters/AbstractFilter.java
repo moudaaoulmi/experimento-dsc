@@ -27,6 +27,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
+
 /**
  * Base implementation of a filter.
  * 
@@ -34,7 +36,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public abstract class AbstractFilter implements IFilter
 {
-    FiltersHandler filtersHandle = new FiltersHandler();
+    GeneralException generalException = new GeneralException();
     
     //
     // attributes
@@ -187,7 +189,7 @@ public abstract class AbstractFilter implements IFilter
         }
         catch (CloneNotSupportedException cnse)
         {
-            filtersHandle.throwInternalError();
+            generalException.throwInternalError();
         }
         return o;
     }

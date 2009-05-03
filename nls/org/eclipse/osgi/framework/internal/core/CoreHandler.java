@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
+import com.atlassw.tools.eclipse.checkstyle.exception.GeneralException;
 
 @ExceptionHandler
-public class CoreHandler
+public class CoreHandler extends GeneralException
 {
     public void messageResourceBundlePut(Exception e, String msg)
     {
