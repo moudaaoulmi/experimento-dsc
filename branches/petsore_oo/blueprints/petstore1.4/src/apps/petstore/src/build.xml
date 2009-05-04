@@ -65,7 +65,8 @@
   	
   	<!-- include exception home -->
   	  	
-  	<property name="exception.home" value="../../../handler/build"/>
+  	<property name="petstore.exception.home" value="../../../handler/build"/>
+  	
     <!-- include user specific build properties first -->
     <property file="${user.home}/petstore.properties"/>
     <!-- include top-level common properties -->
@@ -169,7 +170,7 @@
     <property name="petstore.po.ejbjar.client" value="${petstore.po.home}/build/po-ejb-client.jar"/>
 
     <!-- Classpaths -->
-    <property name="petstore.classpath" value="${petstore.signon.classbindir}:${petstore.uidgen.ejbjar.client}:${petstore.asyncsender.ejbjar.client}:${petstore.xmldocuments.client}:${petstore.customer.ejbjar.client}:${petstore.cart.ejbjar.client}:${petstore.catalog.ejbjar.client}:${petstore.tracer.client}:${petstore.waf.classbindir}:${petstore.po.ejbjar.client}:${petstore.servicelocator.client}:${petstore.classbindir}:${appserver.cpath}:${exception.home}"/>
+    <property name="petstore.classpath" value="${petstore.signon.classbindir}:${petstore.uidgen.ejbjar.client}:${petstore.asyncsender.ejbjar.client}:${petstore.xmldocuments.client}:${petstore.customer.ejbjar.client}:${petstore.cart.ejbjar.client}:${petstore.catalog.ejbjar.client}:${petstore.tracer.client}:${petstore.waf.classbindir}:${petstore.po.ejbjar.client}:${petstore.servicelocator.client}:${petstore.classbindir}:${appserver.cpath}:${petstore.exception.home}"/>
 
   </target>
 
