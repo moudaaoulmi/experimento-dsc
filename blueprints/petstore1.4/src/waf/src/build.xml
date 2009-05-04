@@ -59,8 +59,6 @@
   	<!-- include exception home -->
   	  	  	
   	<property name="exception.home" value="../../handler/build"/>
-  	  	
-  	<property name="j2ee" value="C:/Sun/AppServer/lib/j2ee"/>
 
     <!-- The destination directories for the build -->
     <property name="waf.src" value="${waf.home}/src"/>
@@ -89,7 +87,7 @@
     <property name="waf.servicelocator.client" value="${waf.servicelocator.home}/build/servicelocator.jar"/>
 
     <!-- The classpath used for building the workspace. -->
-    <property name="waf.classpath" value="${waf.classbindir}:${waf.tracer.client}:${waf.servicelocator.client}:${appserver.cpath}:${waf.base64.jar}:${exception.home}:${j2ee}"/>
+    <property name="waf.classpath" value="${waf.classbindir}:${waf.tracer.client}:${waf.servicelocator.client}:${appserver.cpath}:${waf.base64.jar}:${exception.home}"/>
 
     <property name="waf.ejbjar" value="waf-ejb.jar"/>
     <property name="waf.ejbjar.client" value="waf-ejb-client.jar"/>
