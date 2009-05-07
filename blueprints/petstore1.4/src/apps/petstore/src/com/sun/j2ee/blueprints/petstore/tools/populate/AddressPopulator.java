@@ -57,6 +57,7 @@ public class AddressPopulator {
 	private String rootTag;
 	private AddressLocalHome addressHome = null;
 	private AddressLocal address;
+	private ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
 
 	public AddressPopulator(String rootTag) {
 		this.rootTag = rootTag;
@@ -103,7 +104,7 @@ public class AddressPopulator {
 		} catch (Exception exception) {
 
 			/** Exception Handler */
-			ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+			
 			toolPopulateHandler.throwPopulateExceptionHandler(exception);
 			return null;
 			// throw new PopulateException ("Could not create: " +

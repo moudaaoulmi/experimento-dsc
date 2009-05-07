@@ -60,7 +60,7 @@ import com.sun.j2ee.blueprints.util.tracer.Debug;
  */
 public class CatalogEJB implements SessionBean {
 
-	EjbHandler ejbHandler = new EjbHandler();
+	private EjbHandler ejbHandler = new EjbHandler();
 
 	protected CatalogDAO dao;
 

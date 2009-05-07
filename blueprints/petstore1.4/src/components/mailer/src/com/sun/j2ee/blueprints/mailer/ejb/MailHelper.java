@@ -61,7 +61,7 @@ import com.sun.j2ee.blueprints.mailer.exceptions.MailerAppException;
  */
 public class MailHelper {
 
-	EjbHandler ejbHandler = new EjbHandler();
+	private EjbHandler ejbHandler = new EjbHandler();
 
     /**
      * This method creates an email message and sends it using the

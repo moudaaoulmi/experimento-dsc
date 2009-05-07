@@ -63,7 +63,7 @@ public class ServiceLocator {
 
     private static ServiceLocator me;
 
-    EjbHandler ejbHandler = new EjbHandler();
+    private EjbHandler ejbHandler = new EjbHandler();
     
     public ServiceLocator() throws ServiceLocatorException  {
       try {

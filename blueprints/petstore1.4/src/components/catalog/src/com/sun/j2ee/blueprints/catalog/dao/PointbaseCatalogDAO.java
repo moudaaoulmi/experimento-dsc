@@ -62,6 +62,7 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
  * stored in the database to the objects needed by Catalog EJB.
  */
 public class PointbaseCatalogDAO implements CatalogDAO {
+	private DaoHandler daoHandler = new DaoHandler();
 	public static String GET_CATEGORY_STATEMENT = "select name, descn "
 			+ " from (category a join category_details b on a.catid=b.catid) "
 			+ " where locale = ? and a.catid = ?";
@@ -100,7 +101,7 @@ public class PointbaseCatalogDAO implements CatalogDAO {
 			"          or lower(b.descn) like ? ", ") )" };
 
 	/** Exception Handler */
-	DaoHandler daoHandler = new DaoHandler();
+	
 
 	// Helper methods
 

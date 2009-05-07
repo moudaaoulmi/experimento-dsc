@@ -46,65 +46,66 @@ import org.xml.sax.helpers.*;
 import com.sun.j2ee.blueprints.contactinfo.ejb.*;
 import com.sun.j2ee.blueprints.address.ejb.*;
 
-
 public class ContactInfoPopulator {
-  public static final String JNDI_CONTACT_INFO_HOME = "java:comp/env/ejb/ContactInfo";
-  private static final String XML_CONTACTINFO = "ContactInfo";
-  private static final String XML_FAMILYNAME = "FamilyName";
-  private static final String XML_GIVENNAME = "GivenName";
-  private static final String XML_EMAIL = "Email";
-  private static final String XML_PHONE = "Phone";
-  private String rootTag;
-  private ContactInfoLocalHome contactInfoHome = null;
-  private ContactInfoLocal contactInfo ;
-  private AddressPopulator addressPopulator;
+	public static final String JNDI_CONTACT_INFO_HOME = "java:comp/env/ejb/ContactInfo";
+	private static final String XML_CONTACTINFO = "ContactInfo";
+	private static final String XML_FAMILYNAME = "FamilyName";
+	private static final String XML_GIVENNAME = "GivenName";
+	private static final String XML_EMAIL = "Email";
+	private static final String XML_PHONE = "Phone";
+	private String rootTag;
+	private ContactInfoLocalHome contactInfoHome = null;
+	private ContactInfoLocal contactInfo;
+	private AddressPopulator addressPopulator;
+	private ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
 
-  public ContactInfoPopulator(String rootTag) {
-    this.rootTag = rootTag;
-    addressPopulator = new AddressPopulator(rootTag);
-    return;
-  }
+	public ContactInfoPopulator(String rootTag) {
+		this.rootTag = rootTag;
+		addressPopulator = new AddressPopulator(rootTag);
+		return;
+	}
 
-  public XMLFilter setup(XMLReader reader) throws PopulateException {
-    return new XMLDBHandler(addressPopulator.setup(reader), rootTag, XML_CONTACTINFO) {
+	public XMLFilter setup(XMLReader reader) throws PopulateException {
+		return new XMLDBHandler(addressPopulator.setup(reader), rootTag,
+				XML_CONTACTINFO) {
 
-      public void update() throws PopulateException {}
+			public void update() throws PopulateException {
+			}
 
-      public void create() throws PopulateException {
-        contactInfo = createContactInfo(getValue(XML_GIVENNAME),
-                                        getValue(XML_FAMILYNAME),
-                                        getValue(XML_PHONE),
-                                        getValue(XML_EMAIL),
-                                        addressPopulator.getAddress());
-        return;
-      }
-    };
-  }
+			public void create() throws PopulateException {
+				contactInfo = createContactInfo(getValue(XML_GIVENNAME),
+						getValue(XML_FAMILYNAME), getValue(XML_PHONE),
+						getValue(XML_EMAIL), addressPopulator.getAddress());
+				return;
+			}
+		};
+	}
 
-  public boolean check() throws PopulateException {
-    return addressPopulator.check();
-  }
+	public boolean check() throws PopulateException {
+		return addressPopulator.check();
+	}
 
-  private ContactInfoLocal createContactInfo(String givenName, String familyName, String phone, String email, AddressLocal address) throws PopulateException {
-    try {
-      if (contactInfoHome == null) {
-        InitialContext context = new InitialContext();
-        contactInfoHome = (ContactInfoLocalHome) context.lookup(JNDI_CONTACT_INFO_HOME);
-      }
-      return contactInfoHome.create(givenName, familyName, phone, email, address);
-    } catch (Exception exception) {
-     /** Exception Handler  */
-   	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
-   	toolPopulateHandler.throwPopulateExceptionHandler(exception);
-	return null;
-    }
+	private ContactInfoLocal createContactInfo(String givenName,
+			String familyName, String phone, String email, AddressLocal address)
+			throws PopulateException {
+		try {
+			if (contactInfoHome == null) {
+				InitialContext context = new InitialContext();
+				contactInfoHome = (ContactInfoLocalHome) context
+						.lookup(JNDI_CONTACT_INFO_HOME);
+			}
+			return contactInfoHome.create(givenName, familyName, phone, email,
+					address);
+		} catch (Exception exception) {
+			/** Exception Handler */
 
-  }
+			toolPopulateHandler.throwPopulateExceptionHandler(exception);
+			return null;
+		}
 
-  public ContactInfoLocal getContactInfo() {
-    return contactInfo;
-  }
+	}
+
+	public ContactInfoLocal getContactInfo() {
+		return contactInfo;
+	}
 }
-
-
-

@@ -53,7 +53,7 @@ public class SupplierOrderTD implements TransitionDelegate {
 
   private TopicSender invoiceTopicSender;
   
-  TransitionsHandler transitionsHandler = new TransitionsHandler();
+  private TransitionsHandler transitionsHandler = new TransitionsHandler();
 
   public SupplierOrderTD() { }
 

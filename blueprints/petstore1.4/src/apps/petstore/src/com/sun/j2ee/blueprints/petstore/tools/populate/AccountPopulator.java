@@ -47,62 +47,64 @@ import com.sun.j2ee.blueprints.customer.account.ejb.*;
 import com.sun.j2ee.blueprints.creditcard.ejb.*;
 import com.sun.j2ee.blueprints.contactinfo.ejb.*;
 
-
 public class AccountPopulator {
-  public static final String JNDI_ACCOUNT_HOME = "java:comp/env/ejb/Account";
-  public static final String XML_ACCOUNT = "Account";
-  private String rootTag;
-  private AccountLocalHome accountHome = null;
-  private AccountLocal account ;
-  private ContactInfoPopulator contactInfoPopulator;
-  private CreditCardPopulator creditCardPopulator;
+	public static final String JNDI_ACCOUNT_HOME = "java:comp/env/ejb/Account";
+	public static final String XML_ACCOUNT = "Account";
+	private String rootTag;
+	private AccountLocalHome accountHome = null;
+	private AccountLocal account;
+	private ContactInfoPopulator contactInfoPopulator;
+	private CreditCardPopulator creditCardPopulator;
+	private ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
 
+	public AccountPopulator(String rootTag) {
+		this.rootTag = rootTag;
+		contactInfoPopulator = new ContactInfoPopulator(rootTag);
+		creditCardPopulator = new CreditCardPopulator(rootTag);
+		return;
+	}
 
-  public AccountPopulator(String rootTag) {
-    this.rootTag = rootTag;
-    contactInfoPopulator = new ContactInfoPopulator(rootTag);
-    creditCardPopulator = new CreditCardPopulator(rootTag);
-    return;
-  }
-  
-  public XMLFilter setup(XMLReader reader) throws PopulateException {
-    return new XMLDBHandler(creditCardPopulator.setup(contactInfoPopulator.setup(reader)), rootTag, XML_ACCOUNT) {
+	public XMLFilter setup(XMLReader reader) throws PopulateException {
+		return new XMLDBHandler(creditCardPopulator.setup(contactInfoPopulator
+				.setup(reader)), rootTag, XML_ACCOUNT) {
 
-      public void update() throws PopulateException {}
+			public void update() throws PopulateException {
+			}
 
-      public void create() throws PopulateException {
-        account = createAccount(contactInfoPopulator.getContactInfo(), creditCardPopulator.getCreditCard());
-        return;
-      }
-    };
-  }
+			public void create() throws PopulateException {
+				account = createAccount(contactInfoPopulator.getContactInfo(),
+						creditCardPopulator.getCreditCard());
+				return;
+			}
+		};
+	}
 
-  public boolean check() throws PopulateException {
-    return contactInfoPopulator.check() && creditCardPopulator.check();
-  }
+	public boolean check() throws PopulateException {
+		return contactInfoPopulator.check() && creditCardPopulator.check();
+	}
 
-  private AccountLocal createAccount(ContactInfoLocal contactInfo, CreditCardLocal creditCard) throws PopulateException {
-    try {
-      if (accountHome == null) {
-        InitialContext context = new InitialContext();
-        accountHome = (AccountLocalHome) context.lookup(JNDI_ACCOUNT_HOME);
-      }
-      return accountHome.create(AccountLocalHome.Active, contactInfo, creditCard);
-      
-    } catch (Exception exception) {
-    	
-    	/** Exception Handler */
-    	ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
-    	toolPopulateHandler.throwPopulateExceptionHandler(exception);
-    	return null;
-    	// throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
-    }
-  }
+	private AccountLocal createAccount(ContactInfoLocal contactInfo,
+			CreditCardLocal creditCard) throws PopulateException {
+		try {
+			if (accountHome == null) {
+				InitialContext context = new InitialContext();
+				accountHome = (AccountLocalHome) context
+						.lookup(JNDI_ACCOUNT_HOME);
+			}
+			return accountHome.create(AccountLocalHome.Active, contactInfo,
+					creditCard);
 
-  public AccountLocal getAccount() {
-    return account;
-  }
+		} catch (Exception exception) {
+
+			/** Exception Handler */
+			toolPopulateHandler.throwPopulateExceptionHandler(exception);
+			return null;
+			// throw new PopulateException ("Could not create: " +
+			// exception.getMessage(), exception);
+		}
+	}
+
+	public AccountLocal getAccount() {
+		return account;
+	}
 }
-
-
-

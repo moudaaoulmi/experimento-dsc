@@ -58,7 +58,7 @@ public class MailerMDB implements MessageDrivenBean, MessageListener {
   private Context context;
   private MessageDrivenContext mdc = null;
 
-  EjbHandler ejbHandler = new EjbHandler();
+  private EjbHandler ejbHandler = new EjbHandler();
   
   public MailerMDB() {
   }

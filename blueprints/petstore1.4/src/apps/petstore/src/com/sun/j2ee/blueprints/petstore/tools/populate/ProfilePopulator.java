@@ -55,7 +55,8 @@ public class ProfilePopulator {
 	private String rootTag;
 	private ProfileLocalHome profileHome = null;
 	private ProfileLocal profile;
-
+	private ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+	
 	public ProfilePopulator(String rootTag) {
 		this.rootTag = rootTag;
 		return;
@@ -94,7 +95,7 @@ public class ProfilePopulator {
 					myListPreference, bannerPreference);
 		} catch (Exception exception) {
 			/** Exception Handler */
-			ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+			
 			toolPopulateHandler.throwPopulateExceptionHandler(exception);
 			return null;
 		}

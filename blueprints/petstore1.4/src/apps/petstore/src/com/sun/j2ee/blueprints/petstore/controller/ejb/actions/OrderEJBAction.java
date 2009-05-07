@@ -87,7 +87,7 @@ import com.sun.j2ee.blueprints.petstore.controller.exceptions.ShoppingCartEmptyO
 
 public class OrderEJBAction extends EJBActionSupport {
   
-  ActionsHandler actionsHandler = new ActionsHandler();
+	private ActionsHandler actionsHandler = new ActionsHandler();
   public EventResponse perform(Event e) throws EventException {
     OrderEvent oe = (OrderEvent)e;
     PurchaseOrder purchaseOrder = new PurchaseOrder();

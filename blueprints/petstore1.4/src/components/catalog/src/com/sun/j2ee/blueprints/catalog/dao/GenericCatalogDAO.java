@@ -87,7 +87,7 @@ public class GenericCatalogDAO implements CatalogDAO {
 	private Map sqlStatements = new HashMap();
 
 	/** Exception Handler */
-	DaoHandler daoHandler = new DaoHandler();
+	private DaoHandler daoHandler = new DaoHandler();
 
 	public GenericCatalogDAO() throws CatalogDAOSysException {
 		try {

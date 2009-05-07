@@ -52,7 +52,7 @@ public abstract class CustomerEJB implements javax.ejb.EntityBean {
 
     private EntityContext context = null;
 
-    EjbHandler ejbHandler = new EjbHandler();
+    private EjbHandler ejbHandler = new EjbHandler();
     // getters and setters for CMP fields
     //====================================
     public abstract String getUserId();

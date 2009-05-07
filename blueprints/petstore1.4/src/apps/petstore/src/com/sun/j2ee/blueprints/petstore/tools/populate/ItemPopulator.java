@@ -52,7 +52,7 @@ public class ItemPopulator {
   private String rootTag;
   private Map sqlStatements;
   private ItemDetailsPopulator itemDetailsPopulator;
-
+  private ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
 
   public ItemPopulator(Map sqlStatements) throws PopulateException {
     this(XML_ITEMS, sqlStatements);
@@ -90,7 +90,7 @@ public class ItemPopulator {
       itemDetailsPopulator.dropTables(connection);
     } catch (PopulateException exception) {
 	/**  Exception Handler  */
- 	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
+ 	 
  	 toolPopulateHandler.ignoreHandler(exception);
     }
     PopulateUtils.executeSQLStatement(connection, sqlStatements, PopulateUtils.makeSQLStatementKey(PopulateUtils.DROP_OPERATION, "item"), null, null);

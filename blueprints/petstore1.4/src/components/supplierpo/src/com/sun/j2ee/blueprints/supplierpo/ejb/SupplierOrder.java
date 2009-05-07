@@ -71,7 +71,7 @@ public class SupplierOrder {
   private ContactInfo shippingInfo;
   private ArrayList lineItems = null;
 
-  static EjbHandler ejbHandler = new EjbHandler();
+  private static EjbHandler ejbHandler = new EjbHandler();
 
   // Constructor to be used when creating SupplierOrder from data
 
