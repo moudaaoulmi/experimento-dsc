@@ -8,7 +8,6 @@ package com.sun.j2ee.blueprints.signon.ejb;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
-import javax.ejb.FinderException;
 import javax.naming.NamingException;
 import petstore.exception.ExceptionHandler;
 /**
