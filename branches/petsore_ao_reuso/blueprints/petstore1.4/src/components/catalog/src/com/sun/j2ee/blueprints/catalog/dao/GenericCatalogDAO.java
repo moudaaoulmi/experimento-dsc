@@ -37,22 +37,39 @@
 
 package com.sun.j2ee.blueprints.catalog.dao;
 
-import java.sql.*;
-import java.util.*;
-import java.net.*;
-import java.io.*;
-import javax.naming.*;
-import javax.sql.*;
-import javax.xml.parsers.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.StringTokenizer;
 
-import com.sun.j2ee.blueprints.catalog.util.JNDINames;
-import com.sun.j2ee.blueprints.catalog.model.Page;
-import com.sun.j2ee.blueprints.catalog.model.Category;
-import com.sun.j2ee.blueprints.catalog.model.Product;
-import com.sun.j2ee.blueprints.catalog.model.Item;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
 import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
+import com.sun.j2ee.blueprints.catalog.model.Category;
+import com.sun.j2ee.blueprints.catalog.model.Item;
+import com.sun.j2ee.blueprints.catalog.model.Page;
+import com.sun.j2ee.blueprints.catalog.model.Product;
+import com.sun.j2ee.blueprints.catalog.util.JNDINames;
 
 
 /**
@@ -135,7 +152,12 @@ public class GenericCatalogDAO implements CatalogDAO {
         resultSet.close();
     }
     if (statement != null) {
-        statement.close();
+    	//XXX Verificar o porque não consegue capturar
+		try {
+			statement.close();
+		} catch (SQLException e) {
+			//Do nothing
+		}
     }
     if (connection != null) {
         connection.close();

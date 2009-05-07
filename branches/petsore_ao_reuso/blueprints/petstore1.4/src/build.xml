@@ -798,6 +798,7 @@
         <pathelement path="components/uidgen/build/classes"/>
         <pathelement path="components/util/tracer/build/classes"/>
       	<pathelement path="components/util/aspect/build/classes"/>
+      	<pathelement path="aspectos/reuso/build/classes"/>
         <pathelement path="components/xmldocuments/build/classes"/>
         <pathelement path="waf/build/classes"/>
         <pathelement path="apps/admin/build/classes"/>
@@ -824,6 +825,7 @@
         <pathelement path="components/uidgen/src"/>
         <pathelement path="components/util/tracer/src"/>
       	<pathelement path="components/util/aspect/src"/>
+      	<pathelement path="aspectos/reuso/src"/>
         <pathelement path="components/xmldocuments/src"/>
         <pathelement path="waf/src"/>
         <pathelement path="waf/src/controller"/>
