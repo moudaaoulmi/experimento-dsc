@@ -29,7 +29,7 @@ import petstore.exception.ExceptionHandler;
  * @author Raquel Maranhao
  */
 @ExceptionHandler
-public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
+public aspect WafViewTemplateHandler {
 	
 	// ---------------------------
     // Declare soft's
@@ -39,7 +39,6 @@ public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
 	declare soft : MalformedURLException : screenDefinitionDAO_loadDocument() ||
 		templateServlet_initScreensGetResourceHandler();
 	declare soft : IOException : screenDefinitionDAO_loadDocument() || 
-		aroundExceptionDoNothingHandler() ||
 		insertTag_doEndTagHandler();
 	declare soft : ParserConfigurationException : screenDefinitionDAO_loadDocument();
 	declare soft : ServletException : insertTag_doEndTagHandler();
@@ -65,8 +64,6 @@ public aspect WafViewTemplateHandler extends ExceptionGenericAspect {
 		
 	
 	/*** com.sun.j2ee.blueprints.waf.view.template.tags.InsertTag ***/
-	public pointcut aroundExceptionDoNothingHandler() :   
-		execution(private void com.sun.j2ee.blueprints.waf.view.template.tags.InsertTag.internalDoStartTag1());
 	pointcut insertTag_internalDoStartTag2Handler() :  
 		execution(private void com.sun.j2ee.blueprints.waf.view.template.tags.InsertTag.internalDoStartTag2());
 	pointcut insertTag_doEndTagHandler() : 
