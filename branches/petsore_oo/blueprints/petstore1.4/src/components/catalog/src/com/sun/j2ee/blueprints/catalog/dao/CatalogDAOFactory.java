@@ -45,7 +45,7 @@ import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
 
 public class CatalogDAOFactory {
 	
-	private DaoHandler daoHandler = new DaoHandler();
+	private static DaoHandler daoHandler = new DaoHandler();
     /**
      * This method instantiates a particular subclass implementing
      * the DAO methods based on the information obtained from the
