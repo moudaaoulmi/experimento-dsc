@@ -34,7 +34,7 @@ import petstore.exception.ExceptionHandler;
  * @author Raquel Maranhao
  */
 @ExceptionHandler
-public aspect WafControllerWebHandler extends ExceptionGenericAspect {
+public aspect WafControllerWebHandler {
 
 	// ---------------------------
     // Declare soft's
@@ -74,9 +74,6 @@ public aspect WafControllerWebHandler extends ExceptionGenericAspect {
 	/*** DefaultComponentManager ***/
 	pointcut defaultComponentManager_getWebControllerHandler() :  
 		execution(public WebController DefaultComponentManager.getWebController(HttpSession));
-	
-	public pointcut aroundExceptionDoNothingHandler() : 
-		execution(public void DefaultComponentManager.sessionDestroyed(HttpSessionEvent));
 	
 	/*** MainServlet ***/
 	pointcut mainServlet_initGetResourceHandler() : 
