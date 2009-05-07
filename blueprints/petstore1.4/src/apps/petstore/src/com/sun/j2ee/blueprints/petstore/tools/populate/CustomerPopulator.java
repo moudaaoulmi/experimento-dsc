@@ -37,12 +37,17 @@
 
 package com.sun.j2ee.blueprints.petstore.tools.populate;
 
-import javax.naming.*;
-import java.util.*;
-import org.xml.sax.*;
-import com.sun.j2ee.blueprints.customer.ejb.*;
-import com.sun.j2ee.blueprints.customer.account.ejb.*;
-import com.sun.j2ee.blueprints.customer.profile.ejb.*;
+import java.util.Collection;
+
+import javax.naming.InitialContext;
+
+import org.xml.sax.XMLFilter;
+import org.xml.sax.XMLReader;
+
+import com.sun.j2ee.blueprints.customer.account.ejb.AccountLocal;
+import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
+import com.sun.j2ee.blueprints.customer.ejb.CustomerLocalHome;
+import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileLocal;
 
 
 public class CustomerPopulator {
@@ -80,47 +85,47 @@ public class CustomerPopulator {
     };
   }
 
-  /**
+  /*
    * EH - Refactored to aspect PetstoreToolsHandler.
    */      
   public boolean check() throws PopulateException {
-      InitialContext context = new InitialContext();
-      customerHome = (CustomerLocalHome) context.lookup(JNDI_CUSTOMER_HOME);
-      Collection customers = customerHome.findAllCustomers();
-      if ((customers == null) || (customers.size() == 0)) {
-         return false;
-      }
-      return true;
+	  InitialContext context = new InitialContext();
+	  customerHome = (CustomerLocalHome) context.lookup(JNDI_CUSTOMER_HOME);
+	  Collection customers = customerHome.findAllCustomers();
+	  if ((customers == null) || (customers.size() == 0)) {
+		  return false;
+	  }
+	  return true;
   }
 
-  /**
+  /*
    * EH - Refactored to aspect PetstoreToolsHandler.
    */      
   private CustomerLocal createCustomer(String id, AccountLocal account, ProfileLocal profile) throws PopulateException {
-      if (customerHome == null) {
-        InitialContext context = new InitialContext();
-        customerHome = (CustomerLocalHome) context.lookup(JNDI_CUSTOMER_HOME);
-      }
+	  if (customerHome == null) {
+		  InitialContext context = new InitialContext();
+		  customerHome = (CustomerLocalHome) context.lookup(JNDI_CUSTOMER_HOME);
+	  }
       
       internalRemoveExistingCustomer(id);
       
-      CustomerLocal customer = customerHome.create(id);
-      if (account != null) {
-        AccountLocal acct = customer.getAccount();
-        acct.setStatus(account.getStatus());
-        acct.setContactInfo(account.getContactInfo());
-        acct.setCreditCard(account.getCreditCard());
-        account.remove();
-      }
-      if (profile != null) {
-        ProfileLocal prof = customer.getProfile();
-        prof.setPreferredLanguage(profile.getPreferredLanguage());
-        prof.setFavoriteCategory(profile.getFavoriteCategory());
-        prof.setMyListPreference(profile.getMyListPreference());
-        prof.setBannerPreference(profile.getBannerPreference());
-        profile.remove();
-      }
-      return customer;
+	  CustomerLocal customer = customerHome.create(id);
+	  if (account != null) {
+		  AccountLocal acct = customer.getAccount();
+		  acct.setStatus(account.getStatus());
+		  acct.setContactInfo(account.getContactInfo());
+		  acct.setCreditCard(account.getCreditCard());
+		  account.remove();
+	  }
+	  if (profile != null) {
+		  ProfileLocal prof = customer.getProfile();
+		  prof.setPreferredLanguage(profile.getPreferredLanguage());
+		  prof.setFavoriteCategory(profile.getFavoriteCategory());
+		  prof.setMyListPreference(profile.getMyListPreference());
+		  prof.setBannerPreference(profile.getBannerPreference());
+		  profile.remove();
+	  }
+	  return customer;
   }
   
   /**

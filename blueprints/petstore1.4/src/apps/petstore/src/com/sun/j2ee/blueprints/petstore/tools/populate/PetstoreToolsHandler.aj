@@ -42,7 +42,7 @@ import petstore.exception.ExceptionHandler;
  * @author Raquel Maranhao
  */
 @ExceptionHandler
-public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
+public aspect PetstoreToolsHandler {
 	private Map connect = new HashMap();
 	
 	// ---------------------------
@@ -67,10 +67,7 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 									 createCreditCardHandler() || 
 									 createUserHandler();
 	
-	declare soft : FinderException : aroundExceptionDoNothingHandler();
-	
-	declare soft : RemoveException : createCustomerHandler() || 
-									 aroundExceptionDoNothingHandler();
+	declare soft : RemoveException : createCustomerHandler();
 	
 	declare soft : IOException : initHandler() || 
 								 internalSetupHandler() ||
@@ -135,9 +132,10 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 		execution(private CreditCardLocal CreditCardPopulator.createCreditCard(String, String, String));
 	
 	/*** CustomerPopulator ***/
-	public pointcut aroundExceptionDoNothingHandler() : 
-		execution(private void CustomerPopulator.internalRemoveExistingCustomer(String));
-		pointcut createCustomerHandler() : 
+//	public pointcut aroundExceptionDoNothingHandler() : 
+//		execution(private void CustomerPopulator.internalRemoveExistingCustomer(String));
+	
+	pointcut createCustomerHandler() : 
 		execution(private CustomerLocal CustomerPopulator.createCustomer(String, AccountLocal, ProfileLocal));
 	
 	/*** ItemPopulator ***/
@@ -197,7 +195,6 @@ public aspect PetstoreToolsHandler extends ExceptionGenericAspect {
 	// ---------------------------
     // Advice's
     // ---------------------------
-
 	Connection around(): connectionHandler(){
 		Connection c = proceed();
     	connect.put(Thread.currentThread().getName(), c);

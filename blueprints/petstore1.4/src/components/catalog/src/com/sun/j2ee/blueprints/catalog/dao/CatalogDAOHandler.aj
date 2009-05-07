@@ -8,14 +8,12 @@ import javax.naming.NamingException;
 
 import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
 import com.sun.j2ee.blueprints.catalog.model.Item;
-import com.sun.j2ee.blueprints.util.aspect.ExceptionGenericAspect;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -27,16 +25,14 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
 import javax.sql.DataSource;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
 
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
 @ExceptionHandler
-public aspect CatalogDAOHandler extends ExceptionGenericAspect {
+public aspect CatalogDAOHandler {
 	
     Map connection = new HashMap();
     //Connection connection = null;
@@ -66,7 +62,7 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 								  getItemsPointBaseHandler() ||
 								  searchItemsPointBaseHandler() ||
 								  resultSetClose() ||
-								  preparedStatementClose() || 
+								  //preparedStatementClose() || 
 								  connectionClose();
 
     //declare soft : NumberFormatException : parseIntHandler();
@@ -99,8 +95,8 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 	pointcut resultSetClose() : 
 		closeAll() && call(* ResultSet.close());
 	
-	pointcut preparedStatementClose() : 
-		closeAll() && call(* Statement.close());
+//	pointcut preparedStatementClose() : 
+//		closeAll() && call(* PreparedStatement.close());
 	
 	pointcut connectionClose() : 
 		closeAll() && call(* Connection.close());
@@ -108,7 +104,7 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
 	//GenericAspect
 	public pointcut aroundExceptionDoNothingHandler() :
 	    resultSetClose() ||
-		preparedStatementClose() || 
+//		preparedStatementClose() || 
 		connectionClose();
 	
 	pointcut getCategoryHandler() : 
@@ -196,6 +192,15 @@ public aspect CatalogDAOHandler extends ExceptionGenericAspect {
     // ---------------------------
     // Advice's
     // ---------------------------
+	void around() : 
+	    aroundExceptionDoNothingHandler() {
+		try {
+			proceed();
+		} catch(Exception exception) {
+			//Do nothing
+		}
+    }	
+	
 	CatalogDAO around() throws CatalogDAOSysException : 
 		getDAOHandler() {
 		try{

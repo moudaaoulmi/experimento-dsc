@@ -27,7 +27,7 @@ import petstore.exception.ExceptionHandler;
  * @author rmaranhao
  */
 @ExceptionHandler
-public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
+public aspect SupplierToolsPopulateHandler {
 	
 	// ---------------------------
     // Declare soft's
@@ -46,10 +46,6 @@ public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 	
 	declare soft : NamingException :createInventoryHandler();
 	
-	declare soft : FinderException : aroundExceptionDoNothingHandler();
-	
-	declare soft : RemoveException : aroundExceptionDoNothingHandler();
-	
 	declare soft : CreateException : createInventoryHandler();
 	
 	declare soft : IOException : internalInventoryPopulatorHandler();
@@ -58,9 +54,6 @@ public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
     // Pointcut's
     // ---------------------------
 	/*** InventoryPopulator ***/
-	
-	public pointcut aroundExceptionDoNothingHandler() :
-		execution(private void InventoryPopulator.internalRemoveExistingInventory(String));
 	
 	pointcut createInventoryHandler() :
 		execution(private InventoryLocal InventoryPopulator.createInventory(String, int));
@@ -92,7 +85,6 @@ public aspect SupplierToolsPopulateHandler extends ExceptionGenericAspect {
 	// ---------------------------
     // Advice's
     // ---------------------------
-
 	InventoryLocal around() throws PopulateException :
 		createInventoryHandler() {
 		try{

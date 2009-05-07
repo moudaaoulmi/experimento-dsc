@@ -31,7 +31,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.Source;
 import  com.sun.j2ee.blueprints.supplier.tools.populate.InventoryPopulator;
-
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import javax.naming.NamingException;
@@ -45,7 +45,6 @@ import javax.xml.parsers.SAXParser;
 import org.xml.sax.InputSource;
 import com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb.OrderFulfillmentFacadeEJB;
 import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocal;
-import petstore.exception.ExceptionHandler;
 
 
 @ExceptionHandler
@@ -66,7 +65,9 @@ public privileged aspect GeneralExceptionHandler {
 									 internalRemoveExistingUserHandler() ||
 									 checkHandler2() ||
 									 userPopulatorCheckHandler() ||
-									 checkInventoryHandler();
+									 checkInventoryHandler() ||
+									 aroundExceptionDoNothingHandler();
+	
 	
 	declare soft : NamingException : checkHandler() ||
 									 checkHandler2() ||
@@ -87,10 +88,13 @@ public privileged aspect GeneralExceptionHandler {
 
 	declare soft : RemoveException : destroyHandler() ||
 									 defaultWebController_destroyHandler() ||
-									 internalRemoveExistingUserHandler();
+									 internalRemoveExistingUserHandler() ||
+									 aroundExceptionDoNothingHandler();
 
     declare soft : ParsingDoneException : loadSQLStatementsHandler() ||
     									  loadSQLStatementsHandler2();
+    
+    declare soft : IOException : aroundExceptionDoNothingHandler();
     
 	// ---------------------------
 	// Pointcut's
@@ -170,6 +174,13 @@ public privileged aspect GeneralExceptionHandler {
 	
 	pointcut getValueSupplierHandler() : 
 		execution(public int com.sun.j2ee.blueprints.supplier.tools.populate.XMLDBHandler.getValue(String, int));
+	
+	/*** CustomerPopulator ***/
+	public pointcut aroundExceptionDoNothingHandler() : 
+		execution(private void CustomerPopulator.internalRemoveExistingCustomer(String)) ||
+		execution(private void com.sun.j2ee.blueprints.waf.view.template.tags.InsertTag.internalDoStartTag1()) ||
+		execution(private void InventoryPopulator.internalRemoveExistingInventory(String)) ||
+		execution(public void DefaultComponentManager.sessionDestroyed(..));
 	
 	// ---------------------------
 	// Advice's
@@ -272,4 +283,13 @@ public privileged aspect GeneralExceptionHandler {
 	    	return defaultValue;
 	    }
 	}
+	
+	void around() : 
+	    aroundExceptionDoNothingHandler() {
+		try {
+			proceed();
+		} catch(Exception exception) {
+			//Do nothing
+		}
+    }	
 }
