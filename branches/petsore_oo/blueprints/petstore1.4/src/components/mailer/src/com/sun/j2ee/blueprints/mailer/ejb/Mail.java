@@ -60,7 +60,7 @@ public class Mail {
   private String subject  = null;
   private String content = null;
 
-  static EjbHandler ejbHandler = new EjbHandler();
+  private static EjbHandler ejbHandler = new EjbHandler();
   
   private Mail() {}
 

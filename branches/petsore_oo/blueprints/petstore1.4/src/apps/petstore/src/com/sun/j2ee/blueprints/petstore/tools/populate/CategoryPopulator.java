@@ -53,7 +53,7 @@ public class CategoryPopulator {
   private String rootTag;
   private CategoryDetailsPopulator categoryDetailsPopulator;
   private Map sqlStatements;
-
+  private ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
 
   public CategoryPopulator(Map sqlStatements) throws PopulateException {
     this(XML_CATEGORIES, sqlStatements);
@@ -91,7 +91,7 @@ public class CategoryPopulator {
       categoryDetailsPopulator.dropTables(connection);
     } catch (PopulateException exception) {
     /** Exception Handler */
-   	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
+   	 
    	 toolPopulateHandler.ignoreHandler(exception);
    	}
     

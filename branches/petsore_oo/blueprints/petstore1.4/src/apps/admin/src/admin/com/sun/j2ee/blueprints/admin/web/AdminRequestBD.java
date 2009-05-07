@@ -78,7 +78,7 @@ public class AdminRequestBD {
     private String OPC_ADMIN_NAME = "java:comp/env/ejb/OPCAdminFacadeRemote";
     private OPCAdminFacade opcAdminEJB = null;
     private WebHandler webHandler =  new WebHandler();
-;
+
 
     public AdminRequestBD() throws AdminBDException {      
     	try {

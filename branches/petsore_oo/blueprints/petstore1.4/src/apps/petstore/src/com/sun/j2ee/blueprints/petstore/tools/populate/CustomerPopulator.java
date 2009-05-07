@@ -57,7 +57,8 @@ public class CustomerPopulator {
 	private CustomerLocalHome customerHome = null;
 	private AccountPopulator accountPopulator;
 	private ProfilePopulator profilePopulator;
-
+	private ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+	
 	public CustomerPopulator() throws PopulateException {
 		this(XML_CUSTOMERS);
 		return;
@@ -96,7 +97,7 @@ public class CustomerPopulator {
 			}
 		} catch (Exception e) {
 			/** Exception Handler */
-			ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+			
 			toolPopulateHandler.checkHandler();
 			// return false;
 		}
@@ -106,7 +107,7 @@ public class CustomerPopulator {
 	private CustomerLocal createCustomer(String id, AccountLocal account,
 			ProfileLocal profile) throws PopulateException {
 		/** Exception Handler */
-		ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+		
 
 		try {
 			if (customerHome == null) {

@@ -79,7 +79,7 @@ import com.sun.j2ee.blueprints.cart.model.CartItem;
 
 public final class CartHTMLAction extends HTMLActionSupport {
 
-	ActionsHandler actionsHandler = new ActionsHandler();
+	private ActionsHandler actionsHandler = new ActionsHandler();
 	public Event perform(HttpServletRequest request)
         throws HTMLActionException {
         // Extract attributes we will need

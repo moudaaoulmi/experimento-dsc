@@ -58,7 +58,7 @@ public abstract class XMLDBHandler extends XMLFilterImpl {
   private String rootElementTag;
   private String elementTag;
   private boolean lazyInstantiation;
-
+  private ToolPopulateHandler tooPopulateHandler = new ToolPopulateHandler();
 
   public XMLDBHandler(XMLReader parent, String rootElementTag, String elementTag) {
     this(parent, rootElementTag, elementTag, false);
@@ -73,8 +73,7 @@ public abstract class XMLDBHandler extends XMLFilterImpl {
     return;
   }
   
-  /** Exception Handler  */
-  ToolPopulateHandler tooPopulateHandler = new ToolPopulateHandler();
+  
 
   public void startDocument() throws SAXException {
     state = OFF;

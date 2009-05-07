@@ -54,7 +54,7 @@ import com.sun.j2ee.blueprints.processmanager.transitions.*;
  */
 public class OrderApprovalTD implements TransitionDelegate {
 
-  TransitionsHandler transitionsHandler = new TransitionsHandler();
+	private TransitionsHandler transitionsHandler = new TransitionsHandler();
   private QueueConnectionFactory qFactory;
   private Queue mailQueue;
   private Queue supplierPoQueue;

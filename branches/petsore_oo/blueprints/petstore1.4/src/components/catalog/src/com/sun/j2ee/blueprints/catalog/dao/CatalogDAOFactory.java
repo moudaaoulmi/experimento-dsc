@@ -44,7 +44,8 @@ import com.sun.j2ee.blueprints.catalog.util.JNDINames;
 import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
 
 public class CatalogDAOFactory {
-
+	
+	private DaoHandler daoHandler = new DaoHandler();
     /**
      * This method instantiates a particular subclass implementing
      * the DAO methods based on the information obtained from the
@@ -52,7 +53,7 @@ public class CatalogDAOFactory {
      */
     public static CatalogDAO getDAO() throws CatalogDAOSysException {
     	/** Exception Handler  */
-    	DaoHandler daoHandler = new DaoHandler();
+    	
     	
         CatalogDAO catDao = null;
         try {

@@ -45,58 +45,59 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 import com.sun.j2ee.blueprints.creditcard.ejb.*;
 
-
 public class CreditCardPopulator {
-  public static final String JNDI_CREDIT_CARD_HOME = "java:comp/env/ejb/CreditCard";
-  private static final String XML_CREDITCARD = "CreditCard";
-  private static final String XML_CARDNUMBER = "CardNumber";
-  private static final String XML_CARDTYPE = "CardType";
-  private static final String XML_EXPIRYDATE = "ExpiryDate";
-  private String rootTag;
-  private CreditCardLocalHome creditCardHome = null;
-  private CreditCardLocal creditCard ;
+	public static final String JNDI_CREDIT_CARD_HOME = "java:comp/env/ejb/CreditCard";
+	private static final String XML_CREDITCARD = "CreditCard";
+	private static final String XML_CARDNUMBER = "CardNumber";
+	private static final String XML_CARDTYPE = "CardType";
+	private static final String XML_EXPIRYDATE = "ExpiryDate";
+	private String rootTag;
+	private CreditCardLocalHome creditCardHome = null;
+	private CreditCardLocal creditCard;
+	private ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
 
-  public CreditCardPopulator(String rootTag) {
-    this.rootTag = rootTag;
-    return;
-  }
+	public CreditCardPopulator(String rootTag) {
+		this.rootTag = rootTag;
+		return;
+	}
 
-  public XMLFilter setup(XMLReader reader) throws PopulateException {
-    return new XMLDBHandler(reader, rootTag, XML_CREDITCARD) {
+	public XMLFilter setup(XMLReader reader) throws PopulateException {
+		return new XMLDBHandler(reader, rootTag, XML_CREDITCARD) {
 
-      public void update() throws PopulateException {}
+			public void update() throws PopulateException {
+			}
 
-      public void create() throws PopulateException {
-        creditCard = createCreditCard(getValue(XML_CARDNUMBER),
-                                      getValue(XML_CARDTYPE),
-                                      getValue(XML_EXPIRYDATE));
-        return;
-      }
-    };
-  }
+			public void create() throws PopulateException {
+				creditCard = createCreditCard(getValue(XML_CARDNUMBER),
+						getValue(XML_CARDTYPE), getValue(XML_EXPIRYDATE));
+				return;
+			}
+		};
+	}
 
-  public boolean check() throws PopulateException {
-    return true;
-  }
+	public boolean check() throws PopulateException {
+		return true;
+	}
 
-  private CreditCardLocal createCreditCard(String cardNumber, String cardType, String expiryDate) throws PopulateException {
-    try {
-      if (creditCardHome == null) {
-        InitialContext context = new InitialContext();
-        creditCardHome = (CreditCardLocalHome) context.lookup(JNDI_CREDIT_CARD_HOME);
-      }
-      return creditCardHome.create(cardNumber, cardType, expiryDate);
-    } catch (Exception exception) {
-    /**  Exception Handler  */
-   	 ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler(); 
-   	toolPopulateHandler.throwPopulateExceptionHandler(exception);
-	return null;
-    }
+	private CreditCardLocal createCreditCard(String cardNumber,
+			String cardType, String expiryDate) throws PopulateException {
+		try {
+			if (creditCardHome == null) {
+				InitialContext context = new InitialContext();
+				creditCardHome = (CreditCardLocalHome) context
+						.lookup(JNDI_CREDIT_CARD_HOME);
+			}
+			return creditCardHome.create(cardNumber, cardType, expiryDate);
+		} catch (Exception exception) {
+			/** Exception Handler */
 
-  }
+			toolPopulateHandler.throwPopulateExceptionHandler(exception);
+			return null;
+		}
 
-  public CreditCardLocal getCreditCard() {
-    return creditCard;
-  }
+	}
+
+	public CreditCardLocal getCreditCard() {
+		return creditCard;
+	}
 }
-

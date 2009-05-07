@@ -56,7 +56,7 @@ class ByteArrayDataSource implements DataSource {
     private byte[] data; // data for mail message
     private String type; // content type/mime type
     
-    EjbHandler ejbHandler = new EjbHandler();
+    private EjbHandler ejbHandler = new EjbHandler();
 
    /**
     * Create a DataSource from a String

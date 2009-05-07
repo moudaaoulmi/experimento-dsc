@@ -70,7 +70,7 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
 public abstract class PurchaseOrderEJB implements EntityBean {
 
-  EjbHandler ejbHandler = new EjbHandler(); 
+  private EjbHandler ejbHandler = new EjbHandler(); 
   private EntityContext context = null;
 
   /**

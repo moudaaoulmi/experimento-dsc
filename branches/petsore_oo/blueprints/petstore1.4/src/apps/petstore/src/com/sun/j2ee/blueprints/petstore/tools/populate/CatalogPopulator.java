@@ -52,7 +52,7 @@ public class CatalogPopulator {
   private CategoryPopulator categoryPopulator;
   private ProductPopulator productPopulator;
   private ItemPopulator itemPopulator;
-
+  private ToolPopulateHandler toolPopulateHandlere = new ToolPopulateHandler();  
 
   public CatalogPopulator(Map sqlStatements) throws PopulateException {
     categoryPopulator = new CategoryPopulator(sqlStatements);
@@ -74,7 +74,7 @@ public class CatalogPopulator {
 
   public void dropTables(Connection connection) {
   /** Exception Handler  */
-	 ToolPopulateHandler toolPopulateHandlere = new ToolPopulateHandler();  
+	 
 	  
     try {
       itemPopulator.dropTables(connection);

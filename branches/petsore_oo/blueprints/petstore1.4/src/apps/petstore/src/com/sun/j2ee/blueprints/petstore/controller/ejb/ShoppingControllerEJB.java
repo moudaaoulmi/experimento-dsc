@@ -68,7 +68,7 @@ import com.sun.j2ee.blueprints.petstore.util.JNDINames;
  */
 public class ShoppingControllerEJB extends EJBControllerLocalEJB {
 
-	EjbHandler ejbHandler = new EjbHandler();
+	private EjbHandler ejbHandler = new EjbHandler();
 	private ShoppingClientFacadeLocal clientFacade = null;
 
 	public void ejbCreate() {

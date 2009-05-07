@@ -54,7 +54,7 @@ import com.sun.j2ee.blueprints.processmanager.manager.ejb.ManagerLocalHome;
 
 public class ProcessManagerEJB implements SessionBean {
 
-	EjbHandler ejbHandler = new EjbHandler();
+	private EjbHandler ejbHandler = new EjbHandler();
     private static final String MANAGER_HOME_ENV_NAME = "java:comp/env/ejb/Manager";
 
     private ManagerLocalHome mlh;

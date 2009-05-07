@@ -70,7 +70,7 @@ public class SupplierOrderMDB implements MessageDrivenBean, MessageListener {
 
   private TransitionDelegate transitionDelegate;
 
-  ProcesspoEjbHandler processpoEjbHandler = new ProcesspoEjbHandler();
+  private ProcesspoEjbHandler processpoEjbHandler = new ProcesspoEjbHandler();
   
   public SupplierOrderMDB() {}
 

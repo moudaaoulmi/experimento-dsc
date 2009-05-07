@@ -57,7 +57,9 @@ public class UserPopulator {
 	private static final String XML_PASSWORD = "Password";
 	private UserLocalHome userHome = null;
 	private String rootTag;
-
+	/** Exception Handler */
+	private ToolPopulateHandler tooPopulateHandler = new ToolPopulateHandler();
+	
 	public UserPopulator() {
 		this(XML_USERS);
 		return;
@@ -68,8 +70,7 @@ public class UserPopulator {
 		return;
 	}
 
-	/** Exception Handler */
-	ToolPopulateHandler tooPopulateHandler = new ToolPopulateHandler();
+	
 
 	public XMLFilter setup(XMLReader reader) throws PopulateException {
 		return new XMLDBHandler(reader, rootTag, XML_USER) {

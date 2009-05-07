@@ -54,7 +54,7 @@ public class ProductPopulator {
   private String rootTag;
   private Map sqlStatements;
   private ProductDetailsPopulator productDetailsPopulator;
-
+  private ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
 
   public ProductPopulator(Map sqlStatements) throws PopulateException {
     this(XML_PRODUCTS, sqlStatements);
@@ -92,7 +92,7 @@ public class ProductPopulator {
       productDetailsPopulator.dropTables(connection);
     } catch (PopulateException exception) {
     	/** Exception Handler */
-    	ToolPopulateHandler toolPopulateHandler = new ToolPopulateHandler();
+    	
     	toolPopulateHandler.ignoreHandler(exception);
     }
     PopulateUtils.executeSQLStatement(connection, sqlStatements, PopulateUtils.makeSQLStatementKey(PopulateUtils.DROP_OPERATION, "product"), null, null);

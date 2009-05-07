@@ -73,7 +73,7 @@ import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 public abstract class SupplierOrderEJB implements EntityBean {
 
   private EntityContext context = null;
-  EjbHandler ejbHandler = new EjbHandler();
+  private EjbHandler ejbHandler = new EjbHandler();
 
   /**
    * Accessor method for purchase order ID

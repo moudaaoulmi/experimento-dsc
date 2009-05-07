@@ -61,7 +61,7 @@ public class TPASupplierOrderXDE extends XMLDocumentEditor.DefaultXDE {
   private Transformer transformer;
   private SupplierOrder supplierOrder = null;
 
-  OrderfulfillmentEjbHandler orderfulfillmentEjbHandler = new OrderfulfillmentEjbHandler();
+  private OrderfulfillmentEjbHandler orderfulfillmentEjbHandler = new OrderfulfillmentEjbHandler();
 
   public TPASupplierOrderXDE() throws XMLDocumentException {
     this(null, true, DEFAULT_SCHEMA_URI);

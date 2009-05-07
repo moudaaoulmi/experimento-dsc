@@ -44,7 +44,7 @@ import javax.jms.*;
  */
 public class QueueHelper implements java.io.Serializable {
 
-	TransitionsHandler transitionsHandler = new TransitionsHandler();
+	private TransitionsHandler transitionsHandler = new TransitionsHandler();
     private Queue q;
     private QueueConnectionFactory qFactory;
 

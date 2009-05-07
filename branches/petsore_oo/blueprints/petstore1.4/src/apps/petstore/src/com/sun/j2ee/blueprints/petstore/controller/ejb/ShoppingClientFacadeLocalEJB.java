@@ -74,7 +74,7 @@ import com.sun.j2ee.blueprints.petstore.util.JNDINames;
  */
 public class ShoppingClientFacadeLocalEJB implements SessionBean {
 
-	EjbHandler ejbHandler = new EjbHandler();
+	private EjbHandler ejbHandler = new EjbHandler();
 	private SessionContext sc = null;
 
 	private ShoppingCartLocal cart = null;

@@ -56,7 +56,7 @@ import com.sun.j2ee.blueprints.lineitem.ejb.LineItem;
 
 
 public class PurchaseOrder {
-  static EjbHandler ejbHandler = new EjbHandler();	
+  private static EjbHandler ejbHandler = new EjbHandler();	
   public static final boolean TRACE = false;
   public static final String DTD_PUBLIC_ID = "-//Sun Microsystems, Inc. - J2EE Blueprints Group//DTD PurchaseOrder 1.1//EN";
   public static final String DTD_SYSTEM_ID = "/com/sun/j2ee/blueprints/purchaseorder/rsrc/schemas/PurchaseOrder.dtd";

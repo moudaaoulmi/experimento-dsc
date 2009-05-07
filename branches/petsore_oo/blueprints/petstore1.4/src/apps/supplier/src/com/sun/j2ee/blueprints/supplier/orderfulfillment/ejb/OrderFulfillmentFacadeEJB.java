@@ -82,7 +82,7 @@ public class OrderFulfillmentFacadeEJB implements SessionBean {
   private InventoryLocalHome invHome;
   private SessionContext sc;
   
-  OrderfulfillmentEjbHandler orderfulfillmentEjbHandler = new OrderfulfillmentEjbHandler();
+  private OrderfulfillmentEjbHandler orderfulfillmentEjbHandler = new OrderfulfillmentEjbHandler();
 
   public OrderFulfillmentFacadeEJB() {}
 

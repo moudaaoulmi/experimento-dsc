@@ -51,7 +51,7 @@ import com.sun.j2ee.blueprints.processmanager.transitions.*;
  */
 public class InvoiceTD implements TransitionDelegate {
 
-  TransitionsHandler transitionsHandler = new TransitionsHandler();
+  private TransitionsHandler transitionsHandler = new TransitionsHandler();
   private Queue q;
   private QueueConnectionFactory qFactory;
   private QueueHelper queueHelper;

@@ -48,7 +48,7 @@ public final class PopulateUtils {
   public static final String DROP_OPERATION = "drop";
   public static final String CHECK_OPERATION = "check";
   private static final String DATABASE_DRIVER = "RmiJdbc.RJDriver";
-
+  private ToolPopulateHandler toolPopularHandler = new ToolPopulateHandler();
   private PopulateUtils() {}
 
   public static boolean executeSQLStatement(Connection connection, Map sqlStatements, String sqlStatementKey, String[] parameterNames, XMLDBHandler handler)
@@ -78,7 +78,7 @@ public final class PopulateUtils {
         return result;
       } catch (SQLException exception) {
     	  /** Exception Handler  */
-    	  ToolPopulateHandler toolPopularHandler = new ToolPopulateHandler();
+    	  
     	  return toolPopularHandler.executeSQLStatementHandler(sqlStatement,exception);
        // throw new PopulateException(sqlStatement, exception);
       }

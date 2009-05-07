@@ -75,7 +75,7 @@ import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
 
 public class CreateUserEJBAction extends EJBActionSupport {
 
-	ActionsHandler actionsHandler = new ActionsHandler();
+	private ActionsHandler actionsHandler = new ActionsHandler();
 	public EventResponse perform(Event e) throws EventException {
       CreateUserEvent cue = (CreateUserEvent)e;
 
