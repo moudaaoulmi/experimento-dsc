@@ -87,7 +87,7 @@ public class GenericCatalogDAO implements CatalogDAO {
 	private Map sqlStatements = new HashMap();
 
 	/** Exception Handler */
-	private DaoHandler daoHandler = new DaoHandler();
+	private static DaoHandler daoHandler = new DaoHandler();
 
 	public GenericCatalogDAO() throws CatalogDAOSysException {
 		try {
@@ -144,21 +144,21 @@ public class GenericCatalogDAO implements CatalogDAO {
 			try {
 				resultSet.close();
 			} catch (Exception exception) {
-				DaoHandler.ignore(exception);
+				daoHandler.ignoreHandler(exception);
 			}
 		}
 		if (statement != null) {
 			try {
 				statement.close();
 			} catch (Exception exception) {
-				DaoHandler.ignore(exception);
+				daoHandler.ignoreHandler(exception);
 			}
 		}
 		if (connection != null) {
 			try {
 				connection.close();
 			} catch (Exception exception) {
-				DaoHandler.ignore(exception);
+				daoHandler.ignoreHandler(exception);
 			}
 		}
 		return;

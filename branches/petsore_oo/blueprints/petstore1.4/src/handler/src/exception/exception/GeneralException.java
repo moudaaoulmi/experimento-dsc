@@ -5,7 +5,7 @@ import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
-
+@ExceptionHandler
 public class GeneralException {
 	
 	
