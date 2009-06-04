@@ -32,8 +32,6 @@ public class DaoHandler extends GeneralException{
         throw new CatalogDAOSysException("CatalogDAOFactory.getDAO:"+ ne.getClass().getName() + "while getting DAO type : \n" + ne.getMessage());
     } 
 	
-	public static void ignore(Exception e){}
-	
 	/**
 	 * Reusado
 	 * 
