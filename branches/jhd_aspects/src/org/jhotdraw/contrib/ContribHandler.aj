@@ -6,6 +6,9 @@ import java.beans.PropertyVetoException;
 
 import javax.swing.JInternalFrame;
 
+import org.jhotdraw.exception.ExceptionHandler;
+
+@ExceptionHandler
 public aspect ContribHandler {
 
 	// pointcuts
