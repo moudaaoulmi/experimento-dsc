@@ -2,7 +2,6 @@ package com.atlassw.tools.eclipse.checkstyle.voting;
 
 import java.io.IOException;
 
-import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 
 public privileged aspect VotingExceptionHandler
