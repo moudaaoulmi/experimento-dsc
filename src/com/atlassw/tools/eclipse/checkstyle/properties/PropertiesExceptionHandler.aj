@@ -15,11 +15,9 @@ import com.atlassw.tools.eclipse.checkstyle.config.ICheckConfiguration;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import org.eclipse.swt.events.SelectionEvent;
-import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 /**
  * @author Cristiane Queiroz
  */
-@ExceptionHandler
 public privileged aspect PropertiesExceptionHandler
 {
     // ---------------------------
