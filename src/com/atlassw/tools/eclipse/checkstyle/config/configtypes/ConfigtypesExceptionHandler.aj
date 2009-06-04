@@ -25,20 +25,15 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 import java.net.URL;
 import java.lang.IllegalArgumentException;
 
 import java.net.MalformedURLException;
-import java.net.Authenticator;
-
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.MissingResourceException;
-import org.eclipse.swt.events.SelectionListener;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 
 //@ExceptionHandler
