@@ -11,15 +11,7 @@ import com.atlassw.tools.eclipse.checkstyle.util.CheckstylePluginException;
 import com.atlassw.tools.eclipse.checkstyle.config.CheckConfigurationWorkingCopy;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.config.gui.RuleConfigurationEditDialog;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jface.viewers.ComboViewer;
-import com.atlassw.tools.eclipse.checkstyle.config.gui.widgets.IConfigPropertyWidget;
-import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
-import com.atlassw.tools.eclipse.checkstyle.Messages;
-import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
-import org.eclipse.swt.events.SelectionListener;
 
 @ExceptionHandler
 public privileged aspect GuiExceptionHandler

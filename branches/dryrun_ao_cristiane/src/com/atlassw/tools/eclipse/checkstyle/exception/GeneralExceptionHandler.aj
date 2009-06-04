@@ -2,7 +2,6 @@
 package com.atlassw.tools.eclipse.checkstyle.exception;
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileNotFoundException;
@@ -79,9 +78,6 @@ import javax.xml.transform.TransformerConfigurationException;
 
 import java.net.UnknownHostException;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.events.SelectionListener;
-import org.osgi.service.prefs.Preferences;
-import com.atlassw.tools.eclipse.checkstyle.exception.ExceptionHandler;
 
 import com.atlassw.tools.eclipse.checkstyle.config.Module;
 import com.atlassw.tools.eclipse.checkstyle.config.ConfigProperty;
@@ -440,6 +436,7 @@ public privileged aspect GeneralExceptionHandler
         list.put(Thread.currentThread().getName(), listener);
         return listener;
     }
+    
     Object around(): setModules2(){
         try{
             return proceed();
