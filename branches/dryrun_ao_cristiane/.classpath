@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="lib/commons-io-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ReusableCode"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

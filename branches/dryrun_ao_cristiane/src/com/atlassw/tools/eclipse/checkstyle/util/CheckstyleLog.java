@@ -37,13 +37,16 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 
+import br.upe.dsc.reusable.exception.ILogObject;
+
 import com.atlassw.tools.eclipse.checkstyle.CheckstylePlugin;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 
 /**
  * Logging utility for the Checkstyle plug-in.
  */
-public final class CheckstyleLog
+// REFLOG
+public final class CheckstyleLog implements ILogObject
 {
     // =================================================
     // Public static final variables.
@@ -54,7 +57,9 @@ public final class CheckstyleLog
     // =================================================
 
     private static ILog sLog;
-
+    
+    private static CheckstyleLog INSTANCE;
+    
     // =================================================
     // Instance member variables.
     // =================================================
@@ -63,8 +68,9 @@ public final class CheckstyleLog
     // Constructors & finalizer.
     // =================================================
 
-    private CheckstyleLog()
-    {}
+    private CheckstyleLog() {
+        INSTANCE = this;
+    }
 
     static
     {
@@ -80,9 +86,19 @@ public final class CheckstyleLog
      * 
      * @param t the exception to log
      */
+    //A mais usada no log de exceções
     public static void log(Throwable t)
     {
         log(t, t.getLocalizedMessage());
+    }
+    
+    public void logGeneral(String msg, Throwable t){
+        //não propaga a mensagem, pois os logs padrões não possuem.
+        log(t);
+    }
+    
+    public static CheckstyleLog getIntance(){
+        return INSTANCE;
     }
 
     /**

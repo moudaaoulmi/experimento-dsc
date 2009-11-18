@@ -11,6 +11,7 @@ public aspect CheckstyleHandler
         try{
             proceed();
         }catch (SecurityException e) {
+          //XXX LOG  - nao dah p gerenalizar totalmente
             CheckstyleLog.log(e);
         }
     }
