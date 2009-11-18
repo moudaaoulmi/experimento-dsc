@@ -162,6 +162,7 @@ public privileged aspect ConfigExceptionHandler
         }
         catch (CheckstylePluginException e)
         {
+          //XXX LOG - n dah p generalizar totalmente
             CheckstyleLog.log(e);
         }
         return result;

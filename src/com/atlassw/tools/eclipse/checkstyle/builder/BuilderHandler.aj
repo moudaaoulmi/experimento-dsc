@@ -144,11 +144,13 @@ public privileged aspect BuilderHandler
         }
         catch (SAXException e)
         {
+            //XXX LOG  - nao dah p gerenalizar totalmente
             CheckstyleLog.log(e, "unable to parse " + aPackageFile.toExternalForm() //$NON-NLS-1$
                     + " - " + e.getLocalizedMessage()); //$NON-NLS-1$
         }
         catch (IOException e)
         {
+            //XXX LOG  - nao dah p gerenalizar totalmente
             CheckstyleLog.log(e, "unable to read " + aPackageFile.toExternalForm()); //$NON-NLS-1$
         }
         finally
@@ -232,6 +234,7 @@ public privileged aspect BuilderHandler
         }
         catch (MalformedURLException mfe)
         {
+          //XXX LOG  - nao dah p gerenalizar totalmente
             // log the exception although this should not happen
             CheckstyleLog.log(mfe, mfe.getLocalizedMessage());
         }
