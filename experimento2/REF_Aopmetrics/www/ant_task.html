@@ -1,0 +1,186 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="tigris.css"  />
+  <title>AOP Metrics :: Ant Task</title>
+</head>
+<body>
+
+
+<h1>AOP metrics ant task</h1>
+
+<div class="h2">
+<h2>Description</h2>
+
+<p>Ant task is a prefered way to launch <b>aopmetrics</b> metrics suite. You
+can also use the command line described in <a href="/cmdline.html">a separate page</a>.</p>
+
+<p>
+The task is using AspectJ compiler. It launches an internal build of sources specified 
+by <code>&lt;fileset&gt;</code> or <code>lst</code> config file.
+Compiled class files are stored in the <code>workdir</code>. 
+Then, Java and AspectJ syntax trees are analysed and 
+<a href="/metrics.html">all supported metrics</a> are generated.
+Finally, <b>aopmetrics</b> exports measurements' results to specified
+<code>resultfile</code> (or writes to the standard output, by default).
+</p>
+
+<p>Currently, <b>aopmetrics</b> provides two export file formats:
+ <ul>
+   <li>Simple XML-based format. Useful for an automatic processing (scripts, programs) 
+     or transformations (to HTML). An example is shown below.</li>
+<pre>
+&lt;project name="aop-metrics"&gt;
+  &lt;package name="org.tigris.aopmetrics.metrics"&gt;
+    &lt;type kind="class" name="DepthOfInheritanceTree"&gt;
+      &lt;metric name="LOCC" value="39"/&gt;
+      &lt;metric name="WOM" value="3"/&gt;
+      &lt;metric name="DIT" value="0"/&gt;
+      [...]
+    &lt;/type&gt;
+    [...]
+    &lt;metric name="NOT" value="38"/&gt;
+    &lt;metric name="Ce" value="52"/&gt;
+    &lt;metric name="Ca" value="1"/&gt;
+    [...]
+  &lt;/package&gt;
+  &lt;package name="org.tigris.aopmetrics"&gt;
+    [...]
+  &lt;/package&gt;
+  [...]
+&lt;/project&gt;
+</pre>
+  <li>XLS format (Ms Excel). Useful for a human analysis. Can be viewed by
+  <a href="http://www.gnome.org/projects/gnumeric/">Gnumeric</a>. Here is 
+  a <a href="/aop-metrics-results.xls">sample</a> (metrics' results for the aopmetrics project).</li>
+ </ul>
+</p>
+</div>
+
+
+<div class="h2">
+<h2>Parameters</h2>
+
+<table>
+ <tr>
+   <th>Attribute</th>
+   <th>Description</th>
+   <th align="center">Required</th>
+ </tr>
+
+ <tr>
+  <td><b>configfile</b></td>
+  <td>Specifies a config file (.lst), which is commonly used in AspectJ projects. The config
+    file contains paths of all source files (separated by newline).</td>
+  <td align="center">Yes, unless nested fileset is used.</td>
+ </tr>
+ 
+ <tr>
+  <td><b>export</b></td>
+  <td>Specifies an export type. Currently only 'xml' and 'xls' types are supported. </td>
+  <td align="center">No, default: xml.</td>
+ </tr>
+
+ <tr>
+  <td><b>resultsfile</b></td>
+  <td>Specifies a file, where the aopmetrics writes results of all measurements. If the file
+     is not specified, then the results will be printed to the standard output.</td>
+  <td align="center">No</td>
+ </tr>
+
+ <tr>
+  <td><b>workdir</b></td>
+  <td>Specifies a directory, where aopmetrics stores temporary files (compiled sources
+     by AspectJ compiler). If the directory doesn't exist, then the task creates it.</td>
+  <td align="center">Yes</td>
+ </tr>
+ 
+ <tr>
+  <td><b>sourcelevel</b></td>
+  <td>Specifies a source compiliance level. The value is passed to the AspectJ compiler.
+    Currently, the compiler supports '1.3', '1.4' and '1.5' levels.</td>
+  <td align="center">No, default: 1.4.</td>
+ </tr>
+
+ <tr>
+  <td><b>verbose</b></td>
+  <td>Specifies a verbosity level. The attribute is useful for debugging. 
+    Currently, 'normal', 'info' and 'debug' levels are supported.</td>
+  <td align="center">No, default: normal.</td>
+ </tr>
+
+ <tr>
+  <td><b>charset</b></td>
+  <td>Specifies a character encoding of given sources.</td>
+  <td align="center">No.</td>
+ </tr>
+</table>
+</div>
+
+
+
+<div class="h2">
+<h2>Nested elements</h2>
+
+<h3>fileset</h3>
+
+Nested <b>fileset</b> elements can be used for specifying source files for measurements.
+This is simpler than using AspectJ config file (.lst), when you don't use it in your project.
+Usually this element is identical to filesets in <b>javac</b> or <b>ajc</b>
+tasks.
+
+<h3>classpath</h3>
+
+Nested <b>classpath</b> elements can be used for specifying user class files.
+Usually this element is identical to classpaths in <b>javac</b> or <b>ajc</b>
+tasks.
+</div>
+
+
+
+<div class="h2">
+<h2>Examples</h2>
+
+<p>Example of the aopmetrics task's definition:</p>
+<pre>
+&lt;path id="cp.aopmetrics"&gt;
+	&lt;fileset dir="tools/aopmetrics"&gt;
+		&lt;include name="*.jar" /&gt;
+	&lt;/fileset&gt;
+&lt;/path&gt;
+
+&lt;taskdef name="aopmetrics" classname="org.tigris.aopmetrics.AopMetricsTask"&gt;
+	&lt;classpath refid="cp.aopmetrics"/&gt;
+&lt;/taskdef&gt;
+</pre>
+
+<p>Specifying source files using a nested fileset:</p>
+<pre>
+&lt;path id="cp.compile"&gt;
+	&lt;fileset dir="lib"&gt;
+		&lt;include name="*.jar" /&gt;
+	&lt;/fileset&gt;
+&lt;/path&gt;
+
+&lt;aopmetrics workdir="build/workdir" sourcelevel="1.5"
+		resultsfile="build/aop-metrics-results.xml"&gt;
+	&lt;fileset dir="src" includes="**/*.java"/&gt;
+	&lt;fileset dir="testsrc" includes="**/*.java"/&gt;
+	&lt;classpath refid="cp.compile"/&gt;
+&lt;/aopmetrics&gt;
+</pre>
+
+
+<p>Specifying source files using a config file. Results are printed to the standard output:</p>
+<pre>
+&lt;aopmetrics workdir="build/workdir" configfile="without-tracing.lst"&gt;
+	&lt;classpath refid="cp.compile"/&gt;
+&lt;/aopmetrics&gt;
+</pre>
+
+<p>For more a complex example see <b>aopmetrics</b> old <a href="build.xml">build file</a>.
+</p>
+</div>
+
+
+</body>
+</html>
