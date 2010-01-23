@@ -1,0 +1,73 @@
+src/lancs/mobilemedia/core/comms/BaseMessaging.java
+src/lancs/mobilemedia/core/ui/MainUIMidlet.java
+src/lancs/mobilemedia/core/ui/controller/ControllerInterface.java
+src/lancs/mobilemedia/core/ui/controller/AbstractController.java
+src/lancs/mobilemedia/core/ui/controller/BaseController.java
+src/lancs/mobilemedia/core/ui/controller/AlbumController.java
+src/lancs/mobilemedia/core/ui/controller/MediaController.java
+src/lancs/mobilemedia/core/ui/controller/MediaListController.java
+src/lancs/mobilemedia/core/ui/controller/ScreenSingleton.java
+src/lancs/mobilemedia/core/ui/datamodel/AlbumData.java
+src/lancs/mobilemedia/core/ui/datamodel/MediaAccessor.java
+src/lancs/mobilemedia/core/ui/datamodel/MediaData.java
+src/lancs/mobilemedia/core/ui/screens/AddMediaToAlbum.java
+src/lancs/mobilemedia/core/ui/screens/AlbumListScreen.java
+src/lancs/mobilemedia/core/ui/screens/MediaListScreen.java
+src/lancs/mobilemedia/core/ui/screens/NewLabelScreen.java
+src/lancs/mobilemedia/core/ui/screens/SplashScreen.java
+src/lancs/mobilemedia/core/util/Constants.java
+src/lancs/mobilemedia/core/util/MediaUtil.java
+src/lancs/mobilemedia/lib/exceptions/MediaNotFoundException.java
+src/lancs/mobilemedia/lib/exceptions/MediaPathNotValidException.java
+src/lancs/mobilemedia/lib/exceptions/InvalidArrayFormatException.java
+src/lancs/mobilemedia/lib/exceptions/InvalidMediaDataException.java
+src/lancs/mobilemedia/lib/exceptions/InvalidMediaFormatException.java
+src/lancs/mobilemedia/lib/exceptions/PersistenceMechanismException.java
+src/lancs/mobilemedia/lib/exceptions/UnavailablePhotoAlbumException.java
+src/lancs/mobilemedia/lib/exceptions/InvalidAlbumNameException.java
+src/lancs/mobilemedia/aspects/exceptionblocks/UtilAspectEH.aj
+src/lancs/mobilemedia/aspects/exceptionblocks/DataModelAspectEH.aj
+src/lancs/mobilemedia/aspects/exceptionblocks/ControllerAspectEH.aj
+
+# This configuration (Instance B03) includes:
+# - The Music alternative feature
+# - All optional features (Sorting, Favourites, Copy)
+# Photo and Video alternative features are not included.
+
+# Music
+src/lancs/mobilemedia/alternative/music/AbstractMusicAspect.aj
+src/lancs/mobilemedia/alternative/music/MusicAspect.aj
+src/lancs/mobilemedia/alternative/music/MusicAlbumData.java
+src/lancs/mobilemedia/alternative/music/MusicPlayController.java
+src/lancs/mobilemedia/alternative/music/PlayMusicScreen.java
+src/lancs/mobilemedia/alternative/music/MusicNotPhotoNotVideo.aj
+
+# Music OR Video
+src/lancs/mobilemedia/alternative/musicvideo/MultiMediaAccessor.java
+src/lancs/mobilemedia/alternative/musicvideo/MultiMediaUtil.java
+
+# Photo OR Music
+src/lancs/mobilemedia/alternative/musicvideo/MusicOrVideo.aj
+src/lancs/mobilemedia/alternative/OneAlternativeFeature.aj
+src/lancs/mobilemedia/alternative/AbstractAlternativeFeature.aj
+
+# Sorting
+src/lancs/mobilemedia/optional/sorting/SortingAspect.aj
+
+# Favourites
+src/lancs/mobilemedia/optional/favourites/FavouritesAspect.aj
+src/lancs/mobilemedia/optional/favourites/PersisteFavoritesAspect.aj
+
+# Copy
+src/lancs/mobilemedia/optional/copy/CopyAspect.aj
+src/lancs/mobilemedia/optional/copy/CopyTargets.java
+
+# Copy AND Music
+src/lancs/mobilemedia/optional/copy/CopyMultiMediaAspect.aj
+src/lancs/mobilemedia/alternative/music/optional/CopyAndMusic.aj
+
+# Copy OR SMS
+src/lancs/mobilemedia/optional/copySMS/PhotoViewController.java
+
+# Music AND Optional Features
+src/lancs/mobilemedia/optional/MusicAndOptionalFeatures.aj
