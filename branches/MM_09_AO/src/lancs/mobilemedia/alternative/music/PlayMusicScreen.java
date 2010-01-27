@@ -42,28 +42,24 @@ public class PlayMusicScreen extends Canvas implements ItemStateListener{
 	Gauge tempoGauge = null;
 	
 	public PlayMusicScreen(MainUIMidlet midlet, InputStream storedMusic, String type, AbstractController controller) {
-		try {
-			midiPlayer = Manager.createPlayer(storedMusic, type);
-			midiPlayer.prefetch();
-			volControl = (VolumeControl) midiPlayer.getControl(
-			"javax.microedition.media.control.VolumeControl");
-			pitchControl = (PitchControl) midiPlayer.getControl(
-			"javax.microedition.media.control.PitchControl");
-			tempoControl = (TempoControl) midiPlayer.getControl(
-			"javax.microedition.media.control.TempoControl");
-			form = new Form("MIDI Player", null);
-			form.addCommand(back);
-			form.addCommand(start);
-			form.addCommand(stop);
-			      
-			initForm();
+		midiPlayer = Manager.createPlayer(storedMusic, type);
+		midiPlayer.prefetch();
+		volControl = (VolumeControl) midiPlayer.getControl(
+		"javax.microedition.media.control.VolumeControl");
+		pitchControl = (PitchControl) midiPlayer.getControl(
+		"javax.microedition.media.control.PitchControl");
+		tempoControl = (TempoControl) midiPlayer.getControl(
+		"javax.microedition.media.control.TempoControl");
+		form = new Form("MIDI Player", null);
+		form.addCommand(back);
+		form.addCommand(start);
+		form.addCommand(stop);
+		      
+		initForm();
 
-			form.setCommandListener(controller);
-			form.setItemStateListener(this);     
-			Display.getDisplay(midlet).setCurrent(form);
-		} catch(Exception e) {
-			System.err.println(e);
-		}
+		form.setCommandListener(controller);
+		form.setItemStateListener(this);     
+		Display.getDisplay(midlet).setCurrent(form);
 	}
 	
 	private void initForm() {
@@ -94,23 +90,15 @@ public class PlayMusicScreen extends Canvas implements ItemStateListener{
 	}
 	
 	public void startPlay() {
-		try {
-			// start the MIDI player if it was created
-			if(midiPlayer != null) {
-				midiPlayer.start();
-			}
-		} catch(Exception e) {
-			System.err.println(e);
+		// start the MIDI player if it was created
+		if(midiPlayer != null) {
+			midiPlayer.start();
 		}
 	}
 	  
 	public void pausePlay() {
-		try {
-			if(midiPlayer != null) {
-				midiPlayer.stop();
-			}
-		} catch(Exception e) {
-			System.err.println(e);
+		if(midiPlayer != null) {
+			midiPlayer.stop();
 		}
 	}
 

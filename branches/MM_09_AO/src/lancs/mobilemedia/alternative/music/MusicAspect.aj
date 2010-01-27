@@ -83,62 +83,35 @@ public aspect MusicAspect extends AbstractMusicAspect {
 		&& withincode(public boolean MediaController.handleCommand(Command));
 	
 	after(AlbumData albumData, MediaController controller) : addNewMediaToAlbum(albumData, controller) {
-		try {
-			// [NC] Added in the scenario 07
-			if (albumData instanceof MusicAlbumData){
-				albumData.loadMediaDataFromRMS( controller.getCurrentStoreName());
-				MediaData mymedia = albumData.getMediaInfo(((AddMediaToAlbum) controller.getCurrentScreen()).getItemName());
-				
-				mymedia.setTypeMedia( ((AddMediaToAlbum) controller.getCurrentScreen()).getItemType() );
-				albumData.updateMediaInfo(mymedia, mymedia);
-			}
+		internalAddNewMediaToAlbum(albumData, controller);
+	}
+
+	private void internalAddNewMediaToAlbum(AlbumData albumData, MediaController controller){
+		// [NC] Added in the scenario 07
+		if (albumData instanceof MusicAlbumData){
+			albumData.loadMediaDataFromRMS( controller.getCurrentStoreName());
+			MediaData mymedia = albumData.getMediaInfo(((AddMediaToAlbum) controller.getCurrentScreen()).getItemName());
 			
-		// TODO [EF] Replicated handlers from the method handleCommandAction in MediaController. 
-		// TODO Nelio, try to reuse these handlers somehow
-		} catch (InvalidMediaDataException e) {
-			Alert alert = null;
-			if (e instanceof MediaPathNotValidException)
-				alert = new Alert("Error", "The path is not valid", null, AlertType.ERROR);
-			else
-				alert = new Alert("Error", "The file format is not valid", null, AlertType.ERROR);
-			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-		} catch (PersistenceMechanismException e) {
-			Alert alert = null;
-			if (e.getCause() instanceof RecordStoreFullException)
-				alert = new Alert("Error", "The mobile database is full", null, AlertType.ERROR);
-			else
-				alert = new Alert("Error", "The mobile database can not add a new photo", null, AlertType.ERROR);
-			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-			
-		} catch (MediaNotFoundException e) {
-			Alert alert = new Alert("Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
-			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-//			return true; // TODO [EF] This should be the return value from method handleCommandAction.
+			mymedia.setTypeMedia( ((AddMediaToAlbum) controller.getCurrentScreen()).getItemType() );
+			albumData.updateMediaInfo(mymedia, mymedia);
 		}
 	}
 	
 	// [NC] Added in the scenario 07
 	public boolean MediaController.playMultiMedia(String selectedMediaName) {
 		InputStream storedMusic = null;
-		try {
-			MediaData mymedia = getAlbumData().getMediaInfo(selectedMediaName);
-			if (mymedia.getTypeMedia().equals(MediaData.MUSIC)) {
-				storedMusic = ((MusicAlbumData) getAlbumData()).getMusicFromRecordStore(getCurrentStoreName(), selectedMediaName);
-				PlayMusicScreen playscree = new PlayMusicScreen(midlet, storedMusic, mymedia.getTypeMedia(), this);
-				MusicPlayController controller = new MusicPlayController(midlet, getAlbumData(), (AlbumListScreen) getAlbumListScreen(), playscree);
-				this.setNextController(controller);
-			}
-			return true;
-		} catch (MediaNotFoundException e) {
-			Alert alert = new Alert( "Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
-			Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-		    return false;
-		} 
-		catch (PersistenceMechanismException e) {
-			Alert alert = new Alert( "Error", "The mobile database can open this item 1", null, AlertType.ERROR);
-			Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-			return false;
+		return internalPlayMultiMediaHandler(selectedMediaName, storedMusic); 
+	}
+
+	private boolean MediaController.internalPlayMultiMediaHandler(String selectedMediaName, InputStream storedMusic){
+		MediaData mymedia = getAlbumData().getMediaInfo(selectedMediaName);
+		if (mymedia.getTypeMedia().equals(MediaData.MUSIC)) {
+			storedMusic = ((MusicAlbumData) getAlbumData()).getMusicFromRecordStore(getCurrentStoreName(), selectedMediaName);
+			PlayMusicScreen playscree = new PlayMusicScreen(midlet, storedMusic, mymedia.getTypeMedia(), this);
+			MusicPlayController controller = new MusicPlayController(midlet, getAlbumData(), (AlbumListScreen) getAlbumListScreen(), playscree);
+			this.setNextController(controller);
 		}
+		return true;
 	}
 	
 	// ********  MediaListScreen  ********* //
