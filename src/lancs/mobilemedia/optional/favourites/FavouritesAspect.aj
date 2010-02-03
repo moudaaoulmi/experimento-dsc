@@ -49,18 +49,7 @@ public privileged aspect FavouritesAspect {
 		 * [EF] Added in the scenario 03 **/
 		if (label.equals("Set Favorite")) {
 		   	String selectedMediaName = controller.getSelectedMediaName();
-			try {
-				MediaData media= controller.getAlbumData().getMediaInfo(selectedMediaName);
-				media.toggleFavorite();
-				controller.updateMedia(media);
-			// TODO Nelio, I add these handlers here just to remove errros. Please, check them.
-			} catch (InvalidMediaDataException e) { 
-			} catch (PersistenceMechanismException e) {
-				
-			} catch (MediaNotFoundException e) {
-				Alert alert = new Alert( "Error", "The selected photo was not found in the mobile device", null, AlertType.ERROR);
-				Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-			}
+		   	internalAroundHandlerCommandAction(controller, selectedMediaName); 
 			return true;
 				
 		/** Case: View favorite photos 
@@ -73,6 +62,12 @@ public privileged aspect FavouritesAspect {
 		}
 		
 		return false;
+	}
+
+	private void internalAroundHandlerCommandAction(MediaController controller,	String selectedMediaName){
+		MediaData media= controller.getAlbumData().getMediaInfo(selectedMediaName);
+		media.toggleFavorite();
+		controller.updateMedia(media);
 	}
 	
 	boolean favorite = false;
