@@ -78,6 +78,8 @@ public abstract aspect CopyMultiMediaAspect {
 			
 		} else if (label.equals("Save Item")) {
 			try {
+				// this code fragment could not be extracted to EH aspect 
+				// due to its context-dependent and context-affecting nature
 				MediaData mediaData = null;	
 				try {
 					mediaData = controller.getAlbumData().getMediaInfo(mediaName);

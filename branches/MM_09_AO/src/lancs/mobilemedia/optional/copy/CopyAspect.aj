@@ -9,8 +9,6 @@
 package lancs.mobilemedia.optional.copy;
 
 import javax.microedition.rms.RecordStore;
-import javax.microedition.rms.RecordStoreException;
-import javax.microedition.rms.RecordStoreNotOpenException;
 
 import lancs.mobilemedia.core.ui.controller.AbstractController;
 import lancs.mobilemedia.core.ui.controller.MediaController;
@@ -51,25 +49,12 @@ public abstract aspect CopyAspect {
 	 * @throws PersistenceMechanismException
 	 */
 	public void MediaAccessor.addMediaData(MediaData mediaData, String albumname) throws InvalidMediaDataException, PersistenceMechanismException {
-		try {
-			mediaRS = RecordStore.openRecordStore(album_label + albumname, true);
-			mediaInfoRS = RecordStore.openRecordStore(info_label + albumname, true);
-			int rid2; // new record ID for ImageData (metadata)
-			rid2 = mediaInfoRS.getNextRecordID();
-			mediaData.setRecordId(rid2);
-			byte[] data1 = this.getByteFromMediaInfo(mediaData);
-			mediaInfoRS.addRecord(data1, 0, data1.length);
-		} catch (RecordStoreException e) {
-			throw new PersistenceMechanismException();
-		}finally{
-			try {
-				mediaRS.closeRecordStore();
-				mediaInfoRS.closeRecordStore();
-			} catch (RecordStoreNotOpenException e) {
-				e.printStackTrace();
-			} catch (RecordStoreException e) {
-				e.printStackTrace();
-			}
-		}
+		mediaRS = RecordStore.openRecordStore(album_label + albumname, true);
+		mediaInfoRS = RecordStore.openRecordStore(info_label + albumname, true);
+		int rid2; // new record ID for ImageData (metadata)
+		rid2 = mediaInfoRS.getNextRecordID();
+		mediaData.setRecordId(rid2);
+		byte[] data1 = this.getByteFromMediaInfo(mediaData);
+		mediaInfoRS.addRecord(data1, 0, data1.length);
 	}
 }
