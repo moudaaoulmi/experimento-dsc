@@ -2,10 +2,7 @@ package lancs.mobilemedia.alternative.video;
 
 import java.io.InputStream;
 
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.Display;
 
 import lancs.mobilemedia.core.ui.MainUIMidlet;
 import lancs.mobilemedia.core.ui.controller.AbstractController;
@@ -17,7 +14,6 @@ import lancs.mobilemedia.core.ui.datamodel.AlbumData;
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
 import lancs.mobilemedia.core.ui.screens.AlbumListScreen;
 import lancs.mobilemedia.core.ui.screens.MediaListScreen;
-import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 
@@ -72,27 +68,19 @@ public privileged aspect VideoAspect extends AbstractVideoAspect {
 	
 	private boolean MediaController.playVideoMedia(String selectedMediaName) {
 		InputStream storedMusic = null;
-		try {
-			MediaData mymedia = getAlbumData().getMediaInfo(selectedMediaName);
-			if (mymedia.getTypeMedia().equals(MediaData.VIDEO)) {
-				storedMusic = ((VideoAlbumData) getAlbumData()).getVideoFromRecordStore(getCurrentStoreName(), selectedMediaName);
-				PlayVideoScreen playscree = new PlayVideoScreen(midlet,storedMusic, mymedia.getTypeMedia(),this);
-				playscree.setVisibleVideo();
-				PlayVideoController controller = new PlayVideoController(midlet, getAlbumData(), (AlbumListScreen) getAlbumListScreen(), playscree);
-				this.setNextController(controller);
-			}
-			return true;
-		} catch (MediaNotFoundException e) {
-			Alert alert = new Alert( "Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
-			Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-		    return false;
-		} 
-		catch (PersistenceMechanismException e) {
-			Alert alert = new Alert( "Error", "The mobile database can open this item 1", null, AlertType.ERROR);
-			Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-			return false;
+		return internalPlayVideoMedia(selectedMediaName, storedMusic);
+	}
+
+	private boolean MediaController.internalPlayVideoMedia(String selectedMediaName, InputStream storedMusic) {
+		MediaData mymedia = getAlbumData().getMediaInfo(selectedMediaName);
+		if (mymedia.getTypeMedia().equals(MediaData.VIDEO)) {
+			storedMusic = ((VideoAlbumData) getAlbumData()).getVideoFromRecordStore(getCurrentStoreName(), selectedMediaName);
+			PlayVideoScreen playscree = new PlayVideoScreen(midlet,storedMusic, mymedia.getTypeMedia(),this);
+			playscree.setVisibleVideo();
+			PlayVideoController controller = new PlayVideoController(midlet, getAlbumData(), (AlbumListScreen) getAlbumListScreen(), playscree);
+			this.setNextController(controller);
 		}
-	
+		return true;
 	}
 	
 	// ********  MediaListScreen  ********* //
