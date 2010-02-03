@@ -1,7 +1,5 @@
 package lancs.mobilemedia.optional.smsorcapturephoto;
 
-import javax.microedition.rms.RecordStoreException;
-
 import lancs.mobilemedia.alternative.photo.ImageMediaAccessor;
 import lancs.mobilemedia.alternative.photo.PhotoViewScreen;
 import lancs.mobilemedia.core.ui.datamodel.AlbumData;
@@ -25,11 +23,7 @@ public privileged aspect SmSOrCapturePhoto {
 	
 	public void ImageMediaAccessor.addImageData(String photoname, byte[] imgdata, String albumname)
 			throws InvalidMediaDataException, PersistenceMechanismException {
-		try {
-			addMediaArrayOfBytes(photoname, albumname, imgdata);
-		} catch (RecordStoreException e) {
-			throw new PersistenceMechanismException();
-		}
+		addMediaArrayOfBytes(photoname, albumname, imgdata); 
 	}
 
 	// ********  PhotoViewController  ********* //

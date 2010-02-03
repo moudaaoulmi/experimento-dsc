@@ -59,25 +59,26 @@ public class SmsMessaging extends BaseMessaging {
 		if ( (smsSendPort != null) && (smsSendPort != "") )
 			address = smsProtocolPrefix + address + ":" + smsSendPort+1;
 		MessageConnection smsconn = null;
-		try {
-			//Open the message connection.
-			smsconn = (MessageConnection) Connector.open(address);
-			//Prepare for send of binary data
-			BinaryMessage binmsg = (BinaryMessage)smsconn.newMessage( MessageConnection.BINARY_MESSAGE );
-			//**Device Specific Notes**
-			//Motorola only supports sending of a single segment, with a maximum of 132 bytes of data
-			binmsg.setPayloadData(imageData);
-			int i = smsconn.numberOfSegments(binmsg);
-			System.out.println("SmsMessaging::sendImage() num segments to send is: " + i);
-			smsconn.send(binmsg);
-		} catch (Throwable t) {
-			System.out.println("Send caught: ");
-			t.printStackTrace();
-			return false;
-		}
+
+		smsconn = internalSendImage(imageData, address, smsconn);
+		
 		//Close any open connections and perform cleanup
 		cleanUpConnections(smsconn);
 		return success;
+	}
+
+	private MessageConnection internalSendImage(byte[] imageData, String address, MessageConnection smsconn) {
+		//Open the message connection.
+		smsconn = (MessageConnection) Connector.open(address);
+		//Prepare for send of binary data
+		BinaryMessage binmsg = (BinaryMessage)smsconn.newMessage( MessageConnection.BINARY_MESSAGE );
+		//**Device Specific Notes**
+		//Motorola only supports sending of a single segment, with a maximum of 132 bytes of data
+		binmsg.setPayloadData(imageData);
+		int i = smsconn.numberOfSegments(binmsg);
+		System.out.println("SmsMessaging::sendImage() num segments to send is: " + i);
+		smsconn.send(binmsg);
+		return smsconn;
 	}
 
 	/* (non-Javadoc)
@@ -88,11 +89,7 @@ public class SmsMessaging extends BaseMessaging {
 		String smsConnection = smsProtocolPrefix + ":" + smsReceivePort;
 		String senderAddress;
 		if (smsConn == null) {
-			try {
-				smsConn = (MessageConnection) Connector.open(smsConnection);
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
-			}
+			smsConn = internalReceiveImage(smsConnection);
 		}
 		connections = PushRegistry.listConnections(true);
 		if (connections == null || connections.length == 0) {
@@ -123,32 +120,34 @@ public class SmsMessaging extends BaseMessaging {
 		return receivedData;
 	}
 
+	private MessageConnection internalReceiveImage(String smsConnection) {
+		return (MessageConnection) Connector.open(smsConnection);
+	}
+
 	/* (non-Javadoc)
 	 * @see ubc.midp.MobileMedia.core.comms.BaseMessaging#cleanUpConnections()
 	 */
 	public void cleanUpConnections(MessageConnection smsConn) {
 		//Cleanup the connection
 		if (smsConn != null) {
-			try {
-				smsConn.close();
-			} catch (IOException ioe) {
-				System.out.println("Closing connection caught: ");
-				ioe.printStackTrace();
-			}
+			internalCleanUpConnections(smsConn);
 		}
+	}
+
+	private void internalCleanUpConnections(MessageConnection smsConn) {
+		smsConn.close();
 	}
 	
 	public void cleanUpReceiverConnections() {
 		//Cleanup the connection
 		if (smsConn != null) {
-			try {
-				smsConn.close();
-				smsConn = null;
-			} catch (IOException ioe) {
-				System.out.println("Closing connection caught: ");
-				ioe.printStackTrace();
-			}
+			internalCleanUpReceiverConnections();
 		}
+	}
+
+	private void internalCleanUpReceiverConnections() {
+		smsConn.close();
+		smsConn = null;
 	}
 	
 	/**

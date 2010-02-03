@@ -47,34 +47,28 @@ public class SmsReceiverThread implements Runnable { //extends BaseThread {
 	public void run() {
 		SmsMessaging smsMessenger = new SmsMessaging();
 		while(true){
-			smsMessenger.setSmsReceivePort(smsPort);
-			byte[] receivedData = null;
-			try {
-				receivedData = smsMessenger.receiveImage();
-			} catch (InterruptedIOException e) {
-				Alert alert = new Alert("Error Incoming Photo");
-				alert.setString("You have just received a bad fragmentated photo which was not possible to recovery.");
-				alert.addCommand(errorNotice);
-				alert.setCommandListener(controller);
-				controller.setCurrentScreen(alert);
-				smsMessenger.cleanUpReceiverConnections();
-				continue;
-			} catch (IOException e) {
-				Alert alert = new Alert("Error Incoming Photo");
-				alert.setString("You have just received a bad fragmentated photo which was not possible to recovery.");
-				alert.addCommand(errorNotice);
-				alert.setCommandListener(controller);
-				controller.setCurrentScreen(alert);
-				smsMessenger.cleanUpReceiverConnections();
-				continue;
-			}
-			Alert alert = new Alert("New Incoming Photo");
-			alert.setString("A MobileMedia user has sent you a Photo. Do you want to accept it?");
-			alert.addCommand(acceptPhotoCommand);
-			alert.addCommand(rejectPhotoCommand);
-			controller.setIncommingData(receivedData);
-			alert.setCommandListener(controller);
-			controller.setCurrentScreen(alert);
+			internalRun(smsMessenger);
 		}
+	}
+
+	private void internalRun(SmsMessaging smsMessenger) {
+		smsMessenger.setSmsReceivePort(smsPort);
+		byte[] receivedData = null;
+
+		receivedData = internalRun2(smsMessenger);
+		
+		Alert alert = new Alert("New Incoming Photo");
+		alert.setString("A MobileMedia user has sent you a Photo. Do you want to accept it?");
+		alert.addCommand(acceptPhotoCommand);
+		alert.addCommand(rejectPhotoCommand);
+		controller.setIncommingData(receivedData);
+		alert.setCommandListener(controller);
+		controller.setCurrentScreen(alert);
+	}
+
+	private byte[] internalRun2(SmsMessaging smsMessenger) {
+		byte[] receivedData;
+		receivedData = smsMessenger.receiveImage();
+		return receivedData;
 	}
 }

@@ -64,6 +64,7 @@ public class SmsSenderController extends AbstractController {
 	      	MediaData ii = null;
 	      	byte[] imageBytes = null;
 			try {
+				// cannot be extracted to EH aspect since it is context-affecting: two variables
 				ii = getAlbumData().getMediaInfo(imageName);
 				imageBytes = getAlbumData().loadMediaBytesFromRMS(ii.getParentAlbumName(), ii.getForeignRecordId());
 			} catch (MediaNotFoundException e) {

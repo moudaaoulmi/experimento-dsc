@@ -41,21 +41,14 @@ public privileged aspect SortingAspect {
 	after(MediaController controler, String selectedImageName): showImage(controler, selectedImageName) {
 		// [EF] Added in the scenario 02
 		// TODO Nelio, how can we aspectize this EH?
-		try {
-			MediaData image = controler.getAlbumData().getMediaInfo(selectedImageName);
-			image.increaseNumberOfViews();
-			controler.updateMedia(image);
-			System.out.println("<* BaseController.handleCommand() *> Image = " + selectedImageName + "; # views = " + image.getNumberOfViews());
-		// TODO Nelio, I add these handlers here just to remove errros. Please, check them.
-		} catch (InvalidMediaDataException e) { 
-		} catch (PersistenceMechanismException e) {
-		} catch (MediaNotFoundException e) {
-			Alert alert = new Alert("Error",
-					"The selected photo was not found in the mobile device",
-					null, AlertType.ERROR);
-			Display.getDisplay((controler.midlet)).setCurrent(alert,
-					Display.getDisplay(controler.midlet).getCurrent());
-		}
+		internalAfterShowImage(controler, selectedImageName);
+	}
+
+	private void internalAfterShowImage(MediaController controler, String selectedImageName) {
+		MediaData image = controler.getAlbumData().getMediaInfo(selectedImageName);
+		image.increaseNumberOfViews();
+		controler.updateMedia(image);
+		System.out.println("<* BaseController.handleCommand() *> Image = " + selectedImageName + "; # views = " + image.getNumberOfViews());
 	}
 
 	// public boolean PhotoController.handleCommand(Command, Displayable)
