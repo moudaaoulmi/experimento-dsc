@@ -5,27 +5,19 @@ import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.List;
-
-import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
-import javax.microedition.rms.RecordStoreNotOpenException;
 
+import lancs.mobilemedia.core.ui.controller.AlbumController;
+import lancs.mobilemedia.core.ui.controller.MediaListController;
+import lancs.mobilemedia.core.ui.controller.ScreenSingleton;
+import lancs.mobilemedia.core.ui.datamodel.AlbumData;
+import lancs.mobilemedia.core.ui.datamodel.MediaAccessor;
 import lancs.mobilemedia.core.ui.screens.AlbumListScreen;
 import lancs.mobilemedia.core.ui.screens.NewLabelScreen;
 import lancs.mobilemedia.core.ui.screens.PasswordScreen;
-import lancs.mobilemedia.core.ui.controller.AbstractController;
-import lancs.mobilemedia.core.ui.controller.MediaController;
-import lancs.mobilemedia.core.ui.controller.ScreenSingleton;
-import lancs.mobilemedia.core.ui.controller.AlbumController;
-import lancs.mobilemedia.core.ui.controller.MediaListController;
-import lancs.mobilemedia.core.ui.datamodel.AlbumData;
-import lancs.mobilemedia.core.ui.datamodel.MediaAccessor;
-
-import lancs.mobilemedia.core.ui.MainUIMidlet;
-
 import lancs.mobilemedia.core.util.Constants;
 import lancs.mobilemedia.lib.exceptions.InvalidAlbumNameException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
@@ -85,24 +77,24 @@ public privileged aspect PrivacyAspect {
 	/************* MediaAccessor **********************/
 	
 	public void MediaAccessor.addPassword(String albumname, String passwd)  {		
-		try{
-			passwordRS = RecordStore.openRecordStore("mpp-"+albumname, true);
-			passwordRS.addRecord(passwd.getBytes(), 0, passwd.getBytes().length);
-			passwordRS.closeRecordStore();
-		}catch(RecordStoreException e){
-			
-		}
-		
-	};
+		passwordRS = RecordStore.openRecordStore("mpp-"+albumname, true);
+		passwordRS.addRecord(passwd.getBytes(), 0, passwd.getBytes().length);
+		passwordRS.closeRecordStore();
+	}
 		
 	public String MediaAccessor.getPassword(String albumname){
 		String password = null;
-		try{
-			passwordRS = RecordStore.openRecordStore("mpp-"+albumname, false);
-			if(passwordRS!=null){
-				password = new String(passwordRS.getRecord(1));
-			}
-		}catch(RecordStoreException e){}
+
+		password = internalGetPassword(albumname, password);
+		
+		return password;
+	}
+
+	private String MediaAccessor.internalGetPassword(String albumname, String password) {
+		passwordRS = RecordStore.openRecordStore("mpp-"+albumname, false);
+		if(passwordRS!=null){
+			password = new String(passwordRS.getRecord(1));
+		}
 		return password;
 	}
 	
@@ -150,22 +142,10 @@ public privileged aspect PrivacyAspect {
 			pwd = null;
 			return true;
 		}else if(label.equals("No")){
-			try {									
-				controller.getAlbumData().createNewAlbum(controller.albumName.getLabelName());	
-			} catch (PersistenceMechanismException e) {
-				Alert alert = null;
-				if (e.getCause() instanceof  RecordStoreFullException)
-					alert = new Alert( "Error", "The mobile database is full", null, AlertType.ERROR);
-				else
-					alert = new Alert( "Error", "The mobile database can not add a new photo album", null, AlertType.ERROR);
-				Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-				return true;
-		    } catch (InvalidAlbumNameException e) {
-		    	Alert alert = new Alert( "Error", "You have provided an invalid Photo Album name", null, AlertType.ERROR);
-				Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
+			if (internalAroundHandleCommandAction2(controller)) {
 				return true;
 			}
-		    
+			
 			controller.goToPreviousScreen();
 			return true;
 		}else if(label.equals("Confirm")){
@@ -173,13 +153,8 @@ public privileged aspect PrivacyAspect {
 			PasswordScreen password = (PasswordScreen) controller.getCurrentScreen();
 			String passwd =controller.getAlbumData().getPassword(controller.getCurrentStoreName());
 			if(password.getPassword().equals(passwd)){
-				try {
-					controller.getAlbumData().deleteAlbum(ScreenSingleton.getInstance().getCurrentStoreName());
-				} catch (PersistenceMechanismException e) {
-					System.out.println(e);
-					Alert alert = new Alert( "Error", "The mobile database can not delete this photo album", null, AlertType.ERROR);
-			        Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-				}
+				internalAroundHandleCommandAction3(controller);
+				
 				controller.goToPreviousScreen();
 			}else{
 					Alert alert = new Alert( "Error", "Invalid Password", null, AlertType.ERROR);
@@ -188,6 +163,16 @@ public privileged aspect PrivacyAspect {
 			return true;
 		}
 		//controller.goToPreviousScreen();
+		return false;
+	}
+
+	private void internalAroundHandleCommandAction3(AlbumController controller) {
+		controller.getAlbumData().deleteAlbum(ScreenSingleton.getInstance().getCurrentStoreName());
+	}
+
+	private boolean internalAroundHandleCommandAction2(AlbumController controller) {
+		controller.getAlbumData().createNewAlbum(controller.albumName.getLabelName());
+		// the following line was added because of the new EH strategy
 		return false;
 	}
 		
@@ -230,15 +215,15 @@ public privileged aspect PrivacyAspect {
 				controller.setCurrentScreen(pwd);
 				pwd = null;
 			}else{
-				try {
-					controller.getAlbumData().deleteAlbum(ScreenSingleton.getInstance().getCurrentStoreName());	
-				} catch (PersistenceMechanismException e) {
-					Alert alert = new Alert( "Error", "The mobile database can not delete this photo album", null, AlertType.ERROR);
-			        Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-				}
+				internalAroundHandleCommandAction4(controller);
+				
 				controller.goToPreviousScreen();	
 			}				
 			return true;	
+		}
+		
+		private void internalAroundHandleCommandAction4(AlbumController controller) {
+			controller.getAlbumData().deleteAlbum(ScreenSingleton.getInstance().getCurrentStoreName());
 		}
 		
 		/******************* MediaListController **************************/
