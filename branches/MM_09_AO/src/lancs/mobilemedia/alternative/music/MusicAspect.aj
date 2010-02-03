@@ -100,10 +100,10 @@ public aspect MusicAspect extends AbstractMusicAspect {
 	// [NC] Added in the scenario 07
 	public boolean MediaController.playMultiMedia(String selectedMediaName) {
 		InputStream storedMusic = null;
-		return internalPlayMultiMediaHandler(selectedMediaName, storedMusic); 
+		return internalPlayMultiMedia(selectedMediaName, storedMusic); 
 	}
 
-	private boolean MediaController.internalPlayMultiMediaHandler(String selectedMediaName, InputStream storedMusic){
+	public boolean MediaController.internalPlayMultiMedia(String selectedMediaName, InputStream storedMusic){
 		MediaData mymedia = getAlbumData().getMediaInfo(selectedMediaName);
 		if (mymedia.getTypeMedia().equals(MediaData.MUSIC)) {
 			storedMusic = ((MusicAlbumData) getAlbumData()).getMusicFromRecordStore(getCurrentStoreName(), selectedMediaName);

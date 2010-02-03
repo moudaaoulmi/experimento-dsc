@@ -8,23 +8,18 @@ import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 
 public class MultiMediaUtil extends MediaUtil {
 
-	public String getBytesFromMediaInfo(MediaData ii)
-			throws InvalidMediaDataException {
-		try {
-			String mediadata = super.getBytesFromMediaInfo(ii);
-			if (ii.getTypeMedia() != null) {
-				if ((ii.getTypeMedia().equals(MediaData.MUSIC)) || (ii.getTypeMedia().equals(MediaData.VIDEO))) {
-					String byteString = new String(mediadata);
-					byteString = byteString.concat(DELIMITER);
-					String typeOfMedia = ii.getTypeMedia();
-					byteString = byteString.concat(typeOfMedia);
-					return byteString;
-				}
+	public String getBytesFromMediaInfo(MediaData ii) throws InvalidMediaDataException {
+		String mediadata = super.getBytesFromMediaInfo(ii);
+		if (ii.getTypeMedia() != null) {
+			if ((ii.getTypeMedia().equals(MediaData.MUSIC)) || (ii.getTypeMedia().equals(MediaData.VIDEO))) {
+				String byteString = new String(mediadata);
+				byteString = byteString.concat(DELIMITER);
+				String typeOfMedia = ii.getTypeMedia();
+				byteString = byteString.concat(typeOfMedia);
+				return byteString;
 			}
-			return mediadata;
-		} catch (Exception e) {
-			throw new InvalidMediaDataException("The provided data are not valid");
 		}
+		return mediadata; 
 	}
 
 	public MediaData getMultiMediaInfoFromBytes(byte[] bytes)

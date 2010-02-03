@@ -50,38 +50,38 @@ public class MultiMediaAccessor extends MediaAccessor {
 //		addMediaData("Tango", "/images/cabeza.mid", default_album_name);
 
 		loadMediaDataFromRMS(default_album_name);
-		try {
-			media = this.getMediaInfo("Applause");
-			media.setTypeMedia("audio/x-wav");
-			this.updateMediaInfo(media, media);
-			
-			media = this.getMediaInfo("Baby");
-			media.setTypeMedia("audio/x-wav");
-			this.updateMediaInfo(media, media);
+		internalResetRecordStore(media); 
+	}
 
-			media = this.getMediaInfo("Bong");
-			media.setTypeMedia("audio/x-wav");
-			this.updateMediaInfo(media, media);
+	private void internalResetRecordStore(MediaData media) throws InvalidMediaDataException, PersistenceMechanismException {
+		media = this.getMediaInfo("Applause");
+		media.setTypeMedia("audio/x-wav");
+		this.updateMediaInfo(media, media);
+		
+		media = this.getMediaInfo("Baby");
+		media.setTypeMedia("audio/x-wav");
+		this.updateMediaInfo(media, media);
+
+		media = this.getMediaInfo("Bong");
+		media.setTypeMedia("audio/x-wav");
+		this.updateMediaInfo(media, media);
 
 //			media = this.getMediaInfo("Frogs");
 //			mmedi = new MediaData(media.getForeignRecordId(), media.getParentAlbumName(), media.getMediaLabel());
 //			mmedi = new MultiMediaData(media, "audio/mpeg");
 //			this.updateMediaInfo(media, mmedi);
 
-			media = this.getMediaInfo("Jump");
-			media.setTypeMedia("audio/x-wav");
-			this.updateMediaInfo(media, media);
+		media = this.getMediaInfo("Jump");
+		media.setTypeMedia("audio/x-wav");
+		this.updateMediaInfo(media, media);
 
-			media = this.getMediaInfo("Printer");
-			media.setTypeMedia("audio/x-wav");
-			this.updateMediaInfo(media, media);
-			
+		media = this.getMediaInfo("Printer");
+		media.setTypeMedia("audio/x-wav");
+		this.updateMediaInfo(media, media);
+		
 //			media = this.getMediaInfo("Tango");
 //			mmedi = new MediaData(media.getForeignRecordId(), media.getParentAlbumName(), media.getMediaLabel());
 //			mmedi = new MultiMediaData(media, "audio/midi");
 //			this.updateMediaInfo(media, mmedi);
-		} catch (MediaNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 }

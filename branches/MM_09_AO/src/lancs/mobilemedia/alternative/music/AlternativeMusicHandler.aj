@@ -20,7 +20,7 @@ public privileged aspect AlternativeMusicHandler {
 	
 	pointcut internalAddNewMediaToAlbumHandler() : execution(* MusicAspect.internalAddNewMediaToAlbum(AlbumData, MediaController));
 	
-	pointcut internalPlayMultiMediaHandler(): execution(boolean MediaController.internalPlayMultiMediaHandler(String, InputStream));
+	pointcut internalPlayMultiMediaHandler(): execution(boolean MediaController.internalPlayMultiMedia(String, InputStream));
 	
 	pointcut playMusicScreenHandler(): execution (PlayMusicScreen.new(MainUIMidlet, InputStream, String, AbstractController));
 	
