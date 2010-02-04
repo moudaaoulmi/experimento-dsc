@@ -17,34 +17,20 @@ import javax.microedition.rms.RecordStoreException;
 public privileged aspect AlternativeVideoHandler {
 	
 	pointcut startVideoHandler() : execution(void PlayVideoScreen.startVideo());
-	
 	pointcut stopVideo() : execution(void PlayVideoScreen.stopVideo());
-	
 	pointcut internalPlayVideScreenHandler() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler());
-	
 	pointcut internalPlayVideScreenHandler2() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler2(AbstractController));
-	
 	pointcut internalPlayVideScreenHandler3() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler3(int, int));
-	
 	pointcut internalPlayVideoMediaHandler() : execution(boolean MediaController.internalPlayVideoMedia(String, InputStream));
-	
 	pointcut inputStreamToBytesHandler(): execution(byte[] VideoMediaAccessor.inputStreamToBytes(InputStream));
-	
 	pointcut internalResetRecordStoreHandler(): execution(MediaData VideoMediaAccessor.internalResetRecordStore(MediaData));
-	
 	pointcut addVideoDataHandler(): execution(void VideoMediaAccessor.addVideoData(String, String, byte[]));
 	
-	
 	declare soft: Exception: startVideoHandler() || stopVideo();
-	
 	declare soft: IOException: internalPlayVideScreenHandler() || inputStreamToBytesHandler();
-	
 	declare soft: MediaException: internalPlayVideScreenHandler() || internalPlayVideScreenHandler3();
-	
 	declare soft: MediaNotFoundException: internalPlayVideoMediaHandler() || internalResetRecordStoreHandler();
-	
 	declare soft: PersistenceMechanismException: internalPlayVideoMediaHandler();
-	
 	declare soft: RecordStoreException: addVideoDataHandler();
 	
 	
