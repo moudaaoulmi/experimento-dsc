@@ -98,17 +98,15 @@ public privileged aspect CapturePhotoAspect {
 	}
 
 	public byte[] CaptureVideoScreen.takePicture() {
-		try {
-			Alert alert = new Alert("Error", "The mobile database is full", null, AlertType.INFO);
-			alert.setTimeout(5000);
-			display.setCurrent(alert);
-			byte[] imageArray = videoControl.getSnapshot(null);
-			return imageArray;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		Alert alert = new Alert("Error", "The mobile database is full", null, AlertType.INFO);
+		alert.setTimeout(5000);
+		display.setCurrent(alert);
+		byte[] imageArray = videoControl.getSnapshot(null);
+		return imageArray;
 	}
+
+	
+	
 	
 	// ********  MediaListScreen  ********* //
 	

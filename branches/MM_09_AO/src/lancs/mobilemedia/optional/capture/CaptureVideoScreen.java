@@ -33,29 +33,26 @@ public class CaptureVideoScreen extends GameCanvas {
 		super(false);
 		typescreen = type;
 		display = Display.getDisplay(midlet);
-		try {
-			capturePlayer = Manager.createPlayer("capture://video");
-			capturePlayer.realize();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
+		internalCaptureVideoScreen();
+		
 		videoControl = (VideoControl) capturePlayer.getControl("javax.microedition.media.control.VideoControl");
-		try {
-			if (videoControl == null)
-				throw new Exception("No Video Control for capturing!");
-			videoControl.initDisplayMode(VideoControl.USE_DIRECT_VIDEO, this);
-			videoControl.setDisplayFullScreen(true);
-		} catch (MediaException me) {
-			videoControl.setDisplayLocation(5, 5);
-			try {
-				videoControl.setDisplaySize(getWidth() - 10, getHeight() - 10);
-			} catch (Exception e) {
-			}
-			repaint();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
+		internalCaptureVideoScreen2();
+			
 		this.addCommand(back);
+	}
+	
+	private void internalCaptureVideoScreen(){
+		capturePlayer = Manager.createPlayer("capture://video");
+		capturePlayer.realize();
+	}
+	
+	private void internalCaptureVideoScreen2(){
+		if (videoControl == null)
+			throw new Exception("No Video Control for capturing!");
+		videoControl.initDisplayMode(VideoControl.USE_DIRECT_VIDEO, this);
+		videoControl.setDisplayFullScreen(true);
 	}
 
 	public void keyPressed(int keyCode) {
@@ -71,10 +68,10 @@ public class CaptureVideoScreen extends GameCanvas {
 	public void setVisibleVideo() {
 		display.setCurrent(this);
 		videoControl.setVisible(true);
-		try {
-			capturePlayer.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		internalSetVisibleVideo();
+	}
+	
+	private void internalSetVisibleVideo(){
+		capturePlayer.start();
 	}
 }

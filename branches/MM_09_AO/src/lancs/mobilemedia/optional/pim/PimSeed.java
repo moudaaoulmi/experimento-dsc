@@ -27,23 +27,12 @@ public class PimSeed {
 	
 	
 	public PimSeed(){
-		try{
-			seed();
-		}catch(Exception e){
-			
-		}
+		seed();
 	}
 		
 	
 	public void seed() throws PIMException {
-		
-		try{
-			PIM pimInst = PIM.getInstance();
-			contList = (ContactList) pimInst.openPIMList(PIM.CONTACT_LIST, PIM.READ_WRITE);
-			contacts = contList.items();
-		}catch (PIMException ex){
-			//Contact List is not supported
-		}
+		internalSeed();
 	
 		if(!contacts.hasMoreElements()){
 			addContact(contList,"Paul","Goldburg","2345 High Park Ave","Orlando","USA","32817");
@@ -61,6 +50,13 @@ public class PimSeed {
 			contList.close();
 		contList = null;
 		contacts=null;
+	}
+
+
+	private void internalSeed() throws PIMException {
+		PIM pimInst = PIM.getInstance();
+		contList = (ContactList) pimInst.openPIMList(PIM.CONTACT_LIST, PIM.READ_WRITE);
+		contacts = contList.items();
 	}
 	
 	private void addContact (ContactList list, String firstName, String lastName,

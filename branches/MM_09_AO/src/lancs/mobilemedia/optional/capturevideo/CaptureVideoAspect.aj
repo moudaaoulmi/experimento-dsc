@@ -32,30 +32,22 @@ public privileged aspect CaptureVideoAspect {
 	}
 	
 	public void CaptureVideoScreen.startCapture() {
-		try {
-			if (!recording) {
-				rControl = (RecordControl) capturePlayer.getControl("RecordControl");
-				if (rControl == null)
-					throw new Exception("No RecordControl found!");
-				byteOfArray = new ByteArrayOutputStream();
-				rControl.setRecordStream(byteOfArray);
-				rControl.startRecord();
-				recording = true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (!recording) {
+			rControl = (RecordControl) capturePlayer.getControl("RecordControl");
+			if (rControl == null)
+				throw new Exception("No RecordControl found!");
+			byteOfArray = new ByteArrayOutputStream();
+			rControl.setRecordStream(byteOfArray);
+			rControl.startRecord();
+			recording = true;
 		}
 	}
 	
 	public void CaptureVideoScreen.pauseCapture() {
-		try {
-			if (recording) {
-				rControl.stopRecord();
-				rControl.commit();
-				recording = false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (recording) {
+			rControl.stopRecord();
+			rControl.commit();
+			recording = false;
 		}
 	}
 	

@@ -15,9 +15,6 @@ import lancs.mobilemedia.core.ui.datamodel.AlbumData;
 import lancs.mobilemedia.core.ui.screens.AddMediaToAlbum;
 import lancs.mobilemedia.core.ui.screens.AlbumListScreen;
 import lancs.mobilemedia.core.util.Constants;
-import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
-import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
-import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 import lancs.mobilemedia.optional.capture.CaptureVideoScreen;
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
 
@@ -51,34 +48,11 @@ public class VideoCaptureController extends AbstractController {
 		} else if (label.equals("Save Item")) {
 			String videoname = ((AddMediaToAlbum) getCurrentScreen()).getItemName();
 			String albumname = ((AddMediaToAlbum) getCurrentScreen()).getPath();
-			try {
-				byte[] capturedMediaByte = saveVideoToAlbum.getCapturedMedia();
-				// TODO [EF] Workaround since getCapturedMedia() is not working.
-				if ((capturedMediaByte == null) || (capturedMediaByte.length==0)) {
-					System.out.println( "<* VideoCaptureController.handleCommand() *> captured video is null, adding Fish to the record store!");
-					InputStream inputStream = (InputStream) this.getClass().getResourceAsStream("/images/fish.mpg");
-					String str = inputStream.toString();
-					capturedMediaByte = str.getBytes();
-				}
-				((VideoAlbumData)getAlbumData()).addVideoData(videoname, albumname, capturedMediaByte);
-			} catch (InvalidMediaDataException e) {
-				e.printStackTrace();
-			} catch (PersistenceMechanismException e) {
-				e.printStackTrace();
-			}
+		
+			internalHandleCommand(videoname,albumname);
 			
-			try {
-				((VideoAlbumData)getAlbumData()).loadMediaDataFromRMS(albumname);
-				MediaData media = ((VideoAlbumData)getAlbumData()).getMediaInfo(videoname);
-				media.setTypeMedia("video/mpeg");
-				((VideoAlbumData)getAlbumData()).updateMediaInfo(media, media);
-			} catch (MediaNotFoundException e) {
-				e.printStackTrace();
-			} catch (InvalidMediaDataException e) {
-				e.printStackTrace();
-			} catch (PersistenceMechanismException e) {
-				e.printStackTrace();
-			}
+			internalHandleCommand2(videoname,albumname);
+			
 			goToListAlbumScreen();
 			return true;
 		} else if ((label.equals("Back")) || (label.equals("Cancel"))){
@@ -88,6 +62,25 @@ public class VideoCaptureController extends AbstractController {
 			return true;
 		}
 		return false;
+	}
+	
+	private void internalHandleCommand(String videoname, String albumname){
+		byte[] capturedMediaByte = saveVideoToAlbum.getCapturedMedia();
+		// TODO [EF] Workaround since getCapturedMedia() is not working.
+		if ((capturedMediaByte == null) || (capturedMediaByte.length==0)) {
+			System.out.println( "<* VideoCaptureController.handleCommand() *> captured video is null, adding Fish to the record store!");
+			InputStream inputStream = (InputStream) this.getClass().getResourceAsStream("/images/fish.mpg");
+			String str = inputStream.toString();
+			capturedMediaByte = str.getBytes();
+		}
+		((VideoAlbumData)getAlbumData()).addVideoData(videoname, albumname, capturedMediaByte);
+	}
+	
+	private void internalHandleCommand2(String videoname, String albumname){
+		((VideoAlbumData)getAlbumData()).loadMediaDataFromRMS(albumname);
+		MediaData media = ((VideoAlbumData)getAlbumData()).getMediaInfo(videoname);
+		media.setTypeMedia("video/mpeg");
+		((VideoAlbumData)getAlbumData()).updateMediaInfo(media, media);
 	}
 	
 	void goToListAlbumScreen() {

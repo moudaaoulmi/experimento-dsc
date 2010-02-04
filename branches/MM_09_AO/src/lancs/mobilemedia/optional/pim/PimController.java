@@ -14,6 +14,9 @@ import lancs.mobilemedia.core.ui.controller.AbstractController;
 import lancs.mobilemedia.core.ui.controller.MediaController;
 import lancs.mobilemedia.core.ui.controller.ScreenSingleton;
 
+
+
+
 public class PimController extends AbstractController{
 	
 	private ContactList contList = null;
@@ -61,14 +64,8 @@ public class PimController extends AbstractController{
 	
 	public void displayPim(){
 		
-		try{
-			PIM pimInst = PIM.getInstance();
-			contList = (ContactList) pimInst.openPIMList(PIM.CONTACT_LIST, PIM.READ_ONLY);
-			contacts = contList.items();
-		}catch(Exception ex){
-		//TO DO
-		}
-	
+		internalPimInst();
+		
 		if(contacts==null){
 			System.out.println("Contact List is empty");
 		}
@@ -90,6 +87,12 @@ public class PimController extends AbstractController{
 		
 		Display.getDisplay(midlet).setCurrent(nNameList);
 		
+	}
+
+	private void internalPimInst() {
+		PIM pimInst = PIM.getInstance();
+		contList = (ContactList) pimInst.openPIMList(PIM.CONTACT_LIST, PIM.READ_ONLY);
+		contacts = contList.items();
 	}
 
 }
