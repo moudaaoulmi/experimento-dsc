@@ -7,9 +7,15 @@ src/lancs/mobilemedia/core/ui/controller/AlbumController.java
 src/lancs/mobilemedia/core/ui/controller/MediaController.java
 src/lancs/mobilemedia/core/ui/controller/MediaListController.java
 src/lancs/mobilemedia/core/ui/controller/ScreenSingleton.java
+#EH Aspect
+src/lancs/mobilemedia/core/ui/controller/CoreUiControllerHandler.aj
+
 src/lancs/mobilemedia/core/ui/datamodel/AlbumData.java
 src/lancs/mobilemedia/core/ui/datamodel/MediaAccessor.java
 src/lancs/mobilemedia/core/ui/datamodel/MediaData.java
+#EH Aspect
+src/lancs/mobilemedia/core/ui/datamodel/CoreUiDataModelHandler.aj
+
 src/lancs/mobilemedia/core/ui/screens/AddMediaToAlbum.java
 src/lancs/mobilemedia/core/ui/screens/AlbumListScreen.java
 src/lancs/mobilemedia/core/ui/screens/MediaListScreen.java
