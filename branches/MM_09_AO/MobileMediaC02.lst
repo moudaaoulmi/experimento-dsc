@@ -7,9 +7,15 @@ src/lancs/mobilemedia/core/ui/controller/AlbumController.java
 src/lancs/mobilemedia/core/ui/controller/MediaController.java
 src/lancs/mobilemedia/core/ui/controller/MediaListController.java
 src/lancs/mobilemedia/core/ui/controller/ScreenSingleton.java
+#EH Aspect
+src/lancs/mobilemedia/core/ui/controller/CoreUiControllerHandler.aj
+
 src/lancs/mobilemedia/core/ui/datamodel/AlbumData.java
 src/lancs/mobilemedia/core/ui/datamodel/MediaAccessor.java
 src/lancs/mobilemedia/core/ui/datamodel/MediaData.java
+#EH Aspect
+src/lancs/mobilemedia/core/ui/datamodel/CoreUiDataModelHandler.aj
+
 src/lancs/mobilemedia/core/ui/screens/AddMediaToAlbum.java
 src/lancs/mobilemedia/core/ui/screens/AlbumListScreen.java
 src/lancs/mobilemedia/core/ui/screens/MediaListScreen.java
@@ -41,11 +47,15 @@ src/lancs/mobilemedia/alternative/video/VideoAlbumData.java
 src/lancs/mobilemedia/alternative/video/VideoAspect.aj
 src/lancs/mobilemedia/alternative/video/VideoMediaAccessor.java
 src/lancs/mobilemedia/alternative/video/VideoNotPhotoNotMusic.aj
+#EH Aspect
+src/lancs/mobilemedia/alternative/video/AlternativeVideoHandler.aj
 
 # Music OR Video
 src/lancs/mobilemedia/alternative/musicvideo/MultiMediaAccessor.java
 src/lancs/mobilemedia/alternative/musicvideo/MusicOrVideo.aj
 src/lancs/mobilemedia/alternative/musicvideo/MultiMediaUtil.java
+#EH Aspect
+src/lancs/mobilemedia/alternative/musicvideo/AlternativeMusicVideoHandler.aj
 
 # Alternative features
 src/lancs/mobilemedia/alternative/OneAlternativeFeature.aj
@@ -53,10 +63,15 @@ src/lancs/mobilemedia/alternative/AbstractAlternativeFeature.aj
 
 # Sorting
 src/lancs/mobilemedia/optional/sorting/SortingAspect.aj
+#EH Aspect
+src/lancs/mobilemedia/optional/sorting/OptionalSortingHandler.aj
 
 # Favourites
 src/lancs/mobilemedia/optional/favourites/FavouritesAspect.aj
 src/lancs/mobilemedia/optional/favourites/PersisteFavoritesAspect.aj
+#EH Aspect
+src/lancs/mobilemedia/optional/favourites/OptionalFavouritesHandler.aj
 
 # Sorting AND Favourites
 src/lancs/mobilemedia/optional/SortingAndFavorites.aj
+
