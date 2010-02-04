@@ -12,16 +12,11 @@ import lancs.mobilemedia.core.ui.controller.MediaController;
 public privileged aspect OptionalSortingHandler {
 	
 	pointcut internalAfterShowImageHandler(): execution(void SortingAspect.internalAfterShowImage(MediaController, String));
-	
-	
-	
+		
 	declare soft: MediaNotFoundException: internalAfterShowImageHandler();
-	
 	declare soft: InvalidMediaDataException: internalAfterShowImageHandler();
-	
 	declare soft: PersistenceMechanismException: internalAfterShowImageHandler();
-	
-	
+		
 	void around(MediaController controller): internalAfterShowImageHandler() && args(controller, *) {
 		try {
 			proceed(controller);
