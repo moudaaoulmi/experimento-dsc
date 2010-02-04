@@ -43,7 +43,4 @@ public aspect OptionalPimHanlder {
 			//Contact List is not supported
 		}
 	}
-	
-	
-	
 }
