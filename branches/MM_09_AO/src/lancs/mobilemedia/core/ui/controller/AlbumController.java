@@ -112,44 +112,33 @@ public class AlbumController extends AbstractController {
         setCurrentScreen(getAlbumListScreen());
     }
 	
-	/**/
+	
 	public boolean saveDefault(){
-		try {			
-			if (getCurrentScreen() instanceof NewLabelScreen) {
-				NewLabelScreen currentScreen = (NewLabelScreen)getCurrentScreen();
-				if (currentScreen.getFormType() == NewLabelScreen.NEW_ALBUM)
-					getAlbumData().createNewAlbum(currentScreen.getLabelName());
-				else if (currentScreen.getFormType() == NewLabelScreen.LABEL_PHOTO) {
-					
-				}
-			}
-		} catch (PersistenceMechanismException e) {
-			Alert alert = null;
-			if (e.getCause() instanceof  RecordStoreFullException)
-				alert = new Alert( "Error", "The mobile database is full", null, AlertType.ERROR);
-			else
-				alert = new Alert( "Error", "The mobile database can not add a new photo album", null, AlertType.ERROR);
-			Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-			return true;
-	    } catch (InvalidAlbumNameException e) {
-	    	Alert alert = new Alert( "Error", "You have provided an invalid Photo Album name", null, AlertType.ERROR);
-			Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-			return true;
+		internalSaveDefault();
+		goToPreviousScreen();
+		return true;
+	}
+
+	private void internalSaveDefault(){ 
+		if (getCurrentScreen() instanceof NewLabelScreen) {
+			NewLabelScreen currentScreen = (NewLabelScreen)getCurrentScreen();
+			if (currentScreen.getFormType() == NewLabelScreen.NEW_ALBUM)
+				getAlbumData().createNewAlbum(currentScreen.getLabelName());
+			else if (currentScreen.getFormType() == NewLabelScreen.LABEL_PHOTO) {}
 		}
+	}
+	
+	public boolean deleteDefault(){
+		internalDeleteDefault();	
 		goToPreviousScreen();
 		return true;
 	}
 	
-	public boolean deleteDefault(){
-		try {
-			getAlbumData().deleteAlbum(ScreenSingleton.getInstance().getCurrentStoreName());	
-		} catch (PersistenceMechanismException e) {
-			Alert alert = new Alert( "Error", "The mobile database can not delete this photo album", null, AlertType.ERROR);
-	        Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-		}
-		goToPreviousScreen();
-		return true;
+	private void internalDeleteDefault(){
+		getAlbumData().deleteAlbum(ScreenSingleton.getInstance().getCurrentStoreName());
 	}
+	
+
 
     private void goToPreviousScreen() {
 	    System.out.println("<* AlbumController.goToPreviousScreen() *>");

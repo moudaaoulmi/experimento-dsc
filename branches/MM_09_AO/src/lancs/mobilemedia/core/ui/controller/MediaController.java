@@ -14,7 +14,7 @@ import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.List;
-import javax.microedition.rms.RecordStoreFullException;
+
 
 import lancs.mobilemedia.core.ui.MainUIMidlet;
 import lancs.mobilemedia.core.ui.datamodel.AlbumData;
@@ -55,42 +55,16 @@ public class MediaController extends MediaListController {
 
 		/** Case: Add photo * */
 		} else if (label.equals("Save Item")) {
-			try {
-				getAlbumData().addNewMediaToAlbum(((AddMediaToAlbum) getCurrentScreen()).getItemName(), 
-						((AddMediaToAlbum) getCurrentScreen()).getPath(), getCurrentStoreName());
-
-			} catch (InvalidMediaDataException e) {
-				Alert alert = null;
-				if (e instanceof MediaPathNotValidException)
-					alert = new Alert("Error", "The path is not valid", null, AlertType.ERROR);
-				else
-					alert = new Alert("Error", "The file format is not valid", null, AlertType.ERROR);
-				Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-				return true;
-				// alert.setTimeout(5000);
-			} catch (PersistenceMechanismException e) {
-				Alert alert = null;
-				if (e.getCause() instanceof RecordStoreFullException)
-					alert = new Alert("Error", "The mobile database is full", null, AlertType.ERROR);
-				else
-					alert = new Alert("Error", "The mobile database can not add a new photo", null, AlertType.ERROR);
-				Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-			}
+			
+			internalHandleCommand();
+			
 			return goToPreviousScreen();
 			/** Case: Delete selected Photo from recordstore * */
 		} else if (label.equals("Delete")) {
 			String selectedMediaName = getSelectedMediaName();
-			try {
-				getAlbumData().deleteMedia(getCurrentStoreName(), selectedMediaName);
-			} catch (PersistenceMechanismException e) {
-				Alert alert = new Alert("Error", "The mobile database can not delete this item", null, AlertType.ERROR);
-				Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-				return true;
-			} catch (MediaNotFoundException e) {
-				Alert alert = new Alert("Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
-				Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-				return true;
-			}
+			
+			internalHandleCommand2(selectedMediaName);
+			
 			showMediaList(getCurrentStoreName());
 			ScreenSingleton.getInstance().setCurrentScreenName(Constants.IMAGELIST_SCREEN);
 			return true;
@@ -99,42 +73,16 @@ public class MediaController extends MediaListController {
 		 *  [EF] Added in the scenario 02 */
 		} else if (label.equals("Edit Label")) {
 			String selectedImageName = getSelectedMediaName();
-			try {
-				media = getAlbumData().getMediaInfo(selectedImageName);
-				ScreenSingleton.getInstance().setCurrentScreenName(Constants.EDIT_LABEL_SCREEN);
-				NewLabelScreen formScreen = new NewLabelScreen(
-						"Edit Label Item", NewLabelScreen.LABEL_PHOTO);
-				formScreen.setCommandListener(this);
-				this.setScreen(formScreen);
-				setCurrentScreen(formScreen);
-				formScreen = null;
-			} catch (MediaNotFoundException e) {
-				Alert alert = new Alert(
-						"Error",
-						"The selected item was not found in the mobile device",
-						null, AlertType.ERROR);
-				Display.getDisplay(midlet).setCurrent(alert,
-						Display.getDisplay(midlet).getCurrent());
-			}
+			
+			internalHandleCommand3(selectedImageName);
+			
 			return true;
 			
 			/** Case: Save new Photo Label */
 		} else if (label.equals("Save")) {
 			String newLabel = this.screen.getLabelName();
 			this.getMedia().setMediaLabel(newLabel);
-			try {
-				updateMedia(media);
-			} catch (InvalidMediaDataException e) {
-				Alert alert = null;
-				if (e instanceof MediaPathNotValidException)
-					alert = new Alert("Error", "The path is not valid", null, AlertType.ERROR);
-				else
-					alert = new Alert("Error", "The image file format is not valid", null, AlertType.ERROR);
-				Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-			} catch (PersistenceMechanismException e) {
-				Alert alert = new Alert("Error", "The mobile database can not update this photo", null, AlertType.ERROR);
-				Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-			}
+			internalHandleCommand4();
 			return goToPreviousScreen();
 		
 		/** Case: Go to the Previous or Fallback screen * */
@@ -150,6 +98,29 @@ public class MediaController extends MediaListController {
 		return false;
 	}
 
+	private void internalHandleCommand() {
+		getAlbumData().addNewMediaToAlbum(((AddMediaToAlbum) getCurrentScreen()).getItemName(), 
+				((AddMediaToAlbum) getCurrentScreen()).getPath(), getCurrentStoreName());
+	}
+
+	private void internalHandleCommand2(String selectedMediaName) {
+		getAlbumData().deleteMedia(getCurrentStoreName(), selectedMediaName);
+	}
+	
+	private void internalHandleCommand3(String selectedImageName) {
+		media = getAlbumData().getMediaInfo(selectedImageName);
+		ScreenSingleton.getInstance().setCurrentScreenName(Constants.EDIT_LABEL_SCREEN);
+		NewLabelScreen formScreen = new NewLabelScreen("Edit Label Item", NewLabelScreen.LABEL_PHOTO);
+		formScreen.setCommandListener(this);
+		this.setScreen(formScreen);
+		setCurrentScreen(formScreen);
+		formScreen = null;
+	}
+	
+	private void internalHandleCommand4(){
+		updateMedia(media);
+	}
+	
 	// [EF] Scenario 02: Increase visibility (package to public) in order to give access to aspect CountViewsAspect	
 	public void updateMedia(MediaData media) throws InvalidMediaDataException, PersistenceMechanismException {
 		getAlbumData().updateMediaInfo(media, media);
