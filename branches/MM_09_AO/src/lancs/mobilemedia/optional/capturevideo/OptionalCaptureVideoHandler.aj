@@ -15,11 +15,11 @@ public aspect OptionalCaptureVideoHandler {
 	pointcut startCaptureHandler() : execution(void CaptureVideoScreen.startCapture());
 	
 	declare soft: Exception : pauseCaptureHandler() || startCaptureHandler();
-	declare soft: InvalidMediaDataException : internalHandleCommand();
-	declare soft: PersistenceMechanismException : internalHandleCommand();
+	declare soft: InvalidMediaDataException : internalHandleCommand() || internalHandleCommand2();
+	declare soft: PersistenceMechanismException : internalHandleCommand() || internalHandleCommand2();
 	declare soft: MediaNotFoundException : internalHandleCommand2();
-	declare soft: InvalidMediaDataException : internalHandleCommand2();
-	declare soft: PersistenceMechanismException : internalHandleCommand2();
+//	declare soft: InvalidMediaDataException : internalHandleCommand2();
+//	declare soft: PersistenceMechanismException : internalHandleCommand2();
 	
 	void around(): pauseCaptureHandler(){
 		try {
