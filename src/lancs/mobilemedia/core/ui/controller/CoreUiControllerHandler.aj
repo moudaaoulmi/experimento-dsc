@@ -18,25 +18,30 @@ import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 
 public privileged aspect CoreUiControllerHandler {
 
-	pointcut internalSaveDefaultHandler() : execution(void AlbumController.internalSaveDefault());
 	pointcut saveDefaultHandler() : execution(boolean AlbumController.saveDefault());
+	pointcut internalSaveDefaultHandler() : execution(void AlbumController.internalSaveDefault());
+	
 	pointcut internalDeleteDefaultHandler() : execution(void AlbumController.internalDeleteDefault());
-	pointcut internalHandleCommandHandler() : execution(void MediaController.internalHandleCommand());
+		
 	pointcut handleCommandHandler() : execution(boolean MediaController.handleCommand(Command));
+	//pointcut handleCommandHandler2() : execution(boolean MediaController.handleCommand(Command));
+	pointcut internalHandleCommandHandler() : execution(void MediaController.internalHandleCommand());
 	pointcut internalHandleCommandHandler2() : execution(void MediaController.internalHandleCommand2(String));
 	pointcut internalHandleCommandHandler3() : execution(void MediaController.internalHandleCommand3(String));
 	pointcut internalHandleCommandHandler4() : execution(void MediaController.internalHandleCommand4());
 	
-	declare soft: PersistenceMechanismException: internalSaveDefaultHandler();
+	declare soft: PersistenceMechanismException: internalSaveDefaultHandler() || internalDeleteDefaultHandler() || internalHandleCommandHandler()
+												 || internalHandleCommandHandler2() || internalHandleCommandHandler4();
 	declare soft: InvalidAlbumNameException: internalSaveDefaultHandler();
-	declare soft: PersistenceMechanismException: internalDeleteDefaultHandler();
-	declare soft: InvalidMediaDataException: internalHandleCommandHandler();
-	declare soft: PersistenceMechanismException: internalHandleCommandHandler();
-	declare soft: PersistenceMechanismException: internalHandleCommandHandler2();
-	declare soft: MediaNotFoundException: internalHandleCommandHandler2();
-	declare soft: MediaNotFoundException: internalHandleCommandHandler3();
-	declare soft: InvalidMediaDataException: internalHandleCommandHandler4();
-	declare soft: PersistenceMechanismException: internalHandleCommandHandler4();
+	declare soft: InvalidMediaDataException: internalHandleCommandHandler() || internalHandleCommandHandler4();
+	declare soft: MediaNotFoundException: internalHandleCommandHandler2() || internalHandleCommandHandler3();
+	
+	//declare soft: PersistenceMechanismException: internalDeleteDefaultHandler();
+	//declare soft: PersistenceMechanismException: internalHandleCommandHandler();
+	//declare soft: PersistenceMechanismException: internalHandleCommandHandler2();
+	//declare soft: MediaNotFoundException: internalHandleCommandHandler3();
+	//declare soft: InvalidMediaDataException: internalHandleCommandHandler4();
+	//declare soft: PersistenceMechanismException: internalHandleCommandHandler4();
 	
 	void around(AlbumController albumController): internalSaveDefaultHandler() && this(albumController){
 		try {			
@@ -122,16 +127,22 @@ public privileged aspect CoreUiControllerHandler {
 		}
 	}
 	
+	
+// Se esse for criado pode erro, pois dois around pode pegar excecoes no mesmo metodo.	
+//	boolean around(): handleCommandHandler2(){
+//		try{
+//			return proceed();
+//		}catch(SoftException e){
+//			return true;
+//		}
+//	} 
+	
 	void around(MediaController mediaController) : internalHandleCommandHandler3() && this(mediaController){
 		try {
 			proceed(mediaController);		
 		} catch (MediaNotFoundException e) {
-			Alert alert = new Alert(
-					"Error",
-					"The selected item was not found in the mobile device",
-					null, AlertType.ERROR);
-			Display.getDisplay(mediaController.midlet).setCurrent(alert,
-					Display.getDisplay(mediaController.midlet).getCurrent());
+			Alert alert = new Alert( "Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
+			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
 		}
 	}
 	
