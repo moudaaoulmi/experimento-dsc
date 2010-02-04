@@ -19,21 +19,14 @@ import lancs.mobilemedia.alternative.music.PlayMusicScreen;
 public privileged aspect AlternativeMusicHandler {
 	
 	pointcut internalAddNewMediaToAlbumHandler() : execution(* MusicAspect.internalAddNewMediaToAlbum(AlbumData, MediaController));
-	
 	pointcut internalPlayMultiMediaHandler(): execution(boolean MediaController.internalPlayMultiMedia(String, InputStream));
-	
 	pointcut playMusicScreenHandler(): execution (PlayMusicScreen.new(MainUIMidlet, InputStream, String, AbstractController));
-	
 	pointcut startPlayHandler(): execution(void PlayMusicScreen.startPlay());
-	
 	pointcut pausePlayHandler(): execution(void PlayMusicScreen.pausePlay());
 	
 	declare soft: InvalidMediaDataException: internalAddNewMediaToAlbumHandler();
-	
 	declare soft: PersistenceMechanismException: internalAddNewMediaToAlbumHandler() || internalPlayMultiMediaHandler();
-	
 	declare soft: MediaNotFoundException: internalAddNewMediaToAlbumHandler() || internalPlayMultiMediaHandler();
-	
 	declare soft: Exception: playMusicScreenHandler() || startPlayHandler() || pausePlayHandler();
 	
 	void around(MediaController controller): internalAddNewMediaToAlbumHandler() && args(*,controller) {
