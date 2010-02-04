@@ -338,24 +338,21 @@ public abstract class MediaAccessor {
 		// remove any existing album stores...
 		if (albumNames != null) {
 			for (int i = 0; i < albumNames.length; i++) {
-				try {
-					// Delete all existing stores containing Image objects as
-					// well as the associated ImageInfo objects
-					// Add the prefixes labels to the info store
-					storeName = album_label + albumNames[i];
-					infoStoreName = info_label + albumNames[i];
-					RecordStore.deleteRecordStore(storeName);
-					RecordStore.deleteRecordStore(infoStoreName);
-				} catch (RecordStoreException e) {
-					System.out.println("No record store named " + storeName + " to delete.");
-					System.out.println("...or...No record store named " + infoStoreName + " to delete.");
-					System.out.println("Ignoring Exception: " + e);
-					// ignore any errors...
-				}
+				internalRemoveRecords(storeName, infoStoreName, i);
 			}
 		} else {
 			// Do nothing for now
 			System.out.println("ImageAccessor::resetVideoRecordStore: albumNames array was null. Nothing to delete.");
 		}
+	}
+	
+	private void internalRemoveRecords(String storeName, String infoStoreName, int i){
+		// Delete all existing stores containing Image objects as
+		// well as the associated ImageInfo objects
+		// Add the prefixes labels to the info store
+		storeName = album_label + albumNames[i];
+		infoStoreName = info_label + albumNames[i];
+		RecordStore.deleteRecordStore(storeName);
+		RecordStore.deleteRecordStore(infoStoreName);
 	}
 }
