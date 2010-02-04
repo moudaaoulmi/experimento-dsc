@@ -82,7 +82,9 @@ public class MediaController extends MediaListController {
 		} else if (label.equals("Save")) {
 			String newLabel = this.screen.getLabelName();
 			this.getMedia().setMediaLabel(newLabel);
+			
 			internalHandleCommand4();
+			
 			return goToPreviousScreen();
 		
 		/** Case: Go to the Previous or Fallback screen * */
