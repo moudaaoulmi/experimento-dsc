@@ -65,29 +65,8 @@ public class PhotoViewController extends AbstractController {
 		
 		/** Case: Save a copy in a new album */
 		else if (label.equals("Save Item")) {
-			try {
-				String photoname = ((AddMediaToAlbum) getCurrentScreen()).getItemName();
-				String albumname = ((AddMediaToAlbum) getCurrentScreen()).getPath();
-				MediaData imageData = processImageData(photoname, albumname);
-				if (imageData != null)
-					this.addImageData(imageData, albumname);
-			} catch (InvalidMediaDataException e) {
-				Alert alert = null;
-				if (e instanceof MediaPathNotValidException)
-					alert = new Alert("Error", "The path is not valid", null, AlertType.ERROR);
-				else
-					alert = new Alert("Error", "The image file format is not valid", null, AlertType.ERROR);
-				Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-				return true;
-				// alert.setTimeout(5000);
-			} catch (PersistenceMechanismException e) {
-				Alert alert = null;
-				if (e.getCause() instanceof RecordStoreFullException)
-					alert = new Alert("Error", "The mobile database is full", null, AlertType.ERROR);
-				else
-					alert = new Alert("Error", "The mobile database can not add a new photo", null, AlertType.ERROR);
-				Display.getDisplay(midlet).setCurrent(alert, Display.getDisplay(midlet).getCurrent());
-			}
+			internalHandleCommand();
+	
 			((AlbumListScreen) getAlbumListScreen()).repaintListAlbum(getAlbumData().getAlbumNames());
 			setCurrentScreen( getAlbumListScreen() );
 			ScreenSingleton.getInstance().setCurrentScreenName(Constants.ALBUMLIST_SCREEN);
@@ -103,6 +82,14 @@ public class PhotoViewController extends AbstractController {
 		return false;
 	}
 
+	private void internalHandleCommand(){
+		String photoname = ((AddMediaToAlbum) getCurrentScreen()).getItemName();
+		String albumname = ((AddMediaToAlbum) getCurrentScreen()).getPath();
+		MediaData imageData = processImageData(photoname, albumname);
+		if (imageData != null)
+			this.addImageData(imageData, albumname);
+	}
+
 	/* [NC] Added as a result of a refactoring in scenario 06 */	
 	private void processCopy(AddMediaToAlbum copyPhotoToAlbum) {
 		copyPhotoToAlbum.setItemName(mediaName);
@@ -113,11 +100,11 @@ public class PhotoViewController extends AbstractController {
 	/* [NC] Added as a result of a refactoring in scenario 06 */	
 	private MediaData processImageData(String photoName, String albumname) throws InvalidMediaDataException, PersistenceMechanismException {
 		MediaData imageData = null;
-		try {
-			imageData = getAlbumData().getMediaInfo(mediaName);
-		} catch (MediaNotFoundException e) {
-			e.printStackTrace();
-		}
+		return internalProcessImageData(imageData);
+	}
+
+	private MediaData internalProcessImageData(MediaData imageData){
+		imageData = getAlbumData().getMediaInfo(mediaName);
 		return imageData;
 	}
 

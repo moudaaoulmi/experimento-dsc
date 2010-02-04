@@ -16,12 +16,9 @@ public class PimControllerThread implements Runnable {
 	}
 	
 	public void run(){	
-		try{
-			new PimSeed();
-			controller.displayPim();
-		}catch(Exception e){
-			//TO DO
-		}
+		new PimSeed();
+		controller.displayPim();
+
 	}
 
 }
