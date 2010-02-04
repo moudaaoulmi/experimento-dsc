@@ -9,11 +9,9 @@ import lancs.mobilemedia.alternative.musicvideo.MultiMediaUtil;
 public privileged aspect AlternativeMusicVideoHandler {
 	
 	pointcut internalResetRecordStoreHandler(): execution(void MultiMediaAccessor.internalResetRecordStore(MediaData));
-	
 	pointcut getBytesFromMediaInfoHandler(): execution(String MultiMediaUtil.getBytesFromMediaInfo(MediaData));
 	
 	declare soft: MediaNotFoundException: internalResetRecordStoreHandler();
-	
 	declare soft: Exception: getBytesFromMediaInfoHandler();
 
 	void around(): internalResetRecordStoreHandler() {
