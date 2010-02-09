@@ -14,15 +14,13 @@ public privileged aspect OptionalFavouritesHandler {
 	pointcut internalAroundHandlerCommandActionHandler(): execution(void internalAroundHandlerCommandAction(MediaController, String));
 	
 	declare soft: InvalidMediaDataException: internalAroundHandlerCommandActionHandler();
-	
 	declare soft: PersistenceMechanismException: internalAroundHandlerCommandActionHandler();
-	
 	declare soft: MediaNotFoundException: internalAroundHandlerCommandActionHandler();
 	
 	void around(MediaController controller): internalAroundHandlerCommandActionHandler() && args(controller, *) {
 		try {
 			proceed(controller);
-		// TODO Nelio, I add these handlers here just to remove errros. Please, check them.
+		// TODO Nelio, I add these handlers here just to remove erros. Please, check them.
 		} catch (InvalidMediaDataException e) { 
 		} catch (PersistenceMechanismException e) {			
 		} catch (MediaNotFoundException e) {

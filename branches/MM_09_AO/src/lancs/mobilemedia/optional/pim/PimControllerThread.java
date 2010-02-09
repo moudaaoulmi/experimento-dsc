@@ -18,7 +18,6 @@ public class PimControllerThread implements Runnable {
 	public void run(){	
 		new PimSeed();
 		controller.displayPim();
-
 	}
 
 }
