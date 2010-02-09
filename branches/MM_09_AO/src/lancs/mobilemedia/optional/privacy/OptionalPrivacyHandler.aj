@@ -24,11 +24,16 @@ public privileged aspect OptionalPrivacyHandler {
 	
 	pointcut internalAroundHandleCommandAction4Handler(): execution(void PrivacyAspect.internalAroundHandleCommandAction4(AlbumController));
 	
+	pointcut internalAroundSaveActionHandler(): execution(boolean internalAroundSaveAction(AlbumController));
+	
 	declare soft: RecordStoreException: addPasswordHandler() || internalGetPasswordHandler();
 	
 	declare soft: PersistenceMechanismException: internalAroundHandleCommandAction2Handler() 
 				                                 || internalAroundHandleCommandAction3Handler()
-				                                 || internalAroundHandleCommandAction4Handler();
+				                                 || internalAroundHandleCommandAction4Handler()
+				                                 || internalAroundSaveActionHandler();
+	
+	declare soft: InvalidAlbumNameException: internalAroundSaveActionHandler();
 	
 	declare soft: InvalidAlbumNameException: internalAroundHandleCommandAction2Handler();
 	
@@ -81,6 +86,24 @@ public privileged aspect OptionalPrivacyHandler {
 		} catch (PersistenceMechanismException e) {
 			Alert alert = new Alert( "Error", "The mobile database can not delete this photo album", null, AlertType.ERROR);
 	        Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
+		}
+	}
+	
+	boolean around(AlbumController controller) : internalAroundSaveActionHandler() && args(controller) {
+		try {
+			return proceed(controller);
+		} catch (PersistenceMechanismException e) {
+			Alert alert = null;
+			if (e.getCause() instanceof  RecordStoreFullException)
+				alert = new Alert( "Error", "The mobile database is full", null, AlertType.ERROR);
+			else
+				alert = new Alert( "Error", "The mobile database can not add a new photo album", null, AlertType.ERROR);
+			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
+			return true;
+	    } catch (InvalidAlbumNameException e) {
+	    	Alert alert = new Alert( "Error", "You have provided an invalid Photo Album name", null, AlertType.ERROR);
+			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
+			return true;
 		}
 	}
 }
