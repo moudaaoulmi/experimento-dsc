@@ -70,29 +70,13 @@ public privileged aspect AlternativeMusicHandler {
 		}
 	}
 	
-	Object around() : playMusicScreenHandler() {
+	Object around() : playMusicScreenHandler() || startPlayHandler() || pausePlayHandler(){
 		try{
 			return proceed();
 		} catch(Exception e) {
 			System.err.println(e);
 		}
 		return null;
-	}
-	
-	void around() : startPlayHandler() {
-		try {
-			proceed();
-		} catch(Exception e) {
-			System.err.println(e);
-		}
-	}
-	
-	void around() : pausePlayHandler() {
-		try {
-			proceed();
-		} catch(Exception e) {
-			System.err.println(e);
-		}
 	}
 
 }
