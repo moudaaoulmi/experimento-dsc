@@ -176,100 +176,114 @@ public privileged aspect PrivacyAspect {
 		return false;
 	}
 		
-	    pointcut saveAction(AlbumController controller):
-			execution(public boolean AlbumController.saveDefault()) && this(controller);
-		
-		boolean around(AlbumController controller): saveAction(controller){
-				
-			if (internalAroundSaveAction(controller)) {
-				return true;
-			}
-			
-			controller.goToPreviousScreen();
-			return true;			
-		}
+	pointcut saveAction(AlbumController controller): execution(public boolean AlbumController.saveDefault()) && this(controller);
 
-		private boolean internalAroundSaveAction(AlbumController controller) {
-			controller.password = (PasswordScreen) controller.getCurrentScreen();
-			controller.getAlbumData().createNewAlbum(controller.albumName.getLabelName());
-			controller.getAlbumData().addPassword(controller.albumName.getLabelName(), controller.password.getPassword());
-			return false;
+	boolean around(AlbumController controller): saveAction(controller){
+		if (internalAroundSaveAction(controller)) {
+			return true;
 		}
-		
-		pointcut deleteAction(AlbumController controller):
+		controller.goToPreviousScreen();
+		return true;
+	}
+
+	private boolean internalAroundSaveAction(AlbumController controller) {
+		controller.password = (PasswordScreen) controller.getCurrentScreen();
+		controller.getAlbumData().createNewAlbum(
+				controller.albumName.getLabelName());
+		controller.getAlbumData().addPassword(
+				controller.albumName.getLabelName(),
+				controller.password.getPassword());
+		return false;
+	}
+
+	pointcut deleteAction(AlbumController controller):
 			execution(public boolean AlbumController.deleteDefault()) && this(controller);
-		
-		boolean around(AlbumController controller): deleteAction(controller){
-			String passwd;
-			controller.albumtodelete = ScreenSingleton.getInstance().getCurrentStoreName();
-			passwd = controller.getAlbumData().getPassword(controller.albumtodelete);
-			if(passwd!=null){
-				PasswordScreen pwd = new PasswordScreen("Password",1);
-				pwd.setCommandListener(controller);
-				controller.setCurrentScreen(pwd);
-				pwd = null;
-			}else{
-				internalAroundHandleCommandAction4(controller);
-				
-				controller.goToPreviousScreen();	
-			}				
-			return true;	
+
+	boolean around(AlbumController controller): deleteAction(controller){
+		String passwd;
+		controller.albumtodelete = ScreenSingleton.getInstance()
+				.getCurrentStoreName();
+		passwd = controller.getAlbumData()
+				.getPassword(controller.albumtodelete);
+		if (passwd != null) {
+			PasswordScreen pwd = new PasswordScreen("Password", 1);
+			pwd.setCommandListener(controller);
+			controller.setCurrentScreen(pwd);
+			pwd = null;
+		} else {
+			internalAroundHandleCommandAction4(controller);
+
+			controller.goToPreviousScreen();
 		}
-		
-		private void internalAroundHandleCommandAction4(AlbumController controller) {
-			controller.getAlbumData().deleteAlbum(ScreenSingleton.getInstance().getCurrentStoreName());
-		}
-		
-		/******************* MediaListController **************************/
-		
-		pointcut handleCommandMediaAction(MediaListController controller, Command c):
+		return true;
+	}
+
+	private void internalAroundHandleCommandAction4(AlbumController controller) {
+		controller.getAlbumData().deleteAlbum(
+				ScreenSingleton.getInstance().getCurrentStoreName());
+	}
+
+	/******************* MediaListController **************************/
+
+	pointcut handleCommandMediaAction(MediaListController controller, Command c):
 			execution(public boolean MediaListController.handleCommand(Command)) && args(c) && this(controller);
 
-		boolean around(MediaListController controller, Command c): handleCommandMediaAction(controller, c) {
-			boolean handled = proceed(controller, c);
-			if (handled)
-				return true;
-			String label = c.getLabel();
-			System.out.println("<* PrivacyAspect.around handleCommandAction *> " + label);
-			
-			if(label.equals("Confirm")){
-				PasswordScreen password = (PasswordScreen) controller.getCurrentScreen();
-				controller.passwd =controller.getAlbumData().getPassword(controller.getCurrentStoreName());
-				if(password.getPassword().equals(controller.passwd)){
-					controller.showMediaList(controller.getCurrentStoreName());//, false, false);
-					ScreenSingleton.getInstance().setCurrentScreenName( Constants.IMAGELIST_SCREEN);
-				}else{
-					Alert alert = new Alert( "Error", "Invalid Password", null, AlertType.ERROR);
-					Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-				}
-				return true;
+	boolean around(MediaListController controller, Command c): handleCommandMediaAction(controller, c) {
+		boolean handled = proceed(controller, c);
+		if (handled)
+			return true;
+		String label = c.getLabel();
+		System.out.println("<* PrivacyAspect.around handleCommandAction *> "
+				+ label);
+
+		if (label.equals("Confirm")) {
+			PasswordScreen password = (PasswordScreen) controller
+					.getCurrentScreen();
+			controller.passwd = controller.getAlbumData().getPassword(
+					controller.getCurrentStoreName());
+			if (password.getPassword().equals(controller.passwd)) {
+				controller.showMediaList(controller.getCurrentStoreName());// ,
+																			// false,
+																			// false);
+				ScreenSingleton.getInstance().setCurrentScreenName(
+						Constants.IMAGELIST_SCREEN);
+			} else {
+				Alert alert = new Alert("Error", "Invalid Password", null,
+						AlertType.ERROR);
+				Display.getDisplay(controller.midlet).setCurrent(alert,
+						Display.getDisplay(controller.midlet).getCurrent());
 			}
-			return false;
+			return true;
 		}
-		
-		
-		pointcut selectAction(MediaListController controller):
+		return false;
+	}
+
+	pointcut selectAction(MediaListController controller):
 			execution(public boolean MediaListController.selectDefault()) && this(controller);
-		
-		boolean around(MediaListController controller): selectAction(controller){
-			
-			List down = (List) Display.getDisplay(controller.midlet).getCurrent();
-			ScreenSingleton.getInstance().setCurrentStoreName(down.getString(down.getSelectedIndex()));
-			
-			controller.passwd = ScreenSingleton.getInstance().getCurrentStoreName();
-			controller.ps2 = controller.getAlbumData().getPassword(controller.passwd);
-			
-			if(controller.ps2==null){
-				controller.showMediaList(ScreenSingleton.getInstance().getCurrentStoreName());//, false, false);
-				ScreenSingleton.getInstance().setCurrentScreenName( Constants.IMAGELIST_SCREEN);
-			}else{
-				PasswordScreen pwd = new PasswordScreen("Password",1);
-				pwd.setCommandListener(controller);
-				controller.setCurrentScreen(pwd);
-				pwd = null;
-				return true;
-			}
-			
-			return true;	
+
+	boolean around(MediaListController controller): selectAction(controller){
+
+		List down = (List) Display.getDisplay(controller.midlet).getCurrent();
+		ScreenSingleton.getInstance().setCurrentStoreName(
+				down.getString(down.getSelectedIndex()));
+
+		controller.passwd = ScreenSingleton.getInstance().getCurrentStoreName();
+		controller.ps2 = controller.getAlbumData().getPassword(
+				controller.passwd);
+
+		if (controller.ps2 == null) {
+			controller.showMediaList(ScreenSingleton.getInstance()
+					.getCurrentStoreName());// , false, false);
+			ScreenSingleton.getInstance().setCurrentScreenName(
+					Constants.IMAGELIST_SCREEN);
+		} else {
+			PasswordScreen pwd = new PasswordScreen("Password", 1);
+			pwd.setCommandListener(controller);
+			controller.setCurrentScreen(pwd);
+			pwd = null;
+			return true;
 		}
+
+		return true;
+	}
 }

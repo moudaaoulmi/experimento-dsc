@@ -69,9 +69,7 @@ public class PimController extends AbstractController{
 		if(contacts==null){
 			System.out.println("Contact List is empty");
 		}
-		
 		nNameList = new List("List of Contacts",List.IMPLICIT);
-				
 		while(contacts.hasMoreElements()){
 			Contact tCont = (Contact) contacts.nextElement();
 			String [] nameValues = tCont.getStringArray(Contact.NAME, 0);
@@ -79,14 +77,10 @@ public class PimController extends AbstractController{
 			String lastName = nameValues[Contact.NAME_FAMILY];
 			nNameList.append(lastName + ", " + firstName, null);
 		}
-		
 		nNameList.addCommand(add);
 		nNameList.addCommand(noadd);
-		
 		nNameList.setCommandListener(this);
-		
 		Display.getDisplay(midlet).setCurrent(nNameList);
-		
 	}
 
 	private void internalPimInst() {
