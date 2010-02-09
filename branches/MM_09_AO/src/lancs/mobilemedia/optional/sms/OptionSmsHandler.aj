@@ -11,25 +11,16 @@ import lancs.mobilemedia.optional.sms.SmsReceiverThread;
 public privileged aspect OptionSmsHandler {
 	
 	pointcut internalSendImageHandler(): execution(MessageConnection SmsMessaging.internalSendImage(byte[], String, MessageConnection));
-	
 	pointcut sendImageHandler(): execution(boolean SmsMessaging.sendImage(byte[]));
-	
 	pointcut internalReceiveMessageHandler(): execution(MessageConnection internalReceiveImage(String));
-	
 	pointcut internalCleanUpConnectionsHandler(): execution(void SmsMessaging.internalCleanUpConnections(MessageConnection));
-	
 	pointcut internalCleanUpReceiverConnectionsHandler(): execution(void SmsMessaging.internalCleanUpReceiverConnections());
-	
 	pointcut internalRunHandler(): execution(void SmsReceiverThread.internalRun(SmsMessaging));
-	
 	pointcut internalRun2Handler(): execution(byte[] SmsReceiverThread.internalRun2(SmsMessaging));
 	
-	
 	declare soft: Throwable: internalSendImageHandler();
-	
 	declare soft: IOException: internalReceiveMessageHandler() || internalCleanUpConnectionsHandler() 
 							   || internalCleanUpReceiverConnectionsHandler() || internalRun2Handler();
-	
 	declare soft: InterruptedIOException: internalRun2Handler();
 	
 	MessageConnection around(): internalSendImageHandler() {
@@ -60,7 +51,7 @@ public privileged aspect OptionSmsHandler {
 		return null;
 	}
 	
-	void around(): internalCleanUpConnectionsHandler() {
+	void around(): internalCleanUpConnectionsHandler() || internalCleanUpReceiverConnectionsHandler(){
 		try {
 			proceed();
 		} catch (IOException ioe) {
@@ -69,14 +60,15 @@ public privileged aspect OptionSmsHandler {
 		}
 	}
 	
-	void around(): internalCleanUpReceiverConnectionsHandler() {
-		try {
-			proceed();
-		} catch (IOException ioe) {
-			System.out.println("Closing connection caught: ");
-			ioe.printStackTrace();
-		}
-	}
+// #Reuse# above	
+//	void around(): internalCleanUpReceiverConnectionsHandler() {
+//		try {
+//			proceed();
+//		} catch (IOException ioe) {
+//			System.out.println("Closing connection caught: ");
+//			ioe.printStackTrace();
+//		}
+//	}
 	
 	byte[] around(SmsReceiverThread receiver, SmsMessaging smsMessenger) : internalRun2Handler() && this(receiver) && args(smsMessenger) {
 		try {
