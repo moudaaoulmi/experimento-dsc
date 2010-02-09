@@ -34,20 +34,12 @@ public privileged aspect AlternativeVideoHandler {
 	declare soft: RecordStoreException: addVideoDataHandler();
 	
 	
-	void around(): startVideoHandler() {
+	void around(): startVideoHandler() || stopVideo(){
 		try{
 			proceed();
 		} catch(Exception e) {
 	    	e.printStackTrace();
 	    } 
-	}
-	
-	void around(): stopVideo() {
-		try {
-			proceed();
-		} catch(Exception e) {
-			e.printStackTrace(); 
-		}
 	}
 	
 	void around(): internalPlayVideScreenHandler() {

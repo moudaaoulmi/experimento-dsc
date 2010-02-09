@@ -24,24 +24,15 @@ public privileged aspect CoreUiControllerHandler {
 	pointcut internalDeleteDefaultHandler() : execution(void AlbumController.internalDeleteDefault());
 		
 	pointcut handleCommandHandler() : execution(boolean MediaController.handleCommand(Command));
-	//pointcut handleCommandHandler2() : execution(boolean MediaController.handleCommand(Command));
 	pointcut internalHandleCommandHandler() : execution(void MediaController.internalHandleCommand());
 	pointcut internalHandleCommandHandler2() : execution(void MediaController.internalHandleCommand2(String));
 	pointcut internalHandleCommandHandler3() : execution(void MediaController.internalHandleCommand3(String));
 	pointcut internalHandleCommandHandler4() : execution(void MediaController.internalHandleCommand4());
 	
-	declare soft: PersistenceMechanismException: internalSaveDefaultHandler() || internalDeleteDefaultHandler() || internalHandleCommandHandler()
-												 || internalHandleCommandHandler2() || internalHandleCommandHandler4();
+	declare soft: PersistenceMechanismException: internalSaveDefaultHandler() || internalDeleteDefaultHandler() || internalHandleCommandHandler()												 || internalHandleCommandHandler2() || internalHandleCommandHandler4();
 	declare soft: InvalidAlbumNameException: internalSaveDefaultHandler();
 	declare soft: InvalidMediaDataException: internalHandleCommandHandler() || internalHandleCommandHandler4();
 	declare soft: MediaNotFoundException: internalHandleCommandHandler2() || internalHandleCommandHandler3();
-	
-	//declare soft: PersistenceMechanismException: internalDeleteDefaultHandler();
-	//declare soft: PersistenceMechanismException: internalHandleCommandHandler();
-	//declare soft: PersistenceMechanismException: internalHandleCommandHandler2();
-	//declare soft: MediaNotFoundException: internalHandleCommandHandler3();
-	//declare soft: InvalidMediaDataException: internalHandleCommandHandler4();
-	//declare soft: PersistenceMechanismException: internalHandleCommandHandler4();
 	
 	void around(AlbumController albumController): internalSaveDefaultHandler() && this(albumController){
 		try {			
@@ -63,7 +54,7 @@ public privileged aspect CoreUiControllerHandler {
 		}
 	}
 	
-	boolean around(): saveDefaultHandler(){
+	boolean around(): saveDefaultHandler() || handleCommandHandler(){
 		try{
 			return proceed();
 		}catch(SoftException e){
@@ -102,14 +93,6 @@ public privileged aspect CoreUiControllerHandler {
 			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
 		}
 	}
-	
-	boolean around(): handleCommandHandler(){
-		try{
-			return proceed();
-		}catch(SoftException e){
-			return true;
-		}
-	} 
 	
 	void around(MediaController mediaController): internalHandleCommandHandler2() && this(mediaController){
 		try {
