@@ -180,26 +180,20 @@ public privileged aspect PrivacyAspect {
 			execution(public boolean AlbumController.saveDefault()) && this(controller);
 		
 		boolean around(AlbumController controller): saveAction(controller){
-						
-			try {								 
-						controller.password = (PasswordScreen) controller.getCurrentScreen();
-						controller.getAlbumData().createNewAlbum(controller.albumName.getLabelName());
-						controller.getAlbumData().addPassword(controller.albumName.getLabelName(), controller.password.getPassword());
-			}catch (PersistenceMechanismException e) {
-				Alert alert = null;
-				if (e.getCause() instanceof  RecordStoreFullException)
-					alert = new Alert( "Error", "The mobile database is full", null, AlertType.ERROR);
-				else
-					alert = new Alert( "Error", "The mobile database can not add a new photo album", null, AlertType.ERROR);
-				Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-				return true;
-		    } catch (InvalidAlbumNameException e) {
-		    	Alert alert = new Alert( "Error", "You have provided an invalid Photo Album name", null, AlertType.ERROR);
-				Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
+				
+			if (internalAroundSaveAction(controller)) {
 				return true;
 			}
+			
 			controller.goToPreviousScreen();
 			return true;			
+		}
+
+		private boolean internalAroundSaveAction(AlbumController controller) {
+			controller.password = (PasswordScreen) controller.getCurrentScreen();
+			controller.getAlbumData().createNewAlbum(controller.albumName.getLabelName());
+			controller.getAlbumData().addPassword(controller.albumName.getLabelName(), controller.password.getPassword());
+			return false;
 		}
 		
 		pointcut deleteAction(AlbumController controller):
