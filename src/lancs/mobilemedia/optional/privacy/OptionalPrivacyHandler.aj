@@ -29,7 +29,8 @@ public privileged aspect OptionalPrivacyHandler {
 	declare soft: InvalidAlbumNameException:   internalAroundSaveActionHandler() 
 											|| internalAroundHandleCommandAction2Handler();
 	
-	void around(): addPasswordHandler() {
+	// Reuse below
+	/*void around(): addPasswordHandler() {
 		try {
 			proceed();
 		} catch(RecordStoreException e){
@@ -41,6 +42,15 @@ public privileged aspect OptionalPrivacyHandler {
 		try {
 			return proceed();
 		} catch(RecordStoreException e){}
+		return null;
+	}*/
+	
+	Object around(): addPasswordHandler() || internalGetPasswordHandler(){
+		try {
+			return proceed();
+		} catch(RecordStoreException e){
+			
+		}
 		return null;
 	}
 	
