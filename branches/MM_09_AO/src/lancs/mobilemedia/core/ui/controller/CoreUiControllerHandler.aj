@@ -62,7 +62,7 @@ public privileged aspect CoreUiControllerHandler {
 		}
 	}
 	
-	void around(AlbumController albumController) : internalDeleteDefaultHandler()  && this(albumController){ 
+	void around(AlbumController albumController) : internalDeleteDefaultHandler() && this(albumController){ 
 		try {
 			proceed(albumController);	
 		} catch (PersistenceMechanismException e) {
