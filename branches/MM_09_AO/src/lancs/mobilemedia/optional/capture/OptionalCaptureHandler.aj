@@ -13,13 +13,13 @@ public privileged aspect OptionalCaptureHandler {
 	declare soft: Exception : internalCaptureVideoScreenHandler() || internalCaptureVideoScreenHandler2() || internalinternalSetVisibleVideoHandler(); 
 	declare soft: MediaException : internalCaptureVideoScreenHandler2();
 
-	void around() : internalCaptureVideoScreenHandler() || internalinternalSetVisibleVideoHandler(){
+	void around() : internalCaptureVideoScreenHandler() || internalinternalSetVisibleVideoHandler() || internalCaptureVideoScreenHandler2() {
 		try {
 			proceed();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	} 
+	}
 	
 	void around(CaptureVideoScreen captureVideoScreen): internalCaptureVideoScreenHandler2() && this(captureVideoScreen){
 		try {
@@ -31,8 +31,6 @@ public privileged aspect OptionalCaptureHandler {
 			} catch (Exception e) {
 			}
 			captureVideoScreen.repaint();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 		
