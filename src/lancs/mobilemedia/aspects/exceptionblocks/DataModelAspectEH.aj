@@ -21,9 +21,18 @@ public aspect DataModelAspectEH {
 	
 	declare soft: RecordStoreException : addMediaData();
 	
-	after()throwing(RecordStoreException e) throws  PersistenceMechanismException: addMediaData(){
-		throw new  PersistenceMechanismException();
+	void around() throws PersistenceMechanismException: addMediaData(){
+		try {
+			proceed();
+		} catch (RecordStoreException e) {
+			throw new  PersistenceMechanismException();
+		}
 	}
+	
+	// Refactored above
+	/*after()throwing(RecordStoreException e) throws  PersistenceMechanismException: addMediaData(){
+		throw new  PersistenceMechanismException();
+	}*/
 	
 	//public String[] ImageMediaAccessor.loadImageDataFromRMS(String) 1- block - Scenario 3
 	pointcut loadMediaDataFromRMS(): 
@@ -31,32 +40,63 @@ public aspect DataModelAspectEH {
 	
 	declare soft: RecordStoreException : loadMediaDataFromRMS();
 	
-	after() throwing(RecordStoreException e) throws  PersistenceMechanismException: loadMediaDataFromRMS(){
-		throw new PersistenceMechanismException(e);
+	MediaData[] around() throws  PersistenceMechanismException: loadMediaDataFromRMS(){
+		try {
+			return proceed();
+		} catch(RecordStoreException e) {
+			throw new PersistenceMechanismException(e);
+		}
 	}
+	
+	// refactored above
+	/*after() throwing(RecordStoreException e) throws  PersistenceMechanismException: loadMediaDataFromRMS(){
+		throw new PersistenceMechanismException(e);
+	}*/
 
 	//public boolean MediaAccessor.updateMediaInfo(MediaData, MediaData) 1- block - Scenario 3
 	pointcut updateMediaInfo(): execution(public boolean MediaAccessor.updateMediaInfo(MediaData, MediaData));
 		
 	declare soft: RecordStoreException : updateMediaInfo(); 
 	
-	after() throwing(Exception e) throws  PersistenceMechanismException: updateMediaInfo(){
-		throw new PersistenceMechanismException(e);
+	boolean around() throws  PersistenceMechanismException: updateMediaInfo(){
+		try {
+			return proceed();
+		} catch(Exception e) {
+			throw new PersistenceMechanismException(e);
+		}
 	}
+	
+	// refactored above
+	/*after() throwing(Exception e) throws  PersistenceMechanismException: updateMediaInfo(){
+		throw new PersistenceMechanismException(e);
+	}*/
 
 	//public boolean ImageMediaAccessor.updateImageInfo(ImageData oldData, ImageData newData) block 2 - Scenario 6
 	pointcut updateMediaInfoAround(): 
 		 call(public void RecordStore.closeRecordStore(..))&& (withincode(public void MediaAccessor.updateMediaRecord(MediaData, MediaData)));
 	
+	void around() : updateMediaInfoAround() {
+		try {
+			proceed();
+		} catch(RecordStoreNotOpenException e) {
+			//No problem if the RecordStore is not Open
+			
+			//catch (RecordStoreException e) {
+			//	throw new PersistenceMechanismException(e);
+			//}
+		}
+	}
+	
+	// Refactored above
 	//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$Verify why not $$$$$$$$$$$$$$$$$$$$$$$$
 	//void around() throws PersistenceMechanismException: updateImageInfoAround(){
-	after() throwing(RecordStoreNotOpenException e) : updateMediaInfoAround() {
+	/*after() throwing(RecordStoreNotOpenException e) : updateMediaInfoAround() {
 		//No problem if the RecordStore is not Open
 		
 		//catch (RecordStoreException e) {
 		//	throw new PersistenceMechanismException(e);
 		//}
-	}
+	}*/
 	
 	//public byte[] ImageMediaAccessor.loadImageBytesFromRMS(String, String,int) 1- block - Scenario 3
 	pointcut loadMediaBytesFromRMS(): 
@@ -64,9 +104,18 @@ public aspect DataModelAspectEH {
 	
 	declare soft: RecordStoreException : loadMediaBytesFromRMS();
 	
-	after() throwing(RecordStoreException e) throws PersistenceMechanismException: loadMediaBytesFromRMS() {
-		throw new PersistenceMechanismException(e);
+	byte[] around() throws PersistenceMechanismException: loadMediaBytesFromRMS() {
+		try {
+			return proceed();
+		} catch(RecordStoreException e) {
+			throw new PersistenceMechanismException(e);
+		}
 	}
+	
+	//refactored above
+	/*after() throwing(RecordStoreException e) throws PersistenceMechanismException: loadMediaBytesFromRMS() {
+		throw new PersistenceMechanismException(e);
+	}*/
 	
 	//public boolean ImageMediaAccessor.deleteSingleImageFromRMS(String, String) 1- block - Scenario 3
 	pointcut deleteSingleMediaFromRMS(): 
@@ -74,9 +123,18 @@ public aspect DataModelAspectEH {
 	
 	declare soft: RecordStoreException : deleteSingleMediaFromRMS();
 	
-	after() throwing(RecordStoreException e) throws  PersistenceMechanismException: deleteSingleMediaFromRMS(){
-		throw new PersistenceMechanismException(e);
+	boolean around() throws  PersistenceMechanismException: deleteSingleMediaFromRMS(){
+		try {
+			return proceed();
+		} catch(RecordStoreException e) {
+			throw new PersistenceMechanismException(e);
+		}
 	}
+	
+	// Refactored above
+	/*after() throwing(RecordStoreException e) throws  PersistenceMechanismException: deleteSingleMediaFromRMS(){
+		throw new PersistenceMechanismException(e);
+	}*/
 	
 	//public void ImageMediaAccessor.createNewPhotoAlbum(String) block 1 - Scenario 4
 	pointcut createNewAlbum(): 
@@ -94,9 +152,18 @@ public aspect DataModelAspectEH {
 	
 	declare soft: RecordStoreException : deleteAlbum();
 	
-	after()throwing(RecordStoreException e) throws PersistenceMechanismException: deleteAlbum(){
-		throw new PersistenceMechanismException(e);
+	void around() throws PersistenceMechanismException: deleteAlbum(){
+		try {
+			proceed();
+		} catch(RecordStoreException e) {
+			throw new PersistenceMechanismException(e);
+		}
 	}
+	
+	// Refactored above
+	/*after()throwing(RecordStoreException e) throws PersistenceMechanismException: deleteAlbum(){
+		throw new PersistenceMechanismException(e);
+	}*/
 	
 	//public String[] AlbumData.getAlbumNames() block 1 - Scenario 5
 	pointcut getAlbumNames(): 
@@ -122,12 +189,25 @@ public aspect DataModelAspectEH {
 	declare soft: PersistenceMechanismException : getMedias();
 	declare soft: InvalidMediaDataException : getMedias();
 	
-	after()throwing(Exception e) throws  UnavailablePhotoAlbumException: getMedias(){
+	MediaData[] around() throws  UnavailablePhotoAlbumException: getMedias(){
+		try {
+			return proceed();
+		} catch(Exception e) {
+			if (e instanceof PersistenceMechanismException)
+				throw new UnavailablePhotoAlbumException(e);
+			else if (e instanceof InvalidMediaDataException)
+				throw new UnavailablePhotoAlbumException(e);
+		}
+		return null;
+	}
+	
+	// Refactored above
+	/*after()throwing(Exception e) throws  UnavailablePhotoAlbumException: getMedias(){
 		if (e instanceof PersistenceMechanismException)
 			throw new UnavailablePhotoAlbumException(e);
 		else if (e instanceof InvalidMediaDataException)
 			throw new UnavailablePhotoAlbumException(e);
-	}
+	}*/
 	
 	//public void AlbumData.resetImageData() block 1 - Scenario 1
 	pointcut resetMediaData(): 
