@@ -63,11 +63,13 @@ public privileged aspect AlternativeMusicHandler {
 			Alert alert = new Alert( "Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
 			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
 		    return false;
-		} catch (PersistenceMechanismException e) {
-			Alert alert = new Alert( "Error", "The mobile database can open this item 1", null, AlertType.ERROR);
-			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
-			return false;
 		}
+		//AQUI
+//		catch (PersistenceMechanismException e) {
+//			Alert alert = new Alert( "Error", "The mobile database can open this item 1", null, AlertType.ERROR);
+//			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
+//			return false;
+//		}
 	}
 	
 	Object around() : playMusicScreenHandler() || startPlayHandler() || pausePlayHandler(){
