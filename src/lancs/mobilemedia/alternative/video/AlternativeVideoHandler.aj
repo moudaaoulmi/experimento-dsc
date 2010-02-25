@@ -12,6 +12,8 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.media.MediaException;
 import lancs.mobilemedia.alternative.video.VideoMediaAccessor;
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
+import lancs.mobilemedia.exception.GeneralExceptionHandler;
+
 import javax.microedition.rms.RecordStoreException;
 
 public privileged aspect AlternativeVideoHandler {
@@ -75,11 +77,13 @@ public privileged aspect AlternativeVideoHandler {
 			Alert alert = new Alert( "Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
 			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
 		    return false;
-		} catch (PersistenceMechanismException e) {
-			Alert alert = new Alert( "Error", "The mobile database can open this item 1", null, AlertType.ERROR);
-			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-			return false;
 		}
+		// AQUI
+//		catch (PersistenceMechanismException e) {
+//			Alert alert = new Alert( "Error", "The mobile database can open this item 1", null, AlertType.ERROR);
+//			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
+//			return false;
+//		}
 	}	
 	
 	MediaData around(): internalResetRecordStoreHandler() {
