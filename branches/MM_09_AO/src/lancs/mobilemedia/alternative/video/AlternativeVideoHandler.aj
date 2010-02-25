@@ -16,8 +16,6 @@ import javax.microedition.rms.RecordStoreException;
 
 public privileged aspect AlternativeVideoHandler {
 	
-	private String[] messages = {"Error ao criar o player:", "Error ao definir a tela"};
-	
 	pointcut internalPlayVideScreenHandler() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler());
 	pointcut internalPlayVideScreenHandler3() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler3(int, int));
 	pointcut startVideoHandler() : execution(void PlayVideoScreen.startVideo());
@@ -44,11 +42,11 @@ public privileged aspect AlternativeVideoHandler {
 	    } 
 	}
 	
-	void around(): internalPlayVideScreenHandler() || internalPlayVideScreenHandler3(){
+	void around(): internalPlayVideScreenHandler() {
 		try{
 			proceed();
 		} catch (Exception e) {
-			System.out.println(messages[thisJoinPointStaticPart.getId()]);
+			System.out.println("Error ao criar o player:");
 			e.printStackTrace();
 		}
 	}
@@ -58,6 +56,15 @@ public privileged aspect AlternativeVideoHandler {
 			proceed();
 		} catch (Exception e) {
 			System.out.println("Error criar or controler" + e.getMessage());
+		}
+	}
+	
+	void around(): internalPlayVideScreenHandler3() {
+		try {
+			proceed();
+		} catch (Exception e) {
+			System.out.println("Error ao definir a tela");
+			e.printStackTrace();
 		}
 	}
 	
