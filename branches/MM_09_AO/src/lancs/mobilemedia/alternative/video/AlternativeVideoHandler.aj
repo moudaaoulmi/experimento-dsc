@@ -16,11 +16,13 @@ import javax.microedition.rms.RecordStoreException;
 
 public privileged aspect AlternativeVideoHandler {
 	
+	private String[] messages = {"Error ao criar o player:", "Error ao definir a tela"};
+	
+	pointcut internalPlayVideScreenHandler() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler());
+	pointcut internalPlayVideScreenHandler3() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler3(int, int));
 	pointcut startVideoHandler() : execution(void PlayVideoScreen.startVideo());
 	pointcut stopVideo() : execution(void PlayVideoScreen.stopVideo());
-	pointcut internalPlayVideScreenHandler() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler());
 	pointcut internalPlayVideScreenHandler2() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler2(AbstractController));
-	pointcut internalPlayVideScreenHandler3() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler3(int, int));
 	pointcut internalPlayVideoMediaHandler() : execution(boolean MediaController.internalPlayVideoMedia(String, InputStream));
 	pointcut inputStreamToBytesHandler(): execution(byte[] VideoMediaAccessor.inputStreamToBytes(InputStream));
 	pointcut internalResetRecordStoreHandler(): execution(MediaData VideoMediaAccessor.internalResetRecordStore(MediaData));
@@ -42,11 +44,11 @@ public privileged aspect AlternativeVideoHandler {
 	    } 
 	}
 	
-	void around(): internalPlayVideScreenHandler() {
+	void around(): internalPlayVideScreenHandler() || internalPlayVideScreenHandler3(){
 		try{
 			proceed();
 		} catch (Exception e) {
-			System.out.println("Error ao criar o player:");
+			System.out.println(messages[thisJoinPointStaticPart.getId()]);
 			e.printStackTrace();
 		}
 	}
@@ -56,15 +58,6 @@ public privileged aspect AlternativeVideoHandler {
 			proceed();
 		} catch (Exception e) {
 			System.out.println("Error criar or controler" + e.getMessage());
-		}
-	}
-	
-	void around(): internalPlayVideScreenHandler3() {
-		try {
-			proceed();
-		} catch (Exception e) {
-			System.out.println("Error ao definir a tela");
-			e.printStackTrace();
 		}
 	}
 	
@@ -80,16 +73,7 @@ public privileged aspect AlternativeVideoHandler {
 			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
 			return false;
 		}
-	}
-	
-	byte[] around() : inputStreamToBytesHandler() {
-		try {
-			return proceed();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		return null;
-	}
+	}	
 	
 	MediaData around(): internalResetRecordStoreHandler() {
 		try {

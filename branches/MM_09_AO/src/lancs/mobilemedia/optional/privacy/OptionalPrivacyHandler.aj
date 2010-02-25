@@ -29,22 +29,6 @@ public privileged aspect OptionalPrivacyHandler {
 	declare soft: InvalidAlbumNameException:   internalAroundSaveActionHandler() 
 											|| internalAroundHandleCommandAction2Handler();
 	
-	// Reuse below
-	/*void around(): addPasswordHandler() {
-		try {
-			proceed();
-		} catch(RecordStoreException e){
-			
-		}
-	}
-	
-	String around() : internalGetPasswordHandler() {
-		try {
-			return proceed();
-		} catch(RecordStoreException e){}
-		return null;
-	}*/
-	
 	Object around(): addPasswordHandler() || internalGetPasswordHandler(){
 		try {
 			return proceed();
@@ -71,25 +55,6 @@ public privileged aspect OptionalPrivacyHandler {
 			return true;
 		}
 	}
-
-// #Reuse# above	
-//	boolean around(AlbumController controller) : internalAroundSaveActionHandler() && args(controller) {
-//		try {
-//			return proceed(controller);
-//		} catch (PersistenceMechanismException e) {
-//			Alert alert = null;
-//			if (e.getCause() instanceof  RecordStoreFullException)
-//				alert = new Alert( "Error", "The mobile database is full", null, AlertType.ERROR);
-//			else
-//				alert = new Alert( "Error", "The mobile database can not add a new photo album", null, AlertType.ERROR);
-//			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-//			return true;
-//	    } catch (InvalidAlbumNameException e) {
-//	    	Alert alert = new Alert( "Error", "You have provided an invalid Photo Album name", null, AlertType.ERROR);
-//			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-//			return true;
-//		}
-//	}
 	
 	void around(AlbumController controller) : (internalAroundHandleCommandAction3Handler() || internalAroundHandleCommandAction4Handler()) && args(controller){
 		try {
@@ -100,16 +65,5 @@ public privileged aspect OptionalPrivacyHandler {
 	        Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
 		}
 	}
-
-// #Reuse# above	
-//	void around(AlbumController controller) : internalAroundHandleCommandAction4Handler() && args(controller){
-//		try {
-//			proceed(controller);
-//		} catch (PersistenceMechanismException e) {
-//			Alert alert = new Alert( "Error", "The mobile database can not delete this photo album", null, AlertType.ERROR);
-//	        Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-//		}
-//	}
-	
 
 }
