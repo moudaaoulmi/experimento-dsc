@@ -18,17 +18,17 @@ import lancs.mobilemedia.core.ui.controller.AbstractController;
 
 
 public privileged aspect CoreUiControllerHandler {
-
-	private String[] messages = {"The mobile database can not delete this photo album", "The mobile database can not delete this photo"};
+	
+	pointcut saveDefaultHandler() : execution(boolean AlbumController.saveDefault());
+	pointcut internalSaveDefaultHandler() : execution(void AlbumController.internalSaveDefault());
 	
 	pointcut internalDeleteDefaultHandler() : execution(void AlbumController.internalDeleteDefault());
-	pointcut internalHandleCommandHandler4() : execution(void MediaController.internalHandleCommand4());
-	pointcut saveDefaultHandler() : execution(boolean AlbumController.saveDefault());
-	pointcut internalSaveDefaultHandler() : execution(void AlbumController.internalSaveDefault());	
+		
 	pointcut handleCommandHandler() : execution(boolean MediaController.handleCommand(Command));
 	pointcut internalHandleCommandHandler() : execution(void MediaController.internalHandleCommand());
 	pointcut internalHandleCommandHandler2() : execution(void MediaController.internalHandleCommand2(String));
 	pointcut internalHandleCommandHandler3() : execution(void MediaController.internalHandleCommand3(String));
+	pointcut internalHandleCommandHandler4() : execution(void MediaController.internalHandleCommand4());
 	
 	declare soft: PersistenceMechanismException: internalSaveDefaultHandler() || internalDeleteDefaultHandler() || internalHandleCommandHandler() || internalHandleCommandHandler2() || internalHandleCommandHandler4();
 	declare soft: InvalidAlbumNameException: internalSaveDefaultHandler();
@@ -86,11 +86,11 @@ public privileged aspect CoreUiControllerHandler {
 		}
 	}
 	
-	void around(AbstractController albumController) : (internalDeleteDefaultHandler() || internalHandleCommandHandler4()) && this(albumController){ 
+	void around(AlbumController albumController) : internalDeleteDefaultHandler() && this(albumController){ 
 		try {
 			proceed(albumController);	
 		} catch (PersistenceMechanismException e) {
-			Alert alert = new Alert( "Error", messages[thisEnclosingJoinPointStaticPart.getId()], null, AlertType.ERROR);
+			Alert alert = new Alert( "Error", "The mobile database can not delete this photo album", null, AlertType.ERROR);
 	        Display.getDisplay(albumController.midlet).setCurrent(alert, Display.getDisplay(albumController.midlet).getCurrent());
 		}
 	}
@@ -105,7 +105,10 @@ public privileged aspect CoreUiControllerHandler {
 			else
 				alert = new Alert("Error", "The image file format is not valid", null, AlertType.ERROR);
 			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
-		} 
+		} catch (PersistenceMechanismException e) {
+			Alert alert = new Alert("Error", "The mobile database can not update this photo", null, AlertType.ERROR);
+			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
+		}
 	}
 	
 	void around(MediaController mediaController): internalHandleCommandHandler2() && this(mediaController){
