@@ -60,16 +60,6 @@ public privileged aspect OptionSmsHandler {
 		}
 	}
 	
-// #Reuse# above	
-//	void around(): internalCleanUpReceiverConnectionsHandler() {
-//		try {
-//			proceed();
-//		} catch (IOException ioe) {
-//			System.out.println("Closing connection caught: ");
-//			ioe.printStackTrace();
-//		}
-//	}
-	
 	byte[] around(SmsReceiverThread receiver, SmsMessaging smsMessenger) : internalRun2Handler() && this(receiver) && args(smsMessenger) {
 		try {
 			return proceed(receiver, smsMessenger);

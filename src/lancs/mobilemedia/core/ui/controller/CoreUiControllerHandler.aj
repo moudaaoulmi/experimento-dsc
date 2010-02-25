@@ -12,24 +12,25 @@ import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
+import lancs.mobilemedia.core.ui.controller.AbstractController;
 
 
 
 
 public privileged aspect CoreUiControllerHandler {
 
-	pointcut saveDefaultHandler() : execution(boolean AlbumController.saveDefault());
-	pointcut internalSaveDefaultHandler() : execution(void AlbumController.internalSaveDefault());
+	private String[] messages = {"The mobile database can not delete this photo album", "The mobile database can not delete this photo"};
 	
 	pointcut internalDeleteDefaultHandler() : execution(void AlbumController.internalDeleteDefault());
-		
+	pointcut internalHandleCommandHandler4() : execution(void MediaController.internalHandleCommand4());
+	pointcut saveDefaultHandler() : execution(boolean AlbumController.saveDefault());
+	pointcut internalSaveDefaultHandler() : execution(void AlbumController.internalSaveDefault());	
 	pointcut handleCommandHandler() : execution(boolean MediaController.handleCommand(Command));
 	pointcut internalHandleCommandHandler() : execution(void MediaController.internalHandleCommand());
 	pointcut internalHandleCommandHandler2() : execution(void MediaController.internalHandleCommand2(String));
 	pointcut internalHandleCommandHandler3() : execution(void MediaController.internalHandleCommand3(String));
-	pointcut internalHandleCommandHandler4() : execution(void MediaController.internalHandleCommand4());
 	
-	declare soft: PersistenceMechanismException: internalSaveDefaultHandler() || internalDeleteDefaultHandler() || internalHandleCommandHandler()												 || internalHandleCommandHandler2() || internalHandleCommandHandler4();
+	declare soft: PersistenceMechanismException: internalSaveDefaultHandler() || internalDeleteDefaultHandler() || internalHandleCommandHandler() || internalHandleCommandHandler2() || internalHandleCommandHandler4();
 	declare soft: InvalidAlbumNameException: internalSaveDefaultHandler();
 	declare soft: InvalidMediaDataException: internalHandleCommandHandler() || internalHandleCommandHandler4();
 	declare soft: MediaNotFoundException: internalHandleCommandHandler2() || internalHandleCommandHandler3();
@@ -51,23 +52,6 @@ public privileged aspect CoreUiControllerHandler {
 			Display.getDisplay(albumController.midlet).setCurrent(alert, Display.getDisplay(albumController.midlet).getCurrent());
 			throw new SoftException(e);
 			//return true;
-		}
-	}
-	
-	boolean around(): saveDefaultHandler() || handleCommandHandler(){
-		try{
-			return proceed();
-		}catch(SoftException e){
-			return true;
-		}
-	}
-	
-	void around(AlbumController albumController) : internalDeleteDefaultHandler() && this(albumController){ 
-		try {
-			proceed(albumController);	
-		} catch (PersistenceMechanismException e) {
-			Alert alert = new Alert( "Error", "The mobile database can not delete this photo album", null, AlertType.ERROR);
-	        Display.getDisplay(albumController.midlet).setCurrent(alert, Display.getDisplay(albumController.midlet).getCurrent());
 		}
 	}
 	
@@ -94,6 +78,36 @@ public privileged aspect CoreUiControllerHandler {
 		}
 	}
 	
+	boolean around(): saveDefaultHandler() || handleCommandHandler(){
+		try{
+			return proceed();
+		}catch(SoftException e){
+			return true;
+		}
+	}
+	
+	void around(AbstractController albumController) : (internalDeleteDefaultHandler() || internalHandleCommandHandler4()) && this(albumController){ 
+		try {
+			proceed(albumController);	
+		} catch (PersistenceMechanismException e) {
+			Alert alert = new Alert( "Error", messages[thisEnclosingJoinPointStaticPart.getId()], null, AlertType.ERROR);
+	        Display.getDisplay(albumController.midlet).setCurrent(alert, Display.getDisplay(albumController.midlet).getCurrent());
+		}
+	}
+	
+	void around(MediaController mediaController) : internalHandleCommandHandler4()&& this(mediaController){
+		try {				
+			proceed(mediaController);
+		} catch (InvalidMediaDataException e) {
+			Alert alert = null;
+			if (e instanceof MediaPathNotValidException)
+				alert = new Alert("Error", "The path is not valid", null, AlertType.ERROR);
+			else
+				alert = new Alert("Error", "The image file format is not valid", null, AlertType.ERROR);
+			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
+		} 
+	}
+	
 	void around(MediaController mediaController): internalHandleCommandHandler2() && this(mediaController){
 		try {
 			proceed(mediaController);
@@ -110,16 +124,6 @@ public privileged aspect CoreUiControllerHandler {
 		}
 	}
 	
-	
-// Se esse for criado pode erro, pois dois around pode pegar excecoes no mesmo metodo.	
-//	boolean around(): handleCommandHandler2(){
-//		try{
-//			return proceed();
-//		}catch(SoftException e){
-//			return true;
-//		}
-//	} 
-	
 	void around(MediaController mediaController) : internalHandleCommandHandler3() && this(mediaController){
 		try {
 			proceed(mediaController);		
@@ -129,19 +133,5 @@ public privileged aspect CoreUiControllerHandler {
 		}
 	}
 	
-	void around(MediaController mediaController) : internalHandleCommandHandler4()&& this(mediaController){
-		try {				
-			proceed(mediaController);
-		} catch (InvalidMediaDataException e) {
-			Alert alert = null;
-			if (e instanceof MediaPathNotValidException)
-				alert = new Alert("Error", "The path is not valid", null, AlertType.ERROR);
-			else
-				alert = new Alert("Error", "The image file format is not valid", null, AlertType.ERROR);
-			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
-		} catch (PersistenceMechanismException e) {
-			Alert alert = new Alert("Error", "The mobile database can not update this photo", null, AlertType.ERROR);
-			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
-		}
-	}
+	
 }

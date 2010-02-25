@@ -15,6 +15,14 @@ public aspect UtilAspectEH {
 	//Method ImageUtil.readImageAsByteArray 1- block - Scenario 3
 	pointcut readMediaAsByteArray(String mediaFile): 
 		 (call(public void Class.getResourceAsStream(String))&&(args(mediaFile)))&& withincode(public byte[] MediaUtil.readMediaAsByteArray(String)) ;
+	pointcut readInternalMediaAsByteArray(String mediaFile): 
+		 call(private byte[] MediaUtil.internalReadMediaAsByteArray(byte[],InputStream,int, byte[]))&& (withincode(public byte[] MediaUtil.readMediaAsByteArray(String))&&(args(mediaFile)));
+	pointcut getMediaInfoFromBytes(): 
+		 execution(public MediaData MediaUtil.getMediaInfoFromBytes(byte[]));
+	pointcut getBytesFromMediaInfo(): 
+		 execution(public String MediaUtil.getBytesFromMediaInfo(MediaData));
+	
+	declare soft: IOException: call(private byte[] MediaUtil.internalReadMediaAsByteArray(byte[],InputStream,int, byte[]))&& (withincode(public byte[] MediaUtil.readMediaAsByteArray(String)));
 	
 	void around(String mediaFile) throws  MediaPathNotValidException: readMediaAsByteArray(mediaFile){
 		try {
@@ -23,17 +31,6 @@ public aspect UtilAspectEH {
 			throw new MediaPathNotValidException("Path not valid for this image: "+mediaFile);
 		}
 	}
-	
-	// Refactored above
-	/*after(String mediaFile) throwing(Exception e) throws  MediaPathNotValidException: readMediaAsByteArray(mediaFile){
-		throw new MediaPathNotValidException("Path not valid for this image: "+mediaFile);
-	}*/
-	
-	//Method ImageUtil.readImageAsByteArray 2- block - Scenario 3
-	pointcut readInternalMediaAsByteArray(String mediaFile): 
-		 call(private byte[] MediaUtil.internalReadMediaAsByteArray(byte[],InputStream,int, byte[]))&& (withincode(public byte[] MediaUtil.readMediaAsByteArray(String))&&(args(mediaFile)));
-	
-	declare soft: IOException: call(private byte[] MediaUtil.internalReadMediaAsByteArray(byte[],InputStream,int, byte[]))&& (withincode(public byte[] MediaUtil.readMediaAsByteArray(String)));
 	
 	byte[] around(String mediaFile) throws  InvalidMediaFormatException, MediaPathNotValidException: readInternalMediaAsByteArray(mediaFile){
 		try {
@@ -50,21 +47,6 @@ public aspect UtilAspectEH {
 		return null;
 	}
 	
-	// Refactored above
-	/*after(String mediaFile) throwing(Exception e) throws  InvalidMediaFormatException, MediaPathNotValidException: readInternalMediaAsByteArray(mediaFile){
-		if (e instanceof IOException){
-			throw new InvalidMediaFormatException(
-					"The file "+mediaFile+" does not have PNG format");
-		}else if (e instanceof NullPointerException){
-			throw new MediaPathNotValidException(
-					"Path not valid for this image:"+mediaFile);
-		}
-	}*/
-	
-	//Method public ImageData ImageUtil.getImageInfoFromBytes(byte[] bytes) 1- block - Scenario 1
-	pointcut getMediaInfoFromBytes(): 
-		 execution(public MediaData MediaUtil.getMediaInfoFromBytes(byte[]));
-	
 	MediaData around() throws  InvalidArrayFormatException: getMediaInfoFromBytes(){
 		try {
 			return proceed();
@@ -73,15 +55,6 @@ public aspect UtilAspectEH {
 		}
 	}
 	
-	// Refactored above
-	/*after() throwing(Exception e) throws  InvalidArrayFormatException: getMediaInfoFromBytes(){
-		throw new InvalidArrayFormatException();
-	}*/
-	
-	//Method public byte[] ImageUtil.getBytesFromImageInfo(ImageData ii) 1- block - Scenario 1
-	pointcut getBytesFromMediaInfo(): 
-		 execution(public String MediaUtil.getBytesFromMediaInfo(MediaData));
-	
 	String around() throws  InvalidMediaDataException: getBytesFromMediaInfo(){
 		try {
 			return proceed();
@@ -89,9 +62,4 @@ public aspect UtilAspectEH {
 			throw new InvalidMediaDataException("The provided data are not valid");
 		}
 	}
-	
-	// Refactored above
-	/*after() throwing(Exception e) throws  InvalidMediaDataException: getBytesFromMediaInfo(){
-		throw new InvalidMediaDataException("The provided data are not valid");
-	}*/
 }

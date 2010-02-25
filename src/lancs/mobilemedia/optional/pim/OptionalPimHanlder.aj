@@ -11,31 +11,6 @@ public aspect OptionalPimHanlder {
 	
 	declare soft : Exception : internalPimInstHandler() || runHandler() || pimSeedHandler();
 	declare soft : PIMException : internalSeedHandler(); 
-
-// #Reuse# Below
-//	void around(): internalPimInstHandler(){
-//		try{
-//			proceed();
-//		}catch(Exception ex){
-//		//TO DO
-//		}
-//	}
-//	
-//	void around(): runHandler(){
-//		try{
-//			proceed();
-//		}catch(Exception e){
-//			//TO DO
-//		}
-//	}
-//
-//	void around(): pimSeedHandler(){
-//		try{
-//			proceed();
-//		}catch(Exception e){
-//			//TO DO
-//		}
-//	}
 	
 	void around(): pimSeedHandler() || runHandler() || internalPimInstHandler() {
 		try{
