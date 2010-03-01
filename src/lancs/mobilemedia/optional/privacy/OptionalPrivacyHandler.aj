@@ -32,9 +32,7 @@ public privileged aspect OptionalPrivacyHandler {
 	Object around(): addPasswordHandler() || internalGetPasswordHandler(){
 		try {
 			return proceed();
-		} catch(RecordStoreException e){
-			
-		}
+		} catch(RecordStoreException e){}
 		return null;
 	}
 	
@@ -44,9 +42,9 @@ public privileged aspect OptionalPrivacyHandler {
 		} catch (PersistenceMechanismException e) {
 			Alert alert = null;
 			if (e.getCause() instanceof  RecordStoreFullException)
-				alert = new Alert( "Error", "The mobile database is full", null, AlertType.ERROR);
+				alert = new Alert("Error", "The mobile database is full", null, AlertType.ERROR);
 			else
-				alert = new Alert( "Error", "The mobile database can not add a new photo album", null, AlertType.ERROR);
+				alert = new Alert("Error", "The mobile database can not add a new photo album", null, AlertType.ERROR);
 			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
 			return true;
 	    } catch (InvalidAlbumNameException e) {
