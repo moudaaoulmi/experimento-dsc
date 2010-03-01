@@ -24,7 +24,7 @@ public privileged aspect OptionalFavouritesHandler {
 		} catch (InvalidMediaDataException e) { 
 		} catch (PersistenceMechanismException e) {			
 		} catch (MediaNotFoundException e) {
-			Alert alert = new Alert( "Error", "The selected photo was not found in the mobile device", null, AlertType.ERROR);
+			Alert alert = new Alert("Error", "The selected photo was not found in the mobile device", null, AlertType.ERROR);
 			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
 		}
 	}
