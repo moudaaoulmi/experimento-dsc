@@ -2,24 +2,29 @@ package lancs.mobilemedia.optional.capture;
 import  java.lang.Exception;
 
 import javax.microedition.media.MediaException;
+import lancs.mobilemedia.exception.OptionalCapturePhotoCaptureHandler;
 
 
-public privileged aspect OptionalCaptureHandler {
+public privileged aspect OptionalCaptureHandler extends OptionalCapturePhotoCaptureHandler{
 
-	pointcut internalCaptureVideoScreenHandler() : execution(void CaptureVideoScreen.internalCaptureVideoScreen());
+	public pointcut checkedMechanismException() : execution(void CaptureVideoScreen.internalCaptureVideoScreen())
+												||internalCaptureVideoScreenHandler2()
+												||execution(void CaptureVideoScreen.internalSetVisibleVideo());
+		
+//	pointcut internalCaptureVideoScreenHandler() : ;
 	pointcut internalCaptureVideoScreenHandler2() : execution(void CaptureVideoScreen.internalCaptureVideoScreen2());
-	pointcut internalinternalSetVisibleVideoHandler() : execution(void CaptureVideoScreen.internalSetVisibleVideo());
+//	pointcut internalinternalSetVisibleVideoHandler() : ;
 	
-	declare soft: Exception : internalCaptureVideoScreenHandler() || internalCaptureVideoScreenHandler2() || internalinternalSetVisibleVideoHandler(); 
+//	declare soft: Exception : internalCaptureVideoScreenHandler() || internalCaptureVideoScreenHandler2() || internalinternalSetVisibleVideoHandler(); 
 	declare soft: MediaException : internalCaptureVideoScreenHandler2();
 
-	void around() : internalCaptureVideoScreenHandler() || internalinternalSetVisibleVideoHandler() || internalCaptureVideoScreenHandler2() {
-		try {
-			proceed();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	void around() : internalCaptureVideoScreenHandler() || internalinternalSetVisibleVideoHandler() || internalCaptureVideoScreenHandler2() {
+//		try {
+//			proceed();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	void around(CaptureVideoScreen captureVideoScreen): internalCaptureVideoScreenHandler2() && this(captureVideoScreen){
 		try {
@@ -28,8 +33,7 @@ public privileged aspect OptionalCaptureHandler {
 			captureVideoScreen.videoControl.setDisplayLocation(5, 5);
 			try {
 				captureVideoScreen.videoControl.setDisplaySize(captureVideoScreen.getWidth() - 10, captureVideoScreen.getHeight() - 10);
-			} catch (Exception e) {
-			}
+			} catch (Exception e) {}
 			captureVideoScreen.repaint();
 		}
 	}
