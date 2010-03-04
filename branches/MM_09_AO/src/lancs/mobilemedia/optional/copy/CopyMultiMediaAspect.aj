@@ -8,11 +8,8 @@
  */
 package lancs.mobilemedia.optional.copy;
 
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
-import javax.microedition.rms.RecordStoreFullException;
 
 import lancs.mobilemedia.core.ui.controller.MediaController;
 import lancs.mobilemedia.core.ui.controller.ScreenSingleton;
@@ -21,8 +18,6 @@ import lancs.mobilemedia.core.ui.datamodel.MediaData;
 import lancs.mobilemedia.core.ui.screens.AddMediaToAlbum;
 import lancs.mobilemedia.core.ui.screens.AlbumListScreen;
 import lancs.mobilemedia.core.util.Constants;
-import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
-import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 
@@ -91,8 +86,6 @@ public abstract aspect CopyMultiMediaAspect {
 	}
 
 	private boolean internalAroundHandleCommandAction(CopyTargets controller) {
-		// this code fragment could not be extracted to EH aspect 
-		// due to its context-dependent and context-affecting nature
 		MediaData mediaData = null;	
 		mediaData = internalAroundHandleCommandAction(controller, mediaData);
 		String albumname = ((AddMediaToAlbum) controller.getCurrentScreen()).getPath();
@@ -103,12 +96,7 @@ public abstract aspect CopyMultiMediaAspect {
 	}
 
 	private MediaData internalAroundHandleCommandAction(CopyTargets controller, MediaData mediaData) {
-		try {
-			mediaData = controller.getAlbumData().getMediaInfo(mediaName);
-		} catch (MediaNotFoundException e) {
-			Alert alert = new Alert("Error", "The selected media was not found in the mobile device", null, AlertType.ERROR);
-			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-		}
+		mediaData = controller.getAlbumData().getMediaInfo(mediaName);
 		return mediaData;
 	}
 }
