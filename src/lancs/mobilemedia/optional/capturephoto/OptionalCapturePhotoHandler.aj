@@ -1,21 +1,23 @@
 package lancs.mobilemedia.optional.capturephoto;
-import  java.lang.Exception;
-import  lancs.mobilemedia.optional.capture.CaptureVideoScreen;
 
-public aspect OptionalCapturePhotoHandler {
+import java.lang.Exception;
+import lancs.mobilemedia.optional.capture.CaptureVideoScreen;
+import lancs.mobilemedia.exception.OptionalCapturePhotoCaptureHandler;
 
-	pointcut takePictureHandler() : execution(byte[] CaptureVideoScreen.takePicture());
+public aspect OptionalCapturePhotoHandler extends OptionalCapturePhotoCaptureHandler {
+
+	public pointcut checkedMechanismException() : execution(byte[] CaptureVideoScreen.takePicture());
 	
-	declare soft: Exception: takePictureHandler();
+	//declare soft: Exception: checkedMechanismException();
 	
-	byte[] around(): takePictureHandler(){
-		try {
-			return proceed();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	byte[] around(): checkedMechanismException(){
+//		try {
+//			return proceed();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	
 }
