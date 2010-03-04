@@ -8,11 +8,9 @@
  */
 package lancs.mobilemedia.optional.copy;
 
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
-import javax.microedition.rms.RecordStoreFullException;
+
 
 import lancs.mobilemedia.core.ui.controller.MediaController;
 import lancs.mobilemedia.core.ui.controller.ScreenSingleton;
@@ -21,8 +19,6 @@ import lancs.mobilemedia.core.ui.datamodel.MediaData;
 import lancs.mobilemedia.core.ui.screens.AddMediaToAlbum;
 import lancs.mobilemedia.core.ui.screens.AlbumListScreen;
 import lancs.mobilemedia.core.util.Constants;
-import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
-import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 
@@ -77,37 +73,10 @@ public abstract aspect CopyMultiMediaAspect {
 			return true;
 			
 		} else if (label.equals("Save Item")) {
-			try {
-				// this code fragment could not be extracted to EH aspect 
-				// due to its context-dependent and context-affecting nature
-				MediaData mediaData = null;	
-				try {
-					mediaData = controller.getAlbumData().getMediaInfo(mediaName);
-				} catch (MediaNotFoundException e) {
-					Alert alert = new Alert("Error", "The selected media was not found in the mobile device", null, AlertType.ERROR);
-					Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-				}
-				String albumname = ((AddMediaToAlbum) controller.getCurrentScreen()).getPath();
-				String newMediaName = ((AddMediaToAlbum) controller.getCurrentScreen()).getItemName();
-				mediaData.setMediaLabel(newMediaName);
-				controller.getAlbumData().addMediaData(mediaData, albumname); 
-			} catch (InvalidMediaDataException e) {
-				Alert alert = null;
-				if (e instanceof MediaPathNotValidException)
-					alert = new Alert("Error", "The path is not valid", null, AlertType.ERROR);
-				else
-					alert = new Alert("Error", "The music file format is not valid", null, AlertType.ERROR);
-				Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
+			if (internalAroundHandleCommandAction(controller)) {
 				return true;
-				// alert.setTimeout(5000);
-			} catch (PersistenceMechanismException e) {
-				Alert alert = null;
-				if (e.getCause() instanceof RecordStoreFullException)
-					alert = new Alert("Error", "The mobile database is full", null, AlertType.ERROR);
-				else
-					alert = new Alert("Error", "The mobile database can not add a new music", null, AlertType.ERROR);
-				Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
 			}
+			
 			// [NC] Changed in the scenario 07: just the first line below to support generic AbstractController
 			((AlbumListScreen) controller.getAlbumListScreen()).repaintListAlbum(controller.getAlbumData().getAlbumNames());
 			controller.setCurrentScreen( controller.getAlbumListScreen() );
@@ -115,5 +84,20 @@ public abstract aspect CopyMultiMediaAspect {
 			return true;
 		}
 		return false;
+	}
+
+	private boolean internalAroundHandleCommandAction(CopyTargets controller) {
+		MediaData mediaData = null;	
+		mediaData = internalAroundHandleCommandAction(controller, mediaData);
+		String albumname = ((AddMediaToAlbum) controller.getCurrentScreen()).getPath();
+		String newMediaName = ((AddMediaToAlbum) controller.getCurrentScreen()).getItemName();
+		mediaData.setMediaLabel(newMediaName);
+		controller.getAlbumData().addMediaData(mediaData, albumname);
+		return false;
+	}
+
+	private MediaData internalAroundHandleCommandAction(CopyTargets controller, MediaData mediaData) {
+		mediaData = controller.getAlbumData().getMediaInfo(mediaName);
+		return mediaData;
 	}
 }
