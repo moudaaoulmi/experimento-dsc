@@ -8,22 +8,23 @@ import javax.microedition.lcdui.Command;
 
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
-import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
+import lancs.mobilemedia.exception.OptionalCopySMSCaptureVideoHandler;
 
 import org.aspectj.lang.SoftException;
 
 
-public aspect OptionalCopySMSHandler {
+public aspect OptionalCopySMSHandler extends OptionalCopySMSCaptureVideoHandler{
 
+	public pointcut checkedMechanismException() : execution(MediaData PhotoViewController.internalProcessImageData(MediaData)); 
 	pointcut internalHanldeCommand() : execution(void PhotoViewController.internalHandleCommand());
 	pointcut handleCommand() : execution(public boolean PhotoViewController.handleCommand(Command));
-	pointcut internalProcessImageData() : execution(MediaData PhotoViewController.internalProcessImageData(MediaData));
+//	pointcut internalProcessImageData() : ;
 	
 	declare soft : InvalidMediaDataException : internalHanldeCommand();
 	declare soft : PersistenceMechanismException : internalHanldeCommand();
-	declare soft : MediaNotFoundException : internalProcessImageData();
+//	declare soft : MediaNotFoundException : internalProcessImageData();
 	
 	void around(PhotoViewController photoViewController): internalHanldeCommand() && this(photoViewController){
 		try {
@@ -56,12 +57,12 @@ public aspect OptionalCopySMSHandler {
 		}
 	}
 	
-	MediaData around() : internalProcessImageData(){
-		try {
-			return proceed();
-		} catch (MediaNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	MediaData around() : internalProcessImageData(){
+//		try {
+//			return proceed();
+//		} catch (MediaNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 }
