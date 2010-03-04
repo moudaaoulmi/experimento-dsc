@@ -4,11 +4,13 @@ import  lancs.mobilemedia.optional.capture.CaptureVideoScreen;
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
+import lancs.mobilemedia.exception.OptionalCopySMSCaptureVideoHandler;
 import  java.lang.Exception;
 
 
-public aspect OptionalCaptureVideoHandler {
+public aspect OptionalCaptureVideoHandler extends OptionalCopySMSCaptureVideoHandler{
 	
+	public pointcut checkedMechanismException() : internalHandleCommand2(); 
 	pointcut pauseCaptureHandler() : execution(void CaptureVideoScreen.pauseCapture());
 	pointcut internalHandleCommand() : execution (void VideoCaptureController.internalHandleCommand(String, String));
 	pointcut internalHandleCommand2() : execution (void VideoCaptureController.internalHandleCommand2(String, String));
@@ -27,13 +29,13 @@ public aspect OptionalCaptureVideoHandler {
 		}
 	}
 	
-	void around(): internalHandleCommand2(){
-		try {
-			proceed();
-		} catch (MediaNotFoundException e) {
-			e.printStackTrace();
-		} 
-	}
+//	void around(): internalHandleCommand2(){
+//		try {
+//			proceed();
+//		} catch (MediaNotFoundException e) {
+//			e.printStackTrace();
+//		} 
+//	}
 
 	void around(): internalHandleCommand() || internalHandleCommand2(){
 		try {
