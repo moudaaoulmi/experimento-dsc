@@ -103,12 +103,7 @@ public abstract aspect CopyMultiMediaAspect {
 	}
 
 	private MediaData internalAroundHandleCommandAction(CopyTargets controller, MediaData mediaData) {
-		try {
-			mediaData = controller.getAlbumData().getMediaInfo(mediaName);
-		} catch (MediaNotFoundException e) {
-			Alert alert = new Alert("Error", "The selected media was not found in the mobile device", null, AlertType.ERROR);
-			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-		}
+		mediaData = controller.getAlbumData().getMediaInfo(mediaName);
 		return mediaData;
 	}
 }
