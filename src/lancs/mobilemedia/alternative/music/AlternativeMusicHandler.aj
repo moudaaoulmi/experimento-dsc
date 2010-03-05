@@ -59,21 +59,6 @@ public privileged aspect AlternativeMusicHandler extends AlternativeMusicVideoHa
 		}
 	}
 	
-//	boolean around(MediaController mediaController): internalPlayMultiMediaHandler() && this(mediaController) {
-//		try{
-//			return proceed(mediaController);
-//		} catch (MediaNotFoundException e) {
-//			Alert alert = new Alert( "Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
-//			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
-//		    return false;
-//		}
-//		catch (PersistenceMechanismException e) {
-//			Alert alert = new Alert( "Error", "The mobile database can open this item 1", null, AlertType.ERROR);
-//			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
-//			return false;
-//		}
-//	}
-	
 	Object around() : playMusicScreenHandler() || startPlayHandler() || pausePlayHandler(){
 		try{
 			return proceed();
