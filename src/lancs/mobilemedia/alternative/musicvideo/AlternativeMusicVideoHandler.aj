@@ -1,7 +1,6 @@
 package lancs.mobilemedia.alternative.musicvideo;
 
 import lancs.mobilemedia.alternative.musicvideo.MultiMediaAccessor;
-import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
 import lancs.mobilemedia.exception.OptionalCopySMSCaptureVideoHandler;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
