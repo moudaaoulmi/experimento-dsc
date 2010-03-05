@@ -10,12 +10,8 @@ package lancs.mobilemedia.alternative.music;
 
 import java.io.InputStream;
 
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.TextField;
-import javax.microedition.rms.RecordStoreFullException;
 
 import lancs.mobilemedia.core.ui.MainUIMidlet;
 import lancs.mobilemedia.core.ui.controller.AbstractController;
@@ -28,10 +24,6 @@ import lancs.mobilemedia.core.ui.datamodel.MediaData;
 import lancs.mobilemedia.core.ui.screens.AddMediaToAlbum;
 import lancs.mobilemedia.core.ui.screens.AlbumListScreen;
 import lancs.mobilemedia.core.ui.screens.MediaListScreen;
-import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
-import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
-import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
-import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 
 /**
  * @author Eduardo Figueiredo

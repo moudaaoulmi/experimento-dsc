@@ -1,8 +1,5 @@
 package lancs.mobilemedia.optional.sms;
 
-import java.io.IOException;
-import java.io.InterruptedIOException;
-
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.Command;
 import javax.wireless.messaging.Message;
