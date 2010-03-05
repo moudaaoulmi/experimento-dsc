@@ -1,6 +1,7 @@
 package lancs.mobilemedia.exception;
 
-public abstract aspect OptionalCapturePhotoCaptureHandler {
+//@ExceptionHandler
+public abstract aspect CheckedExceptionHandler {
 	
 	public abstract pointcut checkedMechanismException();
 	

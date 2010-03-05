@@ -1,14 +1,14 @@
 package lancs.mobilemedia.optional.capturevideo;
 
-import  lancs.mobilemedia.optional.capture.CaptureVideoScreen;
+import lancs.mobilemedia.optional.capture.CaptureVideoScreen;
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
-import lancs.mobilemedia.exception.OptionalCopySMSCaptureVideoHandler;
-import  java.lang.Exception;
+import lancs.mobilemedia.exception.CheckedMediaNotFoundExceptionHandler;
+//import lancs.mobilemedia.exception.ExceptionHandler;
 
-
-public aspect OptionalCaptureVideoHandler extends OptionalCopySMSCaptureVideoHandler{
+//@ExceptionHandler
+public aspect OptionalCaptureVideoHandler extends CheckedMediaNotFoundExceptionHandler {
 	
 	public pointcut checkedMechanismException() : internalHandleCommand2(); 
 	pointcut pauseCaptureHandler() : execution(void CaptureVideoScreen.pauseCapture());

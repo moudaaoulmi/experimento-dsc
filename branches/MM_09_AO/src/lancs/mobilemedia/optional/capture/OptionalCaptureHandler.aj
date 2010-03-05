@@ -2,10 +2,11 @@ package lancs.mobilemedia.optional.capture;
 import  java.lang.Exception;
 
 import javax.microedition.media.MediaException;
-import lancs.mobilemedia.exception.OptionalCapturePhotoCaptureHandler;
+import lancs.mobilemedia.exception.CheckedExceptionHandler;
+//import lancs.mobilemedia.exception.ExceptionHandler;
 
-
-public privileged aspect OptionalCaptureHandler extends OptionalCapturePhotoCaptureHandler{
+//@ExceptionHandler
+public privileged aspect OptionalCaptureHandler extends CheckedExceptionHandler {
 
 	public pointcut checkedMechanismException() : execution(void CaptureVideoScreen.internalCaptureVideoScreen())
 												||internalCaptureVideoScreenHandler2()

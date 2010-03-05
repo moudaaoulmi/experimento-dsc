@@ -7,9 +7,11 @@ import javax.microedition.lcdui.AlertType;
 
 import lancs.mobilemedia.alternative.photo.PhotoViewScreen;
 import lancs.mobilemedia.core.ui.datamodel.AlbumData;
+//import lancs.mobilemedia.exception.ExceptionHandler;
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 
+//@ExceptionHandler
 public aspect ScreensAspectEH {
 
 	//Method public PhotoViewScreen.new 1- block - Scenario 1

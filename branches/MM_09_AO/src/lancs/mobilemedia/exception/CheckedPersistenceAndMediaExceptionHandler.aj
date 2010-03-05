@@ -8,7 +8,8 @@ import lancs.mobilemedia.core.ui.controller.MediaController;
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 
-public abstract aspect AlternativeMusicVideoHandler {
+//@ExceptionHandler
+public abstract aspect CheckedPersistenceAndMediaExceptionHandler {
 	
 	public abstract pointcut checkedPersistenceMechanismAndMediaNotFoundException();
 	
