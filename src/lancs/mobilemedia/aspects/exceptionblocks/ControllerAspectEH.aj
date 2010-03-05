@@ -21,8 +21,21 @@ privileged aspect ControllerAspectEH {
 	//public boolean AlbumController.handleCommand(Command c, Displayable d) block 1 - Scenario 5
 	pointcut handleCommand1(String nameStore, AlbumController controler): 
 		 (call(public void AlbumData.deleteAlbum(String)) && args(nameStore) && this(controler))&& (withincode(public boolean AlbumController.handleCommand(Command)));
+	//private void AlbumController.resetMediaData() block 1 - Scenario 3
+	pointcut resetMediaData(AlbumController controler): 
+		execution(private void AlbumController.resetMediaData())&&this(controler);
+	//private void PhotoListController.showImageList(String) block 1 - Scenario 3
+	pointcut showMediaList(String recordName, MediaListController controler): 
+		execution(public void MediaListController.showMediaList(String))&&this(controler)&&args(recordName);
+	//public void  PhotoController.showImage() block 1 - Scenario 3
+	pointcut showImage(MediaController controler): 
+		execution(public void MediaController.showImage(String))&&this(controler);
 	
 	declare soft: PersistenceMechanismException : (call(public void AlbumData.deleteAlbum(String)))&& (withincode(public boolean AlbumController.handleCommand(Command)));
+	declare soft: PersistenceMechanismException :  execution(private void AlbumController.resetMediaData());
+	declare soft: UnavailablePhotoAlbumException :  execution(public void MediaListController.showMediaList(String));
+	declare soft: PersistenceMechanismException : execution(public void MediaController.showImage(String));
+	declare soft: MediaNotFoundException : execution(public void MediaController.showImage(String));
 	
 	void around(String nameStore, AlbumController controler): handleCommand1(nameStore,controler){
 		try{
@@ -33,11 +46,7 @@ privileged aspect ControllerAspectEH {
 		}
 	}
 	
-	//private void AlbumController.resetMediaData() block 1 - Scenario 3
-	pointcut resetMediaData(AlbumController controler): 
-		 execution(private void AlbumController.resetMediaData())&&this(controler);
 	
-	declare soft: PersistenceMechanismException :  execution(private void AlbumController.resetMediaData());
 	
 	void around(AlbumController controler): resetMediaData(controler){
 		try{
@@ -53,11 +62,7 @@ privileged aspect ControllerAspectEH {
 		}	
 	}
 	
-	//private void PhotoListController.showImageList(String) block 1 - Scenario 3
-	pointcut showMediaList(String recordName, MediaListController controler): 
-		 execution(public void MediaListController.showMediaList(String))&&this(controler)&&args(recordName);
 	
-	declare soft: UnavailablePhotoAlbumException :  execution(public void MediaListController.showMediaList(String));
 	
 	void around(String recordName, MediaListController controler): showMediaList(recordName, controler){
 		try{
@@ -69,12 +74,7 @@ privileged aspect ControllerAspectEH {
 		}
 	}
 	
-	//public void  PhotoController.showImage() block 1 - Scenario 3
-	pointcut showImage(MediaController controler): 
-		 execution(public void MediaController.showImage(String))&&this(controler);
 	
-	declare soft: PersistenceMechanismException : execution(public void MediaController.showImage(String));
-	declare soft: MediaNotFoundException : execution(public void MediaController.showImage(String));
 	
 	void around(MediaController controler): showImage(controler){
 		try{
