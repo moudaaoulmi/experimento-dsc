@@ -13,15 +13,12 @@ import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.List;
-import javax.microedition.rms.RecordStoreFullException;
 
 import lancs.mobilemedia.core.ui.MainUIMidlet;
 import lancs.mobilemedia.core.ui.datamodel.AlbumData;
 import lancs.mobilemedia.core.ui.screens.AlbumListScreen;
 import lancs.mobilemedia.core.ui.screens.NewLabelScreen;
 import lancs.mobilemedia.core.util.Constants;
-import lancs.mobilemedia.lib.exceptions.InvalidAlbumNameException;
-import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 
 /**
  * @author Eduardo Figueiredo

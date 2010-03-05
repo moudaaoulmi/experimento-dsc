@@ -8,10 +8,7 @@
  */
 package lancs.mobilemedia.optional.sorting;
 
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.Display;
 
 import lancs.mobilemedia.core.ui.controller.MediaController;
 import lancs.mobilemedia.core.ui.controller.MediaListController;
@@ -20,9 +17,6 @@ import lancs.mobilemedia.core.ui.datamodel.MediaData;
 import lancs.mobilemedia.core.ui.screens.MediaListScreen;
 import lancs.mobilemedia.core.util.Constants;
 import lancs.mobilemedia.core.util.MediaUtil;
-import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
-import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
-import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 
 /**
  * @author Eduardo Figueiredo
