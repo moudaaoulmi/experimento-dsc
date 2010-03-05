@@ -12,9 +12,6 @@ import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
-import lancs.mobilemedia.core.ui.controller.AbstractController;
-
-
 
 
 public privileged aspect CoreUiControllerHandler {

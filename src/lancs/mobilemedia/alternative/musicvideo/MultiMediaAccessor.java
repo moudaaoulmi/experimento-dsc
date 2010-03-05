@@ -3,7 +3,6 @@ package lancs.mobilemedia.alternative.musicvideo;
 
 import lancs.mobilemedia.core.ui.datamodel.MediaAccessor;
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
-import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
 import lancs.mobilemedia.lib.exceptions.InvalidArrayFormatException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
