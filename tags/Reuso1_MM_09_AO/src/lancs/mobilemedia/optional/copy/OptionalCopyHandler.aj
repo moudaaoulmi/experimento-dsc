@@ -13,7 +13,6 @@ import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotOpenException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
-import org.aspectj.lang.SoftException;
 
 public aspect OptionalCopyHandler {
 	
