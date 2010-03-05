@@ -29,13 +29,6 @@ public aspect OptionalCaptureVideoHandler extends OptionalCopySMSCaptureVideoHan
 		}
 	}
 	
-//	void around(): internalHandleCommand2(){
-//		try {
-//			proceed();
-//		} catch (MediaNotFoundException e) {
-//			e.printStackTrace();
-//		} 
-//	}
 
 	void around(): internalHandleCommand() || internalHandleCommand2(){
 		try {
