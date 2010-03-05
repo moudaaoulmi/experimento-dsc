@@ -56,13 +56,4 @@ public aspect OptionalCopySMSHandler extends OptionalCopySMSCaptureVideoHandler{
 			return true;
 		}
 	}
-	
-//	MediaData around() : internalProcessImageData(){
-//		try {
-//			return proceed();
-//		} catch (MediaNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
 }
