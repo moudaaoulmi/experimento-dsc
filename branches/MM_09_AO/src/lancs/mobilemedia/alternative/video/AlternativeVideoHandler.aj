@@ -71,21 +71,6 @@ public privileged aspect AlternativeVideoHandler extends AlternativeMusicVideoHa
 		}
 	}
 	
-//	boolean around(MediaController controller): internalPlayVideoMediaHandler() && this(controller){
-//		try {
-//			return proceed(controller);
-//		} catch (MediaNotFoundException e) {
-//			Alert alert = new Alert( "Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
-//			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-//		    return false;
-//		}
-//		catch (PersistenceMechanismException e) {
-//			Alert alert = new Alert( "Error", "The mobile database can open this item 1", null, AlertType.ERROR);
-//			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-//			return false;
-//		}
-//	}	
-	
 	// Unable to reuse because this class already has reuse strategy 
 	MediaData around(): internalResetRecordStoreHandler() {
 		try {
