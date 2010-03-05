@@ -10,21 +10,10 @@ public privileged aspect OptionalCaptureHandler extends OptionalCapturePhotoCapt
 	public pointcut checkedMechanismException() : execution(void CaptureVideoScreen.internalCaptureVideoScreen())
 												||internalCaptureVideoScreenHandler2()
 												||execution(void CaptureVideoScreen.internalSetVisibleVideo());
-		
-//	pointcut internalCaptureVideoScreenHandler() : ;
-	pointcut internalCaptureVideoScreenHandler2() : execution(void CaptureVideoScreen.internalCaptureVideoScreen2());
-//	pointcut internalinternalSetVisibleVideoHandler() : ;
 	
-//	declare soft: Exception : internalCaptureVideoScreenHandler() || internalCaptureVideoScreenHandler2() || internalinternalSetVisibleVideoHandler(); 
-	declare soft: MediaException : internalCaptureVideoScreenHandler2();
+	pointcut internalCaptureVideoScreenHandler2() : execution(void CaptureVideoScreen.internalCaptureVideoScreen2());
 
-//	void around() : internalCaptureVideoScreenHandler() || internalinternalSetVisibleVideoHandler() || internalCaptureVideoScreenHandler2() {
-//		try {
-//			proceed();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	declare soft: MediaException : internalCaptureVideoScreenHandler2();
 	
 	void around(CaptureVideoScreen captureVideoScreen): internalCaptureVideoScreenHandler2() && this(captureVideoScreen){
 		try {
