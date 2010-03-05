@@ -10,16 +10,4 @@ public privileged aspect OptionalSmsOrCapturePhotoHandler extends CheckedRecordS
 	
 	public pointcut checkedRecordStoreException(): execution(void ImageMediaAccessor.addImageData(String, byte[], String));
 	
-//	pointcut addImageDataHandler(): execution(void ImageMediaAccessor.addImageData(String, byte[], String));
-//	
-//	declare soft: RecordStoreException: addImageDataHandler();
-//	
-//	void around() throws PersistenceMechanismException : addImageDataHandler() {
-//		try {
-//			proceed();
-//		} catch (RecordStoreException e) {
-//			throw new PersistenceMechanismException();
-//		}
-//	}
-
 }
