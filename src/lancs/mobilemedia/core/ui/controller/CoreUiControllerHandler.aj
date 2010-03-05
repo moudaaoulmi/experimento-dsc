@@ -12,10 +12,6 @@ import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
-import lancs.mobilemedia.core.ui.controller.AbstractController;
-
-
-
 
 public privileged aspect CoreUiControllerHandler {
 	
@@ -40,7 +36,7 @@ public privileged aspect CoreUiControllerHandler {
 			proceed(albumController);
 		} catch (PersistenceMechanismException e) {
 			Alert alert = null;
-			if (e.getCause() instanceof  RecordStoreFullException)
+			if (e.getCause() instanceof RecordStoreFullException)
 				alert = new Alert( "Error", "The mobile database is full", null, AlertType.ERROR);
 			else
 				alert = new Alert( "Error", "The mobile database can not add a new photo album", null, AlertType.ERROR);
@@ -55,16 +51,16 @@ public privileged aspect CoreUiControllerHandler {
 		}
 	}
 	
-	void around(MediaController mediaController): internalHandleCommandHandler() && this(mediaController){
+	void around(MediaController controller): internalHandleCommandHandler() && this(controller){
 		try {
-			proceed(mediaController);
+			proceed(controller);
 		} catch (InvalidMediaDataException e) {
 			Alert alert = null;
 			if (e instanceof MediaPathNotValidException)
 				alert = new Alert("Error", "The path is not valid", null, AlertType.ERROR);
 			else
 				alert = new Alert("Error", "The file format is not valid", null, AlertType.ERROR);
-			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
+			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
 			throw new SoftException(e);
 			//return true;
 			// alert.setTimeout(5000);
@@ -74,7 +70,7 @@ public privileged aspect CoreUiControllerHandler {
 				alert = new Alert("Error", "The mobile database is full", null, AlertType.ERROR);
 			else
 				alert = new Alert("Error", "The mobile database can not add a new photo", null, AlertType.ERROR);
-			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
+			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
 		}
 	}
 	
