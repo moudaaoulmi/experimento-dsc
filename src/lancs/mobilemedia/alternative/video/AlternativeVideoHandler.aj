@@ -12,11 +12,14 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.media.MediaException;
 import lancs.mobilemedia.alternative.video.VideoMediaAccessor;
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
-import lancs.mobilemedia.exception.GeneralExceptionHandler;
+import lancs.mobilemedia.exception.AlternativeMusicVideoHandler;
 
 import javax.microedition.rms.RecordStoreException;
 
-public privileged aspect AlternativeVideoHandler {
+public privileged aspect AlternativeVideoHandler extends AlternativeMusicVideoHandler {
+	
+	// Implementing abstract pointcut. Reuse strategy
+	public pointcut checkedPersistenceMechanismException(): execution(boolean MediaController.internalPlayVideoMedia(String, InputStream));
 	
 	pointcut internalPlayVideScreenHandler() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler());
 	pointcut internalPlayVideScreenHandler3() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler3(int, int));
