@@ -9,11 +9,13 @@ import lancs.mobilemedia.core.ui.controller.AbstractController;
 import javax.microedition.media.MediaException;
 import lancs.mobilemedia.alternative.video.VideoMediaAccessor;
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
-import lancs.mobilemedia.exception.AlternativeMusicVideoHandler;
+import lancs.mobilemedia.exception.CheckedPersistenceAndMediaExceptionHandler;
+//import lancs.mobilemedia.exception.ExceptionHandler;
 
 import javax.microedition.rms.RecordStoreException;
 
-public privileged aspect AlternativeVideoHandler extends AlternativeMusicVideoHandler {
+//@ExceptionHandler
+public privileged aspect AlternativeVideoHandler extends CheckedPersistenceAndMediaExceptionHandler {
 	
 	// Implementing abstract pointcut. Reuse strategy
 	public pointcut checkedPersistenceMechanismAndMediaNotFoundException(): execution(boolean MediaController.internalPlayVideoMedia(String, InputStream));

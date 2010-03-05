@@ -12,10 +12,12 @@ import lancs.mobilemedia.core.ui.controller.AlbumController;
 import lancs.mobilemedia.core.ui.controller.MediaController;
 import lancs.mobilemedia.core.ui.controller.MediaListController;
 import lancs.mobilemedia.core.ui.datamodel.AlbumData;
+//import lancs.mobilemedia.exception.ExceptionHandler;
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 import lancs.mobilemedia.lib.exceptions.UnavailablePhotoAlbumException;
 
+//@ExceptionHandler
 privileged aspect ControllerAspectEH {
 	
 	//public boolean AlbumController.handleCommand(Command c, Displayable d) block 1 - Scenario 5

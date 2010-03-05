@@ -9,7 +9,8 @@ import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 
-public abstract aspect OptionalFavouritesSortingHandler {
+//@ExceptionHandler
+public abstract aspect CheckedInvalidPersistenceMediaNotFoundExceptionHandler {
 
 	public abstract pointcut checkedMechanismException();
 	

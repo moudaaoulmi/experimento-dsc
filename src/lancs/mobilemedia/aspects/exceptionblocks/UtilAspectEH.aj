@@ -5,11 +5,13 @@ import java.io.InputStream;
 
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
 import lancs.mobilemedia.core.util.MediaUtil;
+//import lancs.mobilemedia.exception.ExceptionHandler;
 import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
 import lancs.mobilemedia.lib.exceptions.InvalidArrayFormatException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaFormatException;
 
+//@ExceptionHandler
 public aspect UtilAspectEH {
 	
 	//Method ImageUtil.readImageAsByteArray 1- block - Scenario 3

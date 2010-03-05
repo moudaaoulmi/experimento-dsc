@@ -1,9 +1,11 @@
 package lancs.mobilemedia.optional.smsorcapturephoto;
 
 import lancs.mobilemedia.alternative.photo.ImageMediaAccessor;
-import lancs.mobilemedia.exception.CheckedRecordStoreException;
+import lancs.mobilemedia.exception.CheckedRecordStoreExceptionHandler;
+//import lancs.mobilemedia.exception.ExceptionHandler;
 
-public privileged aspect OptionalSmsOrCapturePhotoHandler extends CheckedRecordStoreException {
+//@ExceptionHandler
+public privileged aspect OptionalSmsOrCapturePhotoHandler extends CheckedRecordStoreExceptionHandler {
 	
 	public pointcut checkedRecordStoreException(): execution(void ImageMediaAccessor.addImageData(String, byte[], String));
 	

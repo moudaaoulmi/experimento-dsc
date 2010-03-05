@@ -5,9 +5,12 @@ import javax.wireless.messaging.MessageConnection;
 import org.aspectj.lang.SoftException;
 import java.io.IOException;
 import java.io.InterruptedIOException;
+
+//import lancs.mobilemedia.exception.ExceptionHandler;
 import lancs.mobilemedia.optional.sms.SmsMessaging;
 import lancs.mobilemedia.optional.sms.SmsReceiverThread;
 
+//@ExceptionHandler
 public privileged aspect OptionSmsHandler {
 	
 	pointcut internalSendImageHandler(): execution(MessageConnection SmsMessaging.internalSendImage(byte[], String, MessageConnection));

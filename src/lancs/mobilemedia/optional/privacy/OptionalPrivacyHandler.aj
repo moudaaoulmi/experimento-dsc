@@ -2,6 +2,7 @@ package lancs.mobilemedia.optional.privacy;
 
 import lancs.mobilemedia.core.ui.controller.AlbumController;
 import lancs.mobilemedia.core.ui.datamodel.MediaAccessor;
+//import lancs.mobilemedia.exception.ExceptionHandler;
 
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.AlertType;
@@ -12,6 +13,7 @@ import javax.microedition.rms.RecordStoreFullException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 import lancs.mobilemedia.lib.exceptions.InvalidAlbumNameException;
 
+//@ExceptionHandler
 public privileged aspect OptionalPrivacyHandler {
 
 	pointcut addPasswordHandler(): execution(void MediaAccessor.addPassword(String, String));

@@ -7,12 +7,14 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.rms.RecordStoreFullException;
 import org.aspectj.lang.SoftException;
 
+//import lancs.mobilemedia.exception.ExceptionHandler;
 import lancs.mobilemedia.lib.exceptions.InvalidAlbumNameException;
 import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 
+//@ExceptionHandler
 public privileged aspect CoreUiControllerHandler {
 	
 	pointcut saveDefaultHandler() : execution(boolean AlbumController.saveDefault());

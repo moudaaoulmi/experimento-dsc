@@ -9,7 +9,7 @@ import lancs.mobilemedia.core.ui.MainUIMidlet;
 import lancs.mobilemedia.core.ui.datamodel.AlbumData;
 import lancs.mobilemedia.core.ui.controller.AbstractController;
 import lancs.mobilemedia.core.ui.controller.MediaController;
-import lancs.mobilemedia.exception.AlternativeMusicVideoHandler;
+import lancs.mobilemedia.exception.CheckedPersistenceAndMediaExceptionHandler;
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
@@ -17,7 +17,8 @@ import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 import java.io.InputStream;
 import lancs.mobilemedia.alternative.music.PlayMusicScreen;
 
-public privileged aspect AlternativeMusicHandler extends AlternativeMusicVideoHandler {
+//@ExceptionHandler
+public privileged aspect AlternativeMusicHandler extends CheckedPersistenceAndMediaExceptionHandler {
 	
 	// Implementing abstract pointcut. Reuse strategy
 	public pointcut checkedPersistenceMechanismAndMediaNotFoundException(): execution(boolean MediaController.internalPlayMultiMedia(String, InputStream));

@@ -10,9 +10,11 @@ import lancs.mobilemedia.lib.exceptions.UnavailablePhotoAlbumException;
 import lancs.mobilemedia.core.ui.datamodel.AlbumData;
 import lancs.mobilemedia.core.ui.datamodel.MediaAccessor;
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
-import lancs.mobilemedia.exception.CheckedRecordStoreException;
+import lancs.mobilemedia.exception.CheckedRecordStoreExceptionHandler;
+//import lancs.mobilemedia.exception.ExceptionHandler;
 
-public aspect DataModelAspectEH extends CheckedRecordStoreException {
+//@ExceptionHandler
+public aspect DataModelAspectEH extends CheckedRecordStoreExceptionHandler {
 	
 	public pointcut checkedRecordStoreException() : execution(public void MediaAccessor.addMediaData(String, String, String));
 	

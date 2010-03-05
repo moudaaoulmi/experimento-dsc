@@ -2,7 +2,8 @@ package lancs.mobilemedia.exception;
 
 import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 
-public abstract aspect InvalidMediaDataExceptionHandler {
+//@ExceptionHandler
+public abstract aspect CheckedInvalidMediaDataExceptionHandler {
 	
 	public abstract pointcut checkedMechanismException();
 	

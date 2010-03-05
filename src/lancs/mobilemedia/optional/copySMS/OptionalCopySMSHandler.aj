@@ -10,13 +10,14 @@ import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
-import lancs.mobilemedia.exception.OptionalCopySMSCaptureVideoHandler;
+import lancs.mobilemedia.exception.CheckedMediaNotFoundExceptionHandler;
+//import lancs.mobilemedia.exception.ExceptionHandler;
 
 import org.aspectj.lang.SoftException;
 
-
-public aspect OptionalCopySMSHandler extends OptionalCopySMSCaptureVideoHandler{
-
+//@ExceptionHandler
+public aspect OptionalCopySMSHandler extends CheckedMediaNotFoundExceptionHandler {
+	
 	public pointcut checkedMechanismException() : execution(MediaData PhotoViewController.internalProcessImageData(MediaData)); 
 	pointcut internalHanldeCommand() : execution(void PhotoViewController.internalHandleCommand());
 	pointcut handleCommand() : execution(public boolean PhotoViewController.handleCommand(Command));

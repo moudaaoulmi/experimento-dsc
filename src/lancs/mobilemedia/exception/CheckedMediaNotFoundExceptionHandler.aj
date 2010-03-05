@@ -2,7 +2,8 @@ package lancs.mobilemedia.exception;
 
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 
-public abstract aspect OptionalCopySMSCaptureVideoHandler {
+//@ExceptionHandler
+public abstract aspect CheckedMediaNotFoundExceptionHandler {
 
 	public abstract pointcut checkedMechanismException();
 	

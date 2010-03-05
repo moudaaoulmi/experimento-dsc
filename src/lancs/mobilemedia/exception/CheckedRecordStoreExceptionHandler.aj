@@ -3,7 +3,8 @@ package lancs.mobilemedia.exception;
 import javax.microedition.rms.RecordStoreException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 
-public abstract aspect CheckedRecordStoreException {
+//@ExceptionHandler
+public abstract aspect CheckedRecordStoreExceptionHandler {
 	
 	public abstract pointcut checkedRecordStoreException();
 	

@@ -2,6 +2,9 @@ package lancs.mobilemedia.core.ui.datamodel;
 
 import javax.microedition.rms.RecordStoreException;
 
+//import lancs.mobilemedia.exception.ExceptionHandler;
+
+//@ExceptionHandler
 public aspect CoreUiDataModelHandler {
 	
 	pointcut internalRemoveRecordsHandler() : execution(void MediaAccessor.internalRemoveRecords(String, String, int));
