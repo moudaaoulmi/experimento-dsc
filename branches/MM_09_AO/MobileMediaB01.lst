@@ -32,6 +32,9 @@ src/lancs/mobilemedia/lib/exceptions/PersistenceMechanismException.java
 src/lancs/mobilemedia/lib/exceptions/UnavailablePhotoAlbumException.java
 src/lancs/mobilemedia/lib/exceptions/InvalidAlbumNameException.java
 src/lancs/mobilemedia/aspects/exceptionblocks/UtilAspectEH.aj
+# EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedRecordStoreExceptionHandler.aj
+
 src/lancs/mobilemedia/aspects/exceptionblocks/DataModelAspectEH.aj
 src/lancs/mobilemedia/aspects/exceptionblocks/ControllerAspectEH.aj
 
@@ -46,6 +49,8 @@ src/lancs/mobilemedia/alternative/music/MusicAlbumData.java
 src/lancs/mobilemedia/alternative/music/MusicPlayController.java
 src/lancs/mobilemedia/alternative/music/PlayMusicScreen.java
 src/lancs/mobilemedia/alternative/music/MusicNotPhotoNotVideo.aj
+# EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedPersistenceAndMediaExceptionHandler.aj
 # EH Aspect
 src/lancs/mobilemedia/alternative/music/AlternativeMusicHandler.aj
 
@@ -57,6 +62,8 @@ src/lancs/mobilemedia/alternative/musicvideo/MultiMediaUtil.java
 src/lancs/mobilemedia/alternative/musicvideo/MusicOrVideo.aj
 src/lancs/mobilemedia/alternative/OneAlternativeFeature.aj
 src/lancs/mobilemedia/alternative/AbstractAlternativeFeature.aj
+# EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedMediaNotFoundExceptionHandler.aj
 #EH Aspect
 src/lancs/mobilemedia/alternative/musicvideo/AlternativeMusicVideoHandler.aj
 

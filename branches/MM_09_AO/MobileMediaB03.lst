@@ -33,6 +33,9 @@ src/lancs/mobilemedia/lib/exceptions/PersistenceMechanismException.java
 src/lancs/mobilemedia/lib/exceptions/UnavailablePhotoAlbumException.java
 src/lancs/mobilemedia/lib/exceptions/InvalidAlbumNameException.java
 src/lancs/mobilemedia/aspects/exceptionblocks/UtilAspectEH.aj
+# EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedRecordStoreExceptionHandler.aj
+
 src/lancs/mobilemedia/aspects/exceptionblocks/DataModelAspectEH.aj
 src/lancs/mobilemedia/aspects/exceptionblocks/ControllerAspectEH.aj
 
@@ -48,12 +51,16 @@ src/lancs/mobilemedia/alternative/music/MusicAlbumData.java
 src/lancs/mobilemedia/alternative/music/MusicPlayController.java
 src/lancs/mobilemedia/alternative/music/PlayMusicScreen.java
 src/lancs/mobilemedia/alternative/music/MusicNotPhotoNotVideo.aj
+# EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedPersistenceAndMediaExceptionHandler.aj
 #EH Aspect
 src/lancs/mobilemedia/alternative/music/AlternativeMusicHandler.aj
 
 # Music OR Video
 src/lancs/mobilemedia/alternative/musicvideo/MultiMediaAccessor.java
 src/lancs/mobilemedia/alternative/musicvideo/MultiMediaUtil.java
+# EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedMediaNotFoundExceptionHandler.aj
 src/lancs/mobilemedia/alternative/musicvideo/AlternativeMusicVideoHandler.aj
 
 # Photo OR Music
@@ -63,12 +70,16 @@ src/lancs/mobilemedia/alternative/AbstractAlternativeFeature.aj
 
 # Sorting
 src/lancs/mobilemedia/optional/sorting/SortingAspect.aj
+# EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedInvalidPersistenceMediaNotFoundExceptionHandler.aj
 #EH Aspect
 src/lancs/mobilemedia/optional/sorting/OptionalSortingHandler.aj
 
 # Favourites
 src/lancs/mobilemedia/optional/favourites/FavouritesAspect.aj
 src/lancs/mobilemedia/optional/favourites/PersisteFavoritesAspect.aj
+#EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedInvalidPersistenceMediaNotFoundExceptionHandler.aj
 #EH Aspect
 src/lancs/mobilemedia/optional/favourites/OptionalFavouritesHandler.aj
 

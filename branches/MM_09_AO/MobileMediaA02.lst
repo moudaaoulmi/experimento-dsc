@@ -32,6 +32,9 @@ src/lancs/mobilemedia/lib/exceptions/PersistenceMechanismException.java
 src/lancs/mobilemedia/lib/exceptions/UnavailablePhotoAlbumException.java
 src/lancs/mobilemedia/lib/exceptions/InvalidAlbumNameException.java
 src/lancs/mobilemedia/aspects/exceptionblocks/UtilAspectEH.aj
+# EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedRecordStoreExceptionHandler.aj
+
 src/lancs/mobilemedia/aspects/exceptionblocks/DataModelAspectEH.aj
 src/lancs/mobilemedia/aspects/exceptionblocks/ControllerAspectEH.aj
 
@@ -56,6 +59,8 @@ src/lancs/mobilemedia/alternative/AbstractAlternativeFeature.aj
 
 # Sorting
 src/lancs/mobilemedia/optional/sorting/SortingAspect.aj
+#EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedInvalidPersistenceMediaNotFoundExceptionHandler.aj
 #EH Aspect
 src/lancs/mobilemedia/optional/sorting/OptionalSortingHandler.aj
 

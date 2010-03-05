@@ -31,6 +31,9 @@ src/lancs/mobilemedia/lib/exceptions/InvalidMediaFormatException.java
 src/lancs/mobilemedia/lib/exceptions/PersistenceMechanismException.java
 src/lancs/mobilemedia/lib/exceptions/UnavailablePhotoAlbumException.java
 src/lancs/mobilemedia/lib/exceptions/InvalidAlbumNameException.java
+# EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedRecordStoreExceptionHandler.aj
+
 src/lancs/mobilemedia/aspects/exceptionblocks/UtilAspectEH.aj
 src/lancs/mobilemedia/aspects/exceptionblocks/DataModelAspectEH.aj
 src/lancs/mobilemedia/aspects/exceptionblocks/ControllerAspectEH.aj

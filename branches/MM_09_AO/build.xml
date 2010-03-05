@@ -127,7 +127,7 @@
     	
        <!-- can use ajc or iajc here -->
        <!-- Do argfiles and sourceroots override each other?? sourceroots="${aspect-source.dir}"-->
-       <iajc destdir="${ajc-compiled.dir}" fork="true" proceedOnError="true" noimporterror="true" forkclasspath="${aspectjtools.jar}" classpath="${build.classpath};" argfiles="${workspace.dir}/MobileMediaABC03.lst" inpath="${midp-compiled.dir}" verbose="true" />
+       <iajc destdir="${ajc-compiled.dir}" fork="true" proceedOnError="true" noimporterror="true" forkclasspath="${aspectjtools.jar}" classpath="${build.classpath};" argfiles="${workspace.dir}/MobileMediaC03.lst" inpath="${midp-compiled.dir}" verbose="true" />
     </target>
 
 	<!-- ============================================================= -->
