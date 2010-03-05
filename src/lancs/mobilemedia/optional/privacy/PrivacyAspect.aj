@@ -6,9 +6,6 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.List;
 import javax.microedition.rms.RecordStore;
-import javax.microedition.rms.RecordStoreException;
-import javax.microedition.rms.RecordStoreFullException;
-import javax.microedition.rms.RecordStoreNotFoundException;
 
 import lancs.mobilemedia.core.ui.controller.AlbumController;
 import lancs.mobilemedia.core.ui.controller.MediaListController;
@@ -19,8 +16,6 @@ import lancs.mobilemedia.core.ui.screens.AlbumListScreen;
 import lancs.mobilemedia.core.ui.screens.NewLabelScreen;
 import lancs.mobilemedia.core.ui.screens.PasswordScreen;
 import lancs.mobilemedia.core.util.Constants;
-import lancs.mobilemedia.lib.exceptions.InvalidAlbumNameException;
-import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 
 
 /*************

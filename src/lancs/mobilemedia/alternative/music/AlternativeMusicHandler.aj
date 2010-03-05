@@ -20,17 +20,16 @@ import lancs.mobilemedia.alternative.music.PlayMusicScreen;
 public privileged aspect AlternativeMusicHandler extends AlternativeMusicVideoHandler {
 	
 	// Implementing abstract pointcut. Reuse strategy
-	public pointcut checkedPersistenceMechanismException(): execution(boolean MediaController.internalPlayMultiMedia(String, InputStream));
+	public pointcut checkedPersistenceMechanismAndMediaNotFoundException(): execution(boolean MediaController.internalPlayMultiMedia(String, InputStream));
 	
 	pointcut internalAddNewMediaToAlbumHandler() : execution(* MusicAspect.internalAddNewMediaToAlbum(AlbumData, MediaController));
-	pointcut internalPlayMultiMediaHandler(): execution(boolean MediaController.internalPlayMultiMedia(String, InputStream));
 	pointcut playMusicScreenHandler(): execution (PlayMusicScreen.new(MainUIMidlet, InputStream, String, AbstractController));
 	pointcut startPlayHandler(): execution(void PlayMusicScreen.startPlay());
 	pointcut pausePlayHandler(): execution(void PlayMusicScreen.pausePlay());
 	
 	declare soft: InvalidMediaDataException: internalAddNewMediaToAlbumHandler();
-	declare soft: PersistenceMechanismException: internalAddNewMediaToAlbumHandler() || internalPlayMultiMediaHandler();
-	declare soft: MediaNotFoundException: internalAddNewMediaToAlbumHandler() || internalPlayMultiMediaHandler();
+	declare soft: PersistenceMechanismException: internalAddNewMediaToAlbumHandler();
+	declare soft: MediaNotFoundException: internalAddNewMediaToAlbumHandler();
 	declare soft: Exception: playMusicScreenHandler() || startPlayHandler() || pausePlayHandler();
 	
 	void around(MediaController controller): internalAddNewMediaToAlbumHandler() && args(*,controller) {
@@ -60,21 +59,20 @@ public privileged aspect AlternativeMusicHandler extends AlternativeMusicVideoHa
 		}
 	}
 	
-	boolean around(MediaController mediaController): internalPlayMultiMediaHandler() && this(mediaController) {
-		try{
-			return proceed(mediaController);
-		} catch (MediaNotFoundException e) {
-			Alert alert = new Alert( "Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
-			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
-		    return false;
-		}
-		//AQUI
+//	boolean around(MediaController mediaController): internalPlayMultiMediaHandler() && this(mediaController) {
+//		try{
+//			return proceed(mediaController);
+//		} catch (MediaNotFoundException e) {
+//			Alert alert = new Alert( "Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
+//			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
+//		    return false;
+//		}
 //		catch (PersistenceMechanismException e) {
 //			Alert alert = new Alert( "Error", "The mobile database can open this item 1", null, AlertType.ERROR);
 //			Display.getDisplay(mediaController.midlet).setCurrent(alert, Display.getDisplay(mediaController.midlet).getCurrent());
 //			return false;
 //		}
-	}
+//	}
 	
 	Object around() : playMusicScreenHandler() || startPlayHandler() || pausePlayHandler(){
 		try{

@@ -19,14 +19,13 @@ import javax.microedition.rms.RecordStoreException;
 public privileged aspect AlternativeVideoHandler extends AlternativeMusicVideoHandler {
 	
 	// Implementing abstract pointcut. Reuse strategy
-	public pointcut checkedPersistenceMechanismException(): execution(boolean MediaController.internalPlayVideoMedia(String, InputStream));
+	public pointcut checkedPersistenceMechanismAndMediaNotFoundException(): execution(boolean MediaController.internalPlayVideoMedia(String, InputStream));
 	
 	pointcut internalPlayVideScreenHandler() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler());
 	pointcut internalPlayVideScreenHandler3() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler3(int, int));
 	pointcut startVideoHandler() : execution(void PlayVideoScreen.startVideo());
 	pointcut stopVideo() : execution(void PlayVideoScreen.stopVideo());
 	pointcut internalPlayVideScreenHandler2() : execution (void PlayVideoScreen.internalPlayVideoScreenHandler2(AbstractController));
-	pointcut internalPlayVideoMediaHandler() : execution(boolean MediaController.internalPlayVideoMedia(String, InputStream));
 	pointcut inputStreamToBytesHandler(): execution(byte[] VideoMediaAccessor.inputStreamToBytes(InputStream));
 	pointcut internalResetRecordStoreHandler(): execution(MediaData VideoMediaAccessor.internalResetRecordStore(MediaData));
 	pointcut addVideoDataHandler(): execution(void VideoMediaAccessor.addVideoData(String, String, byte[]));
@@ -34,8 +33,7 @@ public privileged aspect AlternativeVideoHandler extends AlternativeMusicVideoHa
 	declare soft: Exception: startVideoHandler() || stopVideo();
 	declare soft: IOException: internalPlayVideScreenHandler() || inputStreamToBytesHandler();
 	declare soft: MediaException: internalPlayVideScreenHandler() || internalPlayVideScreenHandler3();
-	declare soft: MediaNotFoundException: internalPlayVideoMediaHandler() || internalResetRecordStoreHandler();
-	declare soft: PersistenceMechanismException: internalPlayVideoMediaHandler();
+	declare soft: MediaNotFoundException: internalResetRecordStoreHandler();
 	declare soft: RecordStoreException: addVideoDataHandler();
 	
 	
@@ -73,22 +71,22 @@ public privileged aspect AlternativeVideoHandler extends AlternativeMusicVideoHa
 		}
 	}
 	
-	boolean around(MediaController controller): internalPlayVideoMediaHandler() && this(controller){
-		try {
-			return proceed(controller);
-		} catch (MediaNotFoundException e) {
-			Alert alert = new Alert( "Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
-			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
-		    return false;
-		}
-		// AQUI
+//	boolean around(MediaController controller): internalPlayVideoMediaHandler() && this(controller){
+//		try {
+//			return proceed(controller);
+//		} catch (MediaNotFoundException e) {
+//			Alert alert = new Alert( "Error", "The selected item was not found in the mobile device", null, AlertType.ERROR);
+//			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
+//		    return false;
+//		}
 //		catch (PersistenceMechanismException e) {
 //			Alert alert = new Alert( "Error", "The mobile database can open this item 1", null, AlertType.ERROR);
 //			Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
 //			return false;
 //		}
-	}	
+//	}	
 	
+	// Unable to reuse because this class already has reuse strategy 
 	MediaData around(): internalResetRecordStoreHandler() {
 		try {
 			return proceed();

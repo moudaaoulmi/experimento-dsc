@@ -1,5 +1,3 @@
-
-
 package lancs.mobilemedia.aspects.exceptionblocks;
 
 import javax.microedition.rms.RecordStore;
@@ -12,11 +10,14 @@ import lancs.mobilemedia.lib.exceptions.UnavailablePhotoAlbumException;
 import lancs.mobilemedia.core.ui.datamodel.AlbumData;
 import lancs.mobilemedia.core.ui.datamodel.MediaAccessor;
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
+import lancs.mobilemedia.exception.CheckedRecordStoreException;
 
-public aspect DataModelAspectEH {
+public aspect DataModelAspectEH extends CheckedRecordStoreException {
+	
+	public pointcut checkedRecordStoreException() : execution(public void MediaAccessor.addMediaData(String, String, String));
 	
 	//Method public void ImageMediaAccessor.addImageData(String, String, String) 1- block - Scenario 1
-	pointcut addMediaData(): execution(public void MediaAccessor.addMediaData(String, String, String));
+	//pointcut addMediaData(): execution(public void MediaAccessor.addMediaData(String, String, String));
 	pointcut loadMediaDataFromRMS(): execution(public MediaData[] MediaAccessor.loadMediaDataFromRMS(String));
 	pointcut updateMediaInfo(): execution(public boolean MediaAccessor.updateMediaInfo(MediaData, MediaData));
 	pointcut updateMediaInfoAround(): call(public void RecordStore.closeRecordStore(..))&& (withincode(public void MediaAccessor.updateMediaRecord(MediaData, MediaData)));
@@ -29,19 +30,19 @@ public aspect DataModelAspectEH {
 	pointcut resetMediaData(): execution(public void AlbumData.resetMediaData());
 	
 	
-	declare soft: RecordStoreException : addMediaData() || loadMediaDataFromRMS() || updateMediaInfo() 
+	declare soft: RecordStoreException : loadMediaDataFromRMS() || updateMediaInfo() 
 										|| loadMediaBytesFromRMS() || deleteSingleMediaFromRMS() || createNewAlbum() || deleteAlbum();
 	declare soft:  InvalidMediaDataException : getAlbumNames() || getMedias() || resetMediaData();
 	declare soft:  PersistenceMechanismException : getAlbumNames() || getMedias();
 	
 	
-	void around() throws PersistenceMechanismException: addMediaData(){
-		try {
-			proceed();
-		} catch (RecordStoreException e) {
-			throw new  PersistenceMechanismException();
-		}
-	}
+//	void around() throws PersistenceMechanismException: addMediaData(){
+//		try {
+//			proceed();
+//		} catch (RecordStoreException e) {
+//			throw new  PersistenceMechanismException();
+//		}
+//	}
 	
 	Object around() throws  PersistenceMechanismException: loadMediaDataFromRMS() || updateMediaInfo() || loadMediaBytesFromRMS()
 																|| deleteSingleMediaFromRMS() || deleteAlbum(){
