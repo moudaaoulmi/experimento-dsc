@@ -36,14 +36,6 @@ public aspect DataModelAspectEH extends CheckedRecordStoreException {
 	declare soft:  PersistenceMechanismException : getAlbumNames() || getMedias();
 	
 	
-//	void around() throws PersistenceMechanismException: addMediaData(){
-//		try {
-//			proceed();
-//		} catch (RecordStoreException e) {
-//			throw new  PersistenceMechanismException();
-//		}
-//	}
-	
 	Object around() throws  PersistenceMechanismException: loadMediaDataFromRMS() || updateMediaInfo() || loadMediaBytesFromRMS()
 																|| deleteSingleMediaFromRMS() || deleteAlbum(){
 		try {
