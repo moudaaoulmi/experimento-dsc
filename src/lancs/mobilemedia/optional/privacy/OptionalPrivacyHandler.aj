@@ -41,7 +41,7 @@ public privileged aspect OptionalPrivacyHandler {
 			return proceed(controller);
 		} catch (PersistenceMechanismException e) {
 			Alert alert = null;
-			if (e.getCause() instanceof  RecordStoreFullException)
+			if (e.getCause() instanceof RecordStoreFullException)
 				alert = new Alert("Error", "The mobile database is full", null, AlertType.ERROR);
 			else
 				alert = new Alert("Error", "The mobile database can not add a new photo album", null, AlertType.ERROR);
@@ -58,7 +58,6 @@ public privileged aspect OptionalPrivacyHandler {
 		try {
 			proceed(controller);
 		} catch (PersistenceMechanismException e) {
-			//System.out.println(e);
 			Alert alert = new Alert( "Error", "The mobile database can not delete this photo album", null, AlertType.ERROR);
 	        Display.getDisplay(controller.midlet).setCurrent(alert, Display.getDisplay(controller.midlet).getCurrent());
 		}
