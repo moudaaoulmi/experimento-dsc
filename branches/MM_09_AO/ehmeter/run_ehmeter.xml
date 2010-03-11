@@ -9,10 +9,9 @@
 	
 	<property name="dir.dist" value="${dir.work}/dist" />
 	<property name="dir.librariesEHMeter" value="${dir.build}/libs" />
-	<property name="dir.lib" value="../libs" />
+	<property name="dir.lib" value="libs" />
 	<property name="dir.plugins" value="D:\Downloads\Eclipse\Galileo\plugins" />
-	<!--<property name="dir.src" value="../product-src/src" />-->
-	<property name="dir.src" value="../preverified" />
+	<property name="dir.src" value="../product-src/src" />
 	<property name="dir.reusable.src" value="C:\Users\Emanoel\Documents\Pessoal\CIn\Mestrado\Exception Handling\ReusableCode\src" />
 
 	<property name="version" value="0.3"/>
@@ -85,18 +84,18 @@
 			  <property name="taskdefs.init" value="true"/>
 		<taskdef name="ehmeter" classname="br.upe.dsc.ehmeter.EHMeterTask" 
 			classpath="${dir.librariesEHMeter}/ehmeter-0.4.1.jar">
-			<classpath>
+			<!--<classpath>
 				<pathelement location="${dir.work}/${jar.name}"/>
 				<pathelement location="libs/aspectjtools.jar" />
 				<pathelement location="ehmeter/libs/aspectjrt.jar" />
 				<pathelement location="libs/ajrt_j2me_obfuscated.jar" />	
 				<pathelement location="libs/ajrt_j2me.jar" />	
-			</classpath>
+			</classpath>-->
 		</taskdef>
 			<mkdir dir="${dir.testclasses}" />
 		
 		<ehmeter workdir="${dir.work}" sourcelevel="1.5" export="xls"
-				resultsfile="${dir.work}/metrics-results.xls">
+				resultsfile="${dir.work}/metrics-results.xls" verbose="debug">
 			<fileset dir="${dir.src}" includes="**/*.java"/>
 			<fileset dir="${dir.src}" includes="**/*.aj"/>
 			<classpath refid="classpath.common"/>
