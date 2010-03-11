@@ -4,6 +4,10 @@
 
 	<!-- Define all relevant properties here. -->
     <property name="workspace.dir" location="${basedir}"/> 
+	
+	<property name="compile-list.lst" location="${workspace.dir}/MobileMediaC03.lst"/>
+	
+	<property name="product-src.dir" location="${workspace.dir}/product-src"/>
 
 	<property file="labBuild.properties"/>
 
@@ -35,7 +39,7 @@
 	<property name="ajc-compiled.dir" location="${workspace.dir}/ajc-compiled"/> 
 	<property name="preverified.dir" location="${workspace.dir}/preverified"/> 
 	<property name="jar.dir" location="${workspace.dir}/jars"/> 
-	<property name="images.dir" location="${workspace.dir}/images"/> 
+	<property name="images.dir" location="${workspace.dir}/images"/>
 
 	<!-- This resource is required for Antenna based tasks -->
 	<taskdef resource="antenna.properties" classpath="libs\antenna-bin-0.9.15-beta.jar"/>
@@ -52,6 +56,13 @@
  		<antcall target="copy-image-files" />
 		<antcall target="midp-preverify" />
 		<antcall target="make-jar" />
+ 		<java classname="antutil.AntFileCopyer" fork="yes">
+ 			<arg value="${compile-list.lst}"/>
+ 			<arg value="${product-src.dir}"/>
+ 			<classpath>
+ 				<pathelement location="libs/antfilecopyer.jar" />
+ 			</classpath>
+ 		</java>
     </target>
 
     <!-- ============================================================= -->
@@ -62,6 +73,7 @@
       <delete quiet="on" dir="${ajc-compiled.dir}"/>
       <delete quiet="on" dir="${preverified.dir}"/>
       <delete quiet="on" dir="${midp-compiled.dir}"/>
+      <delete quiet="on" dir="${product-src.dir}"/>
 
       <!-- Update the jar, don't delete it. This is only required for the 
            Motorola application, which needs the extra property in the jad file -->    	
@@ -78,6 +90,7 @@
       <mkdir dir="${preverified.dir}"/>
       <mkdir dir="${midp-compiled.dir}"/>
       <mkdir dir="${jar.dir}"/>
+      <mkdir dir="${product-src.dir}"/>
     </target>
 
     <!-- ============================================================= -->
@@ -127,7 +140,7 @@
     	
        <!-- can use ajc or iajc here -->
        <!-- Do argfiles and sourceroots override each other?? sourceroots="${aspect-source.dir}"-->
-       <iajc destdir="${ajc-compiled.dir}" fork="true" proceedOnError="true" noimporterror="true" forkclasspath="${aspectjtools.jar}" classpath="${build.classpath};" argfiles="${workspace.dir}/MobileMediaC03.lst" inpath="${midp-compiled.dir}" verbose="true" />
+       <iajc destdir="${ajc-compiled.dir}" fork="true" proceedOnError="true" noimporterror="true" forkclasspath="${aspectjtools.jar}" classpath="${build.classpath};" argfiles="${compile-list.lst}" inpath="${midp-compiled.dir}" verbose="true" />
     </target>
 
 	<!-- ============================================================= -->
