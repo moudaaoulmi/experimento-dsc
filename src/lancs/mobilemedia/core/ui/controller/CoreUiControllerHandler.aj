@@ -15,7 +15,7 @@ import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 
 //@ExceptionHandler
-public privileged aspect CoreUiControllerHandler {
+public aspect CoreUiControllerHandler {
 	
 	pointcut saveDefaultHandler() : execution(boolean AlbumController.saveDefault());
 	pointcut internalSaveDefaultHandler() : execution(void AlbumController.internalSaveDefault());
