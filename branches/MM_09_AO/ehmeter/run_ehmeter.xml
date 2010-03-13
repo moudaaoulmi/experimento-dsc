@@ -10,7 +10,7 @@
 	<property name="dir.dist" value="${dir.work}/dist" />
 	<property name="dir.librariesEHMeter" value="${dir.build}/libs" />
 	<property name="dir.lib" value="libs" />
-	<property name="dir.plugins" value="D:\Downloads\Eclipse\Galileo\plugins" />
+	<property name="dir.plugins" value="C:\\Desenvolvimento\\eclipse-mestrado-3\\plugins" />
 	<property name="dir.src" value="../product-src/src" />
 	<property name="dir.reusable.src" value="C:\Users\Emanoel\Documents\Pessoal\CIn\Mestrado\Exception Handling\ReusableCode\src" />
 
@@ -19,6 +19,9 @@
 
 	<path id="classpath.common">
 		<fileset dir="${dir.lib}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="C:\WTK2.5.1\lib">
 			<include name="*.jar" />
 		</fileset>
 		<fileset dir="${dir.librariesEHMeter}">
@@ -62,9 +65,9 @@
 		
 	    <iajc destdir="${dir.classes}"
 	    		classpathref="classpath.common"
-	    		source="1.6" fork="true" >
+	    		source="1.4" fork="true" >
 			<sourceroots>
-				<pathelement location="${dir.reusable.src}"/>
+				<!--pathelement location="${dir.reusable.src}"/-->
 		    	<pathelement location="${dir.src}"/>
 		    </sourceroots>
 		</iajc>
@@ -80,7 +83,7 @@
 	</target>
 	
 	<target name="run" description="Computes metrics on the project.">
-		<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" classpath="libs\aspectjtools.jar"/>
+		<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" classpath="libs\aspectjtools-1.5.1.jar"/>
 			  <property name="taskdefs.init" value="true"/>
 		<taskdef name="ehmeter" classname="br.upe.dsc.ehmeter.EHMeterTask" 
 			classpath="${dir.librariesEHMeter}/ehmeter-0.4.1.jar">
