@@ -16,19 +16,21 @@ public aspect OptionalPimHanlder {
 	declare soft : Exception : internalPimInstHandler() || runHandler() || pimSeedHandler();
 	declare soft : PIMException : internalSeedHandler(); 
 	
-	void around(): pimSeedHandler() || runHandler() || internalPimInstHandler() {
+	void around(): pimSeedHandler() || runHandler() || internalPimInstHandler() || internalSeedHandler(){
 		try{
 			proceed();
-		}catch(Exception e){
+		} catch(RuntimeException e) {
+			throw e;
+		} catch(Exception e){
 			//TO DO
 		}
 	}
 	
-	void around(): internalSeedHandler(){
-		try{
-			proceed();
-		}catch(PIMException ex){
-			//Contact List is not supported
-		}
-	}
+//	void around(): internalSeedHandler(){
+//		try{
+//			proceed();
+//		}catch(PIMException ex){
+//			//Contact List is not supported
+//		}
+//	}
 }
