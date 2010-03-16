@@ -36,13 +36,26 @@ public privileged aspect AlternativeVideoHandler extends CheckedPersistenceAndMe
 	declare soft: RecordStoreException: addVideoDataHandler();
 	
 	
-	void around(): startVideoHandler() || stopVideo(){
+	Object around(): startVideoHandler() || stopVideo() || internalResetRecordStoreHandler(){
 		try{
-			proceed();
+			return proceed();
+		} catch(RuntimeException e) {
+			throw e;
 		} catch(Exception e) {
 	    	e.printStackTrace();
-	    } 
+	    }
+		return null;
 	}
+	
+	// Unable to reuse because this class already has reuse strategy 
+//	MediaData around(): internalResetRecordStoreHandler() {
+//		try {
+//			return proceed();
+//		} catch (MediaNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	void around(): internalPlayVideScreenHandler() {
 		try{
@@ -70,15 +83,6 @@ public privileged aspect AlternativeVideoHandler extends CheckedPersistenceAndMe
 		}
 	}
 	
-	// Unable to reuse because this class already has reuse strategy 
-	MediaData around(): internalResetRecordStoreHandler() {
-		try {
-			return proceed();
-		} catch (MediaNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
 	void around() throws PersistenceMechanismException : addVideoDataHandler() {
 		try {
