@@ -59,21 +59,23 @@ public aspect DataModelAspectEH extends CheckedRecordStoreExceptionHandler {
 		}
 	}
 	
-	void around(): getAlbumNames(){
+	void around(): getAlbumNames() || resetMediaData(){
 		try{
 			proceed();
-		} catch (PersistenceMechanismException e) {
+		} catch(RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}	
 	
-	void around(): getAlbumNames() || resetMediaData(){
-		try{
-			proceed();
-		} catch (InvalidMediaDataException e) {
-			e.printStackTrace();
-		} 
-	}	
+//	void around(): getAlbumNames() || resetMediaData(){
+//		try{
+//			proceed();
+//		} catch (InvalidMediaDataException e) {
+//			e.printStackTrace();
+//		} 
+//	}	
 		
 	MediaData[] around() throws  UnavailablePhotoAlbumException: getMedias(){
 		try {
