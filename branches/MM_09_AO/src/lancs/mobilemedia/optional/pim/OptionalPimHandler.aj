@@ -3,7 +3,7 @@ package lancs.mobilemedia.optional.pim;
 import java.lang.Exception;
 import javax.microedition.pim.PIMException;
 
-public aspect OptionalPimHanlder {
+public aspect OptionalPimHandler {
 	
 	pointcut internalPimInstHandler() : execution(void PimController.internalPimInst());
 	pointcut runHandler() : execution(void PimControllerThread.run());

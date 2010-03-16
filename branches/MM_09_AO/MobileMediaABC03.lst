@@ -181,4 +181,4 @@ src/lancs/mobilemedia/optional/pim/PimControllerThread.java
 src/lancs/mobilemedia/optional/pim/PimListScreen.java
 src/lancs/mobilemedia/optional/pim/PimSeed.java
 #EH Aspect
-src/lancs/mobilemedia/optional/pim/OptionalPimHanlder.aj
+src/lancs/mobilemedia/optional/pim/OptionalPimHandler.aj
