@@ -19,30 +19,32 @@ public aspect OptionalCaptureVideoHandler {
 	declare soft: PersistenceMechanismException : internalHandleCommand() || internalHandleCommand2();
 	declare soft: MediaNotFoundException : internalHandleCommand2();
 	
-	void around(): pauseCaptureHandler() || startCaptureHandler(){
+	void around(): pauseCaptureHandler() || startCaptureHandler() || internalHandleCommand2() || internalHandleCommand() {
 		try {
 			proceed();
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	void around(): internalHandleCommand2(){
-		try {
-			proceed();
-		} catch (MediaNotFoundException e) {
-			e.printStackTrace();
-		} 
-	}
+//	void around(): internalHandleCommand2(){
+//		try {
+//			proceed();
+//		} catch (MediaNotFoundException e) {
+//			e.printStackTrace();
+//		} 
+//	}
 
-	void around(): internalHandleCommand() || internalHandleCommand2(){
-		try {
-			proceed();
-		} catch (InvalidMediaDataException e) {
-			e.printStackTrace();
-		} catch (PersistenceMechanismException e) {
-			e.printStackTrace();
-		}
-	}
+//	void around(): internalHandleCommand() || internalHandleCommand2(){
+//		try {
+//			proceed();
+//		} catch (InvalidMediaDataException e) {
+//			e.printStackTrace();
+//		} catch (PersistenceMechanismException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 }

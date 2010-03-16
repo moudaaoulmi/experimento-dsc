@@ -64,18 +64,20 @@ public aspect DataModelAspectEH {
 		}
 	}
 	
-	void around(): getAlbumNames(){
-		try{
-			proceed();
-		} catch (PersistenceMechanismException e) {
-			e.printStackTrace();
-		}
-	}	
+//	void around(): getAlbumNames(){
+//		try{
+//			proceed();
+//		} catch (PersistenceMechanismException e) {
+//			e.printStackTrace();
+//		}
+//	}	
 	
 	void around(): getAlbumNames() || resetMediaData(){
 		try{
 			proceed();
-		} catch (InvalidMediaDataException e) {
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
 			e.printStackTrace();
 		} 
 	}	
