@@ -40,7 +40,7 @@ public class BaseController extends AbstractController {
 		//SelectMediaController
 		//Get all MobileMedia defined albums from the record store
 		String[] albumNames = model.getAlbumNames();
-		getAlbumListScreen().deleteAll();
+		//getAlbumListScreen().deleteAll();
 		for (int i = 0; i < albumNames.length; i++) {
 			if (albumNames[i] != null) {
 				//Add album name to menu list
