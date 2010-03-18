@@ -1,0 +1,74 @@
+src/lancs/mobilemedia/core/comms/BaseMessaging.java
+src/lancs/mobilemedia/core/ui/MainUIMidlet.java
+src/lancs/mobilemedia/core/ui/controller/ControllerInterface.java
+src/lancs/mobilemedia/core/ui/controller/AbstractController.java
+src/lancs/mobilemedia/core/ui/controller/BaseController.java
+src/lancs/mobilemedia/core/ui/controller/AlbumController.java
+src/lancs/mobilemedia/core/ui/controller/MediaController.java
+src/lancs/mobilemedia/core/ui/controller/MediaListController.java
+src/lancs/mobilemedia/core/ui/controller/ScreenSingleton.java
+#EH Aspect
+src/lancs/mobilemedia/core/ui/controller/CoreUiControllerHandler.aj
+
+src/lancs/mobilemedia/core/ui/datamodel/AlbumData.java
+src/lancs/mobilemedia/core/ui/datamodel/MediaAccessor.java
+src/lancs/mobilemedia/core/ui/datamodel/MediaData.java
+#EH Aspect
+src/lancs/mobilemedia/core/ui/datamodel/CoreUiDataModelHandler.aj
+
+src/lancs/mobilemedia/core/ui/screens/AddMediaToAlbum.java
+src/lancs/mobilemedia/core/ui/screens/AlbumListScreen.java
+src/lancs/mobilemedia/core/ui/screens/MediaListScreen.java
+src/lancs/mobilemedia/core/ui/screens/NewLabelScreen.java
+src/lancs/mobilemedia/core/ui/screens/SplashScreen.java
+src/lancs/mobilemedia/core/util/Constants.java
+src/lancs/mobilemedia/core/util/MediaUtil.java
+src/lancs/mobilemedia/lib/exceptions/MediaNotFoundException.java
+src/lancs/mobilemedia/lib/exceptions/MediaPathNotValidException.java
+src/lancs/mobilemedia/lib/exceptions/InvalidArrayFormatException.java
+src/lancs/mobilemedia/lib/exceptions/InvalidMediaDataException.java
+src/lancs/mobilemedia/lib/exceptions/InvalidMediaFormatException.java
+src/lancs/mobilemedia/lib/exceptions/PersistenceMechanismException.java
+src/lancs/mobilemedia/lib/exceptions/UnavailablePhotoAlbumException.java
+src/lancs/mobilemedia/lib/exceptions/InvalidAlbumNameException.java
+src/lancs/mobilemedia/aspects/exceptionblocks/UtilAspectEH.aj
+# EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedRecordStoreExceptionHandler.aj
+
+src/lancs/mobilemedia/aspects/exceptionblocks/DataModelAspectEH.aj
+src/lancs/mobilemedia/aspects/exceptionblocks/ControllerAspectEH.aj
+
+# This configuration (Instance A02) includes:
+# - The Photo alternative feature
+# - Sorting and Favorites optional features
+# Music and Video alternative features are not included.
+# No other optional features are not included.
+
+# Photo
+src/lancs/mobilemedia/alternative/photo/AbstractPhotoAspect.aj
+src/lancs/mobilemedia/alternative/photo/PhotoAspect.aj
+src/lancs/mobilemedia/alternative/photo/PhotoNotVideoNotMusic.aj
+src/lancs/mobilemedia/alternative/photo/ImageAlbumData.java
+src/lancs/mobilemedia/alternative/photo/ImageMediaAccessor.java
+src/lancs/mobilemedia/alternative/photo/PhotoViewScreen.java
+src/lancs/mobilemedia/alternative/photo/exceptionblocks/ScreensAspectEH.aj
+
+# OneAlternativeFeature and TwoAlternativeFeatures cannot be included in the same instance
+src/lancs/mobilemedia/alternative/OneAlternativeFeature.aj
+src/lancs/mobilemedia/alternative/AbstractAlternativeFeature.aj
+
+# Sorting
+src/lancs/mobilemedia/optional/sorting/SortingAspect.aj
+#EH Aspect Reuse
+src/lancs/mobilemedia/exception/CheckedInvalidPersistenceMediaNotFoundExceptionHandler.aj
+#EH Aspect
+src/lancs/mobilemedia/optional/sorting/OptionalSortingHandler.aj
+
+# Favourites
+src/lancs/mobilemedia/optional/favourites/FavouritesAspect.aj
+src/lancs/mobilemedia/optional/favourites/PersisteFavoritesAspect.aj
+#EH Aspect
+src/lancs/mobilemedia/optional/favourites/OptionalFavouritesHandler.aj
+
+# Sorting AND Favourites
+src/lancs/mobilemedia/optional/SortingAndFavorites.aj
