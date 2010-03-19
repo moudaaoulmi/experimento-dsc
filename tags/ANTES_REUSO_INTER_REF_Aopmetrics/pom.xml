@@ -1,0 +1,202 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>aopmetrics</groupId>
+  <artifactId>aopmetrics</artifactId>
+  <version>0.3</version>
+  <name>AOP Metrics</name> 
+
+  <url>http://aopmetrics.tigris.org</url>
+  <inceptionYear>2005</inceptionYear> 
+ 
+  <issueManagement>
+    <system>Scarab</system>
+    <url>http://aopmetrics.tigris.org/servlets/ProjectIssues</url> 
+  </issueManagement> 
+ 
+  <mailingLists>
+    <mailingList>
+      <name>dev@aopmetrics.tigris.org</name>
+      <subscribe>dev-subscribe@aopmetrics.tigris.org</subscribe>
+      <unsubscribe>dev-subscribe@aopmetrics.tigris.org</unsubscribe>
+      <post>dev@aopmetrics.tigris.org</post>
+      <archive>http://aopmetrics.tigris.org/servlets/SummarizeList?listName=dev</archive>
+    </mailingList>
+    <mailingList>
+      <name>cvs@aopmetrics.tigris.org</name>
+      <subscribe>cvs-subscribe@aopmetrics.tigris.org</subscribe>
+      <unsubscribe>cvs-subscribe@aopmetrics.tigris.org</unsubscribe>
+      <post>cvs@aopmetrics.tigris.org</post>
+      <archive>http://aopmetrics.tigris.org/servlets/SummarizeList?listName=cvs</archive>
+    </mailingList>
+    <mailingList>
+      <name>issues@aopmetrics.tigris.org</name>
+      <subscribe>issues-subscribe@aopmetrics.tigris.org</subscribe>
+      <unsubscribe>issues-subscribe@aopmetrics.tigris.org</unsubscribe>
+      <post>issues@aopmetrics.tigris.org</post>
+      <archive>http://aopmetrics.tigris.org/servlets/SummarizeList?listName=issues</archive>
+    </mailingList>
+    <mailingList>
+      <name>users@aopmetrics.tigris.org</name>
+      <subscribe>users-subscribe@aopmetrics.tigris.org</subscribe>
+      <unsubscribe>users-subscribe@aopmetrics.tigris.org</unsubscribe>
+      <post>users@aopmetrics.tigris.org</post>
+      <archive>http://aopmetrics.tigris.org/servlets/SummarizeList?listName=users</archive>
+    </mailingList>
+    <mailingList>
+      <name>announce@aopmetrics.tigris.org</name>
+      <subscribe>announce-subscribe@aopmetrics.tigris.org</subscribe>
+      <unsubscribe>announce-subscribe@aopmetrics.tigris.org</unsubscribe>
+      <post>announce@aopmetrics.tigris.org</post>
+      <archive>http://aopmetrics.tigris.org/servlets/SummarizeList?listName=announce</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <developer>
+      <id>misto</id>
+      <name>Michal Stochmialek</name>
+      <email>misto@e-informatyka.pl</email>
+      <url>http://misto.e-informatyka.pl</url>
+    </developer> 
+  </developers> 
+
+
+  <dependencies>
+    <dependency>
+      <groupId>ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.6.5</version>
+    </dependency>
+    <dependency>
+      <groupId>xpp3</groupId>
+      <artifactId>xpp3</artifactId>
+      <version>1.1.3.4-RC8</version>
+    </dependency>
+    <dependency>
+      <groupId>xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>1.1.1</version>
+    </dependency> 
+    <dependency>
+      <groupId>poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>2.5.1-final-20040804</version>
+    </dependency>
+    <dependency>
+      <groupId>aspectj</groupId>
+      <artifactId>aspectjtools</artifactId>
+      <version>1.5.1</version>
+    </dependency> 
+    <dependency>
+      <groupId>aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>1.5.1</version>
+    </dependency> 
+    <dependency>
+      <groupId>commons-cli</groupId>
+      <artifactId>commons-cli</artifactId>
+      <version>1.0</version>
+    </dependency> 
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope> 
+    </dependency> 
+  </dependencies> 
+ 
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source> 
+          <target>1.5</target> 
+        </configuration> 
+      </plugin> 
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>org.tigris.aopmetrics.AopMetricsCLI</mainClass> 
+              <addClasspath>true</addClasspath>
+            </manifest> 
+         </archive> 
+        </configuration> 
+      </plugin>  
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemProperties>
+            <property>
+              <name>tests.workdir</name>
+              <value>target/workdir</value>
+            </property>
+          </systemProperties> 
+        </configuration> 
+      </plugin> 
+    </plugins> 
+  </build>
+  
+  <profiles>
+    <profile> 
+      <id>dist</id>
+      <build>
+       <defaultGoal>assembly:assembly</defaultGoal> 
+       <plugins> 
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>aopmetrics-on-aopmetrics</id>
+                <phase>package</phase> 
+                <configuration>
+                  <tasks>
+                    <taskdef name="aopmetrics" classname="org.tigris.aopmetrics.AopMetricsTask">
+                      <classpath refid="maven.compile.classpath"/>
+                      <classpath refid="maven.test.classpath"/>
+                      <classpath location="${project.build.directory}/${project.build.finalName}.jar"/>
+                    </taskdef>
+        
+                    <aopmetrics workdir="${project.build.directory}/work" sourcelevel="1.5" export="xls"
+                        resultsfile="${project.build.directory}/aop-metrics-results.xls">
+                      <fileset dir="src/main/java" includes="**/*.java"/>
+                      <fileset dir="src/test/java" includes="**/*.java"/>
+                      <classpath refid="maven.compile.classpath"/>
+                      <classpath refid="maven.test.classpath"/>
+                    </aopmetrics> 
+                  </tasks> 
+                </configuration> 
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin> 
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>javadoc-gen</id>
+                <phase>package</phase> 
+                <goals>
+                  <goal>javadoc</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin> 
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/bin.xml</descriptor>
+                <descriptor>src/main/assembly/src.xml</descriptor>
+              </descriptors>  
+            </configuration>
+          </plugin> 
+        </plugins> 
+      </build> 
+    </profile> 
+  </profiles> 
+</project>
