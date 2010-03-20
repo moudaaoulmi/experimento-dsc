@@ -17,6 +17,8 @@
 	
 	<property name="aspectjtools.jar" location="${aspectj.lib.dir}\\aspectjtools.jar"/> 
 	
+	<property name="dir.reusable.src" value="C:\Development\workspaceMM\ReusableCode\src2" /> 
+	
 	<!-- Define core MIDP libraries -->
 	<!-- MIDP 1.0 CLDC 1.0 -->
 	<property name="midpapi10.jar" location="${wtk.home}\lib\midpapi10.jar"/> 
@@ -31,7 +33,7 @@
 	<property name="jsr75.jar" location="${wtk.home}/lib/jsr75.jar"/>
 
 	<!-- Set the classpath to be used -->
-	<property name="build.classpath" value="${midpapi20.jar};${cldcapi11.jar};${aspectjrt.jar};${mmapi.jar};${antenna.jar};${wma.jar};${jsr75.jar}"/>
+	<property name="build.classpath" value="${midpapi20.jar};${cldcapi11.jar};${aspectjrt.jar};${mmapi.jar};${antenna.jar};${wma.jar}"/>
 
 	<!-- Directories created or used during the build process -->
 	<property name="midp-compiled.dir" location="${workspace.dir}/midp-compiled"/>
@@ -140,7 +142,7 @@
     	
        <!-- can use ajc or iajc here -->
        <!-- Do argfiles and sourceroots override each other?? sourceroots="${aspect-source.dir}"-->
-       <iajc destdir="${ajc-compiled.dir}" fork="true" proceedOnError="true" noimporterror="true" forkclasspath="${aspectjtools.jar}" classpath="${build.classpath};" argfiles="${compile-list.lst}" inpath="${midp-compiled.dir}" verbose="true" />
+       <iajc destdir="${ajc-compiled.dir}" fork="true" sourceroots="${dir.reusable.src}" proceedOnError="true" noimporterror="true" forkclasspath="${aspectjtools.jar}" classpath="${build.classpath};" argfiles="${compile-list.lst}" inpath="${midp-compiled.dir}" verbose="true" />
     </target>
 
 	<!-- ============================================================= -->
