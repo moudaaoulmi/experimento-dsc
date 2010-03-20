@@ -1,6 +1,7 @@
 package net.sourceforge.metrics.calculators;
 
 import net.sourceforge.metrics.core.Log;
+import br.upe.dsc.reusable.exception.*;
 import net.sourceforge.metrics.core.Metric;
 import net.sourceforge.metrics.core.sources.AbstractMetricSource;
 
@@ -16,6 +17,8 @@ import org.eclipse.jdt.core.compiler.InvalidInputException;
 import exception.ExceptionHandler;
 @ExceptionHandler
 public privileged aspect CalculatorsHandler {
+	
+	public pointcut emptyBlockException(): internalInitBucketsHandler() || internalCalculateHandler5() || internalCalculateHandler2();
 
 	pointcut internalCalculateHandler(): execution(private String McCabe.internalCalculate(AbstractMetricSource,String));
 
@@ -58,12 +61,12 @@ public privileged aspect CalculatorsHandler {
 
 	}
 
-	void around(): internalInitBucketsHandler() {
-		try {
-			proceed();
-		} catch (JavaModelException e) {
-		}
-	}
+//	void around(): internalInitBucketsHandler() {
+//		try {
+//			proceed();
+//		} catch (JavaModelException e) {
+//		}
+//	}
 
 	void around(String methodName): internalVisitMethodsHandler() && args(..,methodName) {
 		try {
@@ -77,12 +80,12 @@ public privileged aspect CalculatorsHandler {
 		}
 	}
 
-	void around(): internalCalculateHandler5() {
-		try {
-			proceed();
-		} catch (JavaModelException e) {
-		}
-	}
+//	void around(): internalCalculateHandler5() {
+//		try {
+//			proceed();
+//		} catch (JavaModelException e) {
+//		}
+//	}
 
 	void around(AbstractMetricSource source): internalCalculateHandler4() && args(source){
 		try {
@@ -110,12 +113,12 @@ public privileged aspect CalculatorsHandler {
 		}
 	}
 
-	void around(): internalCalculateHandler2() {
-		try {
-			proceed();
-		} catch (JavaModelException e) {
-		}
-	}
+//	void around(): internalCalculateHandler2() {
+//		try {
+//			proceed();
+//		} catch (JavaModelException e) {
+//		}
+//	}
 
 	String around(AbstractMetricSource source, String sourceCode): internalCalculateHandler() && args(source,sourceCode) {
 		try {

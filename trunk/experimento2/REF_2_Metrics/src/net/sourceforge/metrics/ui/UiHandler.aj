@@ -1,55 +1,33 @@
 package net.sourceforge.metrics.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Frame;
+
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Map;
-
-import net.sourceforge.metrics.builder.MetricsBuilder;
-import net.sourceforge.metrics.builder.MetricsNature;
-import net.sourceforge.metrics.core.Avg;
+import br.upe.dsc.reusable.exception.*;
 import net.sourceforge.metrics.core.IExporter;
 import net.sourceforge.metrics.core.Log;
-import net.sourceforge.metrics.core.Max;
-import net.sourceforge.metrics.core.Metric;
-import net.sourceforge.metrics.core.MetricsPlugin;
-import net.sourceforge.metrics.core.sources.AbstractMetricSource;
 import net.sourceforge.metrics.ui.EnableMetrics.MetricsNatureException;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.core.Openable;
-import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.custom.TableTreeItem;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 
 import com.touchgraph.graphlayout.TGException;
 
 import exception.ExceptionHandler;
 @ExceptionHandler
-public privileged aspect UiHandler {
+public privileged aspect UiHandler extends PrintStackTraceAbstractExceptionHandler {
+	
+	public pointcut printStackTraceException(): showViewHandler() || setDependenciesHandler();
 
 	pointcut internalRunHandler(): execution(private void EnableMetrics.internalRun(Shell, IRunnableWithProgress));
 
@@ -95,14 +73,14 @@ public privileged aspect UiHandler {
 		}
 	}
 
-	IViewPart around(): showViewHandler() {
-		try {
-			return proceed();
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	IViewPart around(): showViewHandler() {
+//		try {
+//			return proceed();
+//		} catch (PartInitException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 
 	int around(int defaultVal): getWidthHandler() && args(..,defaultVal) {
 		try {
@@ -137,13 +115,13 @@ public privileged aspect UiHandler {
 		}
 	}
 
-	void around(): setDependenciesHandler() {
-		try {
-			proceed();
-		} catch (TGException e) {
-			e.printStackTrace();
-		}
-	}
+//	void around(): setDependenciesHandler() {
+//		try {
+//			proceed();
+//		} catch (TGException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	void around(): runHandler4() || runHandler5(){
 		try {

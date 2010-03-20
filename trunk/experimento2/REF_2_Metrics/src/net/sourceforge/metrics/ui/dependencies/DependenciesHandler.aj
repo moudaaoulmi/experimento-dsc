@@ -1,6 +1,7 @@
 package net.sourceforge.metrics.ui.dependencies;
 
 import java.io.File;
+import br.upe.dsc.reusable.exception.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,14 @@ import com.touchgraph.graphlayout.TGException;
 
 import exception.ExceptionHandler;
 @ExceptionHandler
-public privileged aspect DependenciesHandler {
+public privileged aspect DependenciesHandler extends PrintStackTraceAbstractExceptionHandler {
+	
+	public pointcut printStackTraceException(): getDependenciesHandler() 
+												|| internalRunHandler2()
+												|| internalRunHandler1()
+												|| actionPerformedHandler()
+												|| addKnotHandler()
+												|| createDependenciesHandler();
 
 	pointcut createDependenciesHandler(): call(public void DependencyGraphPanel.createDependencies(..)) && withincode(public DependencyGraphPanel.new(..));
 
@@ -51,23 +59,23 @@ public privileged aspect DependenciesHandler {
 		}
 	}
 
-	void around(): getDependenciesHandler() {
-		try {
-			proceed();
-		} catch (JavaModelException e) {
-			e.printStackTrace();
-		}
-	}
+//	void around(): getDependenciesHandler() {
+//		try {
+//			proceed();
+//		} catch (JavaModelException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-	void around(): internalRunHandler2() {
-		try {
-			proceed();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+//	void around(): internalRunHandler2() {
+//		try {
+//			proceed();
+//		} catch (InvocationTargetException e) {
+//			e.printStackTrace();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	void around(): internalExportButtonClickedHandler() {
 		try {
@@ -85,36 +93,36 @@ public privileged aspect DependenciesHandler {
 		}
 	}
 
-	void around(): internalRunHandler1() {
-		try {
-			proceed();
-		} catch (TGException e) {
-			e.printStackTrace();
-		}
-	}
+//	void around(): internalRunHandler1() {
+//		try {
+//			proceed();
+//		} catch (TGException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-	void around(): actionPerformedHandler() {
-		try {
-			proceed();
-		} catch (TGException e1) {
-			e1.printStackTrace();
-		}
-	}
+//	void around(): actionPerformedHandler() {
+//		try {
+//			proceed();
+//		} catch (TGException e1) {
+//			e1.printStackTrace();
+//		}
+//	}
 
-	void around(): addKnotHandler() {
-		try {
-			proceed();
-		} catch (TGException e) {
-			e.printStackTrace();
-		}
-	}
+//	void around(): addKnotHandler() {
+//		try {
+//			proceed();
+//		} catch (TGException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-	void around(): createDependenciesHandler() {
-		try {
-			proceed();
-		} catch (TGException e) {
-			e.printStackTrace();
-		}
-	}
+//	void around(): createDependenciesHandler() {
+//		try {
+//			proceed();
+//		} catch (TGException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 }

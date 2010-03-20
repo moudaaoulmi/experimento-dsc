@@ -1,6 +1,7 @@
 package net.sourceforge.metrics.core.sources;
 
 import java.util.Iterator;
+import br.upe.dsc.reusable.exception.*;
 import java.util.Set;
 
 import jdbm.helper.IterationException;
@@ -15,7 +16,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import exception.ExceptionHandler;
 @ExceptionHandler
-public privileged aspect SourcesHandler {
+public privileged aspect SourcesHandler extends EmptyBlockAbstractExceptionHandling {
+	
+	public pointcut emptyBlockException(): internalInitializeChildrenHandler3();
 
 	pointcut calculateHandler(): call(public void ICalculator.calculate(..)) && withincode(protected void AbstractMetricSource.invokeCalculators());
 
@@ -54,12 +57,12 @@ public privileged aspect SourcesHandler {
 		}
 	}
 
-	void around(): internalInitializeChildrenHandler3() {
-		try {
-			proceed();
-		} catch (JavaModelException e) {
-		}
-	}
+//	void around(): internalInitializeChildrenHandler3() {
+//		try {
+//			proceed();
+//		} catch (JavaModelException e) {
+//		}
+//	}
 
 	CompilationUnit around(): getASTHandler() {
 		try {

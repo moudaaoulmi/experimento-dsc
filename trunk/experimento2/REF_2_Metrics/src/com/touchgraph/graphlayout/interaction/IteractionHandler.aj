@@ -2,10 +2,14 @@ package com.touchgraph.graphlayout.interaction;
 
 import com.touchgraph.graphlayout.Node;
 import com.touchgraph.graphlayout.TGException;
-
 import exception.ExceptionHandler;
+
+import br.upe.dsc.reusable.exception.*;
+
 @ExceptionHandler
-public privileged aspect IteractionHandler {
+public privileged aspect IteractionHandler extends PrintStackTraceAbstractExceptionHandler {
+	
+	public pointcut printStackTraceException(): internalRunHandler2();
 
 	pointcut internalMouseReleasedHandler(): execution(private void DragAddUI.internalMouseReleased());
 
@@ -25,13 +29,13 @@ public privileged aspect IteractionHandler {
 	declare soft: InterruptedException : internalRunHandler()||internalSlowScrollToCenterHandler();
 	declare soft: InterruptedException : internalRunHandler2();
 
-	void around(): internalRunHandler2() {
-		try {
-			proceed();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	void around(): internalRunHandler2() {
+//		try {
+//			proceed();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	boolean around(boolean keepScrolling): internalSlowScrollToCenterHandler() && args(keepScrolling,*) {
 		try {
