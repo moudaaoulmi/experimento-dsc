@@ -37,13 +37,20 @@
 
 package com.sun.j2ee.blueprints.asyncsender.ejb;
 
-import javax.jms.*;
-import javax.ejb.*;
-import javax.naming.NamingException;
+import javax.ejb.CreateException;
+import javax.ejb.EJBException;
+import javax.ejb.SessionBean;
+import javax.ejb.SessionContext;
+import javax.jms.Queue;
+import javax.jms.QueueConnection;
+import javax.jms.QueueConnectionFactory;
+import javax.jms.QueueSender;
+import javax.jms.QueueSession;
+import javax.jms.TextMessage;
 
 import com.sun.j2ee.blueprints.asyncsender.util.JNDINames;
-import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
+import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 
 
 public class AsyncSenderEJB implements SessionBean {

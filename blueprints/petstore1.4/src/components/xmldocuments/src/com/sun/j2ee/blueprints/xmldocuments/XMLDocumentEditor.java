@@ -37,11 +37,10 @@
 
 package com.sun.j2ee.blueprints.xmldocuments;
 
-import java.net.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.*;
-import javax.xml.transform.sax.*;
-import javax.xml.transform.stream.*;
+import java.net.URL;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 
 
 public interface XMLDocumentEditor {

@@ -37,9 +37,11 @@
 
 package com.sun.j2ee.blueprints.xmldocuments;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
+
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 

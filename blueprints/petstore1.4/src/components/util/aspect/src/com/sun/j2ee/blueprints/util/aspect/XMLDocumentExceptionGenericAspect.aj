@@ -6,8 +6,9 @@
  */
 package com.sun.j2ee.blueprints.util.aspect;
 
-import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 import petstore.exception.ExceptionHandler;
+
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 /**
  * @author Raquel Maranhao
  *

@@ -37,9 +37,9 @@
 
 package com.sun.j2ee.blueprints.uidgen.counter.ejb;
 
+import javax.ejb.CreateException;
 import javax.ejb.EntityContext;
 import javax.ejb.RemoveException;
-import javax.ejb.CreateException;
 
 public abstract class CounterEJB implements javax.ejb.EntityBean {
 

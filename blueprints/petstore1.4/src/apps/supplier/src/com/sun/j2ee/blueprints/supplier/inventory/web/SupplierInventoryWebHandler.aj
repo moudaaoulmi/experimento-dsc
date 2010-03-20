@@ -5,8 +5,6 @@ package com.sun.j2ee.blueprints.supplier.inventory.web;
 
 import java.util.Collection;
 
-import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
-import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +14,11 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
-import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
-import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
+
 import petstore.exception.ExceptionHandler;
+import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
+
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 
 /**
  * @author Raquel Maranhao

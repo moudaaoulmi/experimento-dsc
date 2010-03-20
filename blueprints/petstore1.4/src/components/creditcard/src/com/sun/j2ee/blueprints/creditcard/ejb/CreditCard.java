@@ -38,16 +38,12 @@
 package com.sun.j2ee.blueprints.creditcard.ejb;
 
 
-import java.io.*;
-import java.util.*;
-import java.net.*;
-import javax.xml.transform.*;
-import javax.xml.transform.sax.*;
-import javax.xml.transform.stream.*;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
-import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentUtils;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentUtils;
 
 
 public class CreditCard {

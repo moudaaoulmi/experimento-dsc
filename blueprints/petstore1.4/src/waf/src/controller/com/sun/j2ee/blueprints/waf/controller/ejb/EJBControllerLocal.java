@@ -40,11 +40,9 @@ package com.sun.j2ee.blueprints.waf.controller.ejb;
 // J2EE imports
 import javax.ejb.EJBLocalObject;
 
-// WAF imports
 import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-
 import com.sun.j2ee.blueprints.waf.event.EventException;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
 
 /**
  * This is the EJB-tier controller of the MVC.

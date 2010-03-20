@@ -36,7 +36,8 @@
  */
 package com.sun.j2ee.blueprints.admin.client;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class WorkQueue

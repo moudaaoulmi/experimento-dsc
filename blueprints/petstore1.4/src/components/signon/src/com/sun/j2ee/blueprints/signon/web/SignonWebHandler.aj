@@ -3,22 +3,25 @@
  */
 package com.sun.j2ee.blueprints.signon.web;
 
-import javax.ejb.CreateException;
-import javax.naming.NamingException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.FilterConfig;
-import javax.xml.parsers.ParserConfigurationException;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.ejb.CreateException;
+import javax.naming.NamingException;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import com.sun.j2ee.blueprints.signon.ejb.SignOnLocal;
+
 import petstore.exception.ExceptionHandler;
+
+import com.sun.j2ee.blueprints.signon.ejb.SignOnLocal;
 /**
  * @author Raquel Maranhao
  */

@@ -37,15 +37,12 @@
 
 package com.sun.j2ee.blueprints.waf.util;
 
+import java.io.ByteArrayOutputStream;
+import java.text.BreakIterator;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Vector;
-import java.text.NumberFormat;
-import java.text.DecimalFormat;
-import java.text.BreakIterator;
-import java.io.ByteArrayOutputStream;
-
-
-import com.sun.j2ee.blueprints.util.tracer.Debug;
 
 /**
  * This utility class for internationalization. This class provides a

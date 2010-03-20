@@ -37,7 +37,6 @@
 
 package com.sun.j2ee.blueprints.waf.controller.web.flow;
 
-import com.sun.j2ee.blueprints.waf.controller.web.flow.FlowHandlerException;
 import javax.servlet.http.HttpServletRequest;
 
 /**

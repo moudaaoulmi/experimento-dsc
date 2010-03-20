@@ -39,28 +39,14 @@ package com.sun.j2ee.blueprints.catalog.client;
 
 import java.util.Locale;
 
-//j2ee imports
-import javax.naming.NamingException;
-import javax.ejb.CreateException;
-import javax.ejb.FinderException;
-import javax.rmi.PortableRemoteObject;
-import javax.naming.InitialContext;
-
-// service locator imports
-import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
-import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
-
-// catalog component imports
-import com.sun.j2ee.blueprints.catalog.util.JNDINames;
-import com.sun.j2ee.blueprints.catalog.ejb.CatalogLocalHome;
-import com.sun.j2ee.blueprints.catalog.ejb.CatalogLocal;
 import com.sun.j2ee.blueprints.catalog.dao.CatalogDAO;
 import com.sun.j2ee.blueprints.catalog.dao.CatalogDAOFactory;
-import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
-import com.sun.j2ee.blueprints.catalog.model.Page;
-import com.sun.j2ee.blueprints.catalog.model.Category;
-import com.sun.j2ee.blueprints.catalog.model.Product;
+import com.sun.j2ee.blueprints.catalog.ejb.CatalogLocal;
+import com.sun.j2ee.blueprints.catalog.ejb.CatalogLocalHome;
 import com.sun.j2ee.blueprints.catalog.model.Item;
+import com.sun.j2ee.blueprints.catalog.model.Page;
+import com.sun.j2ee.blueprints.catalog.util.JNDINames;
+import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 
 
 /**

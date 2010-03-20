@@ -37,7 +37,6 @@
 
 package com.sun.j2ee.blueprints.waf.view.template;
 
-import java.util.HashMap;
 
 public class Parameter implements java.io.Serializable {
 

@@ -38,18 +38,15 @@ package com.sun.j2ee.blueprints.waf.controller.web;
 
 import java.beans.Beans;
 
-// J2EE Imports
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 
-// WAF Imports
-import com.sun.j2ee.blueprints.waf.controller.web.util.WebKeys;
 import com.sun.j2ee.blueprints.servicelocator.web.ServiceLocator;
-import com.sun.j2ee.blueprints.waf.util.JNDINames;
-import com.sun.j2ee.blueprints.waf.controller.web.WebController;
-import com.sun.j2ee.blueprints.waf.controller.ejb.EJBControllerLocalHome;
 import com.sun.j2ee.blueprints.waf.controller.ejb.EJBControllerLocal;
+import com.sun.j2ee.blueprints.waf.controller.ejb.EJBControllerLocalHome;
+import com.sun.j2ee.blueprints.waf.controller.web.util.WebKeys;
+import com.sun.j2ee.blueprints.waf.util.JNDINames;
 
 
 /**

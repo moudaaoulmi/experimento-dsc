@@ -36,31 +36,21 @@
  */
 package com.sun.j2ee.blueprints.xmldocuments;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Element;
-
-import org.xml.sax.SAXException;
-import org.xml.sax.InputSource;
-
-import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
-import java.io.FileInputStream;
-import java.io.File;
-import java.io.IOException;
-
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Date;
-
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
-import javax.xml.transform.*;
-import javax.xml.transform.sax.*;
-import javax.xml.transform.stream.*;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 
 public class OrderApproval {

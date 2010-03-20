@@ -41,31 +41,24 @@ package com.sun.j2ee.blueprints.petstore.controller.ejb.actions;
 
 import java.util.Locale;
 
-// waf imports
-import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.event.EventException;
-import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBActionSupport;
-import com.sun.j2ee.blueprints.waf.util.I18nUtil;
-
-// customer imports
-import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
-import com.sun.j2ee.blueprints.customer.account.ejb.AccountLocal;
-import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfoLocal;
-import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileLocal;
-import com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocal;
-import com.sun.j2ee.blueprints.address.ejb.AddressLocal;
-import com.sun.j2ee.blueprints.creditcard.ejb.CreditCard;
-import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfo;
-import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileInfo;
 import com.sun.j2ee.blueprints.address.ejb.Address;
-
-// petstore imports
+import com.sun.j2ee.blueprints.address.ejb.AddressLocal;
+import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfo;
+import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfoLocal;
+import com.sun.j2ee.blueprints.creditcard.ejb.CreditCard;
+import com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocal;
+import com.sun.j2ee.blueprints.customer.account.ejb.AccountLocal;
+import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
+import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileInfo;
+import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileLocal;
+import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingClientFacadeLocal;
 import com.sun.j2ee.blueprints.petstore.controller.events.CustomerEvent;
 import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
-
-// petstore imports
-import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingClientFacadeLocal;
+import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBActionSupport;
+import com.sun.j2ee.blueprints.waf.event.Event;
+import com.sun.j2ee.blueprints.waf.event.EventException;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
+import com.sun.j2ee.blueprints.waf.util.I18nUtil;
 
 public class CustomerEJBAction extends EJBActionSupport {
 

@@ -55,25 +55,23 @@
 package com.sun.j2ee.blueprints.admin.client;
 
 import java.awt.Component;
-import java.util.*;
-
-import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
-import javax.swing.table.TableModel;
-import javax.swing.event.TableModelEvent;
-
-// Imports for picking up mouse events from the JTable.
-
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.InputEvent;
+import java.util.Date;
+import java.util.Vector;
+
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 public class TableSorter extends TableMap
 {

@@ -37,7 +37,8 @@
 package com.sun.j2ee.blueprints.admin.client;
 
 import java.io.ObjectStreamException;
-import javax.swing.*;
+
+import javax.swing.JLabel;
 
 /**
  * Singleton class used to display a status message at the bottom of an

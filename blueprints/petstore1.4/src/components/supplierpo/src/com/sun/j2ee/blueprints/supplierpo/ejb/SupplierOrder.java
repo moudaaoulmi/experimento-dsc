@@ -37,17 +37,28 @@
 
 package com.sun.j2ee.blueprints.supplierpo.ejb;
 
-import org.w3c.dom.*;
-import java.io.*;
-import java.util.*;
+import java.io.ByteArrayOutputStream;
+import java.io.StringReader;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import javax.xml.transform.*;
-import javax.xml.transform.stream.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
 
-import com.sun.j2ee.blueprints.xmldocuments.*;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfo;
 import com.sun.j2ee.blueprints.lineitem.ejb.LineItem;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentUtils;
 
 
 public class SupplierOrder {

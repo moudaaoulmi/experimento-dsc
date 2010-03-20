@@ -37,12 +37,8 @@
 
 package com.sun.j2ee.blueprints.uidgen.ejb;
 
-import javax.ejb.SessionContext;
-import javax.ejb.RemoveException;
 import javax.ejb.CreateException;
-import javax.ejb.FinderException;
-import javax.ejb.EJBException;
-import javax.naming.NamingException;
+import javax.ejb.SessionContext;
 import javax.naming.InitialContext;
 
 import com.sun.j2ee.blueprints.uidgen.counter.ejb.CounterLocal;

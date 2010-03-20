@@ -37,14 +37,19 @@
 
 package com.sun.j2ee.blueprints.opc.customerrelations.ejb;
 
-import java.io.*;
-import java.util.*;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.Transformer;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
 import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.transform.Source;
 
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentEditor;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;

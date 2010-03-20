@@ -36,39 +36,22 @@
  */
 package com.sun.j2ee.blueprints.petstore.controller.web.actions;
 
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Locale;
-import java.util.Vector;
 import java.util.ArrayList;
 
-// j2ee imports
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletResponse;
 
-// waf imports
-import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionSupport;
-import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionException;
-
-// customer imports
+import com.sun.j2ee.blueprints.address.ejb.Address;
 import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfo;
 import com.sun.j2ee.blueprints.creditcard.ejb.CreditCard;
-import com.sun.j2ee.blueprints.address.ejb.Address;
 import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileInfo;
-
-// petstore imports
-import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
 import com.sun.j2ee.blueprints.petstore.controller.events.CustomerEvent;
 import com.sun.j2ee.blueprints.petstore.controller.web.exceptions.MissingFormDataException;
-
-
-// signon filter import for signed on key
+import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
 import com.sun.j2ee.blueprints.signon.web.SignOnFilter;
+import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionException;
+import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionSupport;
+import com.sun.j2ee.blueprints.waf.event.Event;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
 
 
 /**

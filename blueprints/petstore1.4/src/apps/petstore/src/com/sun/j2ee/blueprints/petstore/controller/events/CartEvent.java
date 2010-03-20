@@ -37,7 +37,8 @@
 
 package com.sun.j2ee.blueprints.petstore.controller.events;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.sun.j2ee.blueprints.waf.event.EventSupport;
 

@@ -37,18 +37,17 @@
 
 package com.sun.j2ee.blueprints.servicelocator.web;
 
+import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Collections;
-import java.net.URL;
-
 
 import javax.ejb.EJBHome;
 import javax.ejb.EJBLocalHome;
-import javax.jms.QueueConnectionFactory;
 import javax.jms.Queue;
-import javax.jms.TopicConnectionFactory;
+import javax.jms.QueueConnectionFactory;
 import javax.jms.Topic;
+import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.rmi.PortableRemoteObject;
 import javax.sql.DataSource;

@@ -38,9 +38,8 @@
 package com.sun.j2ee.blueprints.cart.model;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.Collection;
-import com.sun.j2ee.blueprints.util.tracer.Debug;
+import java.util.Iterator;
 
 /**
  * This class represents the model data for the shopping cart.

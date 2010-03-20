@@ -3,20 +3,14 @@
  */
 package com.sun.j2ee.blueprints.petstore.controller.web;
 
-import javax.ejb.CreateException;
-import javax.ejb.FinderException;
-import javax.ejb.RemoveException;
 import javax.servlet.http.HttpSession;
 
+import petstore.exception.ExceptionHandler;
+
 import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
-import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingControllerLocal;
 import com.sun.j2ee.blueprints.petstore.controller.events.SignOnEvent;
-import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
-import com.sun.j2ee.blueprints.util.tracer.Debug;
 import com.sun.j2ee.blueprints.waf.controller.web.WebController;
 import com.sun.j2ee.blueprints.waf.event.EventException;
-import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
-import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */

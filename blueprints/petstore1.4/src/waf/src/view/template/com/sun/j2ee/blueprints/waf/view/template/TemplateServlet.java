@@ -39,24 +39,22 @@
 package com.sun.j2ee.blueprints.waf.view.template;
 
 import java.io.IOException;
-import java.net.URL;
 import java.io.PrintWriter;
-import java.util.Map;
-import java.util.Iterator;
-import java.util.StringTokenizer;
-import java.util.HashMap;
-import java.util.Locale;
+import java.net.URL;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.StringTokenizer;
 
-// J2EE imports
-import javax.servlet.ServletException;
+import javax.naming.InitialContext;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import javax.naming.InitialContext;
 import javax.transaction.UserTransaction;
 
 import com.sun.j2ee.blueprints.waf.controller.web.util.WebKeys;

@@ -41,10 +41,10 @@ import java.util.Locale;
 
 import javax.ejb.EJBLocalObject;
 
-import com.sun.j2ee.blueprints.catalog.model.Page;
 import com.sun.j2ee.blueprints.catalog.model.Category;
-import com.sun.j2ee.blueprints.catalog.model.Product;
 import com.sun.j2ee.blueprints.catalog.model.Item;
+import com.sun.j2ee.blueprints.catalog.model.Page;
+import com.sun.j2ee.blueprints.catalog.model.Product;
 
 /**
  * This interface is the local interface for the catalog EJB.

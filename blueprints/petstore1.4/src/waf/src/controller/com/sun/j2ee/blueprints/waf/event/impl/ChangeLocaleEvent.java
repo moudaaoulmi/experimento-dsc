@@ -37,7 +37,6 @@
 
 package com.sun.j2ee.blueprints.waf.event.impl;
 
-import java.io.Serializable;
 import java.util.Locale;
 
 import com.sun.j2ee.blueprints.waf.event.EventSupport;

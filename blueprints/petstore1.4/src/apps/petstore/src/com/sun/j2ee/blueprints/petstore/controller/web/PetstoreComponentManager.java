@@ -38,28 +38,18 @@ package com.sun.j2ee.blueprints.petstore.controller.web;
 
 
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 
-// WAF imports
-import com.sun.j2ee.blueprints.waf.controller.web.DefaultComponentManager;
-
-// petstore imports
-import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
+import com.sun.j2ee.blueprints.cart.ejb.ShoppingCartLocal;
+import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
+import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingClientFacadeLocal;
 import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingControllerLocal;
 import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingControllerLocalHome;
-import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingClientFacadeLocal;
 import com.sun.j2ee.blueprints.petstore.util.JNDINames;
-
-// cart component imports
-import com.sun.j2ee.blueprints.cart.ejb.ShoppingCartLocal;
-
-
-// customer component imports
-import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
-
-// service locator imports
+import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
 import com.sun.j2ee.blueprints.servicelocator.web.ServiceLocator;
+import com.sun.j2ee.blueprints.waf.controller.web.DefaultComponentManager;
 
 /**
  * This implmentation class of the ServiceLocator provides

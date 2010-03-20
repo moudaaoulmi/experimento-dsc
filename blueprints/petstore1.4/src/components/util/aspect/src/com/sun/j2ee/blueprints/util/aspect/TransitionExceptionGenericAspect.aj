@@ -6,12 +6,12 @@
  */
 package com.sun.j2ee.blueprints.util.aspect;
 
-import javax.ejb.EJBException;
 import javax.jms.JMSException;
+
+import petstore.exception.ExceptionHandler;
 
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
-import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  *

@@ -36,8 +36,11 @@
  */
 package com.sun.j2ee.blueprints.admin.client;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JPanel;
 
 /**
  * Abstract class used for defining various charts in this application.

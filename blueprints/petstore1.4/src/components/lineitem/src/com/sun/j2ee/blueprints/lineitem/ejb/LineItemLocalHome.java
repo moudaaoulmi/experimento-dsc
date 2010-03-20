@@ -37,10 +37,8 @@
 
 package com.sun.j2ee.blueprints.lineitem.ejb;
 
-import java.lang.Object;
-
-import javax.ejb.EJBLocalHome;
 import javax.ejb.CreateException;
+import javax.ejb.EJBLocalHome;
 import javax.ejb.FinderException;
 
 /**

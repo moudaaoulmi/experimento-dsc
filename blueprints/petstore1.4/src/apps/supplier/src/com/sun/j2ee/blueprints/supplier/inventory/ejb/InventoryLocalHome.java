@@ -37,11 +37,11 @@
 
 package com.sun.j2ee.blueprints.supplier.inventory.ejb;
 
-import javax.ejb.EJBLocalHome;
-import javax.ejb.CreateException;
-import javax.ejb.FinderException;
-
 import java.util.Collection;
+
+import javax.ejb.CreateException;
+import javax.ejb.EJBLocalHome;
+import javax.ejb.FinderException;
 
 /**
  * This is the Local Home Interface for the Inventory CMP Bean

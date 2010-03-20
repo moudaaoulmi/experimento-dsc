@@ -39,8 +39,8 @@
 
 package com.sun.j2ee.blueprints.asyncsender.ejb;
 
-import javax.ejb.EJBLocalHome;
 import javax.ejb.CreateException;
+import javax.ejb.EJBLocalHome;
 
 public interface AsyncSenderLocalHome extends EJBLocalHome {
     public AsyncSender create() throws  CreateException;

@@ -37,11 +37,9 @@
 
 package com.sun.j2ee.blueprints.customer.profile.ejb;
 
+import javax.ejb.CreateException;
 import javax.ejb.EntityContext;
 import javax.ejb.RemoveException;
-import javax.ejb.CreateException;
-import javax.naming.NamingException;
-import javax.naming.InitialContext;
 
 public abstract class ProfileEJB implements javax.ejb.EntityBean {
 

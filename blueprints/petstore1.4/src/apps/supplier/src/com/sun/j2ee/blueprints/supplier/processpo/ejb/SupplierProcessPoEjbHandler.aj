@@ -3,14 +3,15 @@
  */
 package com.sun.j2ee.blueprints.supplier.processpo.ejb;
 
-import javax.jms.Message;
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.jms.JMSException;
+import javax.jms.Message;
+
+import petstore.exception.ExceptionHandler;
 
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
-import petstore.exception.ExceptionHandler;
 
 /**
  * @author rmaranhao

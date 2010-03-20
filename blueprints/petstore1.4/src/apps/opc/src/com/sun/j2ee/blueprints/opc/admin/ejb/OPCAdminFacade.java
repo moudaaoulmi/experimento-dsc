@@ -37,13 +37,11 @@
 
 package com.sun.j2ee.blueprints.opc.admin.ejb;
 
+import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.Map;
 
 import javax.ejb.EJBObject;
-import java.rmi.RemoteException;
-
-import com.sun.j2ee.blueprints.opc.admin.ejb.OPCAdminFacadeException;
 
 /**
  * The Remote interface for the Admin client from OPC

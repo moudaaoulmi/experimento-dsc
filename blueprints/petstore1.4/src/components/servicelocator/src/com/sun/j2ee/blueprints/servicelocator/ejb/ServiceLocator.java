@@ -42,10 +42,10 @@ import java.net.URL;
 
 import javax.ejb.EJBHome;
 import javax.ejb.EJBLocalHome;
-import javax.jms.QueueConnectionFactory;
 import javax.jms.Queue;
-import javax.jms.TopicConnectionFactory;
+import javax.jms.QueueConnectionFactory;
 import javax.jms.Topic;
+import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.rmi.PortableRemoteObject;
 import javax.sql.DataSource;

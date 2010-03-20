@@ -37,16 +37,14 @@
 
 package com.sun.j2ee.blueprints.contactinfo.ejb;
 
+import javax.ejb.CreateException;
 import javax.ejb.EntityContext;
 import javax.ejb.RemoveException;
-import javax.ejb.CreateException;
-import javax.naming.NamingException;
-import javax.naming.InitialContext;
+
 import com.sun.j2ee.blueprints.address.ejb.AddressLocal;
 import com.sun.j2ee.blueprints.address.ejb.AddressLocalHome;
-import com.sun.j2ee.blueprints.address.ejb.Address;
-import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
+import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 
 
 public abstract class ContactInfoEJB implements javax.ejb.EntityBean {

@@ -37,11 +37,17 @@
 
 package com.sun.j2ee.blueprints.petstore.tools.populate;
 
-import javax.naming.*;
-import java.util.*;
-import javax.xml.parsers.*;
-import org.xml.sax.*;
-import com.sun.j2ee.blueprints.signon.user.ejb.*;
+import java.util.Collection;
+
+import javax.naming.InitialContext;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLFilter;
+import org.xml.sax.XMLReader;
+
+import com.sun.j2ee.blueprints.signon.user.ejb.UserLocal;
+import com.sun.j2ee.blueprints.signon.user.ejb.UserLocalHome;
 
 
 public class UserPopulator {

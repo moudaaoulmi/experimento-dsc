@@ -38,8 +38,8 @@
 package com.sun.j2ee.blueprints.petstore.controller.ejb;
 
 // j2ee imports
-import javax.ejb.EJBLocalHome;
 import javax.ejb.CreateException;
+import javax.ejb.EJBLocalHome;
 
 /**
  * The Home interface for ShoppingClientFacadeLocal EJB

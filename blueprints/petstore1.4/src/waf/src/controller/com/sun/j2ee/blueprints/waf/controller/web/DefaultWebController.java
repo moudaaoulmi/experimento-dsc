@@ -38,16 +38,14 @@ package com.sun.j2ee.blueprints.waf.controller.web;
 
 
 // J2EE imports
-import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
-// WAF imports
+import com.sun.j2ee.blueprints.waf.controller.ejb.EJBControllerLocal;
 import com.sun.j2ee.blueprints.waf.controller.web.util.WebKeys;
 import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.controller.ejb.EJBControllerLocal;
-
 import com.sun.j2ee.blueprints.waf.event.EventException;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
 
 /**
  * This class is essentially just a proxy object that calls methods on the

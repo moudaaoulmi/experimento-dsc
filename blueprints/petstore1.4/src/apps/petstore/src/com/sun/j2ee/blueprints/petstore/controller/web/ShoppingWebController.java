@@ -37,19 +37,15 @@
 package com.sun.j2ee.blueprints.petstore.controller.web;
 
 // J2EE imports
-import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
-
-//waf imports
-import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
-import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-
-import com.sun.j2ee.blueprints.waf.controller.web.WebController;
+import javax.servlet.http.HttpSession;
 
 import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingControllerLocal;
-
+import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
+import com.sun.j2ee.blueprints.waf.controller.web.WebController;
+import com.sun.j2ee.blueprints.waf.event.Event;
 import com.sun.j2ee.blueprints.waf.event.EventException;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
 
 
 /**

@@ -41,19 +41,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 
-import javax.servlet.ServletException;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletConfig;
 
-// WAF imports
-import com.sun.j2ee.blueprints.waf.util.I18nUtil;
-import com.sun.j2ee.blueprints.waf.controller.web.URLMappingsXmlDAO;
-import com.sun.j2ee.blueprints.waf.controller.web.RequestProcessor;
-import com.sun.j2ee.blueprints.waf.controller.web.util.WebKeys;
 import com.sun.j2ee.blueprints.waf.controller.web.flow.ScreenFlowManager;
+import com.sun.j2ee.blueprints.waf.controller.web.util.WebKeys;
+import com.sun.j2ee.blueprints.waf.util.I18nUtil;
 
 public class MainServlet extends HttpServlet {
 

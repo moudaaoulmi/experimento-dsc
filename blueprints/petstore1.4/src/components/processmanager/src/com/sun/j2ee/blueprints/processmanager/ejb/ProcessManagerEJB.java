@@ -39,15 +39,11 @@ package com.sun.j2ee.blueprints.processmanager.ejb;
 
 import java.util.Collection;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import javax.ejb.CreateException;
+import javax.ejb.FinderException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
-import javax.ejb.EJBException;
-import javax.ejb.FinderException;
-import javax.ejb.CreateException;
-import javax.ejb.RemoveException;
-import javax.ejb.DuplicateKeyException;
+import javax.naming.InitialContext;
 
 import com.sun.j2ee.blueprints.processmanager.manager.ejb.ManagerLocal;
 import com.sun.j2ee.blueprints.processmanager.manager.ejb.ManagerLocalHome;

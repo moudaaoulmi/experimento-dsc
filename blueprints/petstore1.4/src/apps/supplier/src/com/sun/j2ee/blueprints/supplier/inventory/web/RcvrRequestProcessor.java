@@ -37,45 +37,24 @@
 
 package com.sun.j2ee.blueprints.supplier.inventory.web;
 
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+
+import javax.naming.InitialContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import javax.servlet.ServletOutputStream;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
-import javax.ejb.CreateException;
-import javax.ejb.FinderException;
-
-import java.util.Enumeration;
-import java.util.Collection;
-import java.util.Iterator;
-
-import java.io.File;
-import java.io.IOException;
-
 import javax.transaction.UserTransaction;
-import javax.transaction.SystemException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.HeuristicMixedException;
 
-import com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb.OrderFulfillmentFacadeLocal;
-import com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb.OrderFulfillmentFacadeLocalHome;
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionDelegate;
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionDelegateFactory;
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionInfo;
+import com.sun.j2ee.blueprints.servicelocator.web.ServiceLocator;
 import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocal;
 import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocalHome;
-import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
-
-import com.sun.j2ee.blueprints.supplier.inventory.web.JNDINames;
-
-import com.sun.j2ee.blueprints.servicelocator.web.ServiceLocator;
-import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
-
-import com.sun.j2ee.blueprints.processmanager.transitions.*;
+import com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb.OrderFulfillmentFacadeLocal;
+import com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb.OrderFulfillmentFacadeLocalHome;
 
 /**
  * This servlet processes requests from receiver of the supplier component

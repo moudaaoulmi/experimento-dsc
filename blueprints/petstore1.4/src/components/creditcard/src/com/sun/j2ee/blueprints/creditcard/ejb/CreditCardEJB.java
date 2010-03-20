@@ -37,9 +37,9 @@
 
 package com.sun.j2ee.blueprints.creditcard.ejb;
 
+import javax.ejb.CreateException;
 import javax.ejb.EntityContext;
 import javax.ejb.RemoveException;
-import javax.ejb.CreateException;
 
 public abstract class CreditCardEJB implements javax.ejb.EntityBean {
 

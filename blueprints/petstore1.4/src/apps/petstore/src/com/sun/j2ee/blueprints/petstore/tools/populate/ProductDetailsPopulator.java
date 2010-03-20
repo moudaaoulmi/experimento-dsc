@@ -37,11 +37,11 @@
 
 package com.sun.j2ee.blueprints.petstore.tools.populate;
 
-import java.util.*;
-import java.sql.*;
-import javax.xml.parsers.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
+import java.sql.Connection;
+import java.util.Map;
+
+import org.xml.sax.XMLFilter;
+import org.xml.sax.XMLReader;
 
 
 public class ProductDetailsPopulator {

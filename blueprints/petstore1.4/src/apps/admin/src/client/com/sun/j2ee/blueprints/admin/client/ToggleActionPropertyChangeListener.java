@@ -36,8 +36,8 @@
  */
 package com.sun.j2ee.blueprints.admin.client;
 
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractButton;
 

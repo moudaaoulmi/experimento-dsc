@@ -37,11 +37,15 @@
 
 package com.sun.j2ee.blueprints.supplier.tools.populate;
 
-import javax.naming.*;
-import java.util.*;
-import org.xml.sax.*;
-import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocalHome;
+import java.util.Collection;
+
+import javax.naming.InitialContext;
+
+import org.xml.sax.XMLFilter;
+import org.xml.sax.XMLReader;
+
 import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocal;
+import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocalHome;
 
 
 public class InventoryPopulator {

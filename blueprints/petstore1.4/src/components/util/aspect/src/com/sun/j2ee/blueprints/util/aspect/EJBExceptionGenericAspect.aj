@@ -7,6 +7,7 @@
 package com.sun.j2ee.blueprints.util.aspect;
 
 import javax.ejb.EJBException;
+
 import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao

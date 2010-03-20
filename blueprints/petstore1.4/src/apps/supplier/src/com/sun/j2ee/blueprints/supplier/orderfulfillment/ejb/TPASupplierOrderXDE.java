@@ -39,15 +39,20 @@
 package com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb;
 
 
-import java.io.*;
-import java.util.*;
-import java.net.*;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.URL;
+import java.util.Properties;
 
-import javax.xml.transform.*;
-import javax.xml.transform.stream.*;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
 
-import com.sun.j2ee.blueprints.xmldocuments.*;
 import com.sun.j2ee.blueprints.supplierpo.ejb.SupplierOrder;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentEditor;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentUtils;
 
 
 public class TPASupplierOrderXDE extends XMLDocumentEditor.DefaultXDE {

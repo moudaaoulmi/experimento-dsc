@@ -40,11 +40,10 @@ package com.sun.j2ee.blueprints.catalog.dao;
 import java.util.Locale;
 
 import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
-
-import com.sun.j2ee.blueprints.catalog.model.Page;
 import com.sun.j2ee.blueprints.catalog.model.Category;
-import com.sun.j2ee.blueprints.catalog.model.Product;
 import com.sun.j2ee.blueprints.catalog.model.Item;
+import com.sun.j2ee.blueprints.catalog.model.Page;
+import com.sun.j2ee.blueprints.catalog.model.Product;
 
 /**
  * This class is an interface which will be implemented by database specific

@@ -37,9 +37,10 @@
 
 package com.sun.j2ee.blueprints.opc.admin.ejb;
 
-import javax.ejb.EJBHome;
-import javax.ejb.CreateException;
 import java.rmi.RemoteException;
+
+import javax.ejb.CreateException;
+import javax.ejb.EJBHome;
 
 /**
  * The Home interface for OPC-Admin facade EJB

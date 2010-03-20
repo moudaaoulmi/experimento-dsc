@@ -3,28 +3,30 @@
  */
 package com.sun.j2ee.blueprints.catalog.dao;
 
-import javax.naming.NamingException;
-
-
-import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
-import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
-import com.sun.j2ee.blueprints.catalog.model.Item;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import petstore.exception.ExceptionHandler;
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+
+import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
 import com.sun.j2ee.blueprints.catalog.model.Category;
+import com.sun.j2ee.blueprints.catalog.model.Item;
 import com.sun.j2ee.blueprints.catalog.model.Page;
 import com.sun.j2ee.blueprints.catalog.model.Product;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
-import javax.sql.DataSource;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
-import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */

@@ -37,24 +37,26 @@
 
 package com.sun.j2ee.blueprints.catalog.dao;
 
-import java.sql.*;
-import java.util.*;
-import javax.naming.*;
-import javax.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.StringTokenizer;
 
-// catalog imports
+import javax.sql.DataSource;
 
-import com.sun.j2ee.blueprints.catalog.util.JNDINames;
-import com.sun.j2ee.blueprints.catalog.model.Page;
-import com.sun.j2ee.blueprints.catalog.model.Category;
-import com.sun.j2ee.blueprints.catalog.model.Product;
-import com.sun.j2ee.blueprints.catalog.model.Item;
-import com.sun.j2ee.blueprints.catalog.util.DatabaseNames;
 import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
-
-// service locator imports
+import com.sun.j2ee.blueprints.catalog.model.Category;
+import com.sun.j2ee.blueprints.catalog.model.Item;
+import com.sun.j2ee.blueprints.catalog.model.Page;
+import com.sun.j2ee.blueprints.catalog.model.Product;
+import com.sun.j2ee.blueprints.catalog.util.JNDINames;
 import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
-import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 
 /**
  * This class implements CatalogDAO for pointbase DB.

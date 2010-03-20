@@ -37,7 +37,13 @@
 
 package com.sun.j2ee.blueprints.opc.transitions;
 
-import javax.jms.*;
+import javax.jms.JMSException;
+import javax.jms.Queue;
+import javax.jms.QueueConnection;
+import javax.jms.QueueConnectionFactory;
+import javax.jms.QueueSender;
+import javax.jms.QueueSession;
+import javax.jms.TextMessage;
 
 
 

@@ -39,18 +39,8 @@ package com.sun.j2ee.blueprints.supplier.inventory.web;
 
 import java.util.Collection;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
-import javax.ejb.FinderException;
-
-import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocal;
-import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocalHome;
-
-import com.sun.j2ee.blueprints.supplier.inventory.web.JNDINames;
-
 import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
-import  com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
+import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocalHome;
 
 /**
  * This class has an accessor method that allows the "receiver" application

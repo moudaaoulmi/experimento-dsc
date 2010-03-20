@@ -39,19 +39,14 @@ package com.sun.j2ee.blueprints.signon.web;
 
 import java.io.IOException;
 
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServlet;
 
-import javax.ejb.CreateException;
-import javax.naming.NamingException;
-import javax.naming.InitialContext;
-
-// SignOn EJB Imports
-import com.sun.j2ee.blueprints.signon.ejb.SignOnLocalHome;
 import com.sun.j2ee.blueprints.signon.ejb.SignOnLocal;
+import com.sun.j2ee.blueprints.signon.ejb.SignOnLocalHome;
 
 
 public class CreateUserServlet extends HttpServlet {

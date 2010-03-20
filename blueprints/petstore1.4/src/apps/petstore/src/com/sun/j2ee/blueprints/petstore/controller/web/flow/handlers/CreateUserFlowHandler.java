@@ -41,10 +41,7 @@ package com.sun.j2ee.blueprints.petstore.controller.web.flow.handlers;
 // J2EE imports 
 import javax.servlet.http.HttpServletRequest;
 
-// SignOn imports
 import com.sun.j2ee.blueprints.signon.web.SignOnFilter;
-
-// WAF imports
 import com.sun.j2ee.blueprints.waf.controller.web.flow.FlowHandler;
 import com.sun.j2ee.blueprints.waf.controller.web.flow.FlowHandlerException;
 

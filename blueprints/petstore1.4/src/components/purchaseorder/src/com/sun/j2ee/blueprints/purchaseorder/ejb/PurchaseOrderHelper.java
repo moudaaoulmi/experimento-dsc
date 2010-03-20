@@ -38,24 +38,10 @@
 package com.sun.j2ee.blueprints.purchaseorder.ejb;
 
 import java.util.Collection;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrderLocal;
-import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrderLocalHome;
-
-import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfoLocal;
-import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfoLocalHome;
-import com.sun.j2ee.blueprints.address.ejb.AddressLocal;
-import com.sun.j2ee.blueprints.address.ejb.AddressLocalHome;
-
-import com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocal;
-import com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocalHome;
 import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocal;
-import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocalHome;
-import com.sun.j2ee.blueprints.lineitem.ejb.LineItem;
 
 /**
  * Helper class to check for join conditions purchase order

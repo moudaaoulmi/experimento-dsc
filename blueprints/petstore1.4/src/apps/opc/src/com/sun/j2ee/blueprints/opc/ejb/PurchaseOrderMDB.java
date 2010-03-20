@@ -37,28 +37,32 @@
 
 package com.sun.j2ee.blueprints.opc.ejb;
 
-import java.util.Locale;
 import java.net.URL;
+import java.util.Locale;
 
-import javax.ejb.EJBException;
 import javax.ejb.CreateException;
+import javax.ejb.EJBException;
 import javax.ejb.MessageDrivenBean;
 import javax.ejb.MessageDrivenContext;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
 import javax.naming.Context;
-import javax.jms.*;
 
+import com.sun.j2ee.blueprints.opc.transitions.PurchaseOrderTD;
+import com.sun.j2ee.blueprints.processmanager.ejb.OrderStatusNames;
+import com.sun.j2ee.blueprints.processmanager.ejb.ProcessManagerLocal;
+import com.sun.j2ee.blueprints.processmanager.ejb.ProcessManagerLocalHome;
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionDelegate;
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionInfo;
 import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrder;
+import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrderLocalHome;
+import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
+import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 import com.sun.j2ee.blueprints.xmldocuments.ChangedOrder;
 import com.sun.j2ee.blueprints.xmldocuments.OrderApproval;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
-import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrderLocalHome;
-import com.sun.j2ee.blueprints.processmanager.ejb.ProcessManagerLocalHome;
-import com.sun.j2ee.blueprints.processmanager.ejb.ProcessManagerLocal;
-import com.sun.j2ee.blueprints.processmanager.ejb.OrderStatusNames;
-import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
-import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
-import com.sun.j2ee.blueprints.opc.transitions.*;
-import com.sun.j2ee.blueprints.processmanager.transitions.*;
 
 
 /**

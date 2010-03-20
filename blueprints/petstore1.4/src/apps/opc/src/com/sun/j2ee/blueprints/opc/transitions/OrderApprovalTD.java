@@ -39,10 +39,15 @@ package com.sun.j2ee.blueprints.opc.transitions;
 
 import java.util.Collection;
 import java.util.Iterator;
-import javax.jms.*;
 
+import javax.jms.JMSException;
+import javax.jms.Queue;
+import javax.jms.QueueConnectionFactory;
+
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionDelegate;
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionInfo;
 import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
-import com.sun.j2ee.blueprints.processmanager.transitions.*;
 
 
 /**

@@ -37,21 +37,19 @@
 
 package com.sun.j2ee.blueprints.catalog.ejb;
 
+import java.util.Locale;
+
+import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
-import javax.ejb.EJBException;
-
-import java.util.Locale;
 
 import com.sun.j2ee.blueprints.catalog.dao.CatalogDAO;
 import com.sun.j2ee.blueprints.catalog.dao.CatalogDAOFactory;
-import com.sun.j2ee.blueprints.catalog.model.Page;
-import com.sun.j2ee.blueprints.catalog.model.Category;
-import com.sun.j2ee.blueprints.catalog.model.Product;
-import com.sun.j2ee.blueprints.catalog.model.Item;
-
 import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
-
+import com.sun.j2ee.blueprints.catalog.model.Category;
+import com.sun.j2ee.blueprints.catalog.model.Item;
+import com.sun.j2ee.blueprints.catalog.model.Page;
+import com.sun.j2ee.blueprints.catalog.model.Product;
 import com.sun.j2ee.blueprints.util.tracer.Debug;
 
 /**

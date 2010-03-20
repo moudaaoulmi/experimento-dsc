@@ -5,12 +5,13 @@ package com.sun.j2ee.blueprints.catalog.client;
 
 import java.util.Locale;
 
-import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
-import com.sun.j2ee.blueprints.catalog.model.Page;
-import com.sun.j2ee.blueprints.catalog.model.Item;
-import com.sun.j2ee.blueprints.catalog.ejb.CatalogLocal;
-import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import petstore.exception.ExceptionHandler;
+
+import com.sun.j2ee.blueprints.catalog.ejb.CatalogLocal;
+import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
+import com.sun.j2ee.blueprints.catalog.model.Item;
+import com.sun.j2ee.blueprints.catalog.model.Page;
+import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 /**
  * @author Raquel Maranhao
  */

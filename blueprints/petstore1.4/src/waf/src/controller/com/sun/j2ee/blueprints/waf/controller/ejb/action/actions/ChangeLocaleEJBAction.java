@@ -38,14 +38,11 @@
 
 package com.sun.j2ee.blueprints.waf.controller.ejb.action.actions;
 
-import java.util.Locale;
-
-// waf imports
-import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.event.EventException;
-import com.sun.j2ee.blueprints.waf.event.impl.ChangeLocaleEvent;
 import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBActionSupport;
+import com.sun.j2ee.blueprints.waf.event.Event;
+import com.sun.j2ee.blueprints.waf.event.EventException;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
+import com.sun.j2ee.blueprints.waf.event.impl.ChangeLocaleEvent;
 
 public class ChangeLocaleEJBAction extends EJBActionSupport {
 

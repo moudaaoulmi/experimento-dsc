@@ -40,16 +40,16 @@ package com.sun.j2ee.blueprints.mailer.ejb;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.naming.InitialContext;
 import javax.activation.DataHandler;
 import javax.mail.Message;
-import javax.mail.Transport;
 import javax.mail.Session;
-import javax.mail.internet.MimeMessage;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.naming.InitialContext;
 
-import com.sun.j2ee.blueprints.mailer.util.JNDINames;
 import com.sun.j2ee.blueprints.mailer.exceptions.MailerAppException;
+import com.sun.j2ee.blueprints.mailer.util.JNDINames;
 
 /**
  * A helper class to create and send mail.

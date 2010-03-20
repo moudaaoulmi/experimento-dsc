@@ -37,7 +37,6 @@
 
 package com.sun.j2ee.blueprints.catalog.model;
 
-import java.io.Serializable;
 
 /**
  * This class represents different categories of pets in the Java

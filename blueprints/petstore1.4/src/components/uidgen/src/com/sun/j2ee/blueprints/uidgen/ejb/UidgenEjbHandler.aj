@@ -8,8 +8,9 @@ import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 import javax.naming.NamingException;
 
-import com.sun.j2ee.blueprints.uidgen.counter.ejb.CounterLocal;
 import petstore.exception.ExceptionHandler;
+
+import com.sun.j2ee.blueprints.uidgen.counter.ejb.CounterLocal;
 /**
  * @author Raquel Maranhao
  */

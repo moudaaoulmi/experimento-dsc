@@ -39,18 +39,26 @@
 package com.sun.j2ee.blueprints.xmldocuments.tpa;
 
 
-import java.io.*;
-import java.util.*;
-import java.net.*;
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
-import org.w3c.dom.*;
+import java.util.Date;
 
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.*;
-import javax.xml.transform.stream.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
-import com.sun.j2ee.blueprints.xmldocuments.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import com.sun.j2ee.blueprints.xmldocuments.CustomEntityResolver;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentEditor;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentUtils;
 
 
 public class TPASupplierOrderXDE extends XMLDocumentEditor.DefaultXDE {

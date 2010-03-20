@@ -2,6 +2,7 @@ package com.sun.j2ee.blueprints.processmanager.ejb;
 
 import javax.ejb.EJBException;
 import javax.naming.NamingException;
+
 import petstore.exception.ExceptionHandler;
 
 @ExceptionHandler

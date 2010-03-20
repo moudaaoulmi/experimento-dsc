@@ -39,8 +39,8 @@ package com.sun.j2ee.blueprints.catalog.dao;
 
 import javax.naming.InitialContext;
 
-import com.sun.j2ee.blueprints.catalog.util.JNDINames;
 import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
+import com.sun.j2ee.blueprints.catalog.util.JNDINames;
 
 public class CatalogDAOFactory {
 

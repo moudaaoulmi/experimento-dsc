@@ -39,7 +39,6 @@
 package com.sun.j2ee.blueprints.asyncsender.ejb;
 
 import javax.ejb.EJBLocalObject;
-import javax.ejb.EJBException;
 
 public interface AsyncSender extends EJBLocalObject {
 

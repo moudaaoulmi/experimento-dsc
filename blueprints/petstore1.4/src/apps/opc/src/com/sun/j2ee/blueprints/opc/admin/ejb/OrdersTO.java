@@ -38,9 +38,9 @@
 package com.sun.j2ee.blueprints.opc.admin.ejb;
 
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 public interface OrdersTO extends Serializable {
 

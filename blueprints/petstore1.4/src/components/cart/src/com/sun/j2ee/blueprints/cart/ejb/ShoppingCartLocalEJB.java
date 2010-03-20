@@ -36,19 +36,16 @@
  */
 package com.sun.j2ee.blueprints.cart.ejb;
 
-import java.util.Locale;
-import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
 
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 
-// shoppingcart imports
 import com.sun.j2ee.blueprints.cart.model.CartItem;
-
-// catalog component imports
 import com.sun.j2ee.blueprints.catalog.client.CatalogHelper;
 import com.sun.j2ee.blueprints.catalog.model.Item;
 
