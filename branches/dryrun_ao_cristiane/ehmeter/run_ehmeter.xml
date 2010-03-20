@@ -11,9 +11,9 @@
 	<property name="dir.dist" value="${dir.work}/dist" />
 	<property name="dir.librariesEHMeter" value="${dir.build}/libs" />
 	<property name="dir.lib" value="../lib" />
-	<property name="dir.plugins" value="../../../plugins" />
+	<property name="dir.plugins" value="D:\Downloads\Eclipse\GalileoMM\plugins" />
 	<property name="dir.src" value="../src" />
-	<property name="dir.reusable.src" value="C:\Desenvolvimento\eclipse-mestrado-3\workspace\ReusableCode\src" />
+	<property name="dir.reusable.src" value="C:\Users\Emanoel\Documents\Pessoal\CIn\Mestrado\Exception Handling\ReusableCode\src" />
 	<property name="dir.src2" value="../nls" />
 
 	<property name="version" value="0.3"/>
@@ -89,12 +89,13 @@
 		</taskdef>
 			<mkdir dir="${dir.testclasses}" />
 		
-		<ehmeter workdir="${dir.work}" sourcelevel="1.6" export="xls"
+		<ehmeter workdir="${dir.work}" sourcelevel="1.5" export="xls"
 				resultsfile="${dir.work}/metrics-results.xls">
 			<fileset dir="${dir.src}" includes="**/*.java"/>
 			<fileset dir="${dir.src}" includes="**/*.aj"/>
 			<fileset dir="${dir.src2}" includes="**/*.java"/>
 			<fileset dir="${dir.src2}" includes="**/*.aj"/>
+			<fileset dir="${dir.reusable.src}" includes="**/*.aj"/>
 			<classpath refid="classpath.common"/>
 		</ehmeter>
 	</target>
