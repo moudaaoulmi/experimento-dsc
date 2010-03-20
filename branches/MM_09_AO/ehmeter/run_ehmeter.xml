@@ -5,8 +5,6 @@
 	<property name="dir.work" value="${dir.build}/work" />
 	<property name="dir.classes" value="${dir.work}/classes" />
 	<property name="dir.testclasses" value="${dir.work}/testclasses" />
-	
-	
 	<property name="dir.dist" value="${dir.work}/dist" />
 	<property name="dir.librariesEHMeter" value="${dir.build}/libs" />
 	<property name="dir.lib" value="libs" />
@@ -77,6 +75,7 @@
 	<target name="run" description="Computes metrics on the project.">
 		<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" classpath="libs\aspectjtools-1.5.1.jar"/>
 		<property name="taskdefs.init" value="true"/>
+		
 		<taskdef name="ehmeter" classname="br.upe.dsc.ehmeter.EHMeterTask" classpath="${dir.librariesEHMeter}/ehmeter-0.4.1.jar"/>
 		<mkdir dir="${dir.testclasses}" />
 		<ehmeter workdir="${dir.work}" sourcelevel="1.5" export="xls" resultsfile="${dir.work}/metrics-results.xls" verbose="debug">
