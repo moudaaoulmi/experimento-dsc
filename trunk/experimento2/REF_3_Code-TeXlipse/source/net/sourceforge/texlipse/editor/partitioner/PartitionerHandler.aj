@@ -4,13 +4,17 @@ import net.sourceforge.texlipse.TexlipsePlugin;
 
 import org.eclipse.jface.text.BadLocationException;
 
-public privileged aspect PartitionerHandler {
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+
+public privileged aspect PartitionerHandler extends EmptyBlockAbstractExceptionHandling{
 
 	pointcut internalUpdateBufferHandler(): execution(private void BufferedDocumentScanner.internalUpdateBuffer());
 
 	pointcut internalReadHandler(): execution(private int BufferedDocumentScanner.internalRead());
 
 	pointcut getColumnHandler(): execution(public final int BufferedDocumentScanner.getColumn());
+	
+	public pointcut emptyBlockException():  internalUpdateBufferHandler();
 
 	declare soft: BadLocationException: internalUpdateBufferHandler()||getColumnHandler();
 
@@ -43,10 +47,10 @@ public privileged aspect PartitionerHandler {
 		}
 	}
 
-	void around(): internalUpdateBufferHandler() {
-		try {
-			proceed();
-		} catch (BadLocationException e) {
-		}
-	}
+//	void around(): internalUpdateBufferHandler() {
+//		try {
+//			proceed();
+//		} catch (BadLocationException e) {
+//		}
+//	}
 }

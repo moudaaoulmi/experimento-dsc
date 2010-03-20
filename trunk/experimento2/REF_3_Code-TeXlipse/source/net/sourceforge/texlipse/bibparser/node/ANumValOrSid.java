@@ -2,8 +2,7 @@
 
 package net.sourceforge.texlipse.bibparser.node;
 
-import java.util.*;
-import net.sourceforge.texlipse.bibparser.analysis.*;
+import net.sourceforge.texlipse.bibparser.analysis.Analysis;
 
 public final class ANumValOrSid extends PValOrSid
 {

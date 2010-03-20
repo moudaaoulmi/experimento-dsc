@@ -2,7 +2,7 @@
 
 package net.sourceforge.texlipse.bibparser.node;
 
-import net.sourceforge.texlipse.bibparser.analysis.*;
+import net.sourceforge.texlipse.bibparser.analysis.Analysis;
 
 public final class TRBrace extends Token
 {

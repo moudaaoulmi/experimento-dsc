@@ -2,18 +2,20 @@ package net.sourceforge.texlipse.viewer;
 
 import java.io.File;
 import java.io.IOException;
+
 import net.sourceforge.texlipse.TexlipsePlugin;
+
 import org.aspectj.lang.SoftException;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 
-public privileged aspect ViewerHandler {
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+
+public privileged aspect ViewerHandler extends EmptyBlockAbstractExceptionHandling{
 
 	pointcut internalLaunchHandler(): execution(private void TexLaunchConfigurationDelegate.internalLaunch());
 
@@ -47,32 +49,39 @@ public privileged aspect ViewerHandler {
 	pointcut internalRunHandler(): execution(private void ViewerOutputScanner.EditorOpener.internalRun(IWorkbenchPage));
 
 	pointcut runHandler(): execution(public void ViewerOutputScanner.run());
+	
+	public pointcut emptyBlockException(): (runHandler()) || 
+										   (internalRunHandler()) || 
+										   (internalOpenFileFromLineNumberHandler2()) || 
+										   (internalInitializeHandler()) || 
+										   (internalOkPressedHandler()) ||
+										   (internalLaunchHandler() ||internalPreviewHandler());
 
 	declare soft: InterruptedException: internalLaunchHandler()||internalPreviewHandler();
 	declare soft: CoreException: internalOkPressedHandler() || internalInitializeHandler()||internalRebuildIfNeededHandler()||internalOpenFileFromLineNumberHandler()||internalOpenFileFromLineNumberHandler2();
 	declare soft: IOException: internalGetExistingHandler2()||internalExecuteHandler()||runHandler();
 	declare soft: PartInitException: internalRunHandler();
 
-	void around(): runHandler() {
-		try {
-			proceed();
-		} catch (IOException e) {
-		}
-	}
+//	void around(): runHandler() {
+//		try {
+//			proceed();
+//		} catch (IOException e) {
+//		}
+//	}
+//
+//	void around(): internalRunHandler() {
+//		try {
+//			proceed();
+//		} catch (PartInitException e) {
+//		}
+//	}
 
-	void around(): internalRunHandler() {
-		try {
-			proceed();
-		} catch (PartInitException e) {
-		}
-	}
-
-	void around(): internalOpenFileFromLineNumberHandler2() {
-		try {
-			proceed();
-		} catch (CoreException e) {
-		}
-	}
+//	void around(): internalOpenFileFromLineNumberHandler2() {
+//		try {
+//			proceed();
+//		} catch (CoreException e) {
+//		}
+//	}
 
 	IMarker around(IMarker mark):internalOpenFileFromLineNumberHandler() && args(..,mark) {
 		try {
@@ -145,12 +154,12 @@ public privileged aspect ViewerHandler {
 		}
 	}
 
-	void around(): internalInitializeHandler() {
-		try { // Make sure it's a LaTeX project
-			proceed();
-		} catch (CoreException e) {
-		}
-	}
+//	void around(): internalInitializeHandler() {
+//		try { // Make sure it's a LaTeX project
+//			proceed();
+//		} catch (CoreException e) {
+//		}
+//	}
 
 	void around(): internalOkPressedHandlerSoft() {
 		try {
@@ -160,21 +169,21 @@ public privileged aspect ViewerHandler {
 		}
 	}
 
-	void around(): internalOkPressedHandler() {
-		try {
-			proceed();
-		} catch (CoreException e) {
-			// Something wrong with the config, or could not read attributes, so
-			// swallow and skip
-		}
-	}
+//	void around(): internalOkPressedHandler() {
+//		try {
+//			proceed();
+//		} catch (CoreException e) {
+//			// Something wrong with the config, or could not read attributes, so
+//			// swallow and skip
+//		}
+//	}
 
-	void around(): internalLaunchHandler() ||internalPreviewHandler(){
-		try {
-			proceed();
-		} catch (InterruptedException e) {
-			// swallow
-		}
-	}
+//	void around(): internalLaunchHandler() ||internalPreviewHandler(){
+//		try {
+//			proceed();
+//		} catch (InterruptedException e) {
+//			// swallow
+//		}
+//	}
 
 }

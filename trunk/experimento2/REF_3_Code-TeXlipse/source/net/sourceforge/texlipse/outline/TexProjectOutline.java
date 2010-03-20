@@ -9,7 +9,6 @@
  */
 package net.sourceforge.texlipse.outline;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.model.MarkerHandler;
 import net.sourceforge.texlipse.model.OutlineNode;
 import net.sourceforge.texlipse.model.ReferenceContainer;

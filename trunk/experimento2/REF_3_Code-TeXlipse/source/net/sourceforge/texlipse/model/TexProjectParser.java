@@ -13,9 +13,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+
 import net.sourceforge.texlipse.builder.KpsewhichRunner;
 import net.sourceforge.texlipse.editor.TexDocumentParseException;
 import net.sourceforge.texlipse.texparser.TexParser;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;

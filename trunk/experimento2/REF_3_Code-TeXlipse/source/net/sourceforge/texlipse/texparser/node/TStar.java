@@ -2,7 +2,7 @@
 
 package net.sourceforge.texlipse.texparser.node;
 
-import net.sourceforge.texlipse.texparser.analysis.*;
+import net.sourceforge.texlipse.texparser.analysis.Analysis;
 
 @SuppressWarnings("nls")
 public final class TStar extends Token

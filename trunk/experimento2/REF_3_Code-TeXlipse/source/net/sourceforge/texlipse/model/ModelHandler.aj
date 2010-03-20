@@ -2,10 +2,12 @@ package net.sourceforge.texlipse.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.bibparser.BibParser;
 import net.sourceforge.texlipse.builder.KpsewhichRunner;
 import net.sourceforge.texlipse.editor.TexDocumentParseException;
+
 import org.aspectj.lang.SoftException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -21,7 +23,9 @@ import org.eclipse.jface.text.BadPositionCategoryException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 
-public privileged aspect ModelHandler {
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+
+public privileged aspect ModelHandler extends EmptyBlockAbstractExceptionHandling{
 
 	pointcut runHandler(): execution(protected IStatus TexDocumentModel.ParseJob.run(IProgressMonitor));
 
@@ -50,6 +54,8 @@ public privileged aspect ModelHandler {
 	pointcut internalCreateProjectDatastructs1Handler(): execution(private void TexDocumentModel.internalCreateProjectDatastructs1(IProject,IResource[], IFile, int));
 
 	pointcut internalReadFileHandler(): execution(private void TexProjectParser.internalReadFile(IFile, StringBuilder));
+	
+	public pointcut emptyBlockException(): internalUpdateDocumentPositionsHandler();
 
 	declare soft: CoreException : internalHandler()||internalReadFileHandler();
 	declare soft: BadLocationException: internalAddNodePositionHandler();
@@ -116,14 +122,14 @@ public privileged aspect ModelHandler {
 		}
 	}
 
-	void around(): internalUpdateDocumentPositionsHandler() {
-		try {
-			proceed();
-		} catch (BadPositionCategoryException bpce) {
-			// do nothing, the category will be added again next, it does not
-			// exists the first time
-		}
-	}
+//	void around(): internalUpdateDocumentPositionsHandler() {
+//		try {
+//			proceed();
+//		} catch (BadPositionCategoryException bpce) {
+//			// do nothing, the category will be added again next, it does not
+//			// exists the first time
+//		}
+//	}
 
 	void around() throws TexDocumentParseException : internalDoParseHandler() {
 		try {

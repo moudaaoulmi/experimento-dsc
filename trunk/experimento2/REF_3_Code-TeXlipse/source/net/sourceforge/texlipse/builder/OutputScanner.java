@@ -12,6 +12,7 @@ package net.sourceforge.texlipse.builder;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.actions.InputQueryDialog;
 

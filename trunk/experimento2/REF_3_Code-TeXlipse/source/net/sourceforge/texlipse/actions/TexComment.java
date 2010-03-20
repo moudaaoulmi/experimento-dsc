@@ -9,8 +9,6 @@
  */
 package net.sourceforge.texlipse.actions;
 
-import net.sourceforge.texlipse.TexlipsePlugin;
-
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;

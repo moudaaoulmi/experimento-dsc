@@ -10,14 +10,12 @@
 package net.sourceforge.texlipse.viewer;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import net.sourceforge.texlipse.TexlipsePlugin;
 
 import org.aspectj.lang.SoftException;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;

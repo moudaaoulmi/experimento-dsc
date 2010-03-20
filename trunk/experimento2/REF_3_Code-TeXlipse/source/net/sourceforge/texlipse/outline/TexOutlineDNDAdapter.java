@@ -9,10 +9,8 @@
  */
 package net.sourceforge.texlipse.outline;
 
-import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.model.OutlineNode;
 
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.viewers.ISelection;

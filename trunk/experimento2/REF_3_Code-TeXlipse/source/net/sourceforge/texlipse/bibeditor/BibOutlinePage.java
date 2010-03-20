@@ -14,6 +14,7 @@ import java.util.HashMap;
 import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.bibparser.BibOutlineContainer;
 import net.sourceforge.texlipse.model.ReferenceEntry;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;

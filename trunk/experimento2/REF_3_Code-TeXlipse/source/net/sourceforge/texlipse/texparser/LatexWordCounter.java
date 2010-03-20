@@ -9,11 +9,9 @@
  */
 package net.sourceforge.texlipse.texparser;
 
-import java.io.IOException;
 import java.io.PushbackReader;
 import java.io.StringReader;
 
-import net.sourceforge.texlipse.texparser.lexer.LexerException;
 import net.sourceforge.texlipse.texparser.node.EOF;
 import net.sourceforge.texlipse.texparser.node.TArgument;
 import net.sourceforge.texlipse.texparser.node.TCchapter;

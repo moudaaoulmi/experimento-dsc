@@ -12,7 +12,6 @@ package net.sourceforge.texlipse.editor.hover;
 import net.sourceforge.texlipse.editor.TexEditor;
 import net.sourceforge.texlipse.texparser.LatexParserUtils;
 
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;

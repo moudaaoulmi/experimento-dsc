@@ -2,8 +2,45 @@
 
 package net.sourceforge.texlipse.bibparser.analysis;
 
-import java.util.*;
-import net.sourceforge.texlipse.bibparser.node.*;
+import java.util.Hashtable;
+
+import net.sourceforge.texlipse.bibparser.node.ABibeBibEntry;
+import net.sourceforge.texlipse.bibparser.node.ABibstreBibEntry;
+import net.sourceforge.texlipse.bibparser.node.ABibtaskBibEntry;
+import net.sourceforge.texlipse.bibparser.node.ABibtex;
+import net.sourceforge.texlipse.bibparser.node.AConcat;
+import net.sourceforge.texlipse.bibparser.node.AEntryDef;
+import net.sourceforge.texlipse.bibparser.node.AEntrybraceEntry;
+import net.sourceforge.texlipse.bibparser.node.AEntryparenEntry;
+import net.sourceforge.texlipse.bibparser.node.AIdValOrSid;
+import net.sourceforge.texlipse.bibparser.node.AKeyvalDecl;
+import net.sourceforge.texlipse.bibparser.node.ANumValOrSid;
+import net.sourceforge.texlipse.bibparser.node.AStrbraceStringEntry;
+import net.sourceforge.texlipse.bibparser.node.AStrparenStringEntry;
+import net.sourceforge.texlipse.bibparser.node.AValueBValOrSid;
+import net.sourceforge.texlipse.bibparser.node.AValueQValOrSid;
+import net.sourceforge.texlipse.bibparser.node.EOF;
+import net.sourceforge.texlipse.bibparser.node.Node;
+import net.sourceforge.texlipse.bibparser.node.Start;
+import net.sourceforge.texlipse.bibparser.node.TBString;
+import net.sourceforge.texlipse.bibparser.node.TComma;
+import net.sourceforge.texlipse.bibparser.node.TComment;
+import net.sourceforge.texlipse.bibparser.node.TEntryName;
+import net.sourceforge.texlipse.bibparser.node.TEquals;
+import net.sourceforge.texlipse.bibparser.node.TEstring;
+import net.sourceforge.texlipse.bibparser.node.TIdentifier;
+import net.sourceforge.texlipse.bibparser.node.TLBrace;
+import net.sourceforge.texlipse.bibparser.node.TLParen;
+import net.sourceforge.texlipse.bibparser.node.TNumber;
+import net.sourceforge.texlipse.bibparser.node.TPreamble;
+import net.sourceforge.texlipse.bibparser.node.TQuotec;
+import net.sourceforge.texlipse.bibparser.node.TRBrace;
+import net.sourceforge.texlipse.bibparser.node.TRParen;
+import net.sourceforge.texlipse.bibparser.node.TScribeComment;
+import net.sourceforge.texlipse.bibparser.node.TSharp;
+import net.sourceforge.texlipse.bibparser.node.TStringLiteral;
+import net.sourceforge.texlipse.bibparser.node.TTaskcomment;
+import net.sourceforge.texlipse.bibparser.node.TWhitespace;
 
 public class AnalysisAdapter implements Analysis
 {

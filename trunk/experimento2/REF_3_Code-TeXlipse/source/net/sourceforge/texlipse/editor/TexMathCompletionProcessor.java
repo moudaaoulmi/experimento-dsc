@@ -11,15 +11,12 @@ package net.sourceforge.texlipse.editor;
 
 import java.util.ArrayList;
 
-import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.model.ReferenceManager;
 import net.sourceforge.texlipse.model.TexCommandEntry;
 import net.sourceforge.texlipse.model.TexDocumentModel;
 import net.sourceforge.texlipse.templates.TexContextType;
 import net.sourceforge.texlipse.templates.TexTemplateCompletion;
 
-import org.aspectj.lang.SoftException;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;

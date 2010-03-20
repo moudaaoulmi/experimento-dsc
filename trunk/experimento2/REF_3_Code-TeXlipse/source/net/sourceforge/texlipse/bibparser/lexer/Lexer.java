@@ -2,9 +2,32 @@
 
 package net.sourceforge.texlipse.bibparser.lexer;
 
-import java.io.*;
-import java.util.*;
-import net.sourceforge.texlipse.bibparser.node.*;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PushbackReader;
+
+import net.sourceforge.texlipse.bibparser.node.EOF;
+import net.sourceforge.texlipse.bibparser.node.TBString;
+import net.sourceforge.texlipse.bibparser.node.TComma;
+import net.sourceforge.texlipse.bibparser.node.TComment;
+import net.sourceforge.texlipse.bibparser.node.TEntryName;
+import net.sourceforge.texlipse.bibparser.node.TEquals;
+import net.sourceforge.texlipse.bibparser.node.TEstring;
+import net.sourceforge.texlipse.bibparser.node.TIdentifier;
+import net.sourceforge.texlipse.bibparser.node.TLBrace;
+import net.sourceforge.texlipse.bibparser.node.TLParen;
+import net.sourceforge.texlipse.bibparser.node.TNumber;
+import net.sourceforge.texlipse.bibparser.node.TPreamble;
+import net.sourceforge.texlipse.bibparser.node.TQuotec;
+import net.sourceforge.texlipse.bibparser.node.TRBrace;
+import net.sourceforge.texlipse.bibparser.node.TRParen;
+import net.sourceforge.texlipse.bibparser.node.TScribeComment;
+import net.sourceforge.texlipse.bibparser.node.TSharp;
+import net.sourceforge.texlipse.bibparser.node.TStringLiteral;
+import net.sourceforge.texlipse.bibparser.node.TTaskcomment;
+import net.sourceforge.texlipse.bibparser.node.TWhitespace;
+import net.sourceforge.texlipse.bibparser.node.Token;
 
 public class Lexer {
 	protected Token token;

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 import net.sourceforge.texlipse.model.ReferenceEntry;
 import net.sourceforge.texlipse.model.TexCommandEntry;
-import net.sourceforge.texlipse.texparser.lexer.LexerException;
 import net.sourceforge.texlipse.texparser.node.EOF;
 import net.sourceforge.texlipse.texparser.node.TArgument;
 import net.sourceforge.texlipse.texparser.node.TCbib;

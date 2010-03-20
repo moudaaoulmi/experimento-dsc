@@ -12,12 +12,14 @@ package net.sourceforge.texlipse;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+
 import net.sourceforge.texlipse.bibeditor.BibCodeScanner;
 import net.sourceforge.texlipse.bibeditor.BibColorProvider;
 import net.sourceforge.texlipse.bibeditor.BibEntryScanner;
 import net.sourceforge.texlipse.properties.StringListFieldEditor;
 import net.sourceforge.texlipse.templates.BibTexContextType;
 import net.sourceforge.texlipse.templates.TexContextType;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;

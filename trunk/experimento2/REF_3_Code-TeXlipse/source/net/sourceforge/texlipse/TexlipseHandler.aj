@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 
 public privileged aspect TexlipseHandler {

@@ -1,12 +1,10 @@
 package net.sourceforge.texlipse.actions;
 
-import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.editor.TexCompletionProposal;
 import net.sourceforge.texlipse.editor.TexEditor;
 import net.sourceforge.texlipse.model.TexCommandEntry;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;

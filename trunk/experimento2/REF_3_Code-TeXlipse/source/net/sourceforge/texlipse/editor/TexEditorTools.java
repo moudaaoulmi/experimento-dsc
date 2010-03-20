@@ -12,8 +12,6 @@ package net.sourceforge.texlipse.editor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.texlipse.TexlipsePlugin;
-
 import org.aspectj.lang.SoftException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;

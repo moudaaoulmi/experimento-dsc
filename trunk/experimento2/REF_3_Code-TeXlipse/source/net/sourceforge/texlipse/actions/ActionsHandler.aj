@@ -1,14 +1,15 @@
 package net.sourceforge.texlipse.actions;
 
+import net.sourceforge.texlipse.TexlipsePlugin;
+import net.sourceforge.texlipse.editor.TexEditor;
+import net.sourceforge.texlipse.model.AbstractEntry;
+
 import org.aspectj.lang.SoftException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.PartInitException;
-import net.sourceforge.texlipse.TexlipsePlugin;
-import net.sourceforge.texlipse.editor.TexEditor;
-import net.sourceforge.texlipse.model.AbstractEntry;
 
 public privileged aspect ActionsHandler {
 

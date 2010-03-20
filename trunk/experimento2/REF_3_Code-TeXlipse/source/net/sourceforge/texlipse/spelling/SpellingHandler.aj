@@ -2,21 +2,21 @@ package net.sourceforge.texlipse.spelling;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+
 import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.builder.BuilderRegistry;
+
 import org.aspectj.lang.SoftException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.source.ISourceViewer;
 
-public privileged aspect SpellingHandler {
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+
+public privileged aspect SpellingHandler extends EmptyBlockAbstractExceptionHandling{
 
 	pointcut internalRunHandler(): execution(private void SpellCheckAction.internalRun(IFile) );
 
@@ -41,6 +41,10 @@ public privileged aspect SpellingHandler {
 	pointcut internalGetResolutionsHandler(): execution(private Object SpellingResolutionGenerator.internalGetResolutions(IMarker));
 
 	pointcut internalCheckLineSpellingHandler1(): execution(private void SpellChecker.internalCheckLineSpelling());
+	
+	public pointcut emptyBlockException(): (internalCheckLineSpellingHandler1()) ||
+	   									   (internalRunHandler());
+	
 
 	declare soft: CoreException: internalRunHandler() || internalGetSpellingProposalHandler() || internalGetResolutionsHandler();
 	
@@ -50,13 +54,13 @@ public privileged aspect SpellingHandler {
 	
 	declare soft: InterruptedException: internalCheckLineSpellingHandler1();
 	
-	void around(): internalCheckLineSpellingHandler1() {
-		try {
-			proceed();
-		} catch (InterruptedException e) {
-			// No problem
-		}
-	}
+//	void around(): internalCheckLineSpellingHandler1() {
+//		try {
+//			proceed();
+//		} catch (InterruptedException e) {
+//			// No problem
+//		}
+//	}
 
 	Object around(): internalGetResolutionsHandler() {
 		try {
@@ -150,11 +154,11 @@ public privileged aspect SpellingHandler {
 		}
 	}
 
-	void around(): internalRunHandler() {
-		try {
-			proceed();
-		} catch (CoreException e) {
-		}
-	}
+//	void around(): internalRunHandler() {
+//		try {
+//			proceed();
+//		} catch (CoreException e) {
+//		}
+//	}
 
 }

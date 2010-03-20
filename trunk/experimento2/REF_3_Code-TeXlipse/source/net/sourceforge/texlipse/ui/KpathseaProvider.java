@@ -9,22 +9,19 @@
  */
 package net.sourceforge.texlipse.ui;
 
-import net.sourceforge.texlipse.TexlipsePlugin;
-import net.sourceforge.texlipse.builder.KpsewhichRunner;
-import net.sourceforge.texlipse.builder.Kpath;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.Viewer;
-
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.swt.graphics.Image;
-
-import org.eclipse.core.resources.IProject;
 import java.io.File;
 import java.io.FileFilter;
 
+import net.sourceforge.texlipse.TexlipsePlugin;
+import net.sourceforge.texlipse.builder.Kpath;
+import net.sourceforge.texlipse.builder.KpsewhichRunner;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 

@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+
 import net.sourceforge.texlipse.TexlipsePlugin;
+
 import org.aspectj.lang.SoftException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -17,7 +19,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-public privileged aspect BuilderHandler {
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+
+public privileged aspect BuilderHandler extends EmptyBlockAbstractExceptionHandling{
 
 	pointcut internalRunHandler(): execution(private void AbstractBuilder.internalRun());
 
@@ -79,6 +83,13 @@ public privileged aspect BuilderHandler {
 
 	pointcut internalGetOutputFileDateHandler(): execution(private static IResource TexlipseBuilder.internalGetOutputFileDate(IProject,
 			IResource));
+	
+	public pointcut emptyBlockException(): (internalFullBuildHandler3()) || 
+										   (internalReadFileHandler()||internalReadFile2Handler()) ||
+										   (internalBuildResourceHandler() ||internalBuildPartialFileHandler()) ||
+										   (internalReadOutputHandler()) ||
+										   (internalRenameOutputFileHandler()) ||
+										   (internalRunHandler());
 
 	declare soft: InterruptedException : internalRunHandler();
 	declare soft: Exception : internalRunHandler2()||internalRunHandler6();
@@ -116,12 +127,12 @@ public privileged aspect BuilderHandler {
 		}
 	}
 
-	void around(): internalFullBuildHandler3(){
-		try {
-			proceed();
-		} catch (BuilderCoreException e) {
-		}
-	}
+//	void around(): internalFullBuildHandler3(){
+//		try {
+//			proceed();
+//		} catch (BuilderCoreException e) {
+//		}
+//	}
 
 	Builder around(): internalFullBuildHandler2() {
 		try {
@@ -148,19 +159,19 @@ public privileged aspect BuilderHandler {
 		return number;
 	}
 
-	void around(): internalReadFileHandler()||internalReadFile2Handler() {
-		try {
-			proceed();
-		} catch (IOException e) {
-		}
-	}
+//	void around(): internalReadFileHandler()||internalReadFile2Handler() {
+//		try {
+//			proceed();
+//		} catch (IOException e) {
+//		}
+//	}
 
-	void around(): internalBuildResourceHandler() ||internalBuildPartialFileHandler(){
-		try {
-			proceed();
-		} catch (BuilderCoreException ex) {
-		}
-	}
+//	void around(): internalBuildResourceHandler() ||internalBuildPartialFileHandler(){
+//		try {
+//			proceed();
+//		} catch (BuilderCoreException ex) {
+//		}
+//	}
 
 	void around(): internalAskUserInputHandler() {
 		try {
@@ -197,12 +208,12 @@ public privileged aspect BuilderHandler {
 		}
 	}
 
-	void around(): internalReadOutputHandler(){
-		try {
-			proceed();
-		} catch (IOException e) {
-		}
-	}
+//	void around(): internalReadOutputHandler(){
+//		try {
+//			proceed();
+//		} catch (IOException e) {
+//		}
+//	}
 
 	Integer around(Integer lineNumber): (internalParseErrorsHandler()||internalParseErrorLineHandler()) && args(lineNumber,..){
 		try {
@@ -220,13 +231,13 @@ public privileged aspect BuilderHandler {
 			throw new RuntimeException(e);
 		}
 	}
-
-	void around(): internalRenameOutputFileHandler() {
-		try {
-			proceed();
-		} catch (CoreException e) {
-		}
-	}
+//
+//	void around(): internalRenameOutputFileHandler() {
+//		try {
+//			proceed();
+//		} catch (CoreException e) {
+//		}
+//	}
 
 	String around(AbstractProgramRunner abs) throws CoreException : internalRunHandler2()&& this(abs) {
 		try {
@@ -254,11 +265,11 @@ public privileged aspect BuilderHandler {
 		}
 	}
 
-	void around(): internalRunHandler() {
-		try {
-			proceed();
-		} catch (InterruptedException e) {
-		}
-	}
+//	void around(): internalRunHandler() {
+//		try {
+//			proceed();
+//		} catch (InterruptedException e) {
+//		}
+//	}
 
 }

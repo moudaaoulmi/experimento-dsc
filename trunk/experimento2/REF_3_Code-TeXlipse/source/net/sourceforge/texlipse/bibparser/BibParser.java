@@ -17,13 +17,9 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.texlipse.bibparser.lexer.LexerException;
 import net.sourceforge.texlipse.bibparser.node.Start;
 import net.sourceforge.texlipse.bibparser.parser.Parser;
-import net.sourceforge.texlipse.bibparser.parser.ParserException;
 import net.sourceforge.texlipse.model.ParseErrorMessage;
-
-import org.eclipse.core.resources.IMarker;
 
 /**
  * BibTeX parser front-end. After creation, the parsing is done by calling the

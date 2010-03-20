@@ -18,7 +18,6 @@ import java.util.Map;
 
 import org.aspectj.lang.SoftException;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ISynchronizable;
 import org.eclipse.jface.text.Position;
