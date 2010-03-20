@@ -2,6 +2,7 @@
 package com.atlassw.tools.eclipse.checkstyle.config.gui;
 
 import java.util.ArrayList;
+import br.upe.dsc.reusable.exception.*;
 import org.eclipse.osgi.util.NLS;
 
 import com.atlassw.tools.eclipse.checkstyle.config.gui.CheckConfigurationWorkingSetEditor;
@@ -14,7 +15,7 @@ import com.atlassw.tools.eclipse.checkstyle.config.gui.RuleConfigurationEditDial
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 
 @ExceptionHandler
-public privileged aspect GuiExceptionHandler
+public privileged aspect GuiExceptionHandler extends EmptyBlockAbstractExceptionHandling
 {
 
     // ---------------------------
@@ -38,6 +39,8 @@ public privileged aspect GuiExceptionHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
+    public pointcut emptyBlockException(): CheckConfigurationPropertiesDialog_createDialogAreaHandler();
+    
     pointcut CheckConfigurationConfigureDialog_initializeHandler(): 
         call(* CheckConfigurationWorkingCopy.getModules(..)) &&
         withincode(* CheckConfigurationConfigureDialog.initialize(..));
@@ -135,16 +138,16 @@ public privileged aspect GuiExceptionHandler
         }
     }
 
-    void around(): CheckConfigurationPropertiesDialog_createDialogAreaHandler(){
-        try
-        {
-            proceed();
-        }
-        catch (CheckstylePluginException e)
-        {
-            // NOOP
-        }
-    }
+//    void around(): CheckConfigurationPropertiesDialog_createDialogAreaHandler(){
+//        try
+//        {
+//            proceed();
+//        }
+//        catch (CheckstylePluginException e)
+//        {
+//            // NOOP
+//        }
+//    }
 
     void around(): CheckConfigurationPropertiesDialog_widgetSelectedHandler(){
         try

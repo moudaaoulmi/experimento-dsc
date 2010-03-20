@@ -2,6 +2,7 @@
 package com.atlassw.tools.eclipse.checkstyle.config;
 
 import org.eclipse.osgi.util.NLS;
+import br.upe.dsc.reusable.exception.*;
 import com.atlassw.tools.eclipse.checkstyle.ErrorMessages;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.ProjectConfigurationFactory;
 import com.atlassw.tools.eclipse.checkstyle.util.CheckstyleLog;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @ExceptionHandler
-public privileged aspect ConfigExceptionHandler
+public privileged aspect ConfigExceptionHandler extends EmptyBlockAbstractExceptionHandling
 {
     // ---------------------------
     // Atributos
@@ -55,6 +56,8 @@ public privileged aspect ConfigExceptionHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
+    public pointcut emptyBlockException(): CheckConfigurationWorkingCopy_setModulesIterationHandle();
+    
     pointcut CheckConfigurationWorkingCopy_setLocationHandle():
         execution (private void CheckConfigurationWorkingCopy.setLocationHandle(..)) ;
 
@@ -140,16 +143,16 @@ public privileged aspect ConfigExceptionHandler
         }
     }
 
-    void around(): CheckConfigurationWorkingCopy_setModulesIterationHandle()  {
-        try
-        {
-            proceed();
-        }
-        catch (CoreException e)
-        {
-            // NOOP - just ignore
-        }
-    }
+//    void around(): CheckConfigurationWorkingCopy_setModulesIterationHandle()  {
+//        try
+//        {
+//            proceed();
+//        }
+//        catch (CoreException e)
+//        {
+//            // NOOP - just ignore
+//        }
+//    }
 
     // esses dois nao podem ser reusados pq o com o retorno boolean está
     // utilizando valores iniciais diferentes do valor default.

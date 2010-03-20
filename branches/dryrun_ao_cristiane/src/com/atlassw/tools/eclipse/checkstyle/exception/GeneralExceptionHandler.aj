@@ -1,6 +1,7 @@
 package com.atlassw.tools.eclipse.checkstyle.exception;
 
 import java.io.BufferedOutputStream;
+import br.upe.dsc.reusable.exception.*;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -65,7 +66,7 @@ import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 
-public privileged aspect GeneralExceptionHandler
+public privileged aspect GeneralExceptionHandler extends EmptyBlockAbstractExceptionHandling
 {
 
     private Map inStream = new HashMap();
@@ -141,6 +142,10 @@ public privileged aspect GeneralExceptionHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
+    public pointcut emptyBlockException(): setModules2() 
+                                           || ResourceBundlePropertyResolver_resolveHandle() 
+                                           || metadataFactory_getMetadataI18NBundleHandler();
+    
     pointcut getInput():
         ((  call(* IFile.getContents(..)) &&
                 withincode (* ProjectConfigurationFactory.internalLoadFromPersistence(..))) ||
@@ -341,27 +346,27 @@ public privileged aspect GeneralExceptionHandler
         return listener;
     }
 
-    Object around(): setModules2(){
-        try{
-            return proceed();
-        }catch(CoreException e){
-            // NOOP - just ignore
-        }
-        return null;
-    }
-    Object around(): ResourceBundlePropertyResolver_resolveHandle() ||
-    metadataFactory_getMetadataI18NBundleHandler(){
-        Object result = null;
-        try
-        {
-            result = proceed();
-        }
-        catch (MissingResourceException e)
-        {
-            // ignore
-        }
-        return result;
-    }
+//    Object around(): setModules2(){
+//        try{
+//            return proceed();
+//        }catch(CoreException e){
+//            // NOOP - just ignore
+//        }
+//        return null;
+//    }
+//    Object around(): ResourceBundlePropertyResolver_resolveHandle() ||
+//    metadataFactory_getMetadataI18NBundleHandler(){
+//        Object result = null;
+//        try
+//        {
+//            result = proceed();
+//        }
+//        catch (MissingResourceException e)
+//        {
+//            // ignore
+//        }
+//        return result;
+//    }
 
     CheckstyleConfigurationFile around(CheckstyleConfigurationFile data, String currentRedirects,
             Authenticator oldAuthenticator, ICheckConfiguration checkConfiguration,
