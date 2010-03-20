@@ -17,9 +17,12 @@ import org.tigris.aopmetrics.results.ProjectMeasurements;
 import org.tigris.aopmetrics.source.Project;
 
 import exception.ExceptionHandler;
+import br.upe.dsc.reusable.exception.*;
 
 @ExceptionHandler
-public privileged aspect AopMetricsHandler {
+public privileged aspect AopMetricsHandler extends SoftExceptionAbstractExceptionHandling {
+	
+	public pointcut emptySoftExceptionHandler(): internalStartHandlerSoft();
 
 	pointcut internalStartHandler(): execution(private void AopMetricsCLI.internalStart(String[]));
 
@@ -115,12 +118,12 @@ public privileged aspect AopMetricsHandler {
 
 	}
 
-	void around(): internalStartHandlerSoft(){
-		try {
-			proceed();
-		} catch (SoftException e) {
-			// nothing
-		}
-	}
+//	void around(): internalStartHandlerSoft(){
+//		try {
+//			proceed();
+//		} catch (SoftException e) {
+//			// nothing
+//		}
+//	}
 
 }
