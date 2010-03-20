@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.model.ReferenceEntry;
 import net.sourceforge.texlipse.model.ReferenceManager;
 import net.sourceforge.texlipse.model.TexCommandEntry;
@@ -23,7 +22,6 @@ import net.sourceforge.texlipse.spelling.SpellChecker;
 import net.sourceforge.texlipse.templates.TexContextType;
 import net.sourceforge.texlipse.templates.TexTemplateCompletion;
 
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.CompletionProposal;

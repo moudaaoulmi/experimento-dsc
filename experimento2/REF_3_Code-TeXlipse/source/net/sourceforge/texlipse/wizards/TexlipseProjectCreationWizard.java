@@ -9,8 +9,6 @@
  */
 package net.sourceforge.texlipse.wizards;
 
-import java.lang.reflect.InvocationTargetException;
-
 import net.sourceforge.texlipse.TexlipsePlugin;
 
 import org.eclipse.core.runtime.CoreException;

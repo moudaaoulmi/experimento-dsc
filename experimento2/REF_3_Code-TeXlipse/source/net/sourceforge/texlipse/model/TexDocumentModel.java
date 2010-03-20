@@ -14,8 +14,10 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.bibparser.BibParser;
+import net.sourceforge.texlipse.builder.KpsewhichRunner;
 import net.sourceforge.texlipse.editor.TexDocumentParseException;
 import net.sourceforge.texlipse.editor.TexEditor;
 import net.sourceforge.texlipse.outline.TexOutlinePage;
@@ -24,7 +26,7 @@ import net.sourceforge.texlipse.properties.TexlipseProperties;
 import net.sourceforge.texlipse.texparser.LatexRefExtractingParser;
 import net.sourceforge.texlipse.texparser.TexParser;
 import net.sourceforge.texlipse.treeview.views.TexOutlineTreeView;
-import net.sourceforge.texlipse.builder.KpsewhichRunner;
+
 import org.aspectj.lang.SoftException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;

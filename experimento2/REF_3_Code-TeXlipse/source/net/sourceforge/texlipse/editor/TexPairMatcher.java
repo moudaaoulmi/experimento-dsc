@@ -17,8 +17,6 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.source.ICharacterPairMatcher;
 
-import org.eclipse.jface.text.BadLocationException;
-
 /**
  * @author Esa Seuranen
  * @author Boris von Loesch

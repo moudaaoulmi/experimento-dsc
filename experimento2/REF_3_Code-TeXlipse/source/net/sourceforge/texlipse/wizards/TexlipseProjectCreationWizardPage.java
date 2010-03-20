@@ -14,10 +14,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+
 import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.builder.BuilderChooser;
 import net.sourceforge.texlipse.properties.TexlipseProperties;
 import net.sourceforge.texlipse.templates.ProjectTemplateManager;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;

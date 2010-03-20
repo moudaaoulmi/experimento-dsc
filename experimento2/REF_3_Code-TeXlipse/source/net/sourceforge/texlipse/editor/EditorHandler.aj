@@ -1,6 +1,7 @@
 package net.sourceforge.texlipse.editor;
 
 import net.sourceforge.texlipse.TexlipsePlugin;
+
 import org.aspectj.lang.SoftException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -11,7 +12,6 @@ import org.eclipse.jface.text.BadPositionCategoryException;
 import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -23,7 +23,9 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.texteditor.spelling.SpellingProblem;
 
-public privileged aspect EditorHandler {
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+
+public privileged aspect EditorHandler extends EmptyBlockAbstractExceptionHandling{
 
 	pointcut internalDoExitHandler(): execution(private ExitFlags BracketInserter.ExitPolicy.internalDoExit(int, IDocument,ExitFlags));
 
@@ -108,6 +110,19 @@ public privileged aspect EditorHandler {
 	pointcut internalHandler(): execution(private char BracketInserter.internal(IDocument,int, char));
 
 	pointcut internalHandler1(): execution(private char BracketInserter.internal1(IDocument,int,char));
+	
+	public pointcut emptyBlockException(): (applyHandler()) || 
+										   (internalAcceptHandler()) || 
+										   (internalDocumentChangedHandler()) || 
+										   (internalUpdateHandler2()) || 
+										   (internalDoExitHandler3()) || 
+										   (internalDoExitHandler2()) || 
+										   (internalComputeCompletionProposalsHandler()) || 
+										   (internalGetHoverInfoHandler()) || 
+										   (intenalleft2Handler()) || 
+										   (intenalleftHandler()) || 
+										   (intenalVerifyKeyHandler()) || 
+										   (internalUpdateHandler());
 
 	declare soft: BadLocationException: internalDoExitHandler()||isMaskedHandler()||internalUpdateHandler()||intenalVerifyKeyHandler()||intenalVerifyKey3Handler()||intenalleftHandler()||internalComputeCompletionProposalsHandler()||internalComputeCompletionProposals2Handler()||internalDoExitHandler1()||internalDoExitHandler2()||internalDoExitHandler3()||internalGetLineDelimiterHandler()||internalGetIndexLineHandler()||internalGetLineLengthHandler()||internalGetStringAtHandler()||internalUpdateHandler2()||internalComputeCompletionProposalsHandler2()|| internalDocumentChangedHandler()||internalAcceptHandler()||applyHandler()||internalHandler()||internalHandler1();
 	
@@ -134,12 +149,12 @@ public privileged aspect EditorHandler {
 		return last;
 	}
 
-	void around(): applyHandler() {
-		try {
-			proceed();
-		} catch (BadLocationException x) {
-		}
-	}
+//	void around(): applyHandler() {
+//		try {
+//			proceed();
+//		} catch (BadLocationException x) {
+//		}
+//	}
 
 	void around(): internalAcceptHandlerSoft() {
 		try {
@@ -149,13 +164,13 @@ public privileged aspect EditorHandler {
 		}
 	}
 
-	void around(): internalAcceptHandler() {
-		try {
-			proceed();
-		} catch (BadLocationException e) {
-			// Should not happen
-		}
-	}
+//	void around(): internalAcceptHandler() {
+//		try {
+//			proceed();
+//		} catch (BadLocationException e) {
+//			// Should not happen
+//		}
+//	}
 
 	void around(): internalDocumentChangedHandlerSoft() {
 		try {
@@ -165,12 +180,12 @@ public privileged aspect EditorHandler {
 		}
 	}
 
-	void around(): internalDocumentChangedHandler() {
-		try {
-			proceed();
-		} catch (BadLocationException e) {
-		}
-	}
+//	void around(): internalDocumentChangedHandler() {
+//		try {
+//			proceed();
+//		} catch (BadLocationException e) {
+//		}
+//	}
 
 	ICompletionProposal[] around(): internalComputeCompletionProposalsSoft() {
 		try {
@@ -197,13 +212,13 @@ public privileged aspect EditorHandler {
 		}
 	}
 
-	void around(): internalUpdateHandler2() {
-		try {
-			proceed();
-		} catch (BadLocationException ex) {
-			// Do not inform the user cause this is only a decorator
-		}
-	}
+//	void around(): internalUpdateHandler2() {
+//		try {
+//			proceed();
+//		} catch (BadLocationException ex) {
+//			// Do not inform the user cause this is only a decorator
+//		}
+//	}
 	
 	String around(String line):internalGetStringAtHandler()&& args(..,line) {
 		try {
@@ -281,20 +296,20 @@ public privileged aspect EditorHandler {
 		}
 	}
 
-	void around(): internalDoExitHandler3() {
-		try {
-			proceed();
-		} catch (BadLocationException e) {
-		}
-	}
+//	void around(): internalDoExitHandler3() {
+//		try {
+//			proceed();
+//		} catch (BadLocationException e) {
+//		}
+//	}
 
-	void around(): internalDoExitHandler2() {
-		try {
-			proceed();
-		} catch (BadLocationException e1) {
-			// Should not happen
-		}
-	}
+//	void around(): internalDoExitHandler2() {
+//		try {
+//			proceed();
+//		} catch (BadLocationException e1) {
+//			// Should not happen
+//		}
+//	}
 
 	ExitFlags around(): internalDoExitHandler1() {
 		try {
@@ -313,13 +328,13 @@ public privileged aspect EditorHandler {
 		}
 	}
 
-	ICompletionProposal[] around(): internalComputeCompletionProposalsHandler() {
-		try {
-			return proceed();
-		} catch (BadLocationException e) {
-		}
-		return null;
-	}
+//	ICompletionProposal[] around(): internalComputeCompletionProposalsHandler() {
+//		try {
+//			return proceed();
+//		} catch (BadLocationException e) {
+//		}
+//		return null;
+//	}
 
 	boolean around(int lines): internaIitemInsertedHandler()&&args(..,lines,*) {
 		try {
@@ -341,29 +356,29 @@ public privileged aspect EditorHandler {
 		}
 	}
 
-	String around():internalGetHoverInfoHandler() {
-		try {
-			return proceed();
-		} catch (CoreException e) {
-		}
-		return null;
-	}
+//	String around():internalGetHoverInfoHandler() {
+//		try {
+//			return proceed();
+//		} catch (CoreException e) {
+//		}
+//		return null;
+//	}
 
-	void around(): intenalleft2Handler(){
-		try {
-			proceed();
-		} catch (BadPositionCategoryException e) {
-			// JavaPlugin.log(e);
-		}
-	}
-
-	void around(): intenalleftHandler(){
-		try {
-			proceed();
-		} catch (BadLocationException e) {
-			// JavaPlugin.log(e);
-		}
-	}
+//	void around(): intenalleft2Handler(){
+//		try {
+//			proceed();
+//		} catch (BadPositionCategoryException e) {
+//			// JavaPlugin.log(e);
+//		}
+//	}
+//
+//	void around(): intenalleftHandler(){
+//		try {
+//			proceed();
+//		} catch (BadLocationException e) {
+//			// JavaPlugin.log(e);
+//		}
+//	}
 
 	boolean around(boolean left): intenalVerifyKey3Handler()&& args(..,left) {
 		try {
@@ -384,21 +399,21 @@ public privileged aspect EditorHandler {
 		return 1;
 	}
 
-	void around():intenalVerifyKeyHandler(){
-		try {
-			proceed();
-		} catch (BadLocationException e) {
-		} catch (BadPositionCategoryException e) {
-		}
-	}
+//	void around():intenalVerifyKeyHandler(){
+//		try {
+//			proceed();
+//		} catch (BadLocationException e) {
+//		} catch (BadPositionCategoryException e) {
+//		}
+//	}
 
-	void around():internalUpdateHandler() {
-		try {
-			proceed();
-		} catch (BadPositionCategoryException e) {
-			// ignore and return
-		}
-	}
+//	void around():internalUpdateHandler() {
+//		try {
+//			proceed();
+//		} catch (BadPositionCategoryException e) {
+//			// ignore and return
+//		}
+//	}
 
 	boolean around(): isMaskedHandler() {
 		try {

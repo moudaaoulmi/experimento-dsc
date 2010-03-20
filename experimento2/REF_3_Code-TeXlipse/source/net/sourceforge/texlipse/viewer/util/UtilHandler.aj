@@ -4,10 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+
 import net.sourceforge.texlipse.TexlipsePlugin;
+
 import org.aspectj.lang.SoftException;
 
-public privileged aspect UtilHandler {
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+
+public privileged aspect UtilHandler extends EmptyBlockAbstractExceptionHandling{
 
 	pointcut writeToSocketHandler(): execution(public void FileLocationClient.writeToSocket());
 
@@ -26,6 +30,8 @@ public privileged aspect UtilHandler {
 	pointcut internalRunHandler1(): execution(private void ViewerErrorScanner.internalRun(BufferedReader, ArrayList, String));
 
 	pointcut internalRunHandler2(): execution(private int ViewerErrorScanner.internalRun(int));
+	
+	public pointcut emptyBlockException(): internalRunHandler1();
 
 	declare soft: IOException: writeToSocketHandler()||intenalStopHandler()|| internalRun2Handler()||internalRunHandler1();
 	declare soft:InterruptedException:internalRunHandler2();
@@ -38,12 +44,12 @@ public privileged aspect UtilHandler {
 		return exitCode;
 	}
 
-	void around(): internalRunHandler1() {
-		try {
-			proceed();
-		} catch (IOException e) {
-		}
-	}
+//	void around(): internalRunHandler1() {
+//		try {
+//			proceed();
+//		} catch (IOException e) {
+//		}
+//	}
 
 	int around(int lineNumber): internalParseLineHandler()&& args(*, lineNumber) {
 		try {

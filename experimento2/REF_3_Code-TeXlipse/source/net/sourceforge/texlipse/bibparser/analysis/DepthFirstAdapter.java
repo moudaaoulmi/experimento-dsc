@@ -2,8 +2,26 @@
 
 package net.sourceforge.texlipse.bibparser.analysis;
 
-import java.util.*;
-import net.sourceforge.texlipse.bibparser.node.*;
+import net.sourceforge.texlipse.bibparser.node.ABibeBibEntry;
+import net.sourceforge.texlipse.bibparser.node.ABibstreBibEntry;
+import net.sourceforge.texlipse.bibparser.node.ABibtaskBibEntry;
+import net.sourceforge.texlipse.bibparser.node.ABibtex;
+import net.sourceforge.texlipse.bibparser.node.AConcat;
+import net.sourceforge.texlipse.bibparser.node.AEntryDef;
+import net.sourceforge.texlipse.bibparser.node.AEntrybraceEntry;
+import net.sourceforge.texlipse.bibparser.node.AEntryparenEntry;
+import net.sourceforge.texlipse.bibparser.node.AIdValOrSid;
+import net.sourceforge.texlipse.bibparser.node.AKeyvalDecl;
+import net.sourceforge.texlipse.bibparser.node.ANumValOrSid;
+import net.sourceforge.texlipse.bibparser.node.AStrbraceStringEntry;
+import net.sourceforge.texlipse.bibparser.node.AStrparenStringEntry;
+import net.sourceforge.texlipse.bibparser.node.AValueBValOrSid;
+import net.sourceforge.texlipse.bibparser.node.AValueQValOrSid;
+import net.sourceforge.texlipse.bibparser.node.Node;
+import net.sourceforge.texlipse.bibparser.node.PBibEntry;
+import net.sourceforge.texlipse.bibparser.node.PConcat;
+import net.sourceforge.texlipse.bibparser.node.PKeyvalDecl;
+import net.sourceforge.texlipse.bibparser.node.Start;
 
 public class DepthFirstAdapter extends AnalysisAdapter
 {

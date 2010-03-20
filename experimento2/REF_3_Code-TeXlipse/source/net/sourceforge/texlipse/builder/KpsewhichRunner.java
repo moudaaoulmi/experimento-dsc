@@ -16,11 +16,7 @@ import net.sourceforge.texlipse.properties.TexlipseProperties;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
-
-import net.sourceforge.texlipse.builder.Kpath;
 
 /**
  * Access functionality of the kpathsea library via kpsewhich (Easier than

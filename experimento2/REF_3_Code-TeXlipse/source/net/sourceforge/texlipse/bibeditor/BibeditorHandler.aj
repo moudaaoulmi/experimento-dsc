@@ -1,15 +1,19 @@
 package net.sourceforge.texlipse.bibeditor;
 
 import java.io.IOException;
+
+import net.sourceforge.texlipse.TexlipsePlugin;
+import net.sourceforge.texlipse.editor.TexDocumentParseException;
+
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPositionCategoryException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
-import net.sourceforge.texlipse.TexlipsePlugin;
-import net.sourceforge.texlipse.editor.TexDocumentParseException;
 
-public privileged aspect BibeditorHandler {
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+
+public privileged aspect BibeditorHandler extends EmptyBlockAbstractExceptionHandling{
 
 	pointcut doParseHandler(): execution(private void BibDocumentModel.doParse());
 
@@ -24,18 +28,22 @@ public privileged aspect BibeditorHandler {
 	pointcut internalDocumentChangedHandler(): execution(private void BibStringCompleter.internalDocumentChanged(ITextSelection));
 
 	pointcut internalDocumentChanged2Handler(): execution(private void BibStringCompleter.internalDocumentChanged2(ITextSelection));
+	
+	public pointcut emptyBlockException(): (internalDocumentChangedHandler()||internalDocumentChanged2Handler()) ||
+										   (updateHandler()) ||
+										   (internalUpdateDocumentPositionsHandler());
 
 	declare soft: IOException: doParseHandler();
 	declare soft: BadPositionCategoryException: internalUpdateDocumentPositionsHandler()||internalUpdateDocumentPositions2Handler();
 	declare soft: BadLocationException: internalUpdateDocumentPositions2Handler()||internalDocumentChangedHandler()||internalDocumentChanged2Handler();
 	declare soft: TexDocumentParseException: updateHandler();
 
-	void around(): internalDocumentChangedHandler()||internalDocumentChanged2Handler() {
-		try {
-			proceed();
-		} catch (BadLocationException e) {
-		}
-	}
+//	void around(): internalDocumentChangedHandler()||internalDocumentChanged2Handler() {
+//		try {
+//			proceed();
+//		} catch (BadLocationException e) {
+//		}
+//	}
 
 	void around(BibOutlinePage bib): internalSelectionChangedHandler()&& this(bib){
 		try {
@@ -49,14 +57,14 @@ public privileged aspect BibeditorHandler {
 		}
 	}
 
-	void around(): updateHandler() {
-		try {
-			proceed();
-		} catch (TexDocumentParseException e) {
-			// We do nothing, since the error is already added
-			// TexlipsePlugin.log("There were parse errors in the document", e);
-		}
-	}
+//	void around(): updateHandler() {
+//		try {
+//			proceed();
+//		} catch (TexDocumentParseException e) {
+//			// We do nothing, since the error is already added
+//			// TexlipsePlugin.log("There were parse errors in the document", e);
+//		}
+//	}
 
 	void around(): internalUpdateDocumentPositions2Handler() {
 		//(2)
@@ -76,13 +84,13 @@ public privileged aspect BibeditorHandler {
 		}
 	}
 
-	void around(): internalUpdateDocumentPositionsHandler() {
-		try {
-			proceed();
-		} catch (BadPositionCategoryException bpce) {
-			// do nothing
-		}
-	}
+//	void around(): internalUpdateDocumentPositionsHandler() {
+//		try {
+//			proceed();
+//		} catch (BadPositionCategoryException bpce) {
+//			// do nothing
+//		}
+//	}
 
 	void around() throws TexDocumentParseException: doParseHandler() {
 		try {

@@ -2,15 +2,18 @@ package net.sourceforge.texlipse.editor.hover;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.model.ReferenceEntry;
+
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
-import org.eclipse.swt.events.PaintEvent;
 
-public privileged aspect HoverHandler {
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+
+public privileged aspect HoverHandler extends EmptyBlockAbstractExceptionHandling{
 
 	pointcut getHoverInfoHandler(): execution(public String TexHover.getHoverInfo(ITextViewer, IRegion));
 
@@ -19,6 +22,8 @@ public privileged aspect HoverHandler {
 	pointcut internalGetDocumentExtractHandler(): execution(private void TexInformationControl.internalGetDocumentExtract(String, int, StringBuffer));
 
 	pointcut internaSetRefHoverHandler(): execution(private String TexInformationControl.internaSetRefHover(ReferenceEntry, String) );
+	
+	public pointcut emptyBlockException(): internalGetDocumentExtractHandler() ;
 
 	declare soft:BadLocationException: getHoverInfoHandler()||getHoverRegionHandler()||internaSetRefHoverHandler();
 	declare soft:FileNotFoundException: internalGetDocumentExtractHandler();
@@ -33,13 +38,13 @@ public privileged aspect HoverHandler {
 		return extract;
 	}
 
-	void around(): internalGetDocumentExtractHandler() {
-		try {
-			proceed();
-		} catch (FileNotFoundException e) {
-		} catch (IOException e) {
-		}
-	}
+//	void around(): internalGetDocumentExtractHandler() {
+//		try {
+//			proceed();
+//		} catch (FileNotFoundException e) {
+//		} catch (IOException e) {
+//		}
+//	}
 	
 	IRegion around(int offset):getHoverRegionHandler() && args(offset){
 		try {

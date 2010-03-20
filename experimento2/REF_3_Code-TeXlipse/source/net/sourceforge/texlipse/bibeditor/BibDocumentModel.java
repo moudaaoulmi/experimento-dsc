@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.bibparser.BibOutlineContainer;
 import net.sourceforge.texlipse.bibparser.BibParser;
 import net.sourceforge.texlipse.editor.TexDocumentParseException;
@@ -26,8 +25,6 @@ import net.sourceforge.texlipse.properties.TexlipseProperties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.BadPositionCategoryException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.part.FileEditorInput;
 

@@ -59,8 +59,8 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.ui.PartInitException;
 
-import br.upe.dsc.reusable.exception.LogAbstractHandler;
 import br.upe.dsc.reusable.exception.ILogObject;
+import br.upe.dsc.reusable.exception.LogAbstractHandler;
 
 
 public privileged aspect GeneralLogExceptionHandling extends LogAbstractHandler {

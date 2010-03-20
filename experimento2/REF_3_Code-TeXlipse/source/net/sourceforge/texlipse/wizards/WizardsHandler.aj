@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 
 import net.sourceforge.texlipse.TexlipsePlugin;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;

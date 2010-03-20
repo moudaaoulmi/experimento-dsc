@@ -2,6 +2,7 @@ package net.sourceforge.texlipse.texparser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import net.sourceforge.texlipse.model.ParseErrorMessage;
 import net.sourceforge.texlipse.model.ReferenceContainer;
 import net.sourceforge.texlipse.model.TexCommandEntry;

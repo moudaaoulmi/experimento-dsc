@@ -2,14 +2,54 @@
 
 package net.sourceforge.texlipse.bibparser.parser;
 
-import net.sourceforge.texlipse.bibparser.lexer.*;
-import net.sourceforge.texlipse.bibparser.node.*;
-import net.sourceforge.texlipse.bibparser.analysis.*;
-import java.util.*;
-
-import java.io.DataInputStream;
 import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+
+import net.sourceforge.texlipse.bibparser.analysis.Analysis;
+import net.sourceforge.texlipse.bibparser.analysis.AnalysisAdapter;
+import net.sourceforge.texlipse.bibparser.lexer.Lexer;
+import net.sourceforge.texlipse.bibparser.lexer.LexerException;
+import net.sourceforge.texlipse.bibparser.node.ABibeBibEntry;
+import net.sourceforge.texlipse.bibparser.node.ABibstreBibEntry;
+import net.sourceforge.texlipse.bibparser.node.ABibtaskBibEntry;
+import net.sourceforge.texlipse.bibparser.node.ABibtex;
+import net.sourceforge.texlipse.bibparser.node.AConcat;
+import net.sourceforge.texlipse.bibparser.node.AEntryDef;
+import net.sourceforge.texlipse.bibparser.node.AEntrybraceEntry;
+import net.sourceforge.texlipse.bibparser.node.AEntryparenEntry;
+import net.sourceforge.texlipse.bibparser.node.AIdValOrSid;
+import net.sourceforge.texlipse.bibparser.node.AKeyvalDecl;
+import net.sourceforge.texlipse.bibparser.node.ANumValOrSid;
+import net.sourceforge.texlipse.bibparser.node.AStrbraceStringEntry;
+import net.sourceforge.texlipse.bibparser.node.AStrparenStringEntry;
+import net.sourceforge.texlipse.bibparser.node.AValueBValOrSid;
+import net.sourceforge.texlipse.bibparser.node.AValueQValOrSid;
+import net.sourceforge.texlipse.bibparser.node.EOF;
+import net.sourceforge.texlipse.bibparser.node.NodeCast;
+import net.sourceforge.texlipse.bibparser.node.PBibEntry;
+import net.sourceforge.texlipse.bibparser.node.PBibtex;
+import net.sourceforge.texlipse.bibparser.node.PConcat;
+import net.sourceforge.texlipse.bibparser.node.PEntry;
+import net.sourceforge.texlipse.bibparser.node.PEntryDef;
+import net.sourceforge.texlipse.bibparser.node.PKeyvalDecl;
+import net.sourceforge.texlipse.bibparser.node.PStringEntry;
+import net.sourceforge.texlipse.bibparser.node.PValOrSid;
+import net.sourceforge.texlipse.bibparser.node.Start;
+import net.sourceforge.texlipse.bibparser.node.Switchable;
+import net.sourceforge.texlipse.bibparser.node.TEntryName;
+import net.sourceforge.texlipse.bibparser.node.TIdentifier;
+import net.sourceforge.texlipse.bibparser.node.TNumber;
+import net.sourceforge.texlipse.bibparser.node.TRBrace;
+import net.sourceforge.texlipse.bibparser.node.TRParen;
+import net.sourceforge.texlipse.bibparser.node.TStringLiteral;
+import net.sourceforge.texlipse.bibparser.node.TTaskcomment;
+import net.sourceforge.texlipse.bibparser.node.Token;
+import net.sourceforge.texlipse.bibparser.node.TypedLinkedList;
 
 public class Parser {
 	public final Analysis ignoredTokens = new AnalysisAdapter();

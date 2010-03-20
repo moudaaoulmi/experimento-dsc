@@ -14,7 +14,6 @@ import java.util.List;
 
 import net.sourceforge.texlipse.TexlipsePlugin;
 
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;

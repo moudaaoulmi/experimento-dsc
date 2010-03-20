@@ -1,6 +1,7 @@
 package net.sourceforge.texlipse.bibparser;
 
 import java.util.List;
+
 import net.sourceforge.texlipse.bibparser.lexer.LexerException;
 import net.sourceforge.texlipse.bibparser.parser.ParserException;
 import net.sourceforge.texlipse.model.ParseErrorMessage;

@@ -2,8 +2,50 @@
 
 package net.sourceforge.texlipse.texparser.lexer;
 
-import java.io.*;
-import net.sourceforge.texlipse.texparser.node.*;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PushbackReader;
+
+import net.sourceforge.texlipse.texparser.node.EOF;
+import net.sourceforge.texlipse.texparser.node.TArgument;
+import net.sourceforge.texlipse.texparser.node.TBverbatim;
+import net.sourceforge.texlipse.texparser.node.TCbegin;
+import net.sourceforge.texlipse.texparser.node.TCbib;
+import net.sourceforge.texlipse.texparser.node.TCbibstyle;
+import net.sourceforge.texlipse.texparser.node.TCchapter;
+import net.sourceforge.texlipse.texparser.node.TCcite;
+import net.sourceforge.texlipse.texparser.node.TCend;
+import net.sourceforge.texlipse.texparser.node.TCinclude;
+import net.sourceforge.texlipse.texparser.node.TCinput;
+import net.sourceforge.texlipse.texparser.node.TClabel;
+import net.sourceforge.texlipse.texparser.node.TCnew;
+import net.sourceforge.texlipse.texparser.node.TCommentline;
+import net.sourceforge.texlipse.texparser.node.TCparagraph;
+import net.sourceforge.texlipse.texparser.node.TCpart;
+import net.sourceforge.texlipse.texparser.node.TCpindex;
+import net.sourceforge.texlipse.texparser.node.TCref;
+import net.sourceforge.texlipse.texparser.node.TCrenew;
+import net.sourceforge.texlipse.texparser.node.TCsection;
+import net.sourceforge.texlipse.texparser.node.TCspace;
+import net.sourceforge.texlipse.texparser.node.TCssection;
+import net.sourceforge.texlipse.texparser.node.TCsssection;
+import net.sourceforge.texlipse.texparser.node.TCsymbol;
+import net.sourceforge.texlipse.texparser.node.TCverb;
+import net.sourceforge.texlipse.texparser.node.TCword;
+import net.sourceforge.texlipse.texparser.node.TEverbatim;
+import net.sourceforge.texlipse.texparser.node.TLBrace;
+import net.sourceforge.texlipse.texparser.node.TLBracket;
+import net.sourceforge.texlipse.texparser.node.TOptargument;
+import net.sourceforge.texlipse.texparser.node.TRBrace;
+import net.sourceforge.texlipse.texparser.node.TRBracket;
+import net.sourceforge.texlipse.texparser.node.TSkippedArea;
+import net.sourceforge.texlipse.texparser.node.TStar;
+import net.sourceforge.texlipse.texparser.node.TTaskcomment;
+import net.sourceforge.texlipse.texparser.node.TVtext;
+import net.sourceforge.texlipse.texparser.node.TWhitespace;
+import net.sourceforge.texlipse.texparser.node.TWord;
+import net.sourceforge.texlipse.texparser.node.Token;
 
 @SuppressWarnings("nls")
 public class Lexer {

@@ -10,11 +10,8 @@
 package net.sourceforge.texlipse.editor.hover;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 
-import net.sourceforge.texlipse.TexlipsePlugin;
 import net.sourceforge.texlipse.editor.TexEditor;
 import net.sourceforge.texlipse.model.AbstractEntry;
 import net.sourceforge.texlipse.model.ReferenceEntry;
@@ -23,7 +20,6 @@ import net.sourceforge.texlipse.model.TexCommandEntry;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlExtension;

@@ -11,11 +11,7 @@ package net.sourceforge.texlipse.editor.partitioner;
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-import net.sourceforge.texlipse.TexlipsePlugin;
-
 import org.eclipse.core.runtime.Assert;
-
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.rules.ICharacterScanner;
 

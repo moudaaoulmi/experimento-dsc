@@ -21,9 +21,7 @@ import net.sourceforge.texlipse.model.ParseErrorMessage;
 import net.sourceforge.texlipse.model.ReferenceContainer;
 import net.sourceforge.texlipse.model.ReferenceEntry;
 import net.sourceforge.texlipse.model.TexCommandEntry;
-import net.sourceforge.texlipse.texparser.lexer.LexerException;
 
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 

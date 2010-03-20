@@ -13,7 +13,6 @@ import java.io.File;
 
 import net.sourceforge.texlipse.TexlipsePlugin;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
