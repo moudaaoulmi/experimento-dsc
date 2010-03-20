@@ -2,13 +2,19 @@ package lancs.mobilemedia.optional.capture;
 import  java.lang.Exception;
 
 import javax.microedition.media.MediaException;
-import lancs.mobilemedia.exception.CheckedExceptionHandler;
+
+//import lancs.mobilemedia.exception.CheckedExceptionHandler;
 //import lancs.mobilemedia.exception.ExceptionHandler;
+import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
 
 //@ExceptionHandler
-public privileged aspect OptionalCaptureHandler extends CheckedExceptionHandler {
+public privileged aspect OptionalCaptureHandler extends PrintStackTraceAbstractExceptionHandler {
 
-	public pointcut checkedMechanismException() : execution(void CaptureVideoScreen.internalCaptureVideoScreen())
+//	public pointcut checkedMechanismException() : execution(void CaptureVideoScreen.internalCaptureVideoScreen())
+//												||internalCaptureVideoScreenHandler2()
+//												||execution(void CaptureVideoScreen.internalSetVisibleVideo());
+	
+	public pointcut printStackTraceException() : execution(void CaptureVideoScreen.internalCaptureVideoScreen())
 												||internalCaptureVideoScreenHandler2()
 												||execution(void CaptureVideoScreen.internalSetVisibleVideo());
 	
