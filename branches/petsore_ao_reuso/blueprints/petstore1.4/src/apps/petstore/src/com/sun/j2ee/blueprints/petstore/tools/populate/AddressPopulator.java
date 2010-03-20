@@ -37,9 +37,13 @@
 
 package com.sun.j2ee.blueprints.petstore.tools.populate;
 
-import javax.naming.*;
-import org.xml.sax.*;
-import com.sun.j2ee.blueprints.address.ejb.*;
+import javax.naming.InitialContext;
+
+import org.xml.sax.XMLFilter;
+import org.xml.sax.XMLReader;
+
+import com.sun.j2ee.blueprints.address.ejb.AddressLocal;
+import com.sun.j2ee.blueprints.address.ejb.AddressLocalHome;
 
 
 public class AddressPopulator {

@@ -38,7 +38,6 @@
 
 package com.sun.j2ee.blueprints.cart.ejb;
 
-import java.util.HashMap;
 import java.util.Collection;
 import java.util.Locale;
 

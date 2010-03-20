@@ -3,11 +3,13 @@
  */
 package com.sun.j2ee.blueprints.asyncsender.ejb;
 
-import javax.ejb.EJBException;
-import javax.jms.QueueConnectionFactory;
-import javax.jms.QueueConnection;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.ejb.EJBException;
+import javax.jms.QueueConnection;
+import javax.jms.QueueConnectionFactory;
+
 import petstore.exception.ExceptionHandler;
 
 /**

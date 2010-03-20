@@ -38,20 +38,17 @@
 
 package com.sun.j2ee.blueprints.petstore.controller.ejb.actions;
 
-import java.util.Map;
 import java.util.Iterator;
+import java.util.Map;
 
-// WAF imports
-import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.event.EventException;
-import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBActionSupport;
-
-// petstore imports
-import com.sun.j2ee.blueprints.petstore.controller.events.CartEvent;
 import com.sun.j2ee.blueprints.cart.ejb.ShoppingCartLocal;
 import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingClientFacadeLocal;
+import com.sun.j2ee.blueprints.petstore.controller.events.CartEvent;
 import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
+import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBActionSupport;
+import com.sun.j2ee.blueprints.waf.event.Event;
+import com.sun.j2ee.blueprints.waf.event.EventException;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
 
 public class CartEJBAction extends EJBActionSupport {
 

@@ -38,7 +38,6 @@
 package com.sun.j2ee.blueprints.uidgen.ejb;
 
 import javax.ejb.CreateException;
-import javax.ejb.FinderException;
 
 public interface UniqueIdGeneratorLocalHome extends javax.ejb.EJBLocalHome {
 

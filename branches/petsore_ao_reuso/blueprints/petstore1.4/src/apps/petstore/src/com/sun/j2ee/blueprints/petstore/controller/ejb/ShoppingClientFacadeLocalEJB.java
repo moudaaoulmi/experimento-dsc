@@ -39,26 +39,17 @@ package com.sun.j2ee.blueprints.petstore.controller.ejb;
 
 
 // J2EE imports
+import javax.ejb.FinderException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
-import javax.ejb.FinderException;
 
-// WAF imports
-import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
-
-// shopping cart imports
 import com.sun.j2ee.blueprints.cart.ejb.ShoppingCartLocal;
 import com.sun.j2ee.blueprints.cart.ejb.ShoppingCartLocalHome;
-
-// customer imports
 import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
 import com.sun.j2ee.blueprints.customer.ejb.CustomerLocalHome;
-
-// service locator imports
-import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
-
-// petstore imports
 import com.sun.j2ee.blueprints.petstore.util.JNDINames;
+import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
+import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
 
 /**
  * Session Bean implementation for ShoppingClientFacadeLocal EJB.

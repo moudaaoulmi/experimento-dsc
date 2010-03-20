@@ -37,10 +37,9 @@
 
 package com.sun.j2ee.blueprints.customer.account.ejb;
 
+import javax.ejb.CreateException;
 import javax.ejb.EntityContext;
 import javax.ejb.RemoveException;
-import javax.ejb.CreateException;
-import javax.naming.NamingException;
 import javax.naming.InitialContext;
 
 import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfoLocal;

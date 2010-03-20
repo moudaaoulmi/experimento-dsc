@@ -38,15 +38,14 @@
 
 package com.sun.j2ee.blueprints.waf.controller.ejb;
 
-import javax.ejb.SessionContext;
-
 import java.util.HashMap;
 
-// waf imports
+import javax.ejb.SessionContext;
+
 import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBAction;
+import com.sun.j2ee.blueprints.waf.event.Event;
 import com.sun.j2ee.blueprints.waf.event.EventException;
 import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.event.Event;
 
 /**
  * This class is a responsible for processing Events recieved from the

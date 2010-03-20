@@ -39,18 +39,14 @@ package com.sun.j2ee.blueprints.mailer.ejb;
 
 import java.util.Locale;
 
-import javax.ejb.EJBException;
 import javax.ejb.MessageDrivenBean;
 import javax.ejb.MessageDrivenContext;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
 import javax.naming.Context;
 
-import javax.jms.TextMessage;
-import javax.jms.JMSException;
-import javax.jms.MessageListener;
-import javax.jms.Message;
-
 import com.sun.j2ee.blueprints.mailer.exceptions.MailerAppException;
-import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 
 
 public class MailerMDB implements MessageDrivenBean, MessageListener {

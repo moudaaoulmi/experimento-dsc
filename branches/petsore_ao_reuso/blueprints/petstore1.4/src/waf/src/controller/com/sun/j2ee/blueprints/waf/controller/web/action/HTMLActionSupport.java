@@ -37,8 +37,8 @@
 
 package com.sun.j2ee.blueprints.waf.controller.web.action;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import com.sun.j2ee.blueprints.waf.event.EventResponse;
 

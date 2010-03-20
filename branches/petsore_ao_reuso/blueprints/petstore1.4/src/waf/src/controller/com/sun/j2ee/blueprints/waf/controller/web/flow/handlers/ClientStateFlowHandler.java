@@ -39,17 +39,14 @@ package com.sun.j2ee.blueprints.waf.controller.web.flow.handlers;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
-import java.util.Map;
-import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-// Apache Commons- Tag-Lib Imports
-import org.apache.commons.codec.base64.Base64;
-
-// J2EE imports
 import javax.servlet.http.HttpServletRequest;
 
-// WAF imports
+import org.apache.commons.codec.base64.Base64;
+
 import com.sun.j2ee.blueprints.waf.controller.web.flow.FlowHandler;
 import com.sun.j2ee.blueprints.waf.controller.web.flow.FlowHandlerException;
 

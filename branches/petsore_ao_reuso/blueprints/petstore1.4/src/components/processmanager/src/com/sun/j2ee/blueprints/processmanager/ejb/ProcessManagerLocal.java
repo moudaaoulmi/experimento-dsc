@@ -37,10 +37,10 @@
 
 package com.sun.j2ee.blueprints.processmanager.ejb;
 
+import java.util.Collection;
+
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
-
-import java.util.Collection;
 
 /**
  * This interface provides methods to view and modify

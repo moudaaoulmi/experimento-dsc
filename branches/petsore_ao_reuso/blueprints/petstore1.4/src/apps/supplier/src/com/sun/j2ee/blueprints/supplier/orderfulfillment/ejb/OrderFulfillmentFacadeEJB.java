@@ -37,35 +37,29 @@
 
 package com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb;
 
-import java.util.Collection;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.StringTokenizer;
-import javax.ejb.EJBException;
+import java.util.Iterator;
+
 import javax.ejb.CreateException;
+import javax.ejb.EJBException;
+import javax.ejb.FinderException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.ejb.CreateException;
-import javax.ejb.FinderException;
-import javax.jms.JMSException;
 
-import com.sun.j2ee.blueprints.xmldocuments.tpa.TPAInvoiceXDE;
-import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
+import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocal;
+import com.sun.j2ee.blueprints.processmanager.ejb.OrderStatusNames;
+import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
+import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
+import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocal;
+import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocalHome;
 import com.sun.j2ee.blueprints.supplierpo.ejb.SupplierOrder;
 import com.sun.j2ee.blueprints.supplierpo.ejb.SupplierOrderLocal;
 import com.sun.j2ee.blueprints.supplierpo.ejb.SupplierOrderLocalHome;
-import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocal;
-import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocalHome;
-import com.sun.j2ee.blueprints.lineitem.ejb.LineItem;
-import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocal;
-import com.sun.j2ee.blueprints.supplier.inventory.ejb.InventoryLocalHome;
-import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
-import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
-import com.sun.j2ee.blueprints.processmanager.ejb.OrderStatusNames;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
+import com.sun.j2ee.blueprints.xmldocuments.tpa.TPAInvoiceXDE;
 
 /**
  * Facade used by Supplier Order MDB - called everytime the supplier gets a PO

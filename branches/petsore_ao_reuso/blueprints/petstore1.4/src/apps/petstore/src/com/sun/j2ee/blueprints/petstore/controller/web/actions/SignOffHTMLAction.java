@@ -38,24 +38,17 @@
 package com.sun.j2ee.blueprints.petstore.controller.web.actions;
 
 
-import java.io.IOException;
-import java.util.Hashtable;
 import java.util.Locale;
-import java.util.Vector;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletResponse;
 
-import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.controller.web.util.WebKeys;
-import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionSupport;
-import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionException;
-import com.sun.j2ee.blueprints.waf.event.impl.ChangeLocaleEvent;
-
-// petstore imports
 import com.sun.j2ee.blueprints.petstore.controller.web.PetstoreComponentManager;
+import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionException;
+import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionSupport;
+import com.sun.j2ee.blueprints.waf.controller.web.util.WebKeys;
+import com.sun.j2ee.blueprints.waf.event.Event;
+import com.sun.j2ee.blueprints.waf.event.impl.ChangeLocaleEvent;
 
 /**
  * Implementation of SignOffHTMLAction that processes a

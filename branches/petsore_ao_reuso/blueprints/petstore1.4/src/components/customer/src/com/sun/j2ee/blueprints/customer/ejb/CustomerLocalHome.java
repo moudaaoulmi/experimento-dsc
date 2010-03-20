@@ -37,10 +37,10 @@
 
 package com.sun.j2ee.blueprints.customer.ejb;
 
+import java.util.Collection;
+
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
-
-import java.util.Collection;
 
 public interface CustomerLocalHome extends javax.ejb.EJBLocalHome {
 

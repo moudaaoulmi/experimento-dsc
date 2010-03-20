@@ -41,11 +41,9 @@ package com.sun.j2ee.blueprints.waf.view.template.tags;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import com.sun.j2ee.blueprints.waf.controller.web.util.WebKeys;
 import com.sun.j2ee.blueprints.waf.view.template.Parameter;
 import com.sun.j2ee.blueprints.waf.view.template.Screen;
-
-// WAF imports
-import com.sun.j2ee.blueprints.waf.controller.web.util.WebKeys;
 
 /**
  * This class is an easy interface to the JSP template or other

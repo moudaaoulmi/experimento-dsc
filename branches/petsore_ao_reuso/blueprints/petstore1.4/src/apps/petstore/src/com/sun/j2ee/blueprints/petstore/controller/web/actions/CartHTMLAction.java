@@ -36,34 +36,18 @@
  */
 package com.sun.j2ee.blueprints.petstore.controller.web.actions;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.Locale;
-import java.io.IOException;
 
-// J2EE imports
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletResponse;
 
-// WAF imports
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionSupport;
-import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionException;
-
-// petstore imports
-import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
 import com.sun.j2ee.blueprints.petstore.controller.events.CartEvent;
-
-// cart component imports
-import com.sun.j2ee.blueprints.cart.ejb.ShoppingCartLocal;
-import com.sun.j2ee.blueprints.cart.model.CartItem;
+import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionException;
+import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionSupport;
+import com.sun.j2ee.blueprints.waf.event.Event;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
 
 /**
  * Implementation of CartHTMLAction that processes a

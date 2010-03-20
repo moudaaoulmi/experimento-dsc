@@ -36,8 +36,10 @@
  */
 package com.sun.j2ee.blueprints.catalog.model;
 
-import java.util.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents a page of results (for page-by-page iteration).

@@ -38,21 +38,12 @@ package com.sun.j2ee.blueprints.petstore.controller.web.actions;
 
 // j2ee imports
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletResponse;
 
-// signon filter import for signed on key
-import com.sun.j2ee.blueprints.signon.web.SignOnFilter;
-
-// waf imports
-import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
-import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionSupport;
-import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionException;
-
-// petstore imports
 import com.sun.j2ee.blueprints.petstore.controller.events.CreateUserEvent;
+import com.sun.j2ee.blueprints.signon.web.SignOnFilter;
+import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionException;
+import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionSupport;
+import com.sun.j2ee.blueprints.waf.event.Event;
 
 
 /**

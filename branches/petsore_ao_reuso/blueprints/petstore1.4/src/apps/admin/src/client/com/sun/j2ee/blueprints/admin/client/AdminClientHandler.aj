@@ -13,15 +13,17 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.MissingResourceException;
-import javax.swing.JPanel;
-import org.w3c.dom.Node;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+
 import petstore.exception.ExceptionHandler;
 import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
 

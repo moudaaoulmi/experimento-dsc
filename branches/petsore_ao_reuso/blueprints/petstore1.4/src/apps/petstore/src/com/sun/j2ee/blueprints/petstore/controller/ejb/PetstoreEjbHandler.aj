@@ -3,13 +3,12 @@
  */
 package com.sun.j2ee.blueprints.petstore.controller.ejb;
 
-import javax.ejb.FinderException;
+import petstore.exception.ExceptionHandler;
 
 import com.sun.j2ee.blueprints.cart.ejb.ShoppingCartLocal;
 import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
-import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */

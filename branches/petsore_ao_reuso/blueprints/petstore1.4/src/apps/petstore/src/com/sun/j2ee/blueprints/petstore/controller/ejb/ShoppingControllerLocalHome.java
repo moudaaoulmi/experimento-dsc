@@ -37,8 +37,8 @@
 
 package com.sun.j2ee.blueprints.petstore.controller.ejb;
 
-import javax.ejb.EJBLocalHome;
 import javax.ejb.CreateException;
+import javax.ejb.EJBLocalHome;
 
 
 /**

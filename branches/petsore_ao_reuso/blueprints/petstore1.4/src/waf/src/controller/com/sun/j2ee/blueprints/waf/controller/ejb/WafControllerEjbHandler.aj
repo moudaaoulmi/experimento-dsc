@@ -3,8 +3,9 @@
  */
 package com.sun.j2ee.blueprints.waf.controller.ejb;
 
-import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBAction;
 import petstore.exception.ExceptionHandler;
+
+import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBAction;
 /**
  * @author Raquel Maranhao
  */

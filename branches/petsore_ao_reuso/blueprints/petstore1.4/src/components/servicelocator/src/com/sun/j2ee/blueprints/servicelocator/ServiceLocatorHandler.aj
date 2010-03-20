@@ -4,9 +4,9 @@
 package com.sun.j2ee.blueprints.servicelocator;
 
 import javax.naming.NamingException;
+
 import org.aspectj.lang.SoftException;
 
-import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import petstore.exception.ExceptionHandler;
 /**
  * @author rmaranhao

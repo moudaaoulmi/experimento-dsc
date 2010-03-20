@@ -41,15 +41,11 @@ package com.sun.j2ee.blueprints.petstore.controller.ejb;
 // J2EE imports
 
 // WAF imports
+import com.sun.j2ee.blueprints.petstore.util.JNDINames;
+import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
+import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 import com.sun.j2ee.blueprints.waf.controller.ejb.EJBControllerLocalEJB;
 import com.sun.j2ee.blueprints.waf.controller.ejb.StateMachine;
-
-// service locator imports
-import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
-
-// petstore imports
-import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
-import com.sun.j2ee.blueprints.petstore.util.JNDINames;
 
 /**
  * Session Bean implementation for EJBController EJB.

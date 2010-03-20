@@ -37,9 +37,13 @@
 
 package com.sun.j2ee.blueprints.supplier.transitions;
 
-import javax.jms.*;
+import javax.jms.Topic;
+import javax.jms.TopicConnectionFactory;
+
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionDelegate;
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
+import com.sun.j2ee.blueprints.processmanager.transitions.TransitionInfo;
 import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
-import com.sun.j2ee.blueprints.processmanager.transitions.*;
 
 
 /**

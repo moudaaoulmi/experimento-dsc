@@ -36,14 +36,23 @@
  */
 package com.sun.j2ee.blueprints.mailer.ejb;
 
-import java.io.*;
-import java.net.*;
-import org.w3c.dom.*;
-import javax.xml.transform.*;
-import javax.xml.transform.stream.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.StringReader;
+import java.net.URL;
 
-import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentUtils;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentUtils;
 
 
 public class Mail {

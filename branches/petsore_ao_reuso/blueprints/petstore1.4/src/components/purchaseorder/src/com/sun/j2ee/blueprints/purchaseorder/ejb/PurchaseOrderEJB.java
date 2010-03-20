@@ -36,31 +36,25 @@
  */
 package com.sun.j2ee.blueprints.purchaseorder.ejb;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.ejb.EntityBean;
-import javax.ejb.EntityContext;
-import javax.ejb.CreateException;
-import javax.ejb.RemoveException;
-
-import java.util.Date;
-import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+
+import javax.ejb.CreateException;
+import javax.ejb.EntityBean;
+import javax.ejb.EntityContext;
+import javax.ejb.RemoveException;
 
 import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfoLocal;
 import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfoLocalHome;
-import com.sun.j2ee.blueprints.address.ejb.AddressLocal;
-import com.sun.j2ee.blueprints.address.ejb.AddressLocalHome;
 import com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocal;
 import com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocalHome;
+import com.sun.j2ee.blueprints.lineitem.ejb.LineItem;
 import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocal;
 import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocalHome;
-import com.sun.j2ee.blueprints.lineitem.ejb.LineItem;
-import com.sun.j2ee.blueprints.purchaseorder.ejb.JNDINames;
-
-import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
+import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
 
 /**
  * This is the main Entity Bean class for PurchaseOrderEJB

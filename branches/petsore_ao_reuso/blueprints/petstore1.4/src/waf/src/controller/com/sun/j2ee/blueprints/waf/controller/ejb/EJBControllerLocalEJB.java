@@ -40,11 +40,9 @@ package com.sun.j2ee.blueprints.waf.controller.ejb;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 
-// waf imports
 import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.exceptions.AppException;
 import com.sun.j2ee.blueprints.waf.event.EventException;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
 
 /**
  * Session Bean implementation for EJBController EJB.

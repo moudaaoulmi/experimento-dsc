@@ -38,19 +38,16 @@ package com.sun.j2ee.blueprints.waf.controller.web;
 
 import java.util.HashMap;
 
-// J2ee Imports
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
-// BluePrints/WAF imports
+import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLAction;
+import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionException;
 import com.sun.j2ee.blueprints.waf.controller.web.util.WebKeys;
 import com.sun.j2ee.blueprints.waf.event.Event;
 import com.sun.j2ee.blueprints.waf.event.EventException;
 import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLAction;
-import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionException;
-import com.sun.j2ee.blueprints.waf.controller.web.ComponentManager;
 
 /**
  * This is the web tier controller for the sample application.

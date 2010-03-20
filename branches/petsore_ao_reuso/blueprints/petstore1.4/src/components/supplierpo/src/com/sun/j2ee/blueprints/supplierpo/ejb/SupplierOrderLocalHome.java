@@ -38,8 +38,8 @@ package com.sun.j2ee.blueprints.supplierpo.ejb;
 
 import java.util.Collection;
 
-import javax.ejb.EJBLocalHome;
 import javax.ejb.CreateException;
+import javax.ejb.EJBLocalHome;
 import javax.ejb.FinderException;
 
 

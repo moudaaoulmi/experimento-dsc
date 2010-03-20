@@ -37,8 +37,8 @@
 
 package com.sun.j2ee.blueprints.xmldocuments;
 
-import java.net.*;
-import java.util.*;
+import java.net.URL;
+import java.util.Properties;
 
 
 public class XMLDocumentEditorFactory {

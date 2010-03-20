@@ -37,14 +37,10 @@
 
 package com.sun.j2ee.blueprints.signon.user.ejb;
 
+import javax.ejb.CreateException;
 import javax.ejb.EntityBean;
 import javax.ejb.EntityContext;
-
-import javax.ejb.EJBException;
-import javax.ejb.FinderException;
-import javax.ejb.CreateException;
 import javax.ejb.RemoveException;
-import javax.ejb.DuplicateKeyException;
 
 public abstract class UserEJB implements EntityBean {
 

@@ -40,26 +40,17 @@ package com.sun.j2ee.blueprints.petstore.controller.ejb.actions;
 
 
 // WAF imports
-import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.event.EventException;
-import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBActionSupport;
-
-
-import com.sun.j2ee.blueprints.petstore.controller.events.CreateUserEvent;
-
-
-// SignOn EJB Imports
-import com.sun.j2ee.blueprints.signon.ejb.SignOnLocalHome;
-import com.sun.j2ee.blueprints.signon.ejb.SignOnLocal;
-
-// service locator imports
-import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
-
-// petstore imports
 import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingClientFacadeLocal;
+import com.sun.j2ee.blueprints.petstore.controller.events.CreateUserEvent;
 import com.sun.j2ee.blueprints.petstore.util.JNDINames;
 import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
+import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
+import com.sun.j2ee.blueprints.signon.ejb.SignOnLocal;
+import com.sun.j2ee.blueprints.signon.ejb.SignOnLocalHome;
+import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBActionSupport;
+import com.sun.j2ee.blueprints.waf.event.Event;
+import com.sun.j2ee.blueprints.waf.event.EventException;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
 
 public class CreateUserEJBAction extends EJBActionSupport {
 

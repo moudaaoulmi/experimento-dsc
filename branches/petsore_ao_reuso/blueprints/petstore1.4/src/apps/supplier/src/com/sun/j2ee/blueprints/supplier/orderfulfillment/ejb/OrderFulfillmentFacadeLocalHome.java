@@ -37,8 +37,8 @@
 
 package com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb;
 
-import javax.ejb.EJBLocalHome;
 import javax.ejb.CreateException;
+import javax.ejb.EJBLocalHome;
 
 /**
  * The Home interface for supplier's order fulfillment facade EJB

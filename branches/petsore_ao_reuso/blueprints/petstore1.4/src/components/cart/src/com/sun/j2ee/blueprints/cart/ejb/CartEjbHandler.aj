@@ -5,10 +5,11 @@ package com.sun.j2ee.blueprints.cart.ejb;
 
 import java.util.ArrayList;
 
+import petstore.exception.ExceptionHandler;
+
 import com.sun.j2ee.blueprints.catalog.client.CatalogException;
 import com.sun.j2ee.blueprints.catalog.client.CatalogHelper;
 import com.sun.j2ee.blueprints.catalog.model.Item;
-import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */

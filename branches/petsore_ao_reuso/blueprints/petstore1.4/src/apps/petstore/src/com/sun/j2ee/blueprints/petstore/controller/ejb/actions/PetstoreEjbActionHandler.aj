@@ -4,19 +4,17 @@
 package com.sun.j2ee.blueprints.petstore.controller.ejb.actions;
 
 import javax.ejb.CreateException;
-import javax.ejb.FinderException;
 
-import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
+import petstore.exception.ExceptionHandler;
+
 import com.sun.j2ee.blueprints.petstore.controller.exceptions.DuplicateAccountException;
 import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrder;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import com.sun.j2ee.blueprints.signon.ejb.SignOnLocal;
-import com.sun.j2ee.blueprints.uidgen.ejb.UniqueIdGeneratorLocal;
 import com.sun.j2ee.blueprints.waf.event.Event;
 import com.sun.j2ee.blueprints.waf.event.EventException;
 import com.sun.j2ee.blueprints.waf.event.EventResponse;
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
-import petstore.exception.ExceptionHandler;
 
 /**
  * @author Raquel Maranhao

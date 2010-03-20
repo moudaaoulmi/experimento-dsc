@@ -36,11 +36,9 @@
  */
 package com.sun.j2ee.blueprints.lineitem.ejb;
 
-import java.lang.Object;
-
+import javax.ejb.CreateException;
 import javax.ejb.EntityBean;
 import javax.ejb.EntityContext;
-import javax.ejb.CreateException;
 import javax.ejb.RemoveException;
 
 /**

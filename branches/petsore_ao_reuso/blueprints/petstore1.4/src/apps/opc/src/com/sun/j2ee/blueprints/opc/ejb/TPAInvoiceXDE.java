@@ -39,17 +39,27 @@
 package com.sun.j2ee.blueprints.opc.ejb;
 
 
-import java.io.*;
-import java.util.*;
-import java.net.*;
-import org.w3c.dom.*;
+import java.io.StringReader;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.*;
-import org.xml.sax.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.dom.DOMSource;
 
-import com.sun.j2ee.blueprints.xmldocuments.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentEditor;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentUtils;
 
 
 public class TPAInvoiceXDE extends XMLDocumentEditor.DefaultXDE {

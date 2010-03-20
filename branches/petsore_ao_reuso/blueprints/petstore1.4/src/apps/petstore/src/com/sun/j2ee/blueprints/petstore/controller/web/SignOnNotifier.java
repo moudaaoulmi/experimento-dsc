@@ -39,28 +39,20 @@ package com.sun.j2ee.blueprints.petstore.controller.web;
 import java.util.HashMap;
 import java.util.Locale;
 
-import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
-// signon component
-import com.sun.j2ee.blueprints.signon.web.SignOnFilter;
-
-// WAF imports
-import com.sun.j2ee.blueprints.waf.util.I18nUtil;
-import com.sun.j2ee.blueprints.waf.controller.web.WebController;
-import com.sun.j2ee.blueprints.waf.controller.web.EventMapping;
-import com.sun.j2ee.blueprints.waf.event.Event;
-
-// customer imports
-import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileLocal;
 import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
-
-// petstore imports
-import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
+import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileLocal;
 import com.sun.j2ee.blueprints.petstore.controller.events.SignOnEvent;
-import com.sun.j2ee.blueprints.petstore.controller.web.PetstoreComponentManager;
+import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
+import com.sun.j2ee.blueprints.signon.web.SignOnFilter;
+import com.sun.j2ee.blueprints.waf.controller.web.EventMapping;
+import com.sun.j2ee.blueprints.waf.controller.web.WebController;
+import com.sun.j2ee.blueprints.waf.event.Event;
+import com.sun.j2ee.blueprints.waf.util.I18nUtil;
 
 /**
  * This class will bind with the current session and notify the Petstore

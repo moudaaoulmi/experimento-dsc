@@ -39,8 +39,6 @@ package com.sun.j2ee.blueprints.waf.controller.web;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionListener;
 
-import com.sun.j2ee.blueprints.waf.controller.web.WebController;
-
 /**
  * This interface defines the services that need to be accessed from multiple
  * components in the web tier. This class extends the HttpSessionListener to

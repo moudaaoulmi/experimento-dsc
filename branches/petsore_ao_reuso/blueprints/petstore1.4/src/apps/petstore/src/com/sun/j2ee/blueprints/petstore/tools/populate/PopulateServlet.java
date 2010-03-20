@@ -37,18 +37,29 @@
 
 package com.sun.j2ee.blueprints.petstore.tools.populate;
 
-import java.util.*;
-import java.io.*;
-import java.net.*;
-import java.sql.*;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.sql.*;
-import javax.xml.parsers.*;
-import javax.servlet.http.*;
-import javax.servlet.*;
-import javax.naming.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
+import javax.naming.InitialContext;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpUtils;
+import javax.sql.DataSource;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
 import com.sun.j2ee.blueprints.catalog.util.JNDINames;
 
 

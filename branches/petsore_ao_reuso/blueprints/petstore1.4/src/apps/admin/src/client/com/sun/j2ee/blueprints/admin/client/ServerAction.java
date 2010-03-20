@@ -36,9 +36,11 @@
  */
 package com.sun.j2ee.blueprints.admin.client;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Icon;
 
 
 /**

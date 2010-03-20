@@ -37,9 +37,14 @@
 
 package com.sun.j2ee.blueprints.supplier.tools.populate;
 
-import java.util.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLFilterImpl;
 
 
 public abstract class XMLDBHandler extends XMLFilterImpl {

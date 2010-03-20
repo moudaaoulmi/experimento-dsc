@@ -37,12 +37,19 @@
 
 package com.sun.j2ee.blueprints.supplier.tools.populate;
 
-import java.io.*;
-import java.net.*;
-import javax.xml.parsers.*;
-import javax.servlet.http.*;
-import javax.servlet.*;
-import org.xml.sax.*;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpUtils;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
 
 public class PopulateServlet extends HttpServlet {

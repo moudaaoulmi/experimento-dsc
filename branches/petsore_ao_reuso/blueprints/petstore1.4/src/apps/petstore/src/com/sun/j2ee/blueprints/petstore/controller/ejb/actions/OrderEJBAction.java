@@ -39,44 +39,31 @@ package com.sun.j2ee.blueprints.petstore.controller.ejb.actions;
 
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
-// WAF imports
-import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.event.EventException;
-import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBActionSupport;
-
-// po component imports
-import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrder;
-import com.sun.j2ee.blueprints.lineitem.ejb.LineItem;
-import com.sun.j2ee.blueprints.petstore.controller.events.OrderEvent;
-import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfo;
-import com.sun.j2ee.blueprints.creditcard.ejb.CreditCard;
-
-// async component imports
-import com.sun.j2ee.blueprints.asyncsender.ejb.AsyncSenderLocalHome;
 import com.sun.j2ee.blueprints.asyncsender.ejb.AsyncSender;
-
-// unidue id generator imports
-import com.sun.j2ee.blueprints.uidgen.ejb.UniqueIdGeneratorLocal;
-import com.sun.j2ee.blueprints.uidgen.ejb.UniqueIdGeneratorLocalHome;
-
-// shoppingcart component imports
+import com.sun.j2ee.blueprints.asyncsender.ejb.AsyncSenderLocalHome;
 import com.sun.j2ee.blueprints.cart.ejb.ShoppingCartLocal;
 import com.sun.j2ee.blueprints.cart.model.CartItem;
-
-// service locator imports
-import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
-
-// petstore imports
-import com.sun.j2ee.blueprints.petstore.util.JNDINames;
-import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
+import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfo;
+import com.sun.j2ee.blueprints.creditcard.ejb.CreditCard;
+import com.sun.j2ee.blueprints.lineitem.ejb.LineItem;
 import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingClientFacadeLocal;
+import com.sun.j2ee.blueprints.petstore.controller.events.OrderEvent;
 import com.sun.j2ee.blueprints.petstore.controller.events.OrderEventResponse;
 import com.sun.j2ee.blueprints.petstore.controller.exceptions.ShoppingCartEmptyOrderException;
+import com.sun.j2ee.blueprints.petstore.util.JNDINames;
+import com.sun.j2ee.blueprints.petstore.util.PetstoreKeys;
+import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrder;
+import com.sun.j2ee.blueprints.servicelocator.ejb.ServiceLocator;
+import com.sun.j2ee.blueprints.uidgen.ejb.UniqueIdGeneratorLocal;
+import com.sun.j2ee.blueprints.uidgen.ejb.UniqueIdGeneratorLocalHome;
+import com.sun.j2ee.blueprints.waf.controller.ejb.action.EJBActionSupport;
+import com.sun.j2ee.blueprints.waf.event.Event;
+import com.sun.j2ee.blueprints.waf.event.EventException;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
 
 public class OrderEJBAction extends EJBActionSupport {
 

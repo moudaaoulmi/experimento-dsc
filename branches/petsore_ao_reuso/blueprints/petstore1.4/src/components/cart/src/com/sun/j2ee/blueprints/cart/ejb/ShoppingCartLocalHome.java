@@ -37,9 +37,6 @@
 
 package com.sun.j2ee.blueprints.cart.ejb;
 
-import java.util.HashMap;
-import java.rmi.RemoteException;
-
 import javax.ejb.CreateException;
 import javax.ejb.EJBLocalHome;
 

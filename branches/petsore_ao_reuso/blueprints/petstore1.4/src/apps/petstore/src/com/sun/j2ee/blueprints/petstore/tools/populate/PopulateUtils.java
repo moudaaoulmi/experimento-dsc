@@ -37,9 +37,11 @@
 
 package com.sun.j2ee.blueprints.petstore.tools.populate;
 
-import java.sql.*;
-import java.util.*;
-import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 
 public final class PopulateUtils {

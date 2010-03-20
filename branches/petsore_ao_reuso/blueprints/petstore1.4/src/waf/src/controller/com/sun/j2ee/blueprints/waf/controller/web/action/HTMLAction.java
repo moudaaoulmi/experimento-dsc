@@ -37,11 +37,11 @@
 
 package com.sun.j2ee.blueprints.waf.controller.web.action;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import com.sun.j2ee.blueprints.waf.event.Event;
 import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.controller.web.action.HTMLActionException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.ServletContext;
 
 /**
  * This class is the base interface to request handlers on the

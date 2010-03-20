@@ -37,10 +37,10 @@
 
 package com.sun.j2ee.blueprints.signon.user.ejb;
 
+import java.util.Collection;
+
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
-
-import java.util.Collection;
 
 /**
  * The home interface of the SignOn Entity EJB.

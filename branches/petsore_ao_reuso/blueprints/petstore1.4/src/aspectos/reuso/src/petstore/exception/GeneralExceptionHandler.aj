@@ -1,51 +1,55 @@
 package petstore.exception;
 
-import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
-import com.sun.j2ee.blueprints.opc.customerrelations.ejb.MailContentXDE;
-import com.sun.j2ee.blueprints.opc.customerrelations.ejb.MailContentXDE.FormatterException;
-import com.sun.j2ee.blueprints.supplier.inventory.web.RcvrRequestProcessor;
-import com.sun.j2ee.blueprints.supplier.inventory.web.DisplayInventoryBean;
-import com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb.TPASupplierOrderXDE;
-import com.sun.j2ee.blueprints.petstore.controller.ejb.actions.CustomerEJBAction;
-import com.sun.j2ee.blueprints.petstore.controller.ejb.actions.OrderEJBAction;
-import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingControllerLocal;
-import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
-import com.sun.j2ee.blueprints.signon.ejb.SignOnEJB;
-import com.sun.j2ee.blueprints.petstore.controller.ejb.actions.SignOnEJBAction;
-import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
-import com.sun.j2ee.blueprints.waf.controller.ejb.EJBControllerLocal;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
-import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.uidgen.ejb.UniqueIdGeneratorLocal;
-import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrder;
-import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
-import com.sun.j2ee.blueprints.petstore.controller.web.PetstoreComponentManager;
-import com.sun.j2ee.blueprints.util.tracer.Debug;
-import com.sun.j2ee.blueprints.waf.controller.web.DefaultComponentManager;
-import javax.ejb.RemoveException;
-import javax.ejb.CreateException;
-import javax.ejb.FinderException;
-import javax.servlet.http.HttpSession;
-import com.sun.j2ee.blueprints.petstore.tools.populate.PopulateServlet;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.Source;
-import  com.sun.j2ee.blueprints.supplier.tools.populate.InventoryPopulator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+
+import javax.ejb.CreateException;
+import javax.ejb.FinderException;
+import javax.ejb.RemoveException;
 import javax.naming.NamingException;
-import com.sun.j2ee.blueprints.signon.user.ejb.UserLocal;
-import  com.sun.j2ee.blueprints.petstore.tools.populate.UserPopulator;
+import javax.servlet.http.HttpSession;
+import javax.xml.parsers.SAXParser;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+
+import org.xml.sax.InputSource;
+
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+
+import com.sun.j2ee.blueprints.catalog.dao.GenericCatalogDAO;
+import com.sun.j2ee.blueprints.catalog.dao.GenericCatalogDAO.ParsingDoneException;
+import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
+import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocal;
+import com.sun.j2ee.blueprints.opc.customerrelations.ejb.MailContentXDE;
+import com.sun.j2ee.blueprints.opc.customerrelations.ejb.MailContentXDE.FormatterException;
+import com.sun.j2ee.blueprints.petstore.controller.ejb.ShoppingControllerLocal;
+import com.sun.j2ee.blueprints.petstore.controller.ejb.actions.CustomerEJBAction;
+import com.sun.j2ee.blueprints.petstore.controller.ejb.actions.OrderEJBAction;
+import com.sun.j2ee.blueprints.petstore.controller.ejb.actions.SignOnEJBAction;
+import com.sun.j2ee.blueprints.petstore.controller.web.PetstoreComponentManager;
 import com.sun.j2ee.blueprints.petstore.controller.web.ShoppingWebController;
 import com.sun.j2ee.blueprints.petstore.tools.populate.CustomerPopulator;
-import com.sun.j2ee.blueprints.catalog.dao.GenericCatalogDAO.ParsingDoneException;
-import com.sun.j2ee.blueprints.catalog.dao.GenericCatalogDAO;
-import javax.xml.parsers.SAXParser;
-import org.xml.sax.InputSource;
+import com.sun.j2ee.blueprints.petstore.tools.populate.PopulateServlet;
+import com.sun.j2ee.blueprints.petstore.tools.populate.UserPopulator;
+import com.sun.j2ee.blueprints.purchaseorder.ejb.PurchaseOrder;
+import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
+import com.sun.j2ee.blueprints.signon.ejb.SignOnEJB;
+import com.sun.j2ee.blueprints.signon.user.ejb.UserLocal;
+import com.sun.j2ee.blueprints.supplier.inventory.web.DisplayInventoryBean;
+import com.sun.j2ee.blueprints.supplier.inventory.web.RcvrRequestProcessor;
 import com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb.OrderFulfillmentFacadeEJB;
-import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocal;
-import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+import com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb.TPASupplierOrderXDE;
+import com.sun.j2ee.blueprints.supplier.tools.populate.InventoryPopulator;
+import com.sun.j2ee.blueprints.uidgen.ejb.UniqueIdGeneratorLocal;
+import com.sun.j2ee.blueprints.util.tracer.Debug;
+import com.sun.j2ee.blueprints.waf.controller.ejb.EJBControllerLocal;
+import com.sun.j2ee.blueprints.waf.controller.web.DefaultComponentManager;
+import com.sun.j2ee.blueprints.waf.event.Event;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
+import com.sun.j2ee.blueprints.waf.exceptions.GeneralFailureException;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 
 
 @ExceptionHandler

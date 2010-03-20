@@ -37,13 +37,13 @@
 
 package com.sun.j2ee.blueprints.petstore.tools.populate;
 
-import javax.naming.*;
-import javax.ejb.*;
-import java.util.*;
-import javax.xml.parsers.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
-import com.sun.j2ee.blueprints.creditcard.ejb.*;
+import javax.naming.InitialContext;
+
+import org.xml.sax.XMLFilter;
+import org.xml.sax.XMLReader;
+
+import com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocal;
+import com.sun.j2ee.blueprints.creditcard.ejb.CreditCardLocalHome;
 
 
 public class CreditCardPopulator {

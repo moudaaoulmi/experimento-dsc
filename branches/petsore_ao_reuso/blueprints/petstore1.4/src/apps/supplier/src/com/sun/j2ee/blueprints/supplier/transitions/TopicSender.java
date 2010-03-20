@@ -37,14 +37,14 @@
 
 package com.sun.j2ee.blueprints.supplier.transitions;
 
-import javax.jms.TopicConnectionFactory;
-import javax.jms.TopicConnection;
-import javax.jms.Topic;
-import javax.jms.TopicSession;
-import javax.jms.TopicPublisher;
+import javax.jms.JMSException;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-import javax.jms.JMSException;
+import javax.jms.Topic;
+import javax.jms.TopicConnection;
+import javax.jms.TopicConnectionFactory;
+import javax.jms.TopicPublisher;
+import javax.jms.TopicSession;
 
 /**
  * A helper class which takes care of sending a message to the

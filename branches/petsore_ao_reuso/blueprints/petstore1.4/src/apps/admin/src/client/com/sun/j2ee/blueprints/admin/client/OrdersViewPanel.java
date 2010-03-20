@@ -36,12 +36,17 @@
  */
 package com.sun.j2ee.blueprints.admin.client;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.SoftBevelBorder;
-import javax.swing.table.*;
+import javax.swing.table.TableModel;
 
 /**
  * Used to display all the orders (completed/approved/denied).  The user can

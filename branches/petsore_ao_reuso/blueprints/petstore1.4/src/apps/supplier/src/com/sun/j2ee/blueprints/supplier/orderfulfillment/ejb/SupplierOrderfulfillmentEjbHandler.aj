@@ -3,19 +3,15 @@
  */
 package com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb;
 
-import javax.ejb.FinderException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-
-import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocal;
-import com.sun.j2ee.blueprints.supplierpo.ejb.SupplierOrderLocal;
-import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 import java.util.HashMap;
+import java.util.Properties;
+
 import petstore.exception.ExceptionHandler;
+
+import com.sun.j2ee.blueprints.supplierpo.ejb.SupplierOrderLocal;
+import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;
 /**
  * @author Raquel Maranhao
  */

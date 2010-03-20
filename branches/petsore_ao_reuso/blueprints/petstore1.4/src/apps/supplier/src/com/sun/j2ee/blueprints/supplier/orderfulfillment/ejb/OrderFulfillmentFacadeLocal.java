@@ -39,8 +39,8 @@ package com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb;
 
 import java.util.Collection;
 
-import javax.ejb.EJBLocalObject;
 import javax.ejb.CreateException;
+import javax.ejb.EJBLocalObject;
 import javax.ejb.FinderException;
 
 import com.sun.j2ee.blueprints.xmldocuments.XMLDocumentException;

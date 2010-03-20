@@ -39,12 +39,8 @@
 package com.sun.j2ee.blueprints.xmldocuments.tpa;
 
 
-import java.io.*;
-import java.util.*;
-import java.net.*;
-import org.w3c.dom.*;
-
-import com.sun.j2ee.blueprints.xmldocuments.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 
 public class TPALineItemUtils {

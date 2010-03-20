@@ -37,12 +37,10 @@
 
 package com.sun.j2ee.blueprints.petstore.controller.events;
 
-import com.sun.j2ee.blueprints.waf.event.EventSupport;
-
-// customer component imports
 import com.sun.j2ee.blueprints.contactinfo.ejb.ContactInfo;
-import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileInfo;
 import com.sun.j2ee.blueprints.creditcard.ejb.CreditCard;
+import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileInfo;
+import com.sun.j2ee.blueprints.waf.event.EventSupport;
 
 /**
  * This Event  contains the information for the  EJBController of a change in Locale

@@ -36,16 +36,12 @@
  */
 package com.sun.j2ee.blueprints.waf.controller.web;
 
-import java.util.Collection;
-
-// J2EE Imports
-import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
-// WAF imports
 import com.sun.j2ee.blueprints.waf.event.Event;
-import com.sun.j2ee.blueprints.waf.event.EventResponse;
 import com.sun.j2ee.blueprints.waf.event.EventException;
+import com.sun.j2ee.blueprints.waf.event.EventResponse;
 
 
 
