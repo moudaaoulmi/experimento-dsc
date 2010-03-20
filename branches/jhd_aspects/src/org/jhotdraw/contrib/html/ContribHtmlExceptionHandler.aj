@@ -1,9 +1,14 @@
 package org.jhotdraw.contrib.html;
 
+import br.upe.dsc.reusable.exception.*;
 
-public privileged aspect ContribHtmlExceptionHandler {
+public privileged aspect ContribHtmlExceptionHandler extends EmptyBlockAbstractExceptionHandling {
 	
 	// pointuts
+	
+	public pointcut emptyBlockException() : ETSLADisposalStrategy_internalRunHandler() 
+											|| ContentProducerRegistry_internalReadHandler() 
+											|| DisposableResourceManagerFactory_initManagerPartOneHandler();
 	
 	pointcut ETSLADisposalStrategy_stopDisposingHandler(): execution(public void ETSLADisposalStrategy.stopDisposing(..));
 	pointcut ETSLADisposalStrategy_internalRunHandler(): execution(private void DisposalThread.internalRun(..));
@@ -40,29 +45,29 @@ public privileged aspect ContribHtmlExceptionHandler {
     	}
     } 
     
-    void around():ETSLADisposalStrategy_internalRunHandler(){
-    	try {
-			proceed();
-		}
-		catch (Exception ex) {
-			//break;
-		}
-    }
+//    void around():ETSLADisposalStrategy_internalRunHandler(){
+//    	try {
+//			proceed();
+//		}
+//		catch (Exception ex) {
+//			//break;
+//		}
+//    }
 	
 	 
 	 
-	 void around(): ContentProducerRegistry_internalReadHandler() || DisposableResourceManagerFactory_initManagerPartOneHandler(){
-			try {
-			    proceed();
-			}
-			catch (ClassNotFoundException ex) {
-				// the class does not exist in this application
-				// cannot do much about it so ignore it, the entities of
-				// this class will get their toString() value instead
-			}catch (ResourceManagerNotSetException ex) {
-				// we set it so we shouldn't get here
-			}
-		}
+//	 void around(): ContentProducerRegistry_internalReadHandler() || DisposableResourceManagerFactory_initManagerPartOneHandler(){
+//			try {
+//			    proceed();
+//			}
+//			catch (ClassNotFoundException ex) {
+//				// the class does not exist in this application
+//				// cannot do much about it so ignore it, the entities of
+//				// this class will get their toString() value instead
+//			}catch (ResourceManagerNotSetException ex) {
+//				// we set it so we shouldn't get here
+//			}
+//		}
 		
 	 int around(String template,
 				int endPos, StringBuffer finalText, int startPos, int chunkEnd): HTMLTextAreaFigure_internalSubstituteEntityKeywordsPartOne() 

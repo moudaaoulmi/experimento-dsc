@@ -7,9 +7,10 @@ import java.net.URL;
 import java.util.Iterator;
 
 import org.jhotdraw.util.CommandMenu;
+import br.upe.dsc.reusable.exception.*;
 
 
-public privileged aspect JavadrawExceptionHandler {
+public privileged aspect JavadrawExceptionHandler extends PrintStackTraceAbstractExceptionHandler {
 
 	// ---------------------------
 	// Declare soft's
@@ -22,6 +23,9 @@ public privileged aspect JavadrawExceptionHandler {
 	// ---------------------------
 	// Pointcut's
 	// ---------------------------
+	
+	public pointcut printStackTraceException(): JavaDrawApp_executeComandMenu1Handler();
+	
 	pointcut FollowURLTool_getDocumentBaseHandler(): call( URL.new(..) )
 		 && withincode(void FollowURLTool.mouseUp(..));
 
@@ -53,13 +57,13 @@ public privileged aspect JavadrawExceptionHandler {
 	}
 	
 
-	void around(): JavaDrawApp_executeComandMenu1Handler(){
-		try {
-			proceed();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	void around(): JavaDrawApp_executeComandMenu1Handler(){
+//		try {
+//			proceed();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	void around(CommandMenu menu, File imagesDirectory): JavaDrawApp_internalCreateImagesMenuHandler()
 				&& args( menu, imagesDirectory)

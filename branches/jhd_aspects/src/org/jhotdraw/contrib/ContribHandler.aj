@@ -7,11 +7,14 @@ import java.beans.PropertyVetoException;
 import javax.swing.JInternalFrame;
 
 import org.jhotdraw.exception.ExceptionHandler;
+import br.upe.dsc.reusable.exception.*;
 
 @ExceptionHandler
-public aspect ContribHandler {
+public aspect ContribHandler extends PrintStackTraceAbstractExceptionHandler{
 
 	// pointcuts
+	
+	public pointcut printStackTraceException(): MiniMapView_scrollSubjectTo();
 	
 	pointcut MDIDesktopPane_internalSetMaximum(): execution(private void MDIDesktopPane.internalSetMaximum(JInternalFrame));
 	pointcut MDIDesktopPane_internalSetSelected(): execution(private void MDIDesktopPane.internalSetSelected(JInternalFrame));
@@ -52,13 +55,13 @@ public aspect ContribHandler {
 	 * 
 	 * @return
 	 */
-	void around(): MiniMapView_scrollSubjectTo(){
-		try {
-			proceed();
-		} catch (NoninvertibleTransformException nite) {
-			nite.printStackTrace();
-		}
-	}
+//	void around(): MiniMapView_scrollSubjectTo(){
+//		try {
+//			proceed();
+//		} catch (NoninvertibleTransformException nite) {
+//			nite.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * 
