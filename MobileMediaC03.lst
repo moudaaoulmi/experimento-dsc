@@ -60,8 +60,7 @@ src/lancs/mobilemedia/alternative/video/AlternativeVideoHandler.aj
 src/lancs/mobilemedia/alternative/musicvideo/MultiMediaAccessor.java
 src/lancs/mobilemedia/alternative/musicvideo/MusicOrVideo.aj
 src/lancs/mobilemedia/alternative/musicvideo/MultiMediaUtil.java
-# EH Aspect Reuse
-src/lancs/mobilemedia/exception/CheckedMediaNotFoundExceptionHandler.aj
+
 #EH Aspect
 src/lancs/mobilemedia/alternative/musicvideo/AlternativeMusicVideoHandler.aj
 
@@ -106,8 +105,7 @@ src/lancs/mobilemedia/optional/VideoAndOptionalFeatures.aj
 
 # Capture Video
 src/lancs/mobilemedia/optional/capture/CaptureVideoScreen.java
-#EH Aspect Reuse
-src/lancs/mobilemedia/exception/CheckedExceptionHandler.aj
+
 #EH Aspect
 src/lancs/mobilemedia/optional/capture/OptionalCaptureHandler.aj
 
