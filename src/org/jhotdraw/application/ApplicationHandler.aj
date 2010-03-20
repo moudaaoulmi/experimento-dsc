@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.jhotdraw.exception.ExceptionHandler;
+import br.upe.dsc.reusable.exception.*;
 
 @ExceptionHandler
-public aspect ApplicationHandler {
+public aspect ApplicationHandler extends EmptyBlockAbstractExceptionHandling {
+	
+	public pointcut emptyBlockException(): DrawApplication_executeCommandMenu();
 	
 	declare soft: InterruptedException :DrawApplication_internalOpen();
 	declare soft: InvocationTargetException :DrawApplication_internalOpen() ;
@@ -79,13 +82,13 @@ public aspect ApplicationHandler {
 		
     }
 	
-	void around(): DrawApplication_executeCommandMenu() {
-		try {
-			proceed();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-    }
+//	void around(): DrawApplication_executeCommandMenu() {
+//		try {
+//			proceed();
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		
+//    }
 
 }

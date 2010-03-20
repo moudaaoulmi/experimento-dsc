@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/batik-svggen-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/jdo2-api-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.3.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ReusableCode"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
