@@ -2,6 +2,7 @@
 package com.atlassw.tools.eclipse.checkstyle.builder;
 
 import java.io.IOException;
+import br.upe.dsc.reusable.exception.*;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,7 +23,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.atlassw.tools.eclipse.checkstyle.projectconfig.IProjectConfiguration;
 
 @ExceptionHandler
-public privileged aspect BuilderHandler
+public privileged aspect BuilderHandler extends EmptyBlockAbstractExceptionHandling
 {
     // ---------------------------
     // Declare soft's
@@ -58,6 +59,8 @@ public privileged aspect BuilderHandler
     // ---------------------------
     // Pointcut's
     // ---------------------------
+    public pointcut emptyBlockException(): auditor_calculateMarkerOffsetHandle();
+    
     pointcut buildProjectJob_runHandler():
         execution (* BuildProjectJob.run(..)) ;
 
@@ -214,18 +217,18 @@ public privileged aspect BuilderHandler
         return result;
     }
 
-    void around(): auditor_calculateMarkerOffsetHandle() {
-        try
-        {
-            proceed();
-        }
-        catch (BadLocationException e)
-        {
-            // seems to happen quite often so its no use to log since we
-            // can't do anything about it
-            // CheckstyleLog.log(e);
-        }
-    }
+//    void around(): auditor_calculateMarkerOffsetHandle() {
+//        try
+//        {
+//            proceed();
+//        }
+//        catch (BadLocationException e)
+//        {
+//            // seems to happen quite often so its no use to log since we
+//            // can't do anything about it
+//            // CheckstyleLog.log(e);
+//        }
+//    }
 
     void around(): projectClassLoader_handlePathHandle() {
         try
