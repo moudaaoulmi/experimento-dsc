@@ -20,16 +20,16 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import petstore.exception.ExceptionHandler;
+import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
 
 /**
  * @author Raquel Maranhao
  */
 @ExceptionHandler
-public aspect AdminClientHandler {
+public aspect AdminClientHandler extends PrintStackTraceAbstractExceptionHandler{
 
 	// ---------------------------
     // Declare soft's
@@ -65,7 +65,9 @@ public aspect AdminClientHandler {
 	/*** DataSource ***/
 	pointcut dataSourceHandler() :
 		execution(com.sun.j2ee.blueprints.admin.client.DataSource.new(JFrame, String, String, String, String));
-
+	
+	public pointcut printStackTraceException(): dataSourceHandler();
+	
 	/*** DataSource.OrdersViewTableModel ***/
 	pointcut internalGetIdHandler() :
 		execution(Integer DataSource.OrdersViewTableModel.internalGetId(..));
@@ -136,17 +138,17 @@ public aspect AdminClientHandler {
     // ---------------------------
 	// Create an "around" advice because the exception is catched but not
 	// throwed
-	void around() : dataSourceHandler() {
-		try {
-			proceed();
-		} catch (ClassNotFoundException cnfe) {
-			cnfe.printStackTrace();
-		} catch (InstantiationException ie) {
-			ie.printStackTrace();
-		} catch (IllegalAccessException iae) {
-			iae.printStackTrace();
-		}
-	}
+//	void around() : dataSourceHandler() {
+//		try {
+//			proceed();
+//		} catch (ClassNotFoundException cnfe) {
+//			cnfe.printStackTrace();
+//		} catch (InstantiationException ie) {
+//			ie.printStackTrace();
+//		} catch (IllegalAccessException iae) {
+//			iae.printStackTrace();
+//		}
+//	}
 
 	// Create an "around" advice because the exception is catched but not
 	// throwed

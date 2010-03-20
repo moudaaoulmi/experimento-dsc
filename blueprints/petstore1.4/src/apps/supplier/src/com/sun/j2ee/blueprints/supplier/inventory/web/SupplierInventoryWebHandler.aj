@@ -5,6 +5,7 @@ package com.sun.j2ee.blueprints.supplier.inventory.web;
 
 import java.util.Collection;
 
+import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 import javax.naming.NamingException;
@@ -15,7 +16,6 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
-
 import com.sun.j2ee.blueprints.processmanager.transitions.TransitionException;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
 import petstore.exception.ExceptionHandler;
@@ -24,7 +24,7 @@ import petstore.exception.ExceptionHandler;
  * @author Raquel Maranhao
  */
 @ExceptionHandler
-public aspect SupplierInventoryWebHandler {
+public aspect SupplierInventoryWebHandler extends PrintStackTraceAbstractExceptionHandler{
 
 
 	declare soft : FinderException : getInventoryHandler() || 
@@ -54,6 +54,8 @@ public aspect SupplierInventoryWebHandler {
 
 	pointcut doPostHandler() : 
 		execution(public void RcvrRequestProcessor.doPost(HttpServletRequest, HttpServletResponse));
+	
+	public pointcut printStackTraceException(): (sendInvoicesHandler()) || (doPostHandler());
 
 	Object around() :  
 		updateInventoryHandler() || getInventoryHandler()  || doPostHandler() {
@@ -66,34 +68,32 @@ public aspect SupplierInventoryWebHandler {
 		return result;
 	}
 	
-	void around() :  
-		sendInvoicesHandler() {
-		try {
-			proceed();
-		} catch (TransitionException te) {
-			te.printStackTrace();
-		}
-	}
+//	void around() : sendInvoicesHandler() {
+//		try {
+//			proceed();
+//		} catch (TransitionException te) {
+//			te.printStackTrace();
+//		}
+//	}
 
-	void around() :  
-		doPostHandler() {
-		try {
-			proceed();
-		} catch (NamingException ne) {
-			ne.printStackTrace();
-		} catch (NotSupportedException nse) {
-			nse.printStackTrace();
-		} catch (IllegalStateException ie) {
-			ie.printStackTrace();
-		} catch (RollbackException re) {
-			re.printStackTrace();
-		} catch (HeuristicMixedException hme) {
-			hme.printStackTrace();
-		} catch (HeuristicRollbackException hre) {
-			hre.printStackTrace();
-		} catch (SystemException se) {
-			se.printStackTrace();
-		}
-	}
+//	void around() : doPostHandler() {
+//		try {
+//			proceed();
+//		} catch (NamingException ne) {
+//			ne.printStackTrace();
+//		} catch (NotSupportedException nse) {
+//			nse.printStackTrace();
+//		} catch (IllegalStateException ie) {
+//			ie.printStackTrace();
+//		} catch (RollbackException re) {
+//			re.printStackTrace();
+//		} catch (HeuristicMixedException hme) {
+//			hme.printStackTrace();
+//		} catch (HeuristicRollbackException hre) {
+//			hre.printStackTrace();
+//		} catch (SystemException se) {
+//			se.printStackTrace();
+//		}
+//	}
 
 }

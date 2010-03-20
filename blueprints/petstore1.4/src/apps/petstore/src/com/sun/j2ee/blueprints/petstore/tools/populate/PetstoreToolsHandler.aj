@@ -20,7 +20,6 @@ import com.sun.j2ee.blueprints.customer.ejb.CustomerLocal;
 import com.sun.j2ee.blueprints.customer.profile.ejb.ProfileLocal;
 import com.sun.j2ee.blueprints.petstore.tools.populate.PopulateServlet.ParsingDoneException;
 import com.sun.j2ee.blueprints.signon.user.ejb.UserLocal;
-
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
@@ -36,13 +35,14 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import petstore.exception.ExceptionHandler;
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
 
 
 /**
  * @author Raquel Maranhao
  */
 @ExceptionHandler
-public aspect PetstoreToolsHandler {
+public aspect PetstoreToolsHandler extends EmptyBlockAbstractExceptionHandling {
 	private Map connect = new HashMap();
 	
 	// ---------------------------
@@ -192,6 +192,13 @@ public aspect PetstoreToolsHandler {
 		call(* PopulateServlet.getConnection()) && 
 		withincode(private boolean PopulateServlet.internalPopulateLogic(..));	
 	
+	public pointcut emptyBlockException(): (internalItemPopulatorDropTablesHandler() || 
+										   internalProductPopulatorDropTablesHandler() || 
+										   internalCategoryPopulatorDropTablesHandler() || 
+										   internalCategoryDetailsPopulatorHandler() || 
+										   internalItemDetailsPopulatorDropTablesHandler()) ||
+										   (internalProductDetailsPopulatorDropTablesHandler()); 
+	
 	// ---------------------------
     // Advice's
     // ---------------------------
@@ -230,18 +237,19 @@ public aspect PetstoreToolsHandler {
 			throw new PopulateException ("Could not create: " + exception.getMessage(), exception);
 		}
 	}
-		
-	void around() : 
-		internalItemPopulatorDropTablesHandler() || 
-		internalProductPopulatorDropTablesHandler() || 
-		internalCategoryPopulatorDropTablesHandler() || 
-		internalCategoryDetailsPopulatorHandler() || 
-		internalItemDetailsPopulatorDropTablesHandler() {
-	    try {
-	        proceed();
-	    } catch (PopulateException exception) {
-        }  	
-	}
+
+// #Reuse#	
+//	void around() : 
+//		internalItemPopulatorDropTablesHandler() || 
+//		internalProductPopulatorDropTablesHandler() || 
+//		internalCategoryPopulatorDropTablesHandler() || 
+//		internalCategoryDetailsPopulatorHandler() || 
+//		internalItemDetailsPopulatorDropTablesHandler() {
+//	    try {
+//	        proceed();
+//	    } catch (PopulateException exception) {
+//        }  	
+//	}
 	
 	void around()throws javax.servlet.ServletException : 
 		initHandler()  {
@@ -326,12 +334,13 @@ public aspect PetstoreToolsHandler {
 		}
 	}
 
-	void around() : 
-		internalProductDetailsPopulatorDropTablesHandler() {
-	    try {
-	        proceed();
-	    } catch (PopulateException exception) {}	
-	}
+// #Reuse# 	
+//	void around() : 
+//		internalProductDetailsPopulatorDropTablesHandler() {
+//	    try {
+//	        proceed();
+//	    } catch (PopulateException exception) {}	
+//	}
 	
 	void around() :
 		mainUserPopulatorHandler() {
