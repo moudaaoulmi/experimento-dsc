@@ -10,9 +10,9 @@
 	<property name="dir.dist" value="${dir.work}/dist" />
 	<property name="dir.librariesEHMeter" value="${dir.build}/libs" />
 	<property name="dir.lib" value="libs" />
-	<property name="dir.plugins" value="C:\\Desenvolvimento\\eclipse-mestrado-3\\plugins" />
+	<property name="dir.plugins" value="C:\Development\eclipseMM\plugins" />
 	<property name="dir.src" value="../product-src/src" />
-	<property name="dir.reusable.src" value="C:\Users\Emanoel\Documents\Pessoal\CIn\Mestrado\Exception Handling\ReusableCode\src" />
+	<property name="dir.reusable.src" value="C:\Development\workspaceMM\ReusableCode\src2" />
 
 	<property name="version" value="0.3"/>
 	<property name="jar.name" value="project-analising.jar"/>
@@ -49,29 +49,21 @@
 	</target>
 
 	<target name="compile"  depends="viewProperties">
-		<taskdef 
-		      resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+		<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
 		    <classpath>
 		      <pathelement location="${dir.librariesEHMeter}/aspectjtools.jar"/>
 		    </classpath>
-		  </taskdef>
+		</taskdef>
 		<echo  message="passou por aqui...target 1.6.6 criada...5"></echo>
-		
-		<!--taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" 
-			classpath="${dir.librariesEHMeter}/aspectjtools-1.5.1.jar" > 
-			<classpath location="${dir.librariesEHMeter}/aspectjrt-1.5.1.jar"/>
-			</taskdef -->
 		<mkdir dir="${dir.classes}" />
-		
-	    <iajc destdir="${dir.classes}"
+		<iajc destdir="${dir.classes}"
 	    		classpathref="classpath.common"
 	    		source="1.4" fork="true" >
 			<sourceroots>
-				<!--pathelement location="${dir.reusable.src}"/-->
+				<pathelement location="${dir.reusable.src}"/>
 		    	<pathelement location="${dir.src}"/>
 		    </sourceroots>
 		</iajc>
-		
 	</target>
 	
 	<target name="jar" depends="compile" description="Creates JAR.">
@@ -84,23 +76,13 @@
 	
 	<target name="run" description="Computes metrics on the project.">
 		<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" classpath="libs\aspectjtools-1.5.1.jar"/>
-			  <property name="taskdefs.init" value="true"/>
-		<taskdef name="ehmeter" classname="br.upe.dsc.ehmeter.EHMeterTask" 
-			classpath="${dir.librariesEHMeter}/ehmeter-0.4.1.jar">
-			<!--<classpath>
-				<pathelement location="${dir.work}/${jar.name}"/>
-				<pathelement location="libs/aspectjtools.jar" />
-				<pathelement location="ehmeter/libs/aspectjrt.jar" />
-				<pathelement location="libs/ajrt_j2me_obfuscated.jar" />	
-				<pathelement location="libs/ajrt_j2me.jar" />	
-			</classpath>-->
-		</taskdef>
-			<mkdir dir="${dir.testclasses}" />
-		
-		<ehmeter workdir="${dir.work}" sourcelevel="1.5" export="xls"
-				resultsfile="${dir.work}/metrics-results.xls" verbose="debug">
+		<property name="taskdefs.init" value="true"/>
+		<taskdef name="ehmeter" classname="br.upe.dsc.ehmeter.EHMeterTask" classpath="${dir.librariesEHMeter}/ehmeter-0.4.1.jar"/>
+		<mkdir dir="${dir.testclasses}" />
+		<ehmeter workdir="${dir.work}" sourcelevel="1.5" export="xls" resultsfile="${dir.work}/metrics-results.xls" verbose="debug">
 			<fileset dir="${dir.src}" includes="**/*.java"/>
 			<fileset dir="${dir.src}" includes="**/*.aj"/>
+			<fileset dir="${dir.reusable.src}" includes="**/*.aj"/>
 			<classpath refid="classpath.common"/>
 		</ehmeter>
 	</target>
