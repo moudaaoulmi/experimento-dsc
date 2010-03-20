@@ -4,7 +4,6 @@ import javax.microedition.lcdui.Alert;
 import javax.wireless.messaging.MessageConnection;
 import org.aspectj.lang.SoftException;
 
-import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
