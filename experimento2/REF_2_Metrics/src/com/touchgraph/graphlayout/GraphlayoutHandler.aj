@@ -1,9 +1,16 @@
 package com.touchgraph.graphlayout;
 
 import exception.ExceptionHandler;
+import br.upe.dsc.reusable.exception.*;
 
 @ExceptionHandler
-public privileged aspect GraphlayoutHandler {
+public privileged aspect GraphlayoutHandler extends EmptyBlockAbstractExceptionHandling {
+	
+	public pointcut emptyBlockException(): myWaitHandler()
+										   || internalRunHandler3()
+										   ||internalMouseDraggedHandler()
+										   ||internalAddNearNodesHandler() 
+										   ||internalSetLocaleHandler();
 
 	pointcut internalAddNearNodesHandler(): execution(private void LocalityUtils.internalAddNearNodes(int));
 
@@ -34,13 +41,13 @@ public privileged aspect GraphlayoutHandler {
 		}
 	}
 
-	void around(): myWaitHandler()|| internalRunHandler3()||internalMouseDraggedHandler()||internalAddNearNodesHandler() ||internalSetLocaleHandler(){
-		try {
-			proceed();
-		} catch (InterruptedException e) {
-			// break;
-		}
-	}
+//	void around(): myWaitHandler()|| internalRunHandler3()||internalMouseDraggedHandler()||internalAddNearNodesHandler() ||internalSetLocaleHandler(){
+//		try {
+//			proceed();
+//		} catch (InterruptedException e) {
+//			// break;
+//		}
+//	}
 
 	void around(): internalRunHandler2() {
 		try {

@@ -1,6 +1,7 @@
 package net.sourceforge.metrics.properties;
 
 import java.util.List;
+import br.upe.dsc.reusable.exception.*;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
@@ -9,7 +10,9 @@ import org.eclipse.jdt.core.JavaModelException;
 
 import exception.ExceptionHandler;
 @ExceptionHandler
-public privileged aspect Properties {
+public privileged aspect Properties extends EmptyBlockAbstractExceptionHandling {
+	
+	public pointcut emptyBlockException(): internalGetPackageFragmentRootsHandler();
 
 
 	pointcut getExclusionPatternsHandler(): execution(private String[] MetricsPropertyPage.EnableMetricsTable.getExclusionPatterns(QualifiedName));
@@ -23,12 +26,12 @@ public privileged aspect Properties {
 	declare soft: CoreException: getExclusionPatternsHandler()||internalIsEnabledHandler()||isEnabledHandler();
 	declare soft: JavaModelException: internalGetPackageFragmentRootsHandler();
 
-	void around(): internalGetPackageFragmentRootsHandler() {
-		try {
-			proceed();
-		} catch (JavaModelException e) {
-		}
-	}
+//	void around(): internalGetPackageFragmentRootsHandler() {
+//		try {
+//			proceed();
+//		} catch (JavaModelException e) {
+//		}
+//	}
 
 	boolean around(): isEnabledHandler() {
 		try {

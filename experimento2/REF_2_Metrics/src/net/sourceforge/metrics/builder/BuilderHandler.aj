@@ -1,6 +1,7 @@
 package net.sourceforge.metrics.builder;
 
 import java.util.Map;
+import br.upe.dsc.reusable.exception.*;
 import java.util.Stack;
 
 import org.eclipse.core.resources.IProject;
@@ -16,7 +17,9 @@ import net.sourceforge.metrics.builder.MetricsBuilder.FilterResult;
 import net.sourceforge.metrics.builder.MetricsBuilder.Queue;
 import net.sourceforge.metrics.core.Log;
 @ExceptionHandler
-public privileged aspect BuilderHandler {
+public privileged aspect BuilderHandler extends EmptyBlockAbstractExceptionHandling {
+	
+	public pointcut emptyBlockException(): runHandler() || internalFilterHandler();
 
 	pointcut buildHandler(): execution(protected IProject[] MetricsBuilder.build(int, Map, IProgressMonitor));
 
@@ -42,12 +45,12 @@ public privileged aspect BuilderHandler {
 	declare soft: InterruptedException: internalRunHandler()||runHandler();
 
 
-	void around(): runHandler() {
-		try {
-			proceed();
-		} catch (InterruptedException e) {
-		}
-	}
+//	void around(): runHandler() {
+//		try {
+//			proceed();
+//		} catch (InterruptedException e) {
+//		}
+//	}
 
 	void around(): internalRunHandler(){
 		try {
@@ -92,12 +95,12 @@ public privileged aspect BuilderHandler {
 		}
 	}
 
-	void around(): internalFilterHandler() {
-		try {
-			proceed();
-		} catch (JavaModelException e) {
-		}
-	}
+//	void around(): internalFilterHandler() {
+//		try {
+//			proceed();
+//		} catch (JavaModelException e) {
+//		}
+//	}
 
 	IProject[] around(): buildHandler(){
 		try {
