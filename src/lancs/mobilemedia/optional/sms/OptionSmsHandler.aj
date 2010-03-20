@@ -3,15 +3,19 @@ package lancs.mobilemedia.optional.sms;
 import javax.microedition.lcdui.Alert;
 import javax.wireless.messaging.MessageConnection;
 import org.aspectj.lang.SoftException;
+
+import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
+
 import java.io.IOException;
 import java.io.InterruptedIOException;
 
 //import lancs.mobilemedia.exception.ExceptionHandler;
 import lancs.mobilemedia.optional.sms.SmsMessaging;
 import lancs.mobilemedia.optional.sms.SmsReceiverThread;
+import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
 
 //@ExceptionHandler
-public privileged aspect OptionSmsHandler {
+public privileged aspect OptionSmsHandler extends PrintStackTraceAbstractExceptionHandler {
 	
 	pointcut internalSendImageHandler(): execution(MessageConnection SmsMessaging.internalSendImage(byte[], String, MessageConnection));
 	pointcut sendImageHandler(): execution(boolean SmsMessaging.sendImage(byte[]));
@@ -20,6 +24,8 @@ public privileged aspect OptionSmsHandler {
 	pointcut internalCleanUpReceiverConnectionsHandler(): execution(void SmsMessaging.internalCleanUpReceiverConnections());
 	pointcut internalRunHandler(): execution(void SmsReceiverThread.internalRun(SmsMessaging));
 	pointcut internalRun2Handler(): execution(byte[] SmsReceiverThread.internalRun2(SmsMessaging));
+	
+	public pointcut printStackTraceException() : internalReceiveMessageHandler();
 	
 	declare soft: Throwable: internalSendImageHandler();
 	declare soft: IOException: internalReceiveMessageHandler() || internalCleanUpConnectionsHandler() 
@@ -45,14 +51,14 @@ public privileged aspect OptionSmsHandler {
 		}
 	}
 	
-	MessageConnection around(): internalReceiveMessageHandler() {
-		try {
-			return proceed();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
-		return null;
-	}
+//	MessageConnection around(): internalReceiveMessageHandler() {
+//		try {
+//			return proceed();
+//		} catch (IOException ioe) {
+//			ioe.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	void around(): internalCleanUpConnectionsHandler() || internalCleanUpReceiverConnectionsHandler(){
 		try {

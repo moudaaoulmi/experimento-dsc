@@ -10,19 +10,24 @@ import lancs.mobilemedia.lib.exceptions.InvalidMediaDataException;
 import lancs.mobilemedia.lib.exceptions.MediaPathNotValidException;
 import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
 import lancs.mobilemedia.core.ui.datamodel.MediaData;
-import lancs.mobilemedia.exception.CheckedMediaNotFoundExceptionHandler;
+//import lancs.mobilemedia.exception.CheckedMediaNotFoundExceptionHandler;
 //import lancs.mobilemedia.exception.ExceptionHandler;
-
+import lancs.mobilemedia.lib.exceptions.MediaNotFoundException;
 import org.aspectj.lang.SoftException;
 
+import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
+
 //@ExceptionHandler
-public aspect OptionalCopySMSHandler extends CheckedMediaNotFoundExceptionHandler {
+public aspect OptionalCopySMSHandler extends PrintStackTraceAbstractExceptionHandler {
 	
-	public pointcut checkedMechanismException() : execution(MediaData PhotoViewController.internalProcessImageData(MediaData)); 
+	//public pointcut checkedMechanismException() : execution(MediaData PhotoViewController.internalProcessImageData(MediaData));
+	public pointcut printStackTraceException() : execution(MediaData PhotoViewController.internalProcessImageData(MediaData));
+	
 	pointcut internalHanldeCommand() : execution(void PhotoViewController.internalHandleCommand());
 	pointcut handleCommand() : execution(public boolean PhotoViewController.handleCommand(Command));
 //	pointcut internalProcessImageData() : ;
 	
+	declare soft: MediaNotFoundException : printStackTraceException();
 	declare soft : InvalidMediaDataException : internalHanldeCommand();
 	declare soft : PersistenceMechanismException : internalHanldeCommand();
 //	declare soft : MediaNotFoundException : internalProcessImageData();
