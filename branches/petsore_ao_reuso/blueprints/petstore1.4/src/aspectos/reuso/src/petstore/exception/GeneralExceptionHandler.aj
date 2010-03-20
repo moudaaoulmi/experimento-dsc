@@ -45,10 +45,11 @@ import javax.xml.parsers.SAXParser;
 import org.xml.sax.InputSource;
 import com.sun.j2ee.blueprints.supplier.orderfulfillment.ejb.OrderFulfillmentFacadeEJB;
 import com.sun.j2ee.blueprints.lineitem.ejb.LineItemLocal;
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
 
 
 @ExceptionHandler
-public privileged aspect GeneralExceptionHandler {
+public privileged aspect GeneralExceptionHandler extends EmptyBlockAbstractExceptionHandling{
 
 	// ---------------------------
 	// Declare Soft's
@@ -182,17 +183,21 @@ public privileged aspect GeneralExceptionHandler {
 		execution(private void InventoryPopulator.internalRemoveExistingInventory(String)) ||
 		execution(public void DefaultComponentManager.sessionDestroyed(..));
 	
+	public pointcut emptyBlockException(): (loadSQLStatementsHandler2()) ||
+										   (loadSQLStatementsHandler())  ||
+										   (aroundExceptionDoNothingHandler()); 	
+	
 	// ---------------------------
 	// Advice's
 	// ---------------------------
-	void around() :  loadSQLStatementsHandler() ||
-					 loadSQLStatementsHandler2(){
-		try {
-			proceed();
-		} catch(ParsingDoneException exception) {
-			// Ignored		
-		}
-	}
+//	void around() :  loadSQLStatementsHandler() ||
+//					 loadSQLStatementsHandler2(){
+//		try {
+//			proceed();
+//		} catch(ParsingDoneException exception) {
+//			// Ignored		
+//		}
+//	}
 	
 	Object around() : checkHandler() ||
 					  checkHandler2() ||
@@ -284,12 +289,11 @@ public privileged aspect GeneralExceptionHandler {
 	    }
 	}
 	
-	void around() : 
-	    aroundExceptionDoNothingHandler() {
-		try {
-			proceed();
-		} catch(Exception exception) {
-			//Do nothing
-		}
-    }	
+//	void around() : aroundExceptionDoNothingHandler() {
+//		try {
+//			proceed();
+//		} catch(Exception exception) {
+//			//Do nothing
+//		}
+//    }	
 }

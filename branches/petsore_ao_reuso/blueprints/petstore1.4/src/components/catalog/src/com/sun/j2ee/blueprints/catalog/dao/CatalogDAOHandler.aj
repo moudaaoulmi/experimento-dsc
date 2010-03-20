@@ -6,9 +6,9 @@ package com.sun.j2ee.blueprints.catalog.dao;
 import javax.naming.NamingException;
 
 
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
 import com.sun.j2ee.blueprints.catalog.exceptions.CatalogDAOSysException;
 import com.sun.j2ee.blueprints.catalog.model.Item;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Connection;
@@ -17,22 +17,19 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
 import com.sun.j2ee.blueprints.catalog.model.Category;
 import com.sun.j2ee.blueprints.catalog.model.Page;
 import com.sun.j2ee.blueprints.catalog.model.Product;
 import com.sun.j2ee.blueprints.servicelocator.ServiceLocatorException;
-
 import javax.sql.DataSource;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.xml.sax.SAXException;
 import petstore.exception.ExceptionHandler;
 /**
  * @author Raquel Maranhao
  */
 @ExceptionHandler
-public aspect CatalogDAOHandler {
+public aspect CatalogDAOHandler extends EmptyBlockAbstractExceptionHandling{
 	
     Map connection = new HashMap();
     //Connection connection = null;
@@ -101,11 +98,11 @@ public aspect CatalogDAOHandler {
 	pointcut connectionClose() : 
 		closeAll() && call(* Connection.close());
 	
-	//GenericAspect
-	public pointcut aroundExceptionDoNothingHandler() :
-	    resultSetClose() ||
-//		preparedStatementClose() || 
-		connectionClose();
+//GenericAspect
+//	public pointcut aroundExceptionDoNothingHandler() :
+//	    resultSetClose() ||
+// esse aqui estava comentado //		preparedStatementClose() || 
+//		connectionClose();
 	
 	pointcut getCategoryHandler() : 
 		execution(public Category GenericCatalogDAO.getCategory(String, Locale));
@@ -189,18 +186,21 @@ public aspect CatalogDAOHandler {
 	pointcut searchItemsPointBaseHandler() : 
 		execution(public Page PointbaseCatalogDAO.searchItems(String, int, int, Locale));
 	
-    // ---------------------------
+	public pointcut emptyBlockException(): resultSetClose() || connectionClose();
+	
+	// ---------------------------
     // Advice's
     // ---------------------------
-	void around() : 
-	    aroundExceptionDoNothingHandler() {
-		try {
-			proceed();
-		} catch(Exception exception) {
-			//Do nothing
-		}
-    }	
-	
+
+//	void around() : 
+//	    aroundExceptionDoNothingHandler() {
+//		try {
+//			proceed();
+//		} catch(Exception exception) {
+//			//Do nothing
+//		}
+//    }	
+//	
 	CatalogDAO around() throws CatalogDAOSysException : 
 		getDAOHandler() {
 		try{
