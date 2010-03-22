@@ -17,7 +17,9 @@ import org.maze.eimp.rendezvous.XMLMessage;
 import org.maze.eimp.rendezvous.XMLStream;
 import org.maze.eimp.script.ImCommandServer;
 
-public privileged aspect GeneralExceptionHandler {
+import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
+
+public privileged aspect GeneralExceptionHandler extends PrintStackTraceAbstractExceptionHandler{
 
 	pointcut internalLoadFileHandler(): execution(private void AboutDialog.internalLoadFile(FileReader, char[], StringBuffer));
 
@@ -63,24 +65,54 @@ public privileged aspect GeneralExceptionHandler {
 	// eimpHandler
 
 	pointcut internalStartupHandler(): execution(private void eimpPlugin.internalStartup());
+	
+	public pointcut printStackTraceException() : internalLoadFileHandler() || 
+												 internalMainHander() ||
+												 loadPrefHander() || 
+												 savePrefHander() || 
+												 internalLogoutHandler() || 
+												 internalSendInstantMessageHandler() || 
+												 addBuddyHandler()|| 
+												 callBuddyHandler() || 
+												 removeBuddyHandler() || 
+												 internalSetStatusHandler() || 
+												 internalSetToHandler() || 
+												 startMessageHandler() || 
+												 internalGetOut2Handler() || 
+												 internalStartupHandler();
 
+	declare soft: IOException: printStackTraceException();
+	
 	after():internalLoadFileHandler()||internalMainHander()||loadPrefHander()|| savePrefHander() || internalLogoutHandler() || internalSendInstantMessageHandler() || 
 	  addBuddyHandler()|| callBuddyHandler() || removeBuddyHandler()|| internalSetStatusHandler()||internalSetToHandler() || startMessageHandler()||internalGetOut2Handler()||internalStartupHandler(){
 		System.out.println(thisEnclosingJoinPointStaticPart.getId());
 	}
+	
+	
 
-	declare soft: IOException: internalLoadFileHandler()||internalMainHander()|| loadPrefHander()|| savePrefHander()||internalLogoutHandler() || internalSendInstantMessageHandler() || 
-	  addBuddyHandler()|| callBuddyHandler() || removeBuddyHandler()|| 
-	  internalSetStatusHandler()||internalSetToHandler() || startMessageHandler()||internalGetOut2Handler()||internalStartupHandler();
+//	declare soft: IOException: internalLoadFileHandler() || 
+//							   internalMainHander() || 
+//							   loadPrefHander() || 
+//							   savePrefHander() || 
+//							   internalLogoutHandler() || 
+//							   internalSendInstantMessageHandler() || 
+//							   addBuddyHandler() || 
+//							   callBuddyHandler() || 
+//							   removeBuddyHandler()|| 
+//							   internalSetStatusHandler() ||
+//							   internalSetToHandler() || 
+//							   startMessageHandler() || 
+//							   internalGetOut2Handler() || 
+//							   internalStartupHandler();
 
-	void around(): internalLoadFileHandler()||internalMainHander()||loadPrefHander()|| savePrefHander() || internalLogoutHandler() || internalSendInstantMessageHandler() || 
-	  addBuddyHandler()|| callBuddyHandler() || removeBuddyHandler()|| internalSetStatusHandler()||internalSetToHandler() || startMessageHandler()||internalGetOut2Handler()||internalStartupHandler(){
-		try {
-			proceed();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	void around(): internalLoadFileHandler()||internalMainHander()||loadPrefHander()|| savePrefHander() || internalLogoutHandler() || internalSendInstantMessageHandler() || 
+//	  addBuddyHandler()|| callBuddyHandler() || removeBuddyHandler()|| internalSetStatusHandler()||internalSetToHandler() || startMessageHandler()||internalGetOut2Handler()||internalStartupHandler(){
+//		try {
+//			proceed();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	String around(String key): (getStringHandler()|| getStringHandler2()||getStringHandler3() )&& args(key){
 		try {
