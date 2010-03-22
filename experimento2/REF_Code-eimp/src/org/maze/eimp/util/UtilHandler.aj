@@ -11,7 +11,9 @@ import org.maze.eimp.im.BuddyGroup;
 import org.maze.eimp.im.BuddyList;
 import org.maze.eimp.im.GroupList;
 
-public privileged aspect UtilHandler {
+import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
+
+public privileged aspect UtilHandler extends PrintStackTraceAbstractExceptionHandler{
 
 	pointcut internalRunHandler(): execution( private void internalRun())&& within(AllwaysOnlineHelper);
 
@@ -34,9 +36,11 @@ public privileged aspect UtilHandler {
 	pointcut internalWriteGroupsHandler(): execution(private void LocalStore.internalWriteGroups(File, Properties,FileOutputStream));
 
 	pointcut internalReadGroupsHandler(): execution(private void LocalStore.internalReadGroups(GroupList, File, Properties,FileInputStream));
+	
+	public pointcut printStackTraceException(): internalRun2Handler();
 
 	declare soft: InterruptedException:internalRunHandler();
-	declare soft: Exception:internalRun2Handler()||storeBuddiesHandler()||loadBuddiesHandler();
+	declare soft: Exception: printStackTraceException() || internalRun2Handler() || storeBuddiesHandler()||loadBuddiesHandler();
 	declare soft: MalformedURLException: newURLHandler();
 	declare soft: IOException: internalLoadInformationHandler()||internalStoreInformationHandler();
 
@@ -111,13 +115,13 @@ public privileged aspect UtilHandler {
 		}
 	}
 
-	void around():internalRun2Handler(){
-		try {
-			proceed();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	void around():internalRun2Handler(){
+//		try {
+//			proceed();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	URL around(String url_name) : newURLHandler() && args(url_name) {
 		try {

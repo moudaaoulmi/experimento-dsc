@@ -8,7 +8,10 @@ import java.net.UnknownHostException;
 import org.maze.eimp.im.Buddy;
 import org.xml.sax.SAXException;
 
-public privileged aspect RendezvousHandler {
+import br.upe.dsc.reusable.exception.EmptyBlockAbstractExceptionHandling;
+
+
+public privileged aspect RendezvousHandler extends EmptyBlockAbstractExceptionHandling{
 
 	pointcut internalRendezVousConnectionHandler(): execution(private void RendezVousConnection.internalRendezVousConnection());
 
@@ -20,6 +23,7 @@ public privileged aspect RendezvousHandler {
 
 	pointcut internalRunHandler(): execution(private void RendezVousSession.MessageReaderThread.internalRun() );
 
+	public pointcut emptyBlockException(): internalRendezVousConnectionHandler();
 	
 	declare soft: IOException: internalRendezVousConnectionHandler()|| loginHandler()||startSessionHandler()||internalRunHandler();
 
@@ -29,12 +33,12 @@ public privileged aspect RendezvousHandler {
 
 	declare soft: SAXException : internalRunHandler();
 
-	void around():internalRendezVousConnectionHandler() {
-		try {
-			proceed();
-		} catch (IOException ioe) {
-		}
-	}
+//	void around():internalRendezVousConnectionHandler() {
+//		try {
+//			proceed();
+//		} catch (IOException ioe) {
+//		}
+//	}
 
 	boolean around(RendezVousConnection rdvc):loginHandler()&& this(rdvc) {
 		try {
@@ -46,12 +50,12 @@ public privileged aspect RendezvousHandler {
 		}
 	}
 
-	void around() : internalRendezVousSessionHandler() {
-		try {
-			proceed();
-		} catch (MalformedURLException e) {
-		}
-	}
+//	void around() : internalRendezVousSessionHandler() {
+//		try {
+//			proceed();
+//		} catch (MalformedURLException e) {
+//		}
+//	}
 
 	void around(): startSessionHandler() {
 		try {
