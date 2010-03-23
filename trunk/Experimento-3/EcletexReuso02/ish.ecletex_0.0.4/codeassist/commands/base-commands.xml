@@ -1,0 +1,641 @@
+<?xml version="1.0"?>
+	<Completion>
+	<CompletionItem Code="@">
+		<Description>
+			LaTeX normally leaves a little extra space after punctuation, 
+			such as the period which ends a sentence. However, it uses a 
+			rather simple rule for determining whether a period ends a 
+			sentence: it assumes that periods end sentences unless they 
+			follow an upper case letter. To tell LaTeX to insert extra 
+			space after punctuation which follows an upper case letter, 
+			precede the punctuation by \@. 
+		</Description>
+	</CompletionItem>	
+	<CompletionItem Code="\">
+		<Description>
+			The \\ command tells LaTeX to start a new line. It has an 
+			optional argument, extra-space, that specifies how much extra 
+			vertical space is to be inserted before the next line. This 
+			can be a negative amount. 
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="\*">
+		<Description>
+			The \\* command is the same as the ordinary \\ command except 
+			that it tells LaTeX not to start a new page after the line. 
+		</Description>
+	</CompletionItem>	
+	<CompletionItem Code=",">
+		<Description>
+			Include a thin space; can be used in all modes, not just math. 
+		</Description>
+	</CompletionItem>	
+	<CompletionItem Code=";">
+		<Description>
+			Include a thick space in math mode.  
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code=":">
+		<Description>
+			Include a medium space in math mode.   
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="!">
+		<Description>
+			Include a negative thin space in math mode.   
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="-">
+		<Description>
+			the \- command tells LaTeX that it may hyphenate the word at that 
+			point. LaTeX is very good at hyphenating, and it will usually find 
+			all correct hyphenation points. The \- command is used for the 
+			exceptional cases. Or In the tabbing environment the \- command 
+			moves the left margin of the next and all the following commands 
+			one tab stop to the left.
+		</Description>
+	</CompletionItem>	
+	<CompletionItem Code=">">
+		<Description>
+			The \> command causes LaTeX to advance to the next tab stop. 
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="+">
+		<Description>
+			The \+ command moves the left margin of the next and all the following 
+			commands one tab stop to the right.
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="'">
+		<Description>
+			Produces an acute accent on the following character.
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="addcontentsline">
+		<Description>
+			The \addcontentsline command adds an entry to the specified list or table.
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="addtocontents">
+		<Description>
+			The \addtocontents command adds text (or formatting commands) directly
+			to the file that generates the table of contents or list of figures or 
+			tables. 
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="addtocounter">
+		<Description>
+			The \addtocounter command increments the counter by the amount 
+			specified by the value argument, which can be negative.  
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="address">
+		<Description>
+			The return address, as it should appear on the letter and the envelope. 
+			Separate lines of the address should be separated by \\ commands. If 
+			you do not make an \address declaration, then the letter will be 
+			formatted for copying onto your organization's standard letterhead. 
+			If you give an \address declaration, then the letter will be formatted 
+			as a personal letter. 
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="addtolength">
+		<Description>
+			The `\addtolength' command increments a "length command" by the
+			amount specified in the `length' argument.  It can be a negative amount.
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="addvspace">
+		<Description>
+			The `\addvspace' command normally adds a vertical space of height
+			length.  However, if vertical space has already been added to the same
+			point in the output by a previous `\addvspace' command, then this
+			command will not add more space than needed to make the natural length
+			of the total vertical space equal to `length'.
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="alph">
+		<Description>
+			This command causes the value of the `counter' to be printed in
+			alphabetic characters.  The `\alph' command uses lower case alphabetic
+			alphabetic characters, i.e., `a, b, c...' while the `\Alph' command
+			uses upper case alphabetic characters, i.e., `A, B, C...'.
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="appendix">
+		<Description>
+			The `\appendix' command changes the way sectional units are
+			numbered.  The `\appendix' command generates no text and does not
+			affect the numbering of parts.
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="arabic">
+		<Description>
+			The `\arabic' command causes the value of the `counter' to be
+			printed in Arabic numbers, i.e., `3'.
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="author">
+		<Description>
+			The `\author' command declares the author(s), where `names' is a
+			list of authors separated by `\and' commands.  Use `\\' to separate
+			lines within a single author's entry - for example, to give the
+			author's institution or address.
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="backslash">
+		<Description>
+			because `\\' has its
+			own special meaning.  A `\' is produced by typing `$\backslash$' in
+			your file.
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="begin">
+		<Description>
+			Begins a paragraph-making environment.
+		</Description>
+    <Arguments>
+      <Argument Code="document">
+      </Argument>
+      <Argument Code="equation">
+      </Argument>
+      <Argument Code="eqnarray">
+      </Argument>
+      <Argument Code="itemize">
+      </Argument>
+      <Argument Code="figure">
+      </Argument>
+      <Argument Code="enumerate">
+      </Argument>
+      <Argument Code="verbatim">
+      </Argument>
+      <Argument Code="tabbing">
+      </Argument>
+    </Arguments>
+	</CompletionItem>
+	<CompletionItem Code="bfseries">
+		<Description>
+			The boldface text style.
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="bibitem">
+		<Description>
+			   The `\bibitem' command generates an entry labelled by `label'.  If
+				the `label' argument is missing, a number is generated as the `label',
+				using the `enumi' counter.  The `cite_key' is any sequence of letters,
+				numbers, and punctuation symbols not containing a comma.  This command
+				writes an entry on the `.aux' file containing `cite_key' and the item's
+				`label'.  When this `.aux' file is read by the `\begin{document}'
+				command, the item's `label' is associated with `cite_key', causing the
+				reference to `cite_key' by a `\cite' command to produce the associated
+				`label'.
+		</Description>
+	</CompletionItem>
+	
+	<CompletionItem Code="bibliography">
+		<Description>
+			States the bibtex file to use as the bibliography.
+		</Description>
+	</CompletionItem>
+	<CompletionItem Code="bibliographystyle">
+		<Description>
+			States the bibtex file to use as the bibliography.
+		</Description>
+		<Arguments>
+			<Argument Code="alpha">
+				Sorted alphabetically. Labels are formed from name of author and
+   				year of publication.	
+			</Argument>
+			<Argument Code="plain">
+				Sorted alphabetically. Labels are numeric.
+			</Argument>
+			<Argument Code="unsrt">
+				Like `plain', but entries are in order of citation.
+			</Argument>
+			<Argument Code="abbrv">
+				 Like `plain', but more compact labels.
+			</Argument>
+		</Arguments>
+	</CompletionItem>
+	
+	<CompletionItem Code="bigskip">
+		<Description>
+			The `\bigskip' command is equivalent to `\vspace{bigskipamount}'
+			where `bigskipamount' is determined by the document class.
+		</Description>
+	</CompletionItem>
+	
+	<CompletionItem Code="chapter">
+		<Description>
+			Starts a new chapter.
+		</Description>
+	</CompletionItem>
+
+  <CompletionItem Code="end">
+    <Description>
+      Ends a paragraph-making environment.
+    </Description>
+    <Arguments>
+      <Argument Code="document">
+      </Argument>
+      <Argument Code="equation">
+      </Argument>
+      <Argument Code="eqnarray">
+      </Argument>
+      <Argument Code="itemize">
+      </Argument>
+      <Argument Code="figure">
+      </Argument>
+      <Argument Code="enumerate">
+      </Argument>
+      <Argument Code="verbatim">
+      </Argument>
+      <Argument Code="tabbing">
+      </Argument>
+    </Arguments>
+  </CompletionItem>
+
+  <CompletionItem Code="glqq">
+    <Description>
+      Create left quote mark.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="grqq">
+    <Description>
+      Create right quote mark.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="item">
+    <Description>
+      Starts a new item.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="paragraph">
+    <Description>
+      Starts a new paragraph.
+    </Description>
+  </CompletionItem>
+	
+	<CompletionItem Code="section">
+		<Description>
+			Starts a new section.
+		</Description>
+	</CompletionItem>
+	
+	<CompletionItem Code="subsection">
+		<Description>
+			Starts a new sub section.
+		</Description>
+	</CompletionItem>
+	
+	<CompletionItem Code="subsubsection">
+		<Description>
+			Starts a new sub-sub sub section.
+		</Description>
+	</CompletionItem>
+
+  <CompletionItem Code="frac">
+    <Description>
+      Create a fraction.
+    </Description>
+  </CompletionItem>
+	
+  <CompletionItem Code="sqrt">
+    <Description>
+      Create a square root.
+    </Description>
+  </CompletionItem>	
+
+  <CompletionItem Code="Alpha">
+    <Description>
+      Create the big greek symbol alpha.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="alpha">
+    <Description>
+      Create the greek symbol alpha.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Beta">
+    <Description>
+      Create the big greek symbol beta.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="beta">
+    <Description>
+      Create the greek symbol beta.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Gamma">
+    <Description>
+      Create the big greek symbol gamma.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="gamma">
+    <Description>
+      Create the greek symbol gamma.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Delta">
+    <Description>
+      Create the big greek symbol delta.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="delta">
+    <Description>
+      Create the greek symbol delta.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Epsilon">
+    <Description>
+      Create the big greek symbol epsilon.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="epsilon">
+    <Description>
+      Create the greek symbol epsilon.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Zeta">
+    <Description>
+      Create the big greek symbol zeta.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="zeta">
+    <Description>
+      Create the greek symbol zeta.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Theta">
+    <Description>
+      Create the big greek symbol theta.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="theta">
+    <Description>
+      Create the greek symbol theta.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Iota">
+    <Description>
+      Create the big greek symbol iota.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="iota">
+    <Description>
+      Create the greek symbol iota.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Kappa">
+    <Description>
+      Create the big greek symbol kappa.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="kappa">
+    <Description>
+      Create the greek symbol kappa.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Lambda">
+    <Description>
+      Create the big greek symbol lambda.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="lambda">
+    <Description>
+      Create the greek symbol lambda.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="My">
+    <Description>
+      Create the big greek symbol my.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="my">
+    <Description>
+      Create the greek symbol my.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Ny">
+    <Description>
+      Create the big greek symbol ny.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="ny">
+    <Description>
+      Create the greek symbol ny.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Xi">
+    <Description>
+      Create the big greek symbol xi.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="xi">
+    <Description>
+      Create the greek symbol xi.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Omikron">
+    <Description>
+      Create the big greek symbol omikron.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="omikron">
+    <Description>
+      Create the greek symbol omikron.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Pi">
+    <Description>
+      Create the big greek symbol pi.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="pi">
+    <Description>
+      Create the greek symbol pi.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Rho">
+    <Description>
+      Create the big greek symbol rho.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="rho">
+    <Description>
+      Create the greek symbol rho.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Sigma">
+    <Description>
+      Create the big greek symbol sigma.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="sigma">
+    <Description>
+      Create the greek symbol sigma.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Tau">
+    <Description>
+      Create the big greek symbol tau.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="tau">
+    <Description>
+      Create the greek symbol tau.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Ypsilon">
+    <Description>
+      Create the big greek symbol ypsilon.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="ypsilon">
+    <Description>
+      Create the greek symbol ypsilon.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Phi">
+    <Description>
+      Create the big greek symbol phi.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="phi">
+    <Description>
+      Create the greek symbol phi.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Chi">
+    <Description>
+      Create the big greek symbol chi.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="chi">
+    <Description>
+      Create the greek symbol chi.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Psi">
+    <Description>
+      Create the big greek symbol psi.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="psi">
+    <Description>
+      Create the greek symbol psi.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="Omega">
+    <Description>
+      Create the big greek symbol omega.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="omega">
+    <Description>
+      Create the greek symbol omega.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="sum">
+    <Description>
+      Create the mathematical sum symbol.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="int">
+    <Description>
+      Create the mathematical integral symbol.
+    </Description>
+  </CompletionItem>
+
+  <CompletionItem Code="infty">
+    <Description>
+      Create the mathematical infinity symbol.
+    </Description>
+  </CompletionItem>
+
+	<CompletionItem Code="documentclass">
+		<Description>
+			States the document style of the current document.
+		</Description>
+		<Arguments>
+			<Argument Code="article">
+			</Argument>
+			<Argument Code="report">
+			</Argument>
+			<Argument Code="letter">
+			</Argument>
+			<Argument Code="book">
+			</Argument>
+		</Arguments>
+		<Optionals>
+			<Argument Code="10pt">
+			</Argument>
+			<Argument Code="11pt">
+			</Argument>
+			<Argument Code="12pt">
+			</Argument>
+			<Argument Code="twoside">
+			</Argument>
+			<Argument Code="twocolumn">
+			</Argument>
+			<Argument Code="draft">
+			</Argument>
+			<Argument Code="fleqn">
+			</Argument>
+			<Argument Code="leqno">
+			</Argument>
+			<Argument Code="acm">
+			</Argument>
+		</Optionals>
+	</CompletionItem>
+</Completion>

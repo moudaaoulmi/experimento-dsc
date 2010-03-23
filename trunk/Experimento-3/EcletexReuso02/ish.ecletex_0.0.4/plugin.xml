@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="ish.ecletex"
+   name="ecleTeX (TeX) Plug-in"
+   version="0.0.4"
+   provider-name="Ian Hartney"
+   class="ish.ecletex.ecletexPlugin">
+
+   <runtime>
+      <library name="ecletex.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime.compatibility"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.ui.forms"/>
+      <import plugin="org.eclipse.core.runtime"/>
+   </requires>
+
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="ecleTeX TeX Editor"
+            icon="icons/TexIcon.gif"
+            extensions="tex"
+            class="ish.ecletex.editors.tex.TeXEditor"
+            contributorClass="ish.ecletex.editors.tex.TeXActionContributor"
+            id="ish.ecletex.editors.TeXEditor">
+      </editor>
+      <editor
+            name="ecleTeX BibTeX Editor"
+            icon="icons/TexIcon.gif"
+            extensions="bib"
+            class="ish.ecletex.editors.bibtex.BibTeXEditor"
+            contributorClass="ish.ecletex.editors.bibtex.MultiPageEditorContributor"
+            id="ish.ecletex.editors.bibtex.BibTeXEditor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="ish.ecletex.preferences.TeXPreferencePage"
+            name="ecleTeX Preferences"
+            id="ish.ecletex.preferences.TeXPreferencePage">
+      </page>
+      <page
+            class="ish.ecletex.preferences.TexColorsPreferencePage"
+            category="ish.ecletex.preferences.TeXPreferencePage"
+            name="Editor Colors"
+            id="ish.ecletex.preferences.TeXColorsPreferencePage"/>
+      <page
+            class="ish.ecletex.preferences.TexExternalToolsPreferencePage"
+            category="ish.ecletex.preferences.TeXPreferencePage"
+            name="External Tools"
+            id="ish.ecletex.preferences.TexExternalToolsPreferencePage"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            objectClass="org.eclipse.core.resources.IProject"
+            name="ecleTeX Project Properties"
+            nameFilter="*"
+            class="ish.ecletex.properties.ecletexProjectProperties"
+            id="ish.ecletex.properties.ecletexProjectProperties">
+      </page>
+      <page
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.tex"
+            class="ish.ecletex.properties.texFileProperties"
+            name="Tex File Properties"
+            id="ish.ecletex.properties.samplePropertyPage"/>
+   </extension>
+   <extension
+         id="ecletexNature"
+         name="ecleTeX Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="ish.ecletex.nature.ecletexNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="icons/nature.gif"
+            natureId="ish.ecletex.ecletexNature"
+            id="ecletexNatureImage">
+      </image>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.resourceFilters">
+      <filter
+            selected="true"
+            pattern="*.aux">
+      </filter>
+      <filter
+            selected="true"
+            pattern="*.toc">
+      </filter>
+      <filter
+            selected="true"
+            pattern="*.idx">
+      </filter>
+      <filter
+            selected="true"
+            pattern="*.log">
+      </filter>
+      <filter
+            selected="true"
+            pattern="*.out">
+      </filter>
+      <filter
+            selected="true"
+            pattern="*.bbl">
+      </filter>
+      <filter
+            selected="true"
+            pattern="*.blg">
+      </filter>
+      <filter
+            selected="true"
+            pattern=".project">
+      </filter>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="ecleTeX Action Set"
+            visible="true"
+            id="ish.ecletex.actionSet">
+         <menu
+               label="ecleTeX &amp;Menu"
+               id="ecletexMenu">
+            <separator
+                  name="sampleGroup">
+            </separator>
+         </menu>
+         <action
+               label="(Un)Comment@Ctrl+\"
+               icon="icons/sample.gif"
+               class="ish.ecletex.editors.tex.actions.CommentLineAction"
+               tooltip="Comment or Uncomment a line."
+               menubarPath="ecletexMenu/sampleGroup"
+               retarget="true"
+               id="CommentLineAction">
+         </action>
+         <action
+               label="Add Word"
+               icon="icons/sample.gif"
+               class="ish.ecletex.editors.tex.actions.AddWordAction"
+               tooltip="Add word to user dictionary"
+               retarget="true"
+               id="AddWordAction">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         id="VBOX"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+   <extension
+         id="FONT_ERROR"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+   <extension
+         id="UNDERFULL_HBOX"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+   <extension
+         id="OVERFULL_HBOX"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+   <extension
+         id="FLOAT_WARNING"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+   <extension
+         id="NOFILE_ERROR"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+   <extension
+         id="REFERENCE_ERROR"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+   <extension
+         id="LATEX_WARNING"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+   <extension
+         id="ERRORMESSAGE"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+   <extension
+         id="ecletexBuilder"
+         name="ecleTeX Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder>
+         <run
+               class="ish.ecletex.builders.ecletexBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category 
+        	id="ish.ecletex.wizards.categories" 
+        	name="Latex (ecleTex)"> 
+      </category> 
+      <wizard
+            name="Latex (ecleTeX) Project"
+            icon="icons/TexIcon.gif"
+            category="ish.ecletex.wizards.categories"
+            class="ish.ecletex.wizards.project.ecletexProjectCreationWizard"
+            project="true"
+            id="ish.ecletex.wizards.project.ecletexProjectCreationWizard">
+         <description>
+            New Latex (ecleTeX) Project
+         </description>
+         <selection
+               class="org.eclipse.core.resources.IProject">
+         </selection>
+      </wizard>
+      <wizard
+            name="New Template Wizard"
+            icon="icons/TexIcon.gif"
+            category="ish.ecletex.wizards.categories"
+            class="ish.ecletex.wizards.template.templateCreationWizard"
+            project="true"
+            id="ish.ecletex.wizards.template.templateCreationWizard">
+         <description>
+            New Template
+         </description>
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.exportWizards">
+         <wizard
+            name="Export PDF Wizard"
+            icon="icons/TexIcon.gif"
+            class="ish.ecletex.wizards.export.pdf.PDFExportWizard"
+            id="ish.ecletex.wizards.export.pdf.PDFExportWizard">
+         <description>
+          	Export an ecletex project as a PDF file.
+         </description>
+         <selection class="org.eclipse.core.resources.IProject"/> 
+      </wizard>
+   </extension>
+
+</plugin>
