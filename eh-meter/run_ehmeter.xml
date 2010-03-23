@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="run-eh-meter-petstore" default="run">
+<project name="run-eh-meter-eimp" default="run">
 
 	<property name="dir.build" value="../eh-meter" />
 	<property name="dir.work" value="${dir.build}/work" />
@@ -7,140 +7,76 @@
 	<property name="dir.classes2" value="${dir.work}/classesnls" />
 	<property name="dir.testclasses" value="${dir.work}/testclasses" />
 	
-	
+	<property name="dir.librariesEHMeter" value="${dir.build}/libs" />
 	<property name="dir.dist" value="${dir.work}/dist" />
-	<property name="dir.librariesAOPM" value="${dir.build}/libs" />
-	<property name="dir.lib.server" value="C:/Sun/AppServer/lib/" />
-	<property name="dir.plugins" value="../../../plugins" />
+	<property name="dir.libraries" value="${dir.build}/libs" />
+	<property name="dir.librariesEIMP" value="../lib" />
+	<property name="dir.plugins" value="C:\Development\eclipseMM\plugins" />
 	<property name="dir.src" value="../src" />
-	<property name="dir.src2" value="../nls" />
+	<property name="dir.reusable.src2" value="C:\Development\workspaceMM\ReusableCode\src2" />
 
 	<property name="version" value="0.3"/>
 	<property name="jar.name" value="project-analising.jar"/>
 
 	<path id="classpath.common">
-		<fileset dir="${dir.lib.server}">
+		<fileset dir="${dir.libraries}">
 			<include name="*.jar" />
 		</fileset>
-		<fileset dir="${dir.librariesAOPM}">
+		<fileset dir="${dir.plugins}">
+			<include name="*.jar" />
+		</fileset>	
+		<fileset dir="${dir.librariesEIMP}">
 			<include name="*.jar" />
 		</fileset>
-		<!--fileset dir="${dir.plugins}">
-			<include name="*.jar" />
-		</fileset-->
-		
-		<!-- libs soltas  -->
-		<filelist>
-			<file name="blueprints/petstore1.4/src/apps/admin/src/OrderProcessingCenterEARClient.jar"/>
-			<file name="../blueprints/petstore1.4/src/apps/opc/build/opc-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/apps/opc/build/opc-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/apps/petstore/build/petstore-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/apps/supplier/build/supplier-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/apps/supplier/build/war/WEB-INF/lib/processmanager-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/apps/supplier/build/war/WEB-INF/lib/servicelocator.jar"/>
-			<file name="../blueprints/petstore1.4/src/apps/supplier/build/war/WEB-INF/lib/supplierpo-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/apps/supplier/build/war/WEB-INF/lib/xmldocuments.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/address/build/address-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/address/build/address-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/asyncsender/build/asyncsender-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/asyncsender/build/asyncsender-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/cart/build/cart-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/cart/build/cart-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/catalog/build/catalog-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/catalog/build/catalog-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/contactinfo/build/contactinfo-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/contactinfo/build/contactinfo-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/creditcard/build/creditcard-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/creditcard/build/creditcard-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/customer/build/customer-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/customer/build/customer-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/mailer/build/mailer-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/mailer/build/mailer-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/processmanager/build/processmanager-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/processmanager/build/processmanager-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/purchaseorder/build/po-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/purchaseorder/build/po-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/servicelocator/build/servicelocator.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/signon/build/signon-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/signon/build/signon-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/supplierpo/build/supplierpo-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/supplierpo/build/supplierpo-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/uidgen/build/uidgen-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/uidgen/build/uidgen-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/util/tracer/build/tracer.jar"/>
-			<file name="../blueprints/petstore1.4/src/components/xmldocuments/build/xmldocuments.jar"/>
-			<file name="../blueprints/petstore1.4/src/lib/base64/base64.jar"/>
-			<file name="../blueprints/petstore1.4/src/waf/build/waf-ejb.jar"/>
-			<file name="../blueprints/petstore1.4/src/waf/build/waf-ejb-client.jar"/>
-			<file name="../blueprints/petstore1.4/src/waf/build/waf-web.jar"/>
-		</filelist>
-		
 	</path>
-			<target name="viewProperties">
-				<echo>dir.build:= "${dir.build}"</echo>
-				<echo>dir.work:= "${dir.work}"</echo>
-				<echo>dir.classes:= "${dir.classes}"</echo>
-				<echo>dir.dist:= "${dir.dist}"</echo>
-				<echo>dir.librariesAOPM:= "${dir.librariesAOPM}"</echo>
-				<echo>dir.src:= "${dir.src}"</echo>
-				<echo>version:= "${version}"</echo>
-				<echo>Done...</echo>
-			</target>
+	
+	<target name="viewProperties">
+			<echo>dir.build:= "${dir.build}"</echo>
+			<echo>dir.work:= "${dir.work}"</echo>
+			<echo>dir.classes:= "${dir.classes}"</echo>
+			<echo>dir.dist:= "${dir.dist}"</echo>
+			<echo>dir.librariesAOPM:= "${dir.librariesAOPM}"</echo>
+			<echo>dir.src:= "${dir.src}"</echo>
+			<echo>version:= "${version}"</echo>
+			<echo>Done...</echo>
+	</target>
 
 	<target name="clean">
 		<delete dir="${dir.build}" />
 		<delete dir="${dir.dist}" />
 	</target>
 
-	<target name="compile"  depends="viewProperties">
-		<taskdef 
-		      resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+	<!--target name="compile"  depends="viewProperties">
+		<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
 		    <classpath>
 		      <pathelement location="${dir.librariesAOPM}/aspectjtools-1.5.1.jar"/>
 		    </classpath>
-		  </taskdef>
-
-		
-		<!--taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" 
-			classpath="${dir.librariesAOPM}/aspectjtools-1.5.1.jar" > 
-			<classpath location="${dir.librariesAOPM}/aspectjrt-1.5.1.jar"/>
-			</taskdef -->
+		</taskdef>
 		<mkdir dir="${dir.classes}" />
 		<echo  message="passou por aqui..."> - ${ant.version} </echo>
-	    <iajc destdir="${dir.classes}"
-	    		classpathref="classpath.common"
-	    		source="1.5" fork="true" >
+	    <iajc destdir="${dir.classes}" classpathref="classpath.common" source="1.5" fork="true" >
 			<sourceroots>
-				<pathelement location="../blueprints/petstore1.4/src/apps/admin/src/admin"/>
-				<pathelement location="../blueprints/petstore1.4/src/apps/admin/src/client"/>
-				<pathelement location="../blueprints/petstore1.4/src/apps/opc/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/apps/petstore/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/apps/supplier/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/address/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/asyncsender/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/cart/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/catalog/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/contactinfo/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/creditcard/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/customer/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/encodingfilter/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/lineitem/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/mailer/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/processmanager/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/purchaseorder/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/servicelocator/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/signon/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/supplierpo/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/uidgen/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/util/tracer/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/components/xmldocuments/src"/>
-				<pathelement location="../blueprints/petstore1.4/src/waf/src/controller"/>
-				<pathelement location="../blueprints/petstore1.4/src/waf/src/view/template"/>
-				<pathelement location="../blueprints/petstore1.4/src/aspectos/reuso/src"/>
-				
+				<pathelement location="${dir.src}"/>
+				<pathelement location="${dir.reusable.src2}" />
 		    </sourceroots>
 		</iajc>
 		
+	</target-->
+	
+	<target name="compile"  depends="viewProperties">
+			<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+			    <classpath>
+			      <pathelement location="${dir.librariesEHMeter}/aspectjtools-1.6.1.jar"/>
+			    </classpath>
+			</taskdef>
+			<echo  message="passou por aqui...target 1.6.6 criada...5"></echo>
+			<mkdir dir="${dir.classes}" />
+			<iajc destdir="${dir.classes}" classpathref="classpath.common" source="1.6" fork="true" >
+				<sourceroots>
+					<pathelement location="${dir.reusable.src2}"/>
+			    	<pathelement location="${dir.src}"/>
+			    </sourceroots>
+			</iajc>
 	</target>
 	
 	<target name="jar" depends="compile" description="Creates JAR.">
@@ -152,107 +88,19 @@
 	</target>
 	
 	<target name="run" description="Computes metrics on the project.">
-		<taskdef name="ehmeter" classname="br.upe.dsc.ehmeter.EHMeterTask" 
-			classpath="${dir.librariesAOPM}/ehmeter-0.4.2.jar">
+		<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" classpath="libs\aspectjtools-1.6.1.jar"/>
+		<property name="taskdefs.init" value="true"/>
+		
+		<taskdef name="ehmeter" classname="br.upe.dsc.ehmeter.EHMeterTask" classpath="${dir.librariesEHMeter}/ehmeter-0.4.1.jar">
 			<classpath location="${dir.work}/${jar.name}"/>
 		</taskdef>
-			<mkdir dir="${dir.testclasses}" />
-		
-		<ehmeter workdir="${dir.work}" sourcelevel="1.5" export="xls"
-				resultsfile="${dir.work}/metrics-results.xls">
-			
-			<fileset dir="../blueprints/petstore1.4/src/apps/admin/src/admin"  includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/apps/admin/src/client" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/apps/opc/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/apps/petstore/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/apps/supplier/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/address/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/asyncsender/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/cart/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/catalog/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/contactinfo/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/creditcard/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/customer/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/encodingfilter/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/lineitem/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/mailer/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/processmanager/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/purchaseorder/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/servicelocator/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/signon/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/supplierpo/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/uidgen/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/util/tracer/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/components/xmldocuments/src" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/waf/src/controller" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/waf/src/view/template" includes="**/*.java, **/*.aj"/>
-			<fileset dir="../blueprints/petstore1.4/src/aspectos/reuso/src" includes="**/*.java, **/*.aj"/>
+		<mkdir dir="${dir.testclasses}" />
+		<ehmeter workdir="${dir.work}" sourcelevel="1.5" export="xls" resultsfile="${dir.work}/metrics-results.xls">
+			<fileset dir="${dir.src}" includes="**/*.java"/>
+			<fileset dir="${dir.src}" includes="**/*.aj"/>
+			<fileset dir="${dir.reusable.src2}" includes="**/*.aj"/>
 			<classpath refid="classpath.common"/>
 		</ehmeter>
 	</target>
 	
-
-	<target name="compile-test" depends="compile">
-		<mkdir dir="${dir.testclasses}" />
-		<javac destdir="${dir.testclasses}" srcdir="${dir.testsrc}">
-			<classpath refid="classpath.common"/>
-			<classpath location="${dir.classes}"/>
-		</javac>
-	</target>
-
-	<target name="test" depends="compile-test" description="Runs all tests">
-		<mkdir dir="${dir.testreports}" />
-		<junit printsummary="yes" haltonfailure="yes" filtertrace="off" fork="yes">
-			<classpath refid="classpath.common"/>
-			<classpath location="${dir.classes}"/>
-			<classpath location="${dir.testclasses}"/>
-			<sysproperty key="tests.workdir" value="${dir.testworkdir}"/>
-
-			<formatter type="plain" />
-			<batchtest todir="${dir.testreports}">
-				<fileset dir="${dir.testclasses}">
-					<include name="**/*Test.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-
-	<!--target name="dist" depends="jar, javadoc" description="Creates distribiution archives.">
-		<mkdir dir="${dir.dist}" />
-
-		<property name="name.bin" value="${ant.project.name}-bin-${version}"/>
-		<property name="name.src" value="${ant.project.name}-src-${version}"/>
-		<zip destfile="${dir.dist}/${name.bin}.zip">
-			<zipfileset dir="${dir.libraries}" prefix="${name.bin}" />
-			<zipfileset dir="${dir.build}" prefix="${name.bin}">
-				<include name="${ant.project.name}.jar" />
-			</zipfileset>
-			<zipfileset dir="${dir.build}" prefix="${name.bin}/docs">
-				<include name="javadoc/**" />
-			</zipfileset>
-			<zipfileset dir="www" prefix="${name.bin}/docs">
-				<exclude name="index.html" />
-				<exclude name="project_tools.html" />
-			</zipfileset>
-		</zip>
-		<zip destfile="${dir.dist}/${name.src}.zip">
-			<zipfileset dir="." prefix="${name.src}">
-				<exclude name="**/CVS/*" />
-				<exclude name="build/**" />
-				<exclude name="bin/**" />
-				<exclude name="dist/**" />
-				<exclude name="output/**" />
-			</zipfileset>
-		</zip>
-	</target-->
-
-	<!--target name="javadoc">
-		<mkdir dir="${dir.build}/javadoc" />
-		<javadoc destdir="${dir.build}/javadoc" author="true" version="true" windowtitle="${ant.project.name} API">
-			<fileset dir="${dir.src}" />
-			<classpath refid="classpath.common"/>
-		</javadoc>
-	</target-->
-
 </project>
