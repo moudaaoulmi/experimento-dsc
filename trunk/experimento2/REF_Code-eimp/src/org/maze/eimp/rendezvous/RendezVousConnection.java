@@ -1,9 +1,18 @@
 package org.maze.eimp.rendezvous;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Properties;
 
-import org.maze.eimp.im.*;
+import org.maze.eimp.im.Account;
+import org.maze.eimp.im.Buddy;
+import org.maze.eimp.im.BuddyGroup;
+import org.maze.eimp.im.Connection;
+import org.maze.eimp.im.IMListener;
+import org.maze.eimp.im.MimeMessage;
+import org.maze.eimp.im.Session;
+import org.maze.eimp.im.UserStatus;
 
 import com.strangeberry.rendezvous.Rendezvous;
 import com.strangeberry.rendezvous.ServiceInfo;

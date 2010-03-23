@@ -31,6 +31,7 @@ package org.maze.eimp;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.ResourceBundle;
+
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;

@@ -3,6 +3,7 @@ package org.maze.eimp.xmpp;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.XMPPException;
 import org.maze.eimp.im.Buddy;
+
 import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
 
 public privileged aspect XmppHandler extends PrintStackTraceAbstractExceptionHandler{

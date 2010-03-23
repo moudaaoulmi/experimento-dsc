@@ -1,6 +1,7 @@
 package org.maze.eimp.aim;
 
 import java.io.IOException;
+
 import org.maze.eimp.exception.ExceptionHandler;
 import org.maze.eimp.im.Buddy;
 import org.maze.eimp.im.MimeMessage;

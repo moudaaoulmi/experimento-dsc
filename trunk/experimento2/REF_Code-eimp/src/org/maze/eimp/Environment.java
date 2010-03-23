@@ -36,10 +36,12 @@ import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.graphics.RGB;
 import org.maze.eimp.app.SysTrayHelper;
-import org.maze.eimp.im.*;
-import org.maze.eimp.sounds.Sound;
+import org.maze.eimp.im.Account;
+import org.maze.eimp.im.AccountList;
 import org.maze.eimp.sounds.EventSoundList;
-import org.maze.eimp.util.*;
+import org.maze.eimp.sounds.Sound;
+import org.maze.eimp.util.MessageArchiver;
+import org.maze.eimp.util.StringEx;
 
 /**
  * must set the following: pathHome pathLib logger perfStore

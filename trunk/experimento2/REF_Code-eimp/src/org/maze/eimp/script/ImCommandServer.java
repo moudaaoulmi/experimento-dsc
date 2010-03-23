@@ -30,6 +30,7 @@ package org.maze.eimp.script;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 import org.maze.eimp.EimpConsts;
 import org.maze.eimp.Environment;
 import org.maze.eimp.im.Buddy;

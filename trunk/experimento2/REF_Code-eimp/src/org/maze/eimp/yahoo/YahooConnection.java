@@ -43,6 +43,7 @@ import org.maze.eimp.im.IMListener;
 import org.maze.eimp.im.MimeMessage;
 import org.maze.eimp.im.Session;
 import org.maze.eimp.im.UserStatus;
+
 import ymsg.network.StatusConstants;
 import ymsg.network.YahooUser;
 import ymsg.network.event.SessionChatEvent;

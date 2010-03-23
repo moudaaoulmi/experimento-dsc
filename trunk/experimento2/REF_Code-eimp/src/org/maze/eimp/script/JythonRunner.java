@@ -30,12 +30,6 @@ package org.maze.eimp.script;
 
 //import java.io.IOException;
 import java.io.InputStream;
-//import java.util.Properties;
-//
-//import org.eclipse.core.runtime.Platform;
-//import org.python.core.PyModule;
-//import org.python.core.imp;
-//import org.python.util.PythonInterpreter;
 
 /**
  * @author hliu

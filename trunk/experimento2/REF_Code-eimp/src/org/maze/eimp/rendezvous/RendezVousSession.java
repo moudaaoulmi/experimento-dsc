@@ -1,16 +1,16 @@
 package org.maze.eimp.rendezvous;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
-import java.net.UnknownHostException;
 
 import org.apache.commons.digester.Digester;
-import org.maze.eimp.im.*;
-import org.xml.sax.SAXException;
+import org.maze.eimp.im.Account;
+import org.maze.eimp.im.Buddy;
+import org.maze.eimp.im.BuddyList;
+import org.maze.eimp.im.MimeMessage;
+import org.maze.eimp.im.Session;
 
 /**
  * @author Ringo De Smet

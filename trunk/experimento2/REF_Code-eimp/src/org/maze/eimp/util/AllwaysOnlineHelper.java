@@ -30,6 +30,7 @@ package org.maze.eimp.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import org.maze.eimp.im.Account;
 import org.maze.eimp.im.UserStatus;
 

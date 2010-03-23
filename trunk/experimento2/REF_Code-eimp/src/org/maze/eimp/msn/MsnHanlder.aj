@@ -1,6 +1,7 @@
 package org.maze.eimp.msn;
 
 import java.io.IOException;
+
 import org.maze.eimp.im.Buddy;
 
 import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
