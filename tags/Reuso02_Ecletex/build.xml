@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- Copyright 2004 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: build.xml,v 1.12 2004/10/08 18:15:32 yutayoshida Exp $ -->
+
+<!DOCTYPE project [
+  <!ENTITY commonAntCommands SYSTEM "setup/common-ant.xml">
+<!ENTITY appServerAntCommands SYSTEM "setup/app-server-ant.xml">
+]>
+
+<project name="blueprints" default="ehmeter" basedir=".">
+
+	<property name="aopmetrics" value="aopmetrics" />
+
+	<target name="ehmeter">
+		<path id="cp.ehmeter">
+			<fileset dir="libs">
+				<include name="*.jar" />
+			</fileset>			
+		</path>		
+
+		<taskdef name="ehmeter" classname="br.upe.dsc.ehmeter.EHMeterTask">
+			<classpath refid="cp.ehmeter" />
+		</taskdef>
+
+		<path id="cp.compile">
+			<fileset dir="libs">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+
+		<mkdir dir="${aopmetrics}" />
+
+		<ehmeter workdir="build/workdir" export="xls" sourcelevel="1.5" resultsfile="build/aop-metrics-results.xls">
+			<fileset dir="plugins/ish.ecletex_0.0.4/src" includes="**/*.java" />
+			<classpath refid="cp.compile" />
+		</ehmeter>
+	</target>
+</project>
