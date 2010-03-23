@@ -1,6 +1,7 @@
 package org.maze.eimp;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;

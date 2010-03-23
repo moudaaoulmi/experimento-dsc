@@ -39,6 +39,7 @@ import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
+
 import org.maze.eimp.im.Buddy;
 import org.maze.eimp.im.BuddyGroup;
 import org.maze.eimp.im.BuddyList;

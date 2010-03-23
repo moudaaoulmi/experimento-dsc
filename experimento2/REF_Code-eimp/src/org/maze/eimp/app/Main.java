@@ -29,7 +29,6 @@
 package org.maze.eimp.app;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.eclipse.jface.preference.PreferenceStore;

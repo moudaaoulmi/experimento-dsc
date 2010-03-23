@@ -28,7 +28,6 @@
 
 package org.maze.eimp.aim;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -56,7 +55,6 @@ import com.wilko.jaim.IMTocResponse;
 import com.wilko.jaim.JaimConnection;
 import com.wilko.jaim.JaimEvent;
 import com.wilko.jaim.JaimEventListener;
-import com.wilko.jaim.JaimException;
 import com.wilko.jaim.LoginCompleteTocResponse;
 import com.wilko.jaim.TocResponse;
 

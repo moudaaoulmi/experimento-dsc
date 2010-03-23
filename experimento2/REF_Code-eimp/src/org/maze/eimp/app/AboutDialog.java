@@ -28,9 +28,7 @@
 
 package org.maze.eimp.app;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;

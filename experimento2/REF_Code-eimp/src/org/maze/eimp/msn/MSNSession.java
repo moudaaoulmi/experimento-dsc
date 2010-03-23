@@ -31,6 +31,7 @@ package org.maze.eimp.msn;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import org.maze.eimp.im.Account;
 import org.maze.eimp.im.Buddy;
 import org.maze.eimp.im.BuddyList;

@@ -29,6 +29,7 @@
 package org.maze.eimp.util;
 
 import java.net.URL;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 

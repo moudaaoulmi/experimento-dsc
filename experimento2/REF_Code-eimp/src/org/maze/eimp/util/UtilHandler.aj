@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
+
 import org.maze.eimp.im.BuddyGroup;
 import org.maze.eimp.im.BuddyList;
 import org.maze.eimp.im.GroupList;

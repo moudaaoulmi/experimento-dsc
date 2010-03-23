@@ -4,19 +4,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.MissingResourceException;
+
 import org.eclipse.jface.preference.PreferenceStore;
-import org.maze.eimp.eimpPlugin;
 import org.maze.eimp.app.AboutDialog;
 import org.maze.eimp.app.Main;
 import org.maze.eimp.app.Messages;
 import org.maze.eimp.im.Buddy;
-import rath.msnm.msg.MimeMessage;
 import org.maze.eimp.msn.MSNConnection;
 import org.maze.eimp.perf.PreferenceMessages;
 import org.maze.eimp.rendezvous.XMLMessage;
 import org.maze.eimp.rendezvous.XMLStream;
 import org.maze.eimp.script.ImCommandServer;
-
+import org.maze.eimp.eimpPlugin;
+import rath.msnm.msg.MimeMessage;
 import br.upe.dsc.reusable.exception.PrintStackTraceAbstractExceptionHandler;
 
 public privileged aspect GeneralExceptionHandler extends PrintStackTraceAbstractExceptionHandler{

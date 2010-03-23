@@ -28,7 +28,6 @@
 
 package org.maze.eimp.perf;
 
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
