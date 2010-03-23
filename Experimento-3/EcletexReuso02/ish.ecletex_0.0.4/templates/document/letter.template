@@ -1,0 +1,32 @@
+\documentclass{letter}
+
+% If the letter doesn't fit on one page, but you
+% want it do, remove the ``%'' on the next line:
+% \setlength{\textheight}{8in}
+
+\begin{document}
+% If you want headings on subsequent pages,
+% remove the ``%'' on the next line:
+% \pagestyle{headings}
+
+\begin{letter}{[TO NAME]\\
+	[TO STREET ADDRESS]\\
+	[TO CITY, STATE \ ZIP]}
+\address{[FROM NAME]\\
+	[FROM STREET ADDRESS]\\
+	[FROM CITY, STATE \ ZIP]}
+
+\opening{[SALUTATION]}
+
+[BODY OF LETTER, PARAGRAPHS SEPARATED BY BLANK LINE.]
+
+
+\signature{[YOUR NAME]\\
+	[YOUR TITLE]}
+
+\closing{[CLOSING,]}
+
+\encl{[ENCLOSURE LISTING]}
+
+\end{letter}
+\end{document}

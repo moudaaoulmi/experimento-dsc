@@ -1,0 +1,15 @@
+\documentclass{article}
+
+\author{[NAME] \footnote{[EMAIL]}}
+
+\title{[TITLE OF YOUR ARTICLE]}
+
+\begin{document}
+
+\maketitle
+
+\pagestyle{headings}
+
+\section{[FIRST SECTION HEADER]}
+
+\end{document}
