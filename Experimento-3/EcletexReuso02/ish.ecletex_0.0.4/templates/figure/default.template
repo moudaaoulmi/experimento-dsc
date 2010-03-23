@@ -1,8 +1,0 @@
-\begin{figure}[htbp]
-\begin{center}
-\begin{tabular}{c}
-\includegraphics[width=\textwidth]{Image.File}
-\end{tabular}
-\end{center}
-\caption{Caption}\label{label}
-\end{figure}
