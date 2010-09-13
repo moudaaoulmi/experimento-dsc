@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+   id="org.maze.eimp"
+   name="Eclipse Instant Messenger Plugin"
+   version="1.0.0"
+   provider-name="org.maze"
+   class="org.maze.eimp.eimpPlugin">
+
+   <runtime>
+      <library name="eimp.jar"/>
+      <library name="lib/msnm.jar"/>
+      <library name="lib/JOscarLib.jar"/>
+      <library name="lib/jaimlib.jar"/>
+      <library name="lib/jrendezvous.jar"/>
+      <library name="lib/systray4j.jar"/>
+      <library name="lib/smack.jar"/>
+      <library name="lib/commons-beanutils.jar"/>
+      <library name="lib/commons-collections.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/commons-digester.jar"/>
+      <library name="lib/commons-logging.jar"/>
+      <library name="lib/joscar.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/jsocks-klea.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/oscar.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/ymsg_network_v0_6.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/ymsg_support_v0_6.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.core.resources" export="true"/>
+      <import plugin="org.eclipse.ui" export="true"/>
+      <!--import plugin="org.aspectj.runtime"/-->
+   </requires>
+
+
+   <extension-point id="protocol" name="Chat Protocol" schema="schema/protocol.exsd"/>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="IM"
+            id="eimp">
+      </category>
+      <view
+            name="BuddyListView"
+            icon="icons/v_buddy.gif"
+            category="eimp"
+            class="org.maze.eimp.views.BuddyListView"
+            id="org.maze.eimp.views.BuddyListView">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="IM"
+            id="eimp">
+      </category>
+      <view
+            name="MultiSessionBoardView"
+            icon="icons/v_conv.gif"
+            category="eimp"
+            class="org.maze.eimp.views.MultiSessionBoardView"
+            id="org.maze.eimp.views.MultiSessionBoardView">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Instant Messenger"
+            class="org.maze.eimp.perf.EclipsePrefRootPage"
+            id="org.maze.eimp.perf.eclipsePrefRootPage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Account"
+            category="org.maze.eimp.perf.eclipsePrefRootPage"
+            class="org.maze.eimp.perf.EclipsePrefAccountPage"
+            id="org.maze.eimp.perf.eclipsePrefAccountPage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Appearance"
+            category="org.maze.eimp.perf.eclipsePrefRootPage"
+            class="org.maze.eimp.perf.EclipsePrefAppearancePage"
+            id="org.maze.eimp.perf.eclipsePrefAppearancePage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Sounds"
+            category="org.maze.eimp.perf.eclipsePrefRootPage"
+            class="org.maze.eimp.perf.EclipsePrefSoundsPage"
+            id="org.maze.eimp.perf.eclipsePrefSoundsPage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Instant Messenger"
+            icon="icons/eimp_logo2.gif"
+            class="org.maze.eimp.views.InstantMessengerPerspectiveFactory"
+            id="org.maze.eimp.perspective.im">
+      </perspective>
+   </extension>
+   <extension
+         point="org.maze.eimp.protocol">
+      <protocol
+            name="ICQ Protocol"
+            class="org.maze.eimp.icq.ICQProtocol"
+            id="org.maze.eimp.icq.protocol">
+      </protocol>
+      <protocol
+            name="AIM Protocol"
+            class="org.maze.eimp.aim.AIMProtocol"
+            id="org.maze.eimp.aim.protocol">
+      </protocol>
+      <protocol
+            name="MSN Protocol"
+            class="org.maze.eimp.msn.MSNProtocol"
+            id="org.maze.eimp.msn.protocol">
+      </protocol>
+      <protocol
+            name="iChat Protocol"
+            class="org.maze.eimp.rendezvous.RendezVousProtocol"
+            id="org.maze.eimp.rendezvous.protocol">
+      </protocol>
+      <protocol
+            name="Jabber Protocol"
+            class="org.maze.eimp.xmpp.JabberProtocol"
+            id="org.maze.eimp.xmpp.protocol">
+      </protocol>
+      <protocol
+            name="Yahoo Protocol"
+            class="org.maze.eimp.yahoo.YahooProtocol"
+            id="org.maze.eimp.yahoo.protocol">
+      </protocol>
+   </extension>
+
+</plugin>
