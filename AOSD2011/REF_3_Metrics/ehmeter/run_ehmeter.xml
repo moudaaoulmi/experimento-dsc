@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="run-eh-meter" default="run">
+
+	<property name="dir.build" value="../ehmeter" />
+	<property name="dir.work" value="${dir.build}/work" />
+	<property name="dir.classes" value="${dir.work}/classes" />
+	
+	<property name="dir.dist" value="${dir.work}/dist" />
+	<property name="dir.librariesEHMeter" value="${dir.build}/libs" />
+	<property name="dir.lib" value="../lib" />
+	<property name="dir.plugins" value="../../../plugins" />
+	<property name="dir.src" value="../src" />
+	<property name="dir.reusable.src" value="C:\Desenvolvimento\eclipse-mestrado-3\workspace\ReusableCode\src" />
+
+	<property name="version" value="0.3"/>
+	<property name="jar.name" value="project-analising.jar"/>
+
+	<path id="classpath.common">
+		<fileset dir="${dir.lib}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${dir.librariesEHMeter}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${dir.plugins}">
+			<include name="*.jar" />
+		</fileset>
+		
+	</path>
+			<target name="viewProperties">
+				<echo>dir.build:= "${dir.build}"</echo>
+				<echo>dir.work:= "${dir.work}"</echo>
+				<echo>dir.classes:= "${dir.classes}"</echo>
+				<echo>dir.dist:= "${dir.dist}"</echo>
+				<echo>dir.librariesEHMeter:= "${dir.librariesEHMeter}"</echo>
+				<echo>dir.src:= "${dir.src}"</echo>
+				<echo>version:= "${version}"</echo>
+				<echo>Done...</echo>
+			</target>
+
+	<target name="clean">
+		<delete dir="${dir.build}" />
+		<delete dir="${dir.dist}" />
+	</target>
+
+	<target name="compile"  depends="viewProperties">
+		<taskdef 
+		      resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+		    <classpath>
+		      <pathelement location="${dir.librariesEHMeter}/aspectjtools.jar"/>
+		    </classpath>
+		  </taskdef>
+		<echo  message="passou por aqui...target 1.6.6 criada...2"></echo>
+		
+		<mkdir dir="${dir.classes}" />
+		
+	    <iajc destdir="${dir.classes}"
+	    		classpathref="classpath.common"
+	    		source="1.6" fork="true" >
+			<sourceroots>
+				<pathelement location="${dir.reusable.src}"/>
+		    	<pathelement location="${dir.src}"/>
+		    </sourceroots>
+		</iajc>
+		
+	</target>
+	
+	<target name="jar" depends="compile" description="Creates JAR.">
+		<jar destfile="${dir.work}/${jar.name}">
+			<fileset dir="${dir.classes}">
+				<include name="**/*.class" />
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="run" description="Computes metrics on the project.">
+		<taskdef name="ehmeter" classname="br.upe.dsc.ehmeter.EHMeterTask" 
+			classpath="${dir.librariesEHMeter}/ehmeter-0.4.1.jar">
+			<classpath location="${dir.work}/${jar.name}"/>
+		</taskdef>
+			<mkdir dir="${dir.testclasses}" />
+		
+		<ehmeter workdir="${dir.work}" sourcelevel="1.6" export="xls"
+				resultsfile="${dir.work}/metrics-results.xls">
+			<fileset dir="${dir.src}" includes="**/*.java"/>
+			<fileset dir="${dir.src}" includes="**/*.aj"/>
+			<fileset dir="${dir.src2}" includes="**/*.java"/>
+			<fileset dir="${dir.src2}" includes="**/*.aj"/>
+			<classpath refid="classpath.common"/>
+		</ehmeter>
+	</target>
+	
+
+</project>
