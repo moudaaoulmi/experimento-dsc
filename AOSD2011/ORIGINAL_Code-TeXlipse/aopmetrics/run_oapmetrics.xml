@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="run-aop-metrics" default="run">
+
+	<property name="dir.build" value="../aopmetrics" />
+	<property name="dir.work" value="${dir.build}/work" />
+	<property name="dir.classes" value="${dir.work}/classes" />
+	<property name="dir.testclasses" value="${dir.work}/testclasses" />
+
+	<property name="dir.dist" value="${dir.work}/dist" />
+	<property name="dir.librariesAOPM" value="${dir.build}/libs" />
+	<property name="dir.libPlugins" value="../../../plugins" />
+	<property name="dir.src" value="../source" />
+
+	<property name="version" value="0.3"/>
+	<property name="jar.name" value="project-analising.jar"/>
+
+	<path id="classpath.common">
+		<!--fileset dir="${dir.lib}">
+			<include name="*.jar" />
+		</fileset-->
+		<fileset dir="${dir.libPlugins}">
+					<include name="*.jar" />
+				</fileset>
+		<fileset dir="${dir.librariesAOPM}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+			<target name="viewProperties">
+				<echo>dir.build:= "${dir.build}"</echo>
+				<echo>dir.work:= "${dir.work}"</echo>
+				<echo>dir.classes:= "${dir.classes}"</echo>
+				<echo>dir.dist:= "${dir.dist}"</echo>
+				<echo>dir.librariesAOPM:= "${dir.librariesAOPM}"</echo>
+				<echo>dir.src:= "${dir.src}"</echo>
+				<echo>version:= "${version}"</echo>
+				<echo>Done...</echo>
+			</target>
+
+	<target name="clean">
+		<delete dir="${dir.build}" />
+		<delete dir="${dir.dist}" />
+	</target>
+
+	<target name="compile"  depends="viewProperties">
+		<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" 
+			classpath="${dir.librariesAOPM}/aspectjtools-1.5.1.jar"/>
+		<mkdir dir="${dir.classes}" />
+		
+	    <iajc destdir="${dir.classes}"
+	    		classpathRef = "classpath.common"
+	    		source="1.5" fork="true">
+			<sourceroots>
+		    	<pathelement location="${dir.src}"/>
+		    </sourceroots>
+		</iajc>
+		
+	</target>
+	
+	<target name="jar" depends="compile" description="Creates JAR.">
+		<jar destfile="${dir.work}/${jar.name}">
+			<fileset dir="${dir.classes}">
+				<include name="**/*.class" />
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="run" depends="compile" description="Computes metrics on the project.">
+		<taskdef name="aopmetrics" classname="org.tigris.aopmetrics.AopMetricsTask" 
+			classpath="${dir.librariesAOPM}/aopmetrics-0.3.2.jar">
+			<classpath location="${dir.work}/${jar.name}"/>
+		</taskdef>
+			<mkdir dir="${dir.testclasses}" />
+		
+		<aopmetrics workdir="${dir.work}" sourcelevel="1.5" export="xls"
+				resultsfile="${dir.work}/metrics-results.xls">
+			<fileset dir="${dir.src}" includes="**/*.java"/>
+			<fileset dir="${dir.src}" includes="**/*.aj"/>
+			<classpath refid="classpath.common"/>
+		</aopmetrics>
+	</target>
+	
+
+	<target name="compile-test" depends="compile">
+		<mkdir dir="${dir.testclasses}" />
+		<javac destdir="${dir.testclasses}" srcdir="${dir.testsrc}">
+			<classpath refid="classpath.common"/>
+			<classpath location="${dir.classes}"/>
+		</javac>
+	</target>
+
+	<target name="test" depends="compile-test" description="Runs all tests">
+		<mkdir dir="${dir.testreports}" />
+		<junit printsummary="yes" haltonfailure="yes" filtertrace="off" fork="yes">
+			<classpath refid="classpath.common"/>
+			<classpath location="${dir.classes}"/>
+			<classpath location="${dir.testclasses}"/>
+			<sysproperty key="tests.workdir" value="${dir.testworkdir}"/>
+
+			<formatter type="plain" />
+			<batchtest todir="${dir.testreports}">
+				<fileset dir="${dir.testclasses}">
+					<include name="**/*Test.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+
+	
+
+</project>
