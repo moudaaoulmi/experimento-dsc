@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="aop-metrics" default="all">
+	<!-- 
+     Author: Michal Stochmialek <misto@e-informatyka.pl>
+     Version: CVS $Id: build.xml,v 1.1 2006/04/20 23:37:24 misto Exp $
+	-->
+
+	<property name="dir.build" value="build" />
+	<property name="dir.classes" value="${dir.build}/classes" />
+	<property name="dir.testclasses" value="${dir.build}/test" />
+	<property name="dir.testreports" value="${dir.build}/testreports" />
+	<property name="dir.testworkdir" value="${dir.build}/testworkdir" />
+
+	<property name="dir.dist" value="dist" />
+	<property name="dir.libraries" value="lib" />
+	<property name="dir.src" value="src" />
+	<property name="dir.testsrc" value="testsrc" />
+
+	<property name="version" value="0.2"/>
+
+	<path id="classpath.common">
+		<fileset dir="${dir.libraries}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	
+	
+	<target name="all" depends="clean, test, dist" description="Compiles, run tests and create distribution archives."/>
+
+	<target name="clean">
+		<delete dir="${dir.build}" />
+		<delete dir="${dir.dist}" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${dir.classes}" />
+		<javac destdir="${dir.classes}" srcdir="${dir.src}" debug="true">
+			<classpath refid="classpath.common"/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile" description="Creates JAR.">
+		<jar destfile="${dir.build}/${ant.project.name}.jar">
+			<fileset dir="${dir.classes}">
+				<include name="**/*.class" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="run" depends="jar" description="Computes metrics on the project.">
+		<taskdef name="aopmetrics" classname="org.tigris.aopmetrics.AopMetricsTask">
+			<classpath refid="classpath.common"/>
+			<classpath location="${dir.build}/${ant.project.name}.jar"/>
+		</taskdef>
+
+		<aopmetrics workdir="${dir.testworkdir}" sourcelevel="1.5" export="xls"
+				resultsfile="${dir.build}/aop-metrics-results.xls">
+			<fileset dir="${dir.src}" includes="**/*.java"/>
+			<fileset dir="${dir.testsrc}" includes="**/*.java"/>
+			<classpath refid="classpath.common"/>
+		</aopmetrics>
+	</target>
+
+	<target name="compile-test" depends="compile">
+		<mkdir dir="${dir.testclasses}" />
+		<javac destdir="${dir.testclasses}" srcdir="${dir.testsrc}">
+			<classpath refid="classpath.common"/>
+			<classpath location="${dir.classes}"/>
+		</javac>
+	</target>
+
+	<target name="test" depends="compile-test" description="Runs all tests">
+		<mkdir dir="${dir.testreports}" />
+		<junit printsummary="yes" haltonfailure="yes" filtertrace="off" fork="yes">
+			<classpath refid="classpath.common"/>
+			<classpath location="${dir.classes}"/>
+			<classpath location="${dir.testclasses}"/>
+			<sysproperty key="tests.workdir" value="${dir.testworkdir}"/>
+
+			<formatter type="plain" />
+			<batchtest todir="${dir.testreports}">
+				<fileset dir="${dir.testclasses}">
+					<include name="**/*Test.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+
+	<target name="dist" depends="jar, javadoc" description="Creates distribiution archives.">
+		<mkdir dir="${dir.dist}" />
+
+		<property name="name.bin" value="${ant.project.name}-bin-${version}"/>
+		<property name="name.src" value="${ant.project.name}-src-${version}"/>
+		<zip destfile="${dir.dist}/${name.bin}.zip">
+			<zipfileset dir="${dir.libraries}" prefix="${name.bin}" />
+			<zipfileset dir="${dir.build}" prefix="${name.bin}">
+				<include name="${ant.project.name}.jar" />
+			</zipfileset>
+			<zipfileset dir="${dir.build}" prefix="${name.bin}/docs">
+				<include name="javadoc/**" />
+			</zipfileset>
+			<zipfileset dir="www" prefix="${name.bin}/docs">
+				<exclude name="index.html" />
+				<exclude name="project_tools.html" />
+			</zipfileset>
+		</zip>
+		<zip destfile="${dir.dist}/${name.src}.zip">
+			<zipfileset dir="." prefix="${name.src}">
+				<exclude name="**/CVS/*" />
+				<exclude name="build/**" />
+				<exclude name="bin/**" />
+				<exclude name="dist/**" />
+				<exclude name="output/**" />
+			</zipfileset>
+		</zip>
+	</target>
+
+	<target name="javadoc">
+		<mkdir dir="${dir.build}/javadoc" />
+		<javadoc destdir="${dir.build}/javadoc" author="true" version="true" windowtitle="${ant.project.name} API">
+			<fileset dir="${dir.src}" />
+			<classpath refid="classpath.common"/>
+		</javadoc>
+	</target>
+
+</project>
