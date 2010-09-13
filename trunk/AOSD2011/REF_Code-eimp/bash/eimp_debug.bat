@@ -1,0 +1,1 @@
+java -cp ./lib/swt.jar;./lib/jface.jar;./lib/osgi.jar;./lib/runtime.jar;./lib/boot.jar;./lib/systray4j.jar;./lib/msnm.jar;./lib/jaimlib.jar;./lib/JOscarLib.jar;./lib/jrendezvous.jar;./lib/ymsg9.jar;./lib/smack.jar;./eimp.jar -Djava.library.path=. org.maze.eimp.app.Main
