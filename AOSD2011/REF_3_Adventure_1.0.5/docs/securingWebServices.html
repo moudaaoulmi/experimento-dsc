@@ -1,0 +1,494 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Mutual Authentication with Web Services</title>
+</head>
+<body>
+<h1 style="text-align: center;">Mutual Authentication for Web Services<br>
+</h1>
+<br>
+<br>
+To discuss the topic of this paper, we decided to use the Java
+Blueprints Adventure Builder application.&nbsp; Adventure Builder is a
+set of applications that showcases web services on the J2EE 1.4
+platform.&nbsp; This application is developed as part of the <a
+ href="https://blueprints.dev.java.net/">blueprints.dev.java.net</a>
+project under the sub-project title <a
+ href="https://blueprints.dev.java.net/adventurebuilder/">adventurebuilder</a>
+with full source code available <a
+ href="https://blueprints.dev.java.net/servlets/ProjectDocumentList?folderID=3350&amp;expandFolder=3350&amp;folderID=0">here</a>.&nbsp;
+The Adventure Builder application was also a topic of a popular book
+titled "<a href="https://blueprints.dev.java.net/books.html">Designing
+Web Services with the J2EE 1.4 Platform</a>".&nbsp; The book is
+available for free download in PDF format.<br>
+<br>
+When designing Adventure Builder, we chose to use secure mutually
+authenticated web services as the
+technology for communication between the order processing center and
+entities external to the order processing center, such as for the
+exchange of purchase orders and invoices with the bank and
+suppliers.&nbsp; We made this choice because we are primarily
+interested in
+achieving the greatest degree of secure interoperability among all
+modules and
+among all types of participants.&nbsp; The Adventure Builder
+application already has implemented mutual authentication.&nbsp; This
+document describes how
+mutual authentication was implemented broken down into the following
+steps:<br>
+<br>
+<ol>
+  <li><a href="#one">Exchanging Digital Certificates between
+Participants</a></li>
+  <li><a href="#two">Configuring Endpoint Deployment Descriptors to
+Enable Mutual Authentication</a></li>
+  <li><a href="#three">Debugging the Configuration</a><br>
+  </li>
+</ol>
+<br>
+<h2>Mutual Authentication Summary</h2>
+When using mutual
+authentication, either the actual entity's certificate is trusted
+or an entity in the certificate chain is trusted which implies trust to
+its descendant.&nbsp; For
+example, you want to use a contractor to build a room, you call the
+contractor that worked on a friend's house that the friend said did
+a great
+job.&nbsp; Since your friend trusts this contractor and said he did a
+great job, you trust the contractor, because you trust your
+friend.&nbsp; Certificate and certificate chain trust works in the same
+manner.&nbsp; Your friend acts as a link in the Certificate
+chain.&nbsp; You either trust the client certificate directly and
+import the
+certificate into your truststore where all the trusted certificates
+reside or you trust a third party
+certificate authority like VeriSign which implies trust to the
+certificates that VeriSign distributes (signs).&nbsp; More information
+on web service security can be found in the security chapter of the <span
+ class="body"><span class="body">"Designing
+Web Services with the J2EE&#8482; 1.4 Platform"<i><b> </b></i></span></span>book
+located <a href="https://blueprints.dev.java.net/books.html">here</a>.&nbsp;
+More information
+on certificates can be found in the security section of the J2EE
+1.4 tutorial located <a target="_blank"
+ href="http://java.sun.com/j2ee/1.4/docs/tutorial/doc/Security6.html#wp80737">here</a>.<br>
+<br>
+When messages are sent using mutual authentication, a connection can
+only be completed when the client trusts the server's certificate and
+the
+server trusts the client's certificate.&nbsp; The process of exchanging
+certificates and setting up connection properties is called the "SSL
+Handshake".&nbsp;&nbsp; More
+information on the SSL Handshake and JSSE in located <a target="_blank"
+ href="http://java.sun.com/j2se/1.5.0/docs/guide/security/jsse/JSSERefGuide.html#SSLOverview">here</a>.&nbsp;
+When using an application server like the Sun Java System Application
+Server 8.1 Platform Edition (SJSAS8.1PE) a default self-signed
+certificate is generated upon creation of the domain.&nbsp; The
+certificate has an alias of "s1as" and is stored in the domain's
+keystore
+located at <span style="font-style: italic;">SJSAS8.1PE_INSTALL</span>/domains/<span
+ style="font-style: italic;">DOMAIN_NAME</span>/config/keystore.jks.&nbsp;
+The "s1as" certificate is also&nbsp; imported into the domain's
+truststore located at <span style="font-style: italic;">SJSAS8.1PE_INSTALL</span>/domains/<span
+ style="font-style: italic;">DOMAIN_NAME</span>/config/cacerts.jks.&nbsp;&nbsp;
+The default truststore also has numerous VeriSign certificates
+pre-install to facilitate interoperability.<br>
+<br>
+<br>
+<h2><a name="one"></a>1) Exchanging Digital Certificates between
+Participants<br>
+</h2>
+When you deploy Adventure Builder with the default deployment options
+on SJSAS8.1PE, the Order
+Processing Center and the Supply Chain vendor modules are deployed on
+the same
+instance of the application server.&nbsp; This being the case, the same
+"s1as" certificate is used for the client and the server certificates,
+since the "s1as" certificate is also imported into the domain's
+truststore, the mutual authenticated connection is allowed to be
+made.&nbsp; In a real world scenario the
+Order Processing Center and the Supply Chain vendors would be located
+on different machines across the Internet.&nbsp; To make this
+configuration allow connections to be made, the client and
+server certificates have to be imported into their counter-parts
+truststore.&nbsp; In the examples below domain1's
+certificate will be exported from its keystore and
+imported into domain2's truststore. When the keystore/truststore is
+accessed a password is required, the default password for SJSAS8.1PE is
+"changeit".&nbsp; To
+export a certificate from a keystore and import it into the
+counter-parts truststore, perform the following steps:<br>
+<br>
+<h4>1a) List domain1's keystore contents:<br>
+</h4>
+<div style="margin-left: 40px;">$JAVA_HOME/bin/keytool -list -keystore <span
+ style="font-style: italic;">SJSAS8.1PE_INSTALL</span>/domains/domain1/config/keystore.jks<br>
+Enter keystore password:&nbsp; changeit<br>
+<br>
+Keystore type: jks<br>
+Keystore provider: SUN<br>
+Your keystore contains 1 entry<br>
+s1as, Aug 9, 2005, keyEntry,<br>
+Certificate fingerprint (MD5):
+9F:A1:F1:F9:3C:CB:60:B0:64:F1:35:F7:01:57:3B:0A<br>
+</div>
+<br>
+<h4>1b) Export the domain1's certificate from its keystore:<br>
+</h4>
+<div style="margin-left: 40px;">$JAVA_HOME/bin/keytool -export -alias
+s1as -file /tmp/domain1_s1as.cer
+-keystore <span style="font-style: italic;">SJSAS8.1PE_INSTALL/</span>domains/domain1/config/keystore.jks<br>
+Enter keystore password:&nbsp; changeit<br>
+Certificate stored in file &lt;\tmp\domain1_s1as.cer&gt;<br>
+</div>
+<br>
+<h4>1c) Import the exported certificate into domain2's truststore:<br>
+</h4>
+<div style="margin-left: 40px;">$JAVA_HOME/bin/keytool -import
+-trustcacerts -alias domain1_s1as -file
+/tmp/domain1_s1as.cer -keystore <span style="font-style: italic;">SJSAS8.1PE_INSTALL/</span>domains/domain1/config/cacerts.jks<br>
+Enter keystore password:&nbsp; changeit<br>
+Owner: CN=baslerxp.sfbay.sun.com, OU=Sun Java System Application
+Server, O=Sun Microsystems, L=Santa Clara, ST=California, C=US<br>
+Issuer: CN=baslerxp.sfbay.sun.com, OU=Sun Java System Application
+Server, O=Sun Microsystems, L=Santa Clara, ST=California, C=US<br>
+Serial number: 42f9160f<br>
+Valid from: Tue Aug 09 13:46:07 PDT 2005 until: Fri Aug 07 13:46:07 PDT
+2015<br>
+Certificate fingerprints:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MD5:&nbsp;
+9F:A1:F1:F9:3C:CB:60:B0:64:F1:35:F7:01:57:3B:0A<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SHA1:
+B6:1E:6C:CC:20:B0:2E:CB:87:F2:3C:DE:53:FD:08:E9:92:BC:69:90<br>
+Trust this certificate? [no]:&nbsp; y<br>
+Certificate was added to keystore<br>
+</div>
+<br>
+<h4>1d) List domain2's truststore to verify the import:<br>
+</h4>
+<div style="margin-left: 40px;">$JAVA_HOME/bin/keytool -list -keystore <span
+ style="font-style: italic;">SJSAS8.1PE_INSTALL</span>/domains/domain1/config/cacerts.jks<br>
+Enter keystore password:&nbsp; changeit<br>
+<br>
+Keystore type: jks<br>
+Keystore provider: SUN<br>
+Your keystore contains 14 entries<br>
+verisignc1g3, Apr 8, 2004, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+B1:47:BC:18:57:D1:18:A0:78:2D:EC:71:E8:2A:95:73<br>
+verisignc1g2, Apr 8, 2004, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+DB:23:3D:F9:69:FA:4B:B9:95:80:44:73:5E:7D:41:83<br>
+verisignc1g1, Apr 8, 2004, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+97:60:E8:57:5F:D3:50:47:E5:43:0C:94:36:8A:B0:62<br>
+verisignc2g3, Apr 8, 2004, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+F8:BE:C4:63:22:C9:A8:46:74:8B:B8:1D:1E:4A:2B:F6<br>
+verisignc2g2, Apr 8, 2004, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+2D:BB:E5:25:D3:D1:65:82:3A:B7:0E:FA:E6:EB:E2:E1<br>
+<span style="font-weight: bold;">domain1_s1as, Aug 16, 2005,
+trustedCertEntry,</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">Certificate fingerprint (MD5):
+9F:A1:F1:F9:3C:CB:60:B0:64:F1:35:F7:01:57:3B:0A</span><br>
+verisignc2g1, Apr 8, 2004, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+B3:9C:25:B1:C3:2E:32:53:80:15:30:9D:4D:02:77:3E<br>
+verisignc3g3, Apr 8, 2004, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+CD:68:B6:A7:C7:C4:CE:75:E0:1D:4F:57:44:61:92:09<br>
+verisignc3g2, Apr 8, 2004, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+A2:33:9B:4C:74:78:73:D4:6C:E7:C1:F3:8D:CB:5C:E9<br>
+domain2, Aug 10, 2005, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+23:47:42:EF:48:CB:29:FA:09:DC:C6:C3:C0:D4:D3:59<br>
+verisignc3g1, Apr 8, 2004, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+10:FC:63:5D:F6:26:3E:0D:F3:25:BE:5F:79:CD:67:67<br>
+mykey, Aug 9, 2005, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+A0:AF:EC:4A:4F:4A:54:FA:AE:7C:D9:3C:7F:2F:FE:3A<br>
+s1as, Aug 5, 2005, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+9F:A1:F1:F9:3C:CB:60:B0:64:F1:35:F7:01:57:5C:3D<br>
+verisignsecureserver, Apr 8, 2004, trustedCertEntry,<br>
+Certificate fingerprint (MD5):
+74:7B:82:03:43:F0:00:9E:6B:B3:EC:47:BF:85:A5:93<br>
+</div>
+<br>
+<br>
+After performing the steps above domain1's&nbsp; certificate will be a
+trusted by domain2.&nbsp; To have domain1 trust domain2, the steps have
+to be re-run exporting from domain2 and importing into domain1.&nbsp;
+More information on the JavaSE 5 keytool is location <a target="_blank"
+ href="http://java.sun.com/j2se/1.5.0/docs/tooldocs/solaris/keytool.html">here</a>.<br>
+<br>
+<br>
+<h2><a name="two"></a>2) Configuring Endpoint Deployment Descriptors to
+Enable Mutual Authentication
+</h2>
+When using mutual authentication for web
+services the method used to configure the components depends on how
+the
+web service is implemented.&nbsp; If the web service is implemented
+using a web module then the web.xml deployment descriptor needs to be
+modified.&nbsp; If the web service is implemented using an EJB then the
+sun-ejb-jar.xml deployment descriptor needs to be modified for that
+specific EJB.&nbsp; Described below are the specific changes required
+to
+the deployment descriptors based on implementation.<br>
+<br>
+<h3>Web Tier Implementation</h3>
+When adding mutual authentication to a web module a <code>security-constraint</code>
+needs to be added to the web.xml deployment descriptor to target the
+URL
+pattern and the the manner in which the constraint applies.&nbsp; The
+excerpt below targets the "/hello" URL pattern and requires a
+"CONFIDENTIAL" transport with the authentication mechanism being
+"CLIENT-CERT".&nbsp; This snippet is an example given in the J2EE
+1.4 tutorial with more information located <a target="_blank"
+ href="http://java.sun.com/j2ee/1.4/docs/tutorial/doc/Security7.html#wp498398">here</a>.<br>
+<br>
+&nbsp; &lt;security-constraint&gt;<br>
+&nbsp;&nbsp;&nbsp;
+&lt;display-name&gt;SecurityConstraint&lt;/display-name&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;web-resource-collection&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;web-resource-name&gt;WRCollection&lt;/web-resource-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;url-pattern&gt;/hello&lt;/url-pattern&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;http-method&gt;POST&lt;/http-method&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;http-method&gt;GET&lt;/http-method&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/web-resource-collection&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;user-data-constraint&gt;<br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;</span><br>
+&nbsp;&nbsp;&nbsp; &lt;/user-data-constraint&gt;<br>
+&nbsp; &lt;/security-constraint&gt;<br>
+&nbsp; &lt;login-config&gt;<br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">&lt;auth-method&gt;CLIENT-CERT&lt;/auth-method&gt;</span><br>
+&nbsp; &lt;/login-config&gt;<br>
+<br>
+<br>
+The different values for the bolded elements are as follows:<br>
+<ul>
+  <li>transport-guarantee - This element specifies the kind of
+transport to use between the client and the server.&nbsp; The case
+sensitive values
+that can be used are as follows:</li>
+  <ul>
+    <li>NONE - No transport guarantee is required.</li>
+    <li>INTEGRAL - The data must be sent between the client and the
+server in a manner to ensure the data can't be changed. </li>
+    <li>CONFIDENTIAL - The data must be sent between the client and
+server in a manner to ensure that its true contents can't be
+read.</li>
+  </ul>
+</ul>
+<ul>
+  <li>auth-method - This element is used to identify the
+authentication mechanism for the web module.&nbsp; The case
+sensitive values
+that can be used are as follows: </li>
+  <ul>
+    <li>BASIC - Uses basic authentication which consists of a user
+&amp;
+password.<br>
+    </li>
+    <li>DIGEST - Uses basic authentication which consists of a user
+&amp; password, but sends the password in encrypted format.<br>
+    </li>
+    <li>FORM - Uses a web page to perform authentication.<br>
+    </li>
+    <li>CLIENT-CERT - Uses a client certificate for authentication.<br>
+    </li>
+  </ul>
+</ul>
+<br>
+<h3>EJB Tier Implementation<br>
+</h3>
+When adding mutual authentication to an EJB module that only exposes a
+webservice-endpoint the <code>auth-method</code> and the <code>transport-guarantee</code>
+elements are needed to specify that a "CONFIDENTIAL"
+transport is required with the authentication mechanism of
+"CLIENT-CERT".&nbsp; This snippet is an example taken from the
+Adventure Builder application with the full text of the
+deployment descriptor located in the <span style="font-style: italic;">ADVENTURE_BUILDER_INSTALL</span>/project/apps/activitysupplier/activitysupplier-ejb/src/conf/sun-ejb-jar.xml
+file.<br>
+<br>
+&nbsp;&nbsp;&nbsp; &lt;ejb&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ejb-name&gt;ActivityPOEndpointBean&lt;/ejb-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;webservice-endpoint&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;port-component-name&gt;ActivityPOIntfPort&lt;/port-component-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;endpoint-address-uri&gt;webservice/ActivityPOService&lt;/endpoint-address-uri&gt;<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;login-config&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;auth-method&gt;CLIENT-CERT&lt;/auth-method&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/login-config&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/webservice-endpoint&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/ejb&gt;<br>
+<br>
+<br>
+The different values for the bold elements are as follows:<br>
+<ul>
+  <li>auth-method - This element is used to identify the
+authentication mechanism for the EJB webservice-endpoint.&nbsp; The
+case
+sensitive values
+that can be used are as follows: </li>
+  <ul>
+    <li>BASIC - Uses basic authentication with consists of a user &amp;
+password.</li>
+    <li>CLIENT-CERT - Uses a client certificate for validation.</li>
+  </ul>
+</ul>
+<ul>
+  <li>transport-guarantee - This element specifies the kind of
+transport to use between the client and the server.&nbsp; The case
+sensitive values
+that can be used are as follows:</li>
+  <ul>
+    <li>NONE - No transport guarantee is required.</li>
+    <li>INTEGRAL - The data must be sent between the client and the
+server in a manner to ensure the data can't be changed. </li>
+    <li>CONFIDENTIAL - The data must be sent between the client and
+server in a manner to ensure that its true contents can't be
+read.</li>
+  </ul>
+</ul>
+<br>
+When adding mutual authentication to an EJB module that also exposes
+the EJB
+through remote and/or local interface(s), one more level of security is
+required. &nbsp; An<code>ior-security-constraint</code>
+needs to be added to the sun-ejb-jar.xml deployment descriptor to
+specify that confidentiality and client trust is required.&nbsp; This
+will ensure that that the EJB client meets the mutual authentication
+requirements when the remote and/or local interface(s) are used.&nbsp;
+This step isn't required if the EJB is only exposed via a
+webservice-endpoint or the developer doesn't require this constraint
+implemented when
+the EJB's remote and/or local interface(s) are used.<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; ...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;ior-security-config&gt;<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;transport-config&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;integrity&gt;REQUIRED&lt;/integrity&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;confidentiality&gt;REQUIRED&lt;/confidentiality&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;establish-trust-in-target&gt;SUPPORTED&lt;/establish-trust-in-target&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;establish-trust-in-client&gt;REQUIRED&lt;/establish-trust-in-client&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/transport-config&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/ior-security-config&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br>
+<br>
+<ul>
+  <li>integrity - This element indicates if the EJB enforces that
+the message contents can't be changed.&nbsp; The acceptable values for
+this constraint
+are NONE, SUPPORTED or REQUIRED </li>
+  <li>confidentiality - This element indicates if the EJB enforces that
+the message contents can't be
+read.&nbsp; The acceptable values for this constraint are NONE,
+SUPPORTED or REQUIRED<br>
+  </li>
+  <li>establish-trust-in-target - This element indicates if the server
+should authenticate itself to the client for this EJB.&nbsp; The
+acceptable values for this constraint are NONE or SUPPORTED.<br>
+  </li>
+  <li>establish-trust-in-client - This element indicates if the client
+should authenticate itself to the server for this EJB.&nbsp; The
+acceptable values for this constraint are NONE, SUPPORTED or REQUIRED.<br>
+  </li>
+</ul>
+All the allowable values have the same meaning in the constraints
+listed above.&nbsp; They are as follows:<br>
+<ul>
+  <li>NONE - The constraint is not used.<br>
+  </li>
+  <li>SUPPORTED - The constraint is supported by not required</li>
+  <li>REQUIRED - The constraint is required.<br>
+  </li>
+</ul>
+<br>
+<br>
+<h2><a name="three"></a>3) Debugging the Configuration<br>
+</h2>
+When debugging mutual authentication a system property can be set to
+display different levels of logging.&nbsp; The most common for
+debugging mutual authentication would be
+<code>-Djavax.net.debug=ssl:handshake</code>.&nbsp; To add this system
+property to
+the server's configuration use the Administration GUI to update the JVM
+Options for the server's configuration.&nbsp; The procedure is
+described <a target="_blank"
+ href="http://docs.sun.com/source/817-6088/jvm.html#wp1027996">here</a>.&nbsp;
+More information about the java.net.debug system property can be found <a
+ target="_blank"
+ href="http://java.sun.com/j2se/1.5.0/docs/guide/security/jsse/JSSERefGuide.html#Debug">here</a>.<br>
+<br>
+One other point to note would be that if the client is using a keystore
+with multiple private keys, the private key's certificate with the
+latest timestamp will be used as the client certificate to authenticate
+to the server.&nbsp; This
+can cause problems when it comes to importing the correct client
+certificate
+into the server's truststore.&nbsp; One method to resolve this problem
+could be to import all the certificates in the client's keystore.&nbsp;
+The normal production configuration should only have one private key in
+its keystore representing the client.<br>
+<br>
+<br>
+<br>
+<br>
+<h2>References<br>
+</h2>
+<a href="https://adventurebuilder.dev.java.net/">Java Blueprints
+Adventure Builder java.net site</a><br>
+<a
+ href="http://java.sun.com/j2se/1.5.0/docs/guide/security/jsse/JSSERefGuide.html#Debug">JavaTM
+Secure Socket Extension (JSSE) Reference Guide</a><br>
+<a href="http://www.sun.com/software/products/appsrvr/index.xml">Sun
+Java System Application Server product site</a><br>
+<a href="http://java.sun.com/j2ee/1.4/docs/tutorial/doc/">J2EE 1.4
+Tutorial</a><br>
+<a
+ href="http://java.sun.com/webservices/docs/1.6/tutorial/doc/index.html">Java
+Web Services Tutorial</a><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>

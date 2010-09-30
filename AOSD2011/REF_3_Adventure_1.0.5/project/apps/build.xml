@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!-- Copyright 2004 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: build.xml,v 1.12 2004/09/18 00:11:58 yutayoshida Exp $ -->
+
+<project name="apps" default="core" basedir=".">
+
+  <target name="all" depends="core"/>
+
+  <target name="core">
+    <ant dir="bank" target="core" inheritAll="false" inheritRefs="false"/> 
+    <ant dir="activitysupplier" target="core" inheritAll="false" inheritRefs="false"/>
+    <ant dir="airlinesupplier" target="core" inheritAll="false" inheritRefs="false"/>
+    <ant dir="lodgingsupplier" target="core" inheritAll="false" inheritRefs="false"/>
+    <ant dir="opc" target="core" inheritAll="false" inheritRefs="false"/>
+    <ant dir="consumerwebsite" target="core" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+  <target name="deploy-apps">
+    <ant dir="opc" target="deploy" inheritAll="false" inheritRefs="false"/>
+    <ant dir="consumerwebsite" target="deploy" inheritAll="false" inheritRefs="false"/>
+    <ant dir="bank" target="deploy" inheritAll="false" inheritRefs="false"/>
+    <ant dir="activitysupplier" target="deploy" inheritAll="false" inheritRefs="false"/>
+    <ant dir="airlinesupplier" target="deploy" inheritAll="false" inheritRefs="false"/>
+    <ant dir="lodgingsupplier" target="deploy" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+  <target name="verify-apps">
+    <ant dir="opc" target="verify" inheritAll="false" inheritRefs="false"/>
+    <ant dir="consumerwebsite" target="verify" inheritAll="false" inheritRefs="false"/>
+    <ant dir="bank" target="verify" inheritAll="false" inheritRefs="false"/>
+    <ant dir="activitysupplier" target="verify" inheritAll="false" inheritRefs="false"/>
+    <ant dir="airlinesupplier" target="verify" inheritAll="false" inheritRefs="false"/>
+    <ant dir="lodgingsupplier" target="verify" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+  <target name="undeploy-apps">
+    <ant dir="opc" target="undeploy" inheritAll="false" inheritRefs="false"/>
+    <ant dir="consumerwebsite" target="undeploy" inheritAll="false" inheritRefs="false"/>
+    <ant dir="bank" target="undeploy" inheritAll="false" inheritRefs="false"/>
+    <ant dir="activitysupplier" target="undeploy" inheritAll="false" inheritRefs="false"/>
+    <ant dir="airlinesupplier" target="undeploy" inheritAll="false" inheritRefs="false"/>
+    <ant dir="lodgingsupplier" target="undeploy" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+  <target name="clean">
+    <ant dir="opc" target="clean-all" inheritAll="false" inheritRefs="false"/>
+    <ant dir="consumerwebsite" target="clean" inheritAll="false" inheritRefs="false"/>
+    <ant dir="bank" target="clean-all" inheritAll="false" inheritRefs="false"/>
+    <ant dir="activitysupplier" target="clean-all" inheritAll="false" inheritRefs="false"/>
+    <ant dir="airlinesupplier" target="clean-all" inheritAll="false" inheritRefs="false"/>
+    <ant dir="lodgingsupplier" target="clean-all" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+</project>

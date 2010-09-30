@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="project/apps/lodgingsupplier/lodgingsupplier-ejb/src/java"/>
+	<classpathentry kind="src" path="project/apps/activitysupplier/activitysupplier-ejb/src/java"/>
+	<classpathentry kind="src" path="project/apps/airlinesupplier/airlinesupplier-ejb/src/java"/>
+	<classpathentry kind="src" path="project/apps/bank/bank-ejb/src/java"/>
+	<classpathentry kind="src" path="project/apps/consumerwebsite/src/java"/>
+	<classpathentry kind="src" path="project/apps/opc/processmanager-ejb/src/java"/>
+	<classpathentry kind="src" path="project/components/servicelocator/src/java"/>
+	<classpathentry kind="src" path="project/components/util/dao/src/java"/>
+	<classpathentry kind="src" path="project/components/util/tracer/src/java"/>
+	<classpathentry kind="src" path="project/components/waf/src/java"/>
+	<classpathentry kind="src" path="project/apps/opc/opc-ejb/src/java"/>
+	<classpathentry kind="src" path="project/aspectos/reuso/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="project/lib/base64/base64.jar"/>
+	<classpathentry kind="lib" path="project/lib/jstl/standard.jar"/>
+	<classpathentry kind="lib" path="project/lib/jstl/jstl.jar"/>
+	<classpathentry kind="lib" path="project/lib/populator/populate.jar"/>
+	<classpathentry kind="lib" path="C:/Sun/AppServer/lib/j2ee.jar"/>
+	<classpathentry kind="lib" path="project/lib/ehmeter-0.4.1.jar"/>
+	<classpathentry kind="lib" path="project/apps/activitysupplier/activitysupplier-ejb/build/activitysupplier-ejb.jar"/>
+	<classpathentry kind="lib" path="project/apps/airlinesupplier/airlinesupplier-ejb/build/airlinesupplier-ejb.jar"/>
+	<classpathentry kind="lib" path="project/apps/bank/bank-ejb/build/bank-ejb.jar"/>
+	<classpathentry kind="lib" path="project/apps/lodgingsupplier/lodgingsupplier-ejb/build/lodgingsupplier-ejb.jar"/>
+	<classpathentry kind="lib" path="project/apps/opc/opc-ejb/build/opc-ejb.jar"/>
+	<classpathentry kind="lib" path="project/apps/opc/processmanager-ejb/build/processmanager-ejb-client.jar"/>
+	<classpathentry kind="lib" path="project/apps/opc/processmanager-ejb/build/processmanager-ejb.jar"/>
+	<classpathentry kind="lib" path="project/components/servicelocator/build/servicelocator.jar"/>
+	<classpathentry kind="lib" path="project/components/util/dao/build/daoutils.jar"/>
+	<classpathentry kind="lib" path="project/components/util/tracer/build/tracer.jar"/>
+	<classpathentry kind="lib" path="project/components/waf/build/waf-ejb-client.jar"/>
+	<classpathentry kind="lib" path="project/components/waf/build/waf-ejb.jar"/>
+	<classpathentry kind="lib" path="project/components/waf/build/waf-web.jar"/>
+	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ReusableCode"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

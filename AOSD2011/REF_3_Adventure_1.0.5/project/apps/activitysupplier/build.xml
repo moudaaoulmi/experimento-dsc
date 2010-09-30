@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!-- Copyright 2004 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: build.xml,v 1.11 2004/09/18 00:11:59 yutayoshida Exp $ -->
+
+<!DOCTYPE project [
+  <!ENTITY commonAntCommands SYSTEM "../../setup/common-ant.xml">
+<!ENTITY appServerAntCommands SYSTEM "../../setup/app-server-ant.xml">
+]>
+
+<project name="ActSupApp" default="core" basedir=".">
+	
+	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+			<classpath>
+				<pathelement location="C:/Sun/AppServer/lib/aspectjtools.jar" />
+			</classpath>
+	</taskdef>
+
+
+	<!-- path to root -->
+	<property name="root.dir" value="../.." />
+
+	<property name="ActSupApp.home" value="." />
+
+	<property name="ActSupApp.conf" value="${ActSupApp.home}/src/conf" />
+
+	<!-- The destination directory for the build -->
+	<property name="build.dir" value="${ActSupApp.home}/build" />
+
+  &commonAntCommands; <!-- include common ant commands -->
+
+	<property name="build.jardir" value="${build.dir}/jar" />
+	<property name="ActivityEJB.jar" value="${ActSupApp.home}/activitysupplier-ejb/build/activitysupplier-ejb.jar" />
+
+	<property name="ActSupApp.components.basedir" value="../../components" />
+
+	<!-- The Service Locator Component -->
+	<property name="ActSupApp.servloc.home" value="${ActSupApp.components.basedir}/servicelocator" />
+	<property name="ActSupApp.servloc.jar" value="${ActSupApp.servloc.home}/build/servicelocator.jar" />
+
+	<!-- The OPC Component -->
+	<property name="ActSupApp.opc.home" value="../opc/opc-ejb" />
+	<property name="ActSupApp.broker.wsdl" value="${ActSupApp.opc.home}/build/classes/WebServiceBroker.wsdl" />
+
+	<!-- verifier result destination -->
+	<property name="verify.dest.dir" value="${root.dir}/verifierResult" />
+
+	<path id="ActSupApp.classpath">
+		<path refid="compile.classpath" />
+		<pathelement path="${ActSupApp.servloc.jar}" />
+	</path>
+
+	<property name="app.name" value="ActivitySupplier" />
+	<property name="app.module" value="${build.dir}/activitysupplier.ear" />
+	<!-- Banner Title for build -->
+	<property name="banner.title" value="Activity Supplier Application" />
+
+	<target name="ear" depends="actsupp-component">
+		<delete dir="${build.jardir}" quiet="true" />
+		<mkdir dir="${build.jardir}" />
+		<mkdir dir="${build.jardir}/META-INF" />
+		<copy file="${ActSupApp.conf}/application.xml" todir="${build.jardir}/META-INF" />
+		<copy file="${ActSupApp.servloc.jar}" todir="${build.jardir}" />
+		<copy file="${ActivityEJB.jar}" todir="${build.jardir}" />
+		<delete file="${app.module}" quiet="true" />
+		<jar jarfile="${app.module}" basedir="${build.jardir}" />
+	</target>
+
+	<target name="actsupp-component">
+		<ant dir="${ActSupApp.servloc.home}" target="core" inheritAll="false" inheritRefs="false" />
+		<ant dir="${ActSupApp.opc.home}" target="ws-broker-interface" inheritAll="false" inheritRefs="false" />
+		<ant dir="${ActSupApp.home}/activitysupplier-ejb" target="core" inheritAll="false" inheritRefs="false" />
+	</target>
+
+	<target name="ws-interface">
+		<ant dir="${ActSupApp.home}/activitysupplier-ejb" target="activitysupplier-interface" inheritAll="false" inheritRefs="false" />
+	</target>
+
+	<target name="clean-all" depends="clean">
+		<ant dir="${ActSupApp.home}/activitysupplier-ejb" target="clean" inheritAll="false" inheritRefs="false" />
+	</target>
+
+	<target name="core" depends="banner, actsupp-component, ear" />
+	<target name="all" depends="core" />
+
+</project>

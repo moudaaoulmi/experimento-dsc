@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<!-- Copyright 2004 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: build.xml,v 1.6 2004/05/26 00:07:16 inder Exp $ -->
+
+<project name="components" default="core" basedir=".">
+
+  <target name="all" depends="core"/>
+
+  <target name="core">
+    <ant dir="util/tracer" target="core" inheritAll="false" inheritRefs="false"/>
+    <ant dir="util/dao" target="core" inheritAll="false" inheritRefs="false"/>
+    <ant dir="servicelocator" target="core" inheritAll="false" inheritRefs="false"/>
+    <ant dir="waf" target="core" inheritAll="false" inheritRefs="false"/>
+    <!-- processmanager is moved to under opc -->
+    <!--
+    <ant dir="processmanager" target="core" inheritAll="false" inheritRefs="false"/>
+    -->
+  </target>
+
+  <target name="clean">
+    <ant dir="util/tracer" target="clean" inheritAll="false" inheritRefs="false"/>
+    <ant dir="util/dao" target="clean" inheritAll="false" inheritRefs="false"/>
+    <ant dir="servicelocator" target="clean" inheritAll="false" inheritRefs="false"/>
+    <ant dir="waf" target="clean" inheritAll="false" inheritRefs="false"/>
+    <!-- processmanager is moved to OPC
+    <ant dir="processmanager" target="clean" inheritAll="false" inheritRefs="false"/>
+    -->
+  </target>
+
+</project>

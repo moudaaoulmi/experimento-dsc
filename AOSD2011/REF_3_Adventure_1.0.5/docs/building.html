@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE>Java[tm] Adventure Builder Reference application - Version 1.0.5&gt; Building the Demo</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice 7  (Win32)">
+	<META NAME="CREATED" CONTENT="20061114;11495312">
+	<META NAME="CHANGEDBY" CONTENT="Smitha Kangath">
+	<META NAME="CHANGED" CONTENT="20061114;11502476">
+	<!-- Copyright 2005 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: building.html,v 1.20 2006/11/14 19:45:57 smitha Exp $ -->
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=5 CELLSPACING=0>
+	<TR>
+		<TD BGCOLOR="#000033">
+			<P><A HREF="index.html"><FONT COLOR="#ccccff">Java<SUP>TM</SUP>
+			Adventure Builder Refernce application - Version 1.0.5 &gt;
+			</FONT></A><FONT COLOR="#ffffff">Building the Demo</FONT> 
+			</P>
+		</TD>
+		<TD BGCOLOR="#000033">
+			<P ALIGN=RIGHT><A HREF="http://java.sun.com/blueprints/"><FONT COLOR="#ccccff">Java
+			BluePrints </FONT></A>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P STYLE="margin-bottom: 0in"><BR><B><FONT SIZE=4>Asant and Ant</FONT>
+</B><BR><BR>We use script <I>asant</I>, which is located in the J2EE
+1.4 SDK bin directory, to build the source code of this application.
+<I>asant</I> is a wrapper around<A HREF="http://jakarta.apache.org/ant/index.html">
+Ant</A> which is a Java-based build tool like <I>make</I>, which has
+been developed under the auspices of the <A HREF="http://www.apache.org/">Apache
+Software Foundation</A>. Ant version 1.5.3 and 1.6 beta 1 may also be
+used to build and deploy the applications. 
+</P>
+<CENTER>
+	<TABLE WIDTH=87% CELLPADDING=2 CELLSPACING=2>
+		<TR>
+			<TD>
+				<HR SIZE=1 NOSHADE>
+				<P><BR><B>Note:</B> The Java<SUP>TM</SUP> Adventure Builder
+				Reference application bundle comes with pre-built binaries. To
+				deploy these binaries and avoid building the application, consult
+				the <A HREF="installing.html">installation instructions</A>. 
+				</P>
+			</TD>
+		</TR>
+	</TABLE>
+</CENTER>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<CENTER>
+	<TABLE WIDTH=87% CELLPADDING=2 CELLSPACING=2>
+		<TR>
+			<TD>
+				<HR SIZE=1 NOSHADE>
+			</TD>
+		</TR>
+	</TABLE>
+</CENTER>
+<P><B><FONT SIZE=4>Build Adventure Builder Reference application
+v1.0.5</FONT></B> <BR><BR>This section explains how to build the
+application binaries for the Java<SUP>TM</SUP> Adventure Builder
+Reference application. Building all the application binaries and
+performing other tasks with Ant involves invoking <TT>asant</TT> from
+<TT>&lt;adventure.home&gt;/project</TT> directory of the demo
+installation. 
+</P>
+<P>Before building the application, you need to configure the
+<TT>&lt;adventure.home&gt;/project/build.properties</TT> file to
+match your enviroment. You need to set the following properties:</P>
+<TABLE WIDTH=100% BORDER=1 CELLPADDING=5 CELLSPACING=0>
+	<TR VALIGN=TOP>
+		<TD WIDTH=17%>
+			<P ALIGN=CENTER><B>Property Name</B></P>
+		</TD>
+		<TD WIDTH=37%>
+			<P ALIGN=CENTER><B>Description</B></P>
+		</TD>
+		<TD WIDTH=37%>
+			<P ALIGN=CENTER><B>Examples</B></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD>
+			<P ALIGN=LEFT>j2ee.home</P>
+		</TD>
+		<TD>
+			<P ALIGN=LEFT>The absolute path to the directory where J2EE SDK is
+			installed</P>
+		</TD>
+		<TD>
+			<P ALIGN=LEFT>c:\j2sdkee1.4 (on Windows) or /home/mydir/j2sdkee1.4
+			(on Unix)</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><B>Note: On Windows, while writing the paths in the
+build.properties files, you need to escape the &quot;\&quot; properly
+by using &quot;\\&quot; instead. For example, to set j2ee.home to
+c:\j2sdkee1.4, the entry in the properties file is
+j2ee.home=c:\\j2sdkee1.4</B>. 
+</P>
+<P>To build the application binaries on Unix, open a shell prompt and
+enter these commands: 
+</P>
+<PRE>cd &lt;adventure.home&gt;/project
+asant [argument]</PRE><P>
+To build the application binaries on Windows, open a shell prompt and
+enter these commands: 
+</P>
+<PRE>cd &lt;adventure.home&gt;\project
+asant [argument]</PRE><P>
+For the above command to work, your PATH environment variable must
+have been set as explained in the <A HREF="installing.html">installation
+instructions</A> and the ANT_HOME environment variable, if any,
+should not point to any other version of <TT>ant</TT> that migh be on
+your system. When <TT>asant</TT> is invoked without any arguments,
+all the application binaries are built. The binaries are placed in
+the following folders: 
+</P>
+<PRE>&lt;adventure.home&gt;/project/apps/consumerwebsite/build/consumerwebsite.ear
+&lt;adventure.home&gt;/project/apps/opc/build/opc.ear
+&lt;adventure.home&gt;/project/apps/bank/build/bank.ear
+&lt;adventure.home&gt;/project/apps/activitysupplier/build/activitysupplier.ear
+&lt;adventure.home&gt;/project/apps/airlinesupplier/build/airlinesupplier.ear
+&lt;adventure.home&gt;/project/apps/lodgingsupplier/build/lodgingsupplier.ear</PRE><P>
+The following table lists possible arguments when invoking <TT>asant</TT>
+:</P>
+<CENTER>
+	<TABLE WIDTH=386 BORDER=1 CELLPADDING=5 CELLSPACING=0>
+		<TR>
+			<TH WIDTH=81>
+				<P>Option</P>
+			</TH>
+			<TH WIDTH=283>
+				<P>Purpose</P>
+			</TH>
+		</TR>
+		<TR>
+			<TD WIDTH=81>
+				<P><TT>core</TT></P>
+			</TD>
+			<TD WIDTH=283>
+				<P>Builds everything. (This is the default build target.)</P>
+			</TD>
+		</TR>
+		<TR>
+			<TD WIDTH=81>
+				<P><TT>cleanall</TT></P>
+			</TD>
+			<TD WIDTH=283>
+				<P>Cleans out the build output directories.</P>
+			</TD>
+		</TR>
+		<TR>
+			<TD WIDTH=81>
+				<P><TT>deploy-apps</TT></P>
+			</TD>
+			<TD WIDTH=283>
+				<P>Deploys the application binaries.</P>
+			</TD>
+		</TR>
+	</TABLE>
+</CENTER>
+<HR SIZE=3 NOSHADE>
+<P><A HREF="copyright.html">Copyright &copy; 2006 Sun Microsystems,
+Inc. All Rights Reserved.</A> 
+</P>
+</BODY>
+</HTML>

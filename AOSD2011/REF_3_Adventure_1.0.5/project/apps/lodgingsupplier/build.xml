@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!-- Copyright 2004 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: build.xml,v 1.11 2004/09/18 00:12:00 yutayoshida Exp $ -->
+
+<!DOCTYPE project [
+  <!ENTITY commonAntCommands SYSTEM "../../setup/common-ant.xml">
+  <!ENTITY appServerAntCommands SYSTEM "../../setup/app-server-ant.xml">
+]>
+
+<project name="LodgeSupApp" default="core" basedir=".">
+
+  <!-- path to root -->
+  <property name="root.dir" value="../.."/> 
+
+  <property name="LodgeSupApp.home" value="."/>
+
+  <property name="LodgeSupApp.conf" value="${LodgeSupApp.home}/src/conf"/>
+
+  <!-- The destination directory for the build -->
+  <property name="build.dir" value="${LodgeSupApp.home}/build"/>
+
+  &commonAntCommands; <!-- include common ant commands -->
+
+  <property name="build.jardir" value="${build.dir}/jar"/>
+  <property name="LodgingEJB.jar" value="${LodgeSupApp.home}/lodgingsupplier-ejb/build/lodgingsupplier-ejb.jar"/>
+
+  <property name="LodgeSupApp.components.basedir" value="../../components"/>
+
+  <!-- The Service Locator Component -->
+  <property name="LodgeSupApp.servloc.home" value="${LodgeSupApp.components.basedir}/servicelocator"/>
+  <property name="LodgeSupApp.servloc.jar" value="${LodgeSupApp.servloc.home}/build/servicelocator.jar"/>
+
+  <!-- The OPC Component -->
+  <property name="LodgeSupApp.opc.home" value="../opc/opc-ejb"/>
+
+  <property name="app.name" value="LodgingSupplier"/>
+  <property name="app.module" value="${build.dir}/lodgingsupplier.ear"/>
+  <!-- Banner Title for build -->
+  <property name="banner.title" value="Lodging Supplier Application"/>
+
+  <!-- verifier result destination -->
+  <property name="verify.dest.dir" value="${root.dir}/verifierResult"/>
+
+  <target name="ear" depends="lodgesupp-component">
+    <delete dir="${build.jardir}" quiet="true"/>
+    <mkdir dir="${build.jardir}"/>
+    <mkdir dir="${build.jardir}/META-INF"/>
+    <copy file="${LodgeSupApp.conf}/application.xml" todir="${build.jardir}/META-INF" />
+    <copy file="${LodgeSupApp.servloc.jar}" todir="${build.jardir}" />
+    <copy file="${LodgingEJB.jar}" todir="${build.jardir}" />
+    <delete file="${app.module}" quiet="true"/>
+    <jar jarfile="${app.module}" basedir="${build.jardir}" />
+  </target>
+
+  <target name="lodgesupp-component">
+    <ant dir="${LodgeSupApp.servloc.home}" target="core" inheritAll="false" inheritRefs="false"/>
+    <ant dir="${LodgeSupApp.opc.home}" target="ws-broker-interface" inheritAll="false" inheritRefs="false"/>
+    <ant dir="${LodgeSupApp.home}/lodgingsupplier-ejb" target="core" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+  <target name="ws-interface">
+    <ant dir="${LodgeSupApp.home}/lodgingsupplier-ejb" target="lodgingsupplier-interface" inheritAll="false" inheritRefs="false"/>
+  </target>
+  
+  <target name="clean-all" depends="clean">
+    <ant dir="${LodgeSupApp.home}/lodgingsupplier-ejb" target="clean" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+  <target name="core" depends="banner, lodgesupp-component, ear" />
+  <target name="all" depends="core" />
+
+</project>

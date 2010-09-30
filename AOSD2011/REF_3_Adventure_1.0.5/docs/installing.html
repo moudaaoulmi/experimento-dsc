@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<!-- Copyright 2005 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt $Id: installing.html,v 1.29 2006/11/14 19:51:38 smitha Exp $ -->
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Java[tm] Adventure Builder Reference application - Version
+1.0.5&gt; Installing the Demo</title>
+</head>
+<body>
+<br>
+<table style="" border="0" cellpadding="5" cellspacing="0" width="100%">
+  <tbody>
+    <tr>
+      <td bgcolor="#000033"><a href="index.html"><font color="#ccccff">Java<sup><font
+ -2="">TM</font></sup> Adventure Builder Reference
+application - Version 1.0.5 &gt;</font></a><font color="#ffffff">
+Installing the Demo </font> </td>
+      <td bgcolor="#000033">
+      <div align="right"><a href="http://java.sun.com/blueprints/"> <font
+ color="#ccccff">Java BluePrints</font></a> </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p> This section describes how to install the Java<sup><font -2="">TM</font></sup>
+Adventure Builder Reference application, version 1.0.5 (referred to as
+adventure builder)</p>
+<font size="+2"> System Requirements</font>
+<p> Before installing the adventure builder, you need to download and
+install
+the following software:</p>
+<ul>
+  <b>1. Java 2 Platform, Standard Edition (J2SE<sup><font size="-2"> TM
+  </font></sup> ),<a
+ href="http://java.sun.com/j2se/1.4.2/download.html"> v1.4.2</a>
+  or<a href="http://java.sun.com/j2se/1.5.0/download.jsp"> v5.0</a></b><p><b>2. Java 2 Platform, Enterprise Edition (J2EE<sup><font size="-2">
+TM</font></sup>) 1.4 SDK</b>: <a href="http://java.sun.com/j2ee/1.4">
+download here</a></p>
+</ul>
+<p><font color="#ff6666"><b>Note 1 </b>: When downloading J2EE 1.4 SDK
+, you have the choice to download and install a
+bundle that comes with J2SE v1.4.2_02. If you choose this approach,
+you need not download and install J2SE 1.4.2_02 separately.</font></p>
+<p><font color="#ff6666"><b>Note 2 :</b> You also have the choice to
+download and install J2EE 1.4 SDK without any J2SE version bundled with
+it. If you choose this approach, ensure that the J2SE version you use
+is J2SE v1.4.2_02.</font><br>
+</p>
+<p><font color="#ff6666"><b>NOTE 3 :</b> If you are using this
+application on an already installed instance of the J2EE 1.4 SDK and
+you had already deployed the version of adventure builder that is
+present as
+part of the samples bundle of the J2EE 1.4 SDK, you have to undeploy
+all the adventure&nbsp; builder components completely before performing
+the instruction listed below. For instruction on uninstalling the
+Adventure Builder components, see the next section of this document.
+</font></p>
+<font size="+2"> Environment Variables</font>
+<p> You need to set the J2EE_HOME environment variable to setup the
+adventure builder. The scripts that invoke Ant look for the version
+of ant included with the J2EE 1.4 SDK. Ant
+1.5.3 or greater will work but it is recommended to make these settings
+if you are not familiar with Ant. </p>
+<ul>
+  <li> <tt>JAVA_HOME</tt> must point to the root directory of your
+J2SE
+SDK installation. For example, if you installed the J2SE SDK
+in c:\jdk1.4.2, then set the value of <tt>JAVA_HOME</tt> to that path.</li>
+  <li><tt>J2EE_HOME</tt> must point to the root directory of your J2EE
+1.4
+SDK installation. For example, if you installed the
+J2EE in <tt>/usr/bin/j2ee/j2sdkee1.4</tt> , then set
+the value of <tt>J2EE_HOME </tt>to that path. If you are using the
+J2SE
+that comes bundled with J2EE, then set <tt>JAVA_HOME</tt> to <tt>$J2EE_HOME/jdk</tt>
+  </li>
+</ul>
+<p> Your <tt>PATH</tt> <b>must</b> include the following directories
+as the first two elements. </p>
+For Unix: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <tt>$JAVA_HOME/bin</tt> <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <tt>$J2EE_HOME/bin</tt> <br>
+&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For Windows: <br>
+<tt> &nbsp;&nbsp; &nbsp; %JAVA_HOME%\bin</tt>&nbsp; <br>
+<tt> &nbsp;&nbsp; &nbsp; %J2EE_HOME%\bin<br>
+<br>
+</tt>Also your <tt>CLASSPATH</tt><b> must</b> include the following . <br>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; For Unix: <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <tt>$J2EE_HOME/lib/j2ee.jar</tt> <br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For Windows: <br>
+<tt> &nbsp;&nbsp; &nbsp; %J2EE_HOME%\lib\j2ee.jar</tt> <br>
+<br>
+<font size="+2"> Installing the Java (tm) Adventure Builder Reference
+application</font>
+<p> <font color="#ff6666">NOTE : If you are using this application on
+an
+already installed instance of the J2EE 1.4 SDK and you had already
+deployed the version of adventure builder that is present as
+part of the samples bundle of the J2EE 1.4 SDK, you
+have to undeploy all the adventure builder components completely before
+performing the instructions listed below. For instructions on
+uninstalling
+the adventure builder components, see the next section of this
+document.</font> </p>
+<p> To install the demo, follow these steps:</p>
+<ol>
+  <li><b>Unzip the distribution bundle (adventure-1_0_5.zip) into any
+directory.</b>
+    <p>Unzipping the distribution bundle creates a directory called <tt>adventure1.0.5</tt>
+. The rest of this documentation refers to this directory as <tt>
+&lt;adventure.home&gt;</tt>. </p>
+  </li>
+  <li><b>Start Derby database and wait till it is up and running.</b>
+    <p>If you are using Unix, open a shell prompt and enter these
+commands:</p>
+    <p><tt>cd $J2EE_HOME/bin</tt><br>
+    <tt>asadmin start-database</tt> </p>
+    <p>If you are using Windows, open a command prompt and enter these
+commands:</p>
+    <p><tt>cd %J2EE_HOME%\bin</tt><br>
+    <tt>asadmin start-database<br>
+    </tt></p>
+  </li>
+  <li><b>Start the J2EE server and wait till it is up and running.</b>
+    <p>If you are using Unix, open a shell prompt and enter these
+commands: </p>
+    <pre><tt>cd $J2EE_HOME/bin<br>asadmin start-domain domain1</tt></pre>
+If you are using Windows, open a command prompt and enter these
+commands:
+    <pre><tt>cd %J2EE_HOME%\bin<br>asadmin start-domain domain1</tt></pre>
+  </li>
+  <li><b>Configure your environment by changing the settings in
+&lt;adventure.home&gt;/project/setup/setup.properties file</b>
+    <table border="1" cellpadding="5" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td align="center" valign="top" width="17%"><b>Property Name</b></td>
+          <td align="center" valign="top" width="37%"><b>Description</b></td>
+          <td align="center" valign="top" width="37%"><b>Examples</b></td>
+        </tr>
+        <tr align="left">
+          <td valign="top" width="17%">j2ee.server.name</td>
+          <td valign="top" width="37%">Host name of the server where
+the J2EE 1.4 SDK is installed</td>
+          <td valign="top" width="37%">localhost</td>
+        </tr>
+        <tr align="left">
+          <td valign="top">j2ee.server.username</td>
+          <td valign="top">Administrator user name that is used in
+administrating the server</td>
+          <td valign="top">admin</td>
+        </tr>
+        <tr align="left">
+          <td valign="top">j2ee.server.passwordfile</td>
+          <td valign="top">The path to a file containing the admin
+password for the J2EE SDK. You need to have a password file in the
+following format:
+          <p><code>AS_ADMIN_PASSWORD=&lt;j2eesdk-admin-password&gt;</code>
+          </p>
+          <p>Where you will replace &lt;j2eesdk-admin-password&gt; with
+the admin password for the J2EE 1.4 SDK.</p>
+          </td>
+          <td valign="top">/path/to/passwordfile.txt </td>
+        </tr>
+        <tr valign="top">
+          <td valign="top">j2ee.adminserver.port<br>
+          </td>
+          <td valign="top">The port number for admin server you at the
+time is installation of the J2EE 1.4 SDK<br>
+          </td>
+          <td valign="top">4848<br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li> <b>Run the setup script to install and configure database
+resources.</b>
+    <p> If you are using Unix, open a shell prompt and enter these
+commands:</p>
+    <pre><tt>cd &lt;adventure.home&gt;<br>sh setup.sh</tt></pre>
+If you are using Windows, open a command prompt and enter these
+commands:
+    <pre><tt>cd &lt;adventure.home&gt;<br>setup.bat</tt></pre>
+  </li>
+  <li><b>Run the setup script to deploy the applications.</b>
+    <p> If you are using Unix, open a shell prompt and enter these
+commands: </p>
+    <pre><tt>cd &lt;adventure.home&gt;<br>sh setup.sh deploy-apps</tt></pre>
+If you are using Windows, open a command prompt and enter these
+commands:
+    <pre><tt>cd &lt;adventure.home&gt;<br>     <br>setup.bat deploy-apps</tt></pre>
+  </li>
+</ol>
+<p>&nbsp; After installing the adventure builder, you can start <a
+ href="using.html">using it</a>. </p>
+<p> <font size="+2">Uninstalling the Demo</font> </p>
+<p> First check if you have already deployed versions of adventure
+builder
+in your server by entering the following command and ensure
+that no application with name <tt>ConsumerWebsite </tt>or <tt>OPC</tt>
+or <tt> Bank </tt>or <tt>ActivitySupplier </tt>or <tt>LodgingSupplier
+</tt> or <tt> AirlineSupplier </tt>is present :<br>
+</p>
+<p>If you are using Unix, open a shell prompt and enter these
+commands: </p>
+<pre><tt>cd $J2EE_HOME/bin<br></tt></pre>
+If you are using Windows, open a command prompt and enter these
+commands:
+<pre><tt>cd %J2EE_HOME%\bin<br></tt></pre>
+<p>now run this commands from the bin directory<br>
+</p>
+<p> </p>
+<pre><tt>asadmin list-components</tt></pre>
+This will display a list of the deployed applications, and if all the
+applications have been deployed should list:<br>
+<br>
+ConsumerWebsite &lt;j2ee-application&gt;<br>
+OPC &lt;j2ee-application&gt;<br>
+Bank &lt;j2ee-application&gt;<br>
+ActivitySupplier &lt;j2ee-application&gt;<br>
+LodgingSupplier &lt;j2ee-application&gt;<br>
+AirlineSupplier &lt;j2ee-application&gt;<br>
+<br>
+If any of the above mentioned applications are present in the server,
+undeploy them using the following command :
+<pre><tt>asadmin undeploy &lt;application name&gt;</tt></pre>
+<p> <font size="+2">Configuring Adventure Builder to run on a
+different port</font> </p>
+Make sure you have started the J2EE server and setup resources
+as
+mentioned in steps 1 through 5 above. All you have to do to run
+Adventure Builder on a different port is to point the Web service
+clients to a different endpoint address. The following deployment
+descriptor files have to be modified:<br>
+&nbsp;<tt>&lt;adventure.home&gt;/project/apps/consumerwebsite/web/WEB-INF/sun-web.xml</tt><br>
+&nbsp;<tt>&lt;adventure.home&gt;/project/apps/airlinesupplier/airlinesupplier-ejb/src/conf/sun-ejb-jar.xml</tt><br>
+&nbsp;<tt>&lt;adventure.home&gt;/project/apps/lodgingsupplier/lodgingsupplier-ejb/src/conf/sun-ejb-jar.xml</tt><br>
+&nbsp;<tt>&lt;adventure.home&gt;/project/apps/activitysupplier/activitysupplier-ejb/src/conf/sun-ejb-jar.xml</tt><br>
+&nbsp;<tt>&lt;adventure.home&gt;/project/apps/opc/opc-ejb/src/conf/sun-ejb-jar.xml</tt>
+<br>
+<p>Open these files and search for the stub
+property "javax.xml.rpc.service.endpoint.address"&nbsp; and change the
+value of this property to the URL where the endpoints are
+deployed. Now
+you can <a href="building.html">build</a> and deploy the apps. <br>
+<br>
+</p>
+<hr noshade="noshade"><a href="copyright.html">Copyright &copy; 2006
+Sun Microsystems,
+Inc. All Rights Reserved.</a>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<!-- Copyright 2005 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: mysql.html,v 1.11 2006/11/14 19:49:24 smitha Exp $ -->
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Java[tm] Adventure Builder Reference application - Version
+1.0.5&gt; Using MySql</title>
+</head>
+<body>
+<br>
+<table style="" border="0" cellpadding="5" cellspacing="0" width="100%">
+  <tbody>
+    <tr>
+      <td bgcolor="#000033"><a href="index.html"><font color="#ccccff">Java<sup><font
+ -2="">TM</font></sup> Adventure Builder Reference
+application - Version 1.0.5 &gt;</font></a><font color="#ffffff"> Using
+MySql</font> </td>
+      <td bgcolor="#000033">
+      <div align="right"><a href="http://java.sun.com/blueprints/"> <font
+ color="#ccccff">Java BluePrints</font></a> </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>This document assumes that you have downloaded and installed the
+J2EE 1.4 Platform
+Edition. Download the J2EE 1.4 Platform Edition from <a
+ href="http://java.sun.com/j2ee/1.4/download.html">http://java.sun.com/j2ee/1.4/download.html</a>.
+</p>
+<p>
+This document only explains how to setup the Adventure Builder Consumer
+Web Site
+application of to use MySql as the database. The EJB components in the
+Order
+Processing Center use Container Managed Persistence (CMP) which require
+XA
+compatible drivers to function correctly. While some solutions using
+MySql may
+support CMP with some tuning or driver wrappers we will not focus on
+that in this
+example. MySql is a viable open source solution for providing data base
+support
+in web applications. The Adventure Builder Consumer Web Site which does
+not
+require XA support. The EJB components in the Order Processing Center
+use
+derby as the persistence layer which is managed by the container.
+</p>
+<p>
+<font size="+1">1. Download MySql</font>
+</p>
+<p>
+Download MySql from <a href="http://www.mysql.com">http://www.mysql.com</a>.
+version 4.0 is used in this example.
+</p>
+<p>
+<font size="+1">2. Start MySql</font>
+</p>
+<p>
+This will differ by the platform you use. Please follow the
+instructions for
+the target platform.
+</p>
+<p>
+</p>
+<p>
+Unix:
+</p>
+<pre>/usr/local/mysql/bin/<br></pre>
+<p>
+On Windows:
+</p>
+<pre>C:\mysql\bin<br></pre>
+<p>
+From the command prompt type:
+</p>
+<pre>&gt;mysql --user=root --password=yourrootpassword<br></pre>
+<p>
+<b>a. Create the adventurebuilder database:</b>
+</p>
+<pre>mysql&gt; create database adventurebuilder;<br></pre>
+<p>
+You should see:
+</p>
+<pre>Query OK, 1 row affected (0.00 sec)<br></pre>
+<p>
+<b>b. Create the adventurebuilder user:</b>
+</p>
+<p>
+Note: Assuming that the MySql database and J2EE server are running on
+the same
+machine.
+</p>
+<pre>mysql&gt; grant all privileges on adventurebuilder.* to 'adventurebuilder'@'localhost' identified by 'adventurebuilder';<br></pre>
+<p>
+You should see:
+</p>
+<pre>Query OK, 0 rows affected (0.10 sec)<br></pre>
+<p>
+<b>c. Commit the changes</b>
+</p>
+<pre>mysql&gt; flush privileges;<br></pre>
+<p>
+<font size="+1">4. Test the adventurebuilder user:</font>
+</p>
+<pre>mysql --user=adventurebuilder --password=adventurebuilder --database=adventurebuilder<br></pre>
+<p>
+<font size="+1">5. Check that the tables got created</font>
+</p>
+<p>
+From the mysql prompt type:
+</p>
+<pre>mysql&gt; connect adventurebuilder<br></pre>
+<p>
+You should see:
+</p>
+<pre>Reading table information for completion of table and column names<br>You can turn off this feature to get a quicker startup with -A<br><br>Connection id:    35<br>Current database: adventurebuilder<br></pre>
+<p>
+From the mysql prompt type:
+</p>
+<pre>mysql&gt; show tables;<br></pre>
+<p>
+You should see:
+</p>
+<pre>+----------------------------+<br>| Tables_in_adventurebuilder |<br>+----------------------------+<br>| account                    |<br>| activity                   |<br>| activitylist               |<br>| category                   |<br>| lodging                    |<br>| package                    |<br>| signon                     |<br>| transportation             |<br>+----------------------------+<br>8 rows in set (0.00 sec)<br></pre>
+<p>
+<font size="+1">6. Configure the J2EE server and populate the database</font>
+</p>
+<p>
+Note: If you have a custom setup of MySql or if you are deploying with
+different usernames or databases than those specified you will need
+to modify the setup-mysql.properties file located in the
+WORKSPACE_HOME/setup/mysql directory.
+</p>
+<p>
+Run the ant script in this directory to create the necessary JDBC
+database
+pool as well as JDBC connection.
+</p>
+<p>
+To do from the WORKSPACE_HOME/setup/mysql directory type:
+</p>
+<pre>&gt;ant<br></pre>
+<p>
+Your J2EE environment should be ready for deployment.
+</p>
+<p>
+<font size="+1">7. Download and Install the Connector/J JDBC Driver</font>
+</p>
+<p>
+Download the driver from:<a
+ href="http://dev.mysql.com/downloads/connector/j/3.1/html">http://dev.mysql.com/downloads/connector/j/3.1/html</a><a>
+</a></p>
+<p>
+<a>This example uses the Connector/J 3.1 Developer Release
+</a></p>
+<p>
+<a>Put the driver jar file in the application server classpath.
+</a></p>
+<p>
+<a>For more information see
+</a><a href="http://docs.sun.com/source/817-6088/jdbc.html#wp1018096">Integrating
+a JDBC Driver</a>
+documentation for more details.
+</p>
+<p>
+<font size="+1">8.Deploy Adventure Builder Reference demo applications</font>
+</p>
+<p>
+Build or Deploy the Adventure Builder application. If you have not
+deployed the Adventure Builder Reference demo applications you will
+need to deploy them if you do not want to see an error on the last
+screen. Adventure Builder requires the support applications to do the
+order processing.
+</p>
+<p>
+From the WORKSPACE_HOME/ws directory type:
+</p>
+<pre>ant deploy-apps (or asant deploy-apps)<br></pre>
+<p>
+<font size="+1">9. View the Adventure Builder Reference demo</font>
+</p>
+<p>
+View <a href="http://localhost:8080/ab">http://localhost:8080/ab</a>.
+</p>
+<hr noshade="noshade"><a href="copyright.html">Copyright &copy; 2006
+Sun Microsystems,
+Inc. All Rights Reserved.</a>
+</body>
+</html>

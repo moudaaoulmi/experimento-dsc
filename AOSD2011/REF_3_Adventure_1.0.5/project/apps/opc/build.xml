@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!-- Copyright 2004 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: build.xml,v 1.17 2004/09/18 00:12:00 yutayoshida Exp $ -->
+
+<!DOCTYPE project [
+  <!ENTITY commonAntCommands SYSTEM "../../setup/common-ant.xml">
+  <!ENTITY appServerAntCommands SYSTEM "../../setup/app-server-ant.xml">
+]>
+
+<project name="OPCApp" default="core" basedir=".">
+
+  <!-- path to root -->
+  <property name="root.dir" value="../.."/> 
+
+  <property name="OPCApp.home" value="."/>
+  <property name="OPCApp.conf" value="${OPCApp.home}/src/conf"/>
+
+  <property name="build.dir" value="${OPCApp.home}/build"/>
+  &commonAntCommands; <!-- include common ant commands -->
+
+  <property name="build.jardir" value="${build.dir}/jar"/>
+  <property name="OPCApp.jar" value="${OPCApp.home}/opc-ejb/build/opc-ejb.jar"/>
+  <property name="OPCApp.components.basedir" value="../../components"/>
+  <property name="app.name" value="OPC"/>
+  <property name="app.module" value="${build.dir}/opc.ear"/>
+  <property name="banner.title" value="OPC application"/>
+
+  <!-- Bank Application Dependencies -->
+  <property name="bank.home" value="../bank"/>
+  <property name="bank.build" value="${bank.home}/bank-ejb/build"/>
+  <property name="bank.creditcard.jaxrpc.wsdl" value="${bank.build}/classes/CreditCardService.wsdl"/>
+
+  <!-- Activity Supplier Dependencies -->
+  <property name="activitysupplier.home" value="../activitysupplier"/>
+  <property name="activitysupplier.build" value="${activitysupplier.home}/activitysupplier-ejb/build"/>
+  <property name="activitysupplier.wsdl" value="${activitysupplier.build}/classes/ActivityPurchaseOrderService.wsdl"/>
+
+  <!-- Lodging Supplier Dependencies -->
+  <property name="lodgingsupplier.home" value="../lodgingsupplier"/>
+  <property name="lodgingsupplier.build" value="${lodgingsupplier.home}/lodgingsupplier-ejb/build"/>
+  <property name="lodgingsupplier.wsdl" value="${lodgingsupplier.build}/classes/LodgingPurchaseOrderService.wsdl"/>
+
+  <!-- Airline Supplier Dependencies -->
+  <property name="airlinesupplier.home" value="../airlinesupplier"/>
+  <property name="airlinesupplier.build" value="${airlinesupplier.home}/airlinesupplier-ejb/build"/>
+  <property name="airlinesupplier.wsdl" value="${airlinesupplier.build}/classes/AirlinePurchaseOrderService.wsdl"/>
+
+  <!-- The ProcessManager Component -->
+  <property name="OPCApp.processmanager.home" value="${OPCApp.home}/processmanager-ejb"/>
+  <property name="OPCApp.processmanager.ejb.jar" value="${OPCApp.processmanager.home}/build/processmanager-ejb.jar"/>
+  <property name="OPCApp.processmanagerclient.jar" value="${OPCApp.processmanager.home}/build/processmanager-ejb-client.jar"/>
+
+  <!-- The Service Locator Component -->
+  <property name="OPCApp.servloc.home" value="${OPCApp.components.basedir}/servicelocator"/>
+  <property name="OPCApp.servloc.jar" value="${OPCApp.servloc.home}/build/servicelocator.jar"/>
+
+  <!-- verifier result destination -->
+  <property name="verify.dest.dir" value="${root.dir}/verifierResult"/>
+
+  <target name="ear">
+      <delete dir="${build.jardir}" quiet="true"/>
+      <mkdir dir="${build.jardir}"/>
+      <mkdir dir="${build.jardir}/META-INF"/>
+      <copy file="${OPCApp.conf}/application.xml" todir="${build.jardir}/META-INF" />
+      <copy file="${OPCApp.servloc.jar}" todir="${build.jardir}" />
+      <copy file="${OPCApp.processmanager.ejb.jar}" todir="${build.jardir}" />
+      <copy file="${OPCApp.processmanagerclient.jar}" todir="${build.jardir}" />
+      <copy file="${OPCApp.jar}" todir="${build.jardir}" />
+      <delete file="${app.module}" quiet="true"/>
+      <jar jarfile="${app.module}" basedir="${build.jardir}" />
+  </target>
+
+  <target name="components">
+    <ant dir="${OPCApp.servloc.home}" target="core" inheritAll="false" inheritRefs="false"/>
+    <ant dir="${bank.home}" target="core" inheritAll="false" inheritRefs="false"/>
+    <ant dir="${activitysupplier.home}" target="ws-interface" inheritAll="false" inheritRefs="false"/>
+    <ant dir="${airlinesupplier.home}" target="ws-interface" inheritAll="false" inheritRefs="false"/>
+    <ant dir="${lodgingsupplier.home}" target="ws-interface" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+  <target name="opc-components">
+   <ant dir="${OPCApp.processmanager.home}" target="core" inheritAll="false" inheritRefs="false"/>
+   <ant dir="${OPCApp.home}/opc-ejb" target="core" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+  <target name="website-ws-interface">
+    <ant dir="${OPCApp.processmanager.home}" target="core" inheritAll="false" inheritRefs="false"/>
+    <ant dir="${OPCApp.home}/opc-ejb" target="website-ws-interface" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+  <target name="clean-all" depends="clean">
+    <ant dir="${OPCApp.processmanager.home}" target="clean" inheritAll="false" inheritRefs="false"/>
+    <ant dir="${OPCApp.home}/opc-ejb" target="clean" inheritAll="false" inheritRefs="false"/>
+  </target>
+  
+  <target name="core" depends="banner, opc-components, ear" />
+  <target name="all" depends="components, core" />
+
+</project>
+
+

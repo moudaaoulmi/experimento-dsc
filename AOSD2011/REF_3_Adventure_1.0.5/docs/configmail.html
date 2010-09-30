@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<!-- Copyright 2005 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: configmail.html,v 1.20 2006/11/14 19:49:22 smitha Exp $ -->
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Java[tm] Adventure Builder Reference application - Version
+1.0.5&gt; Configuring Mail Notifications</title>
+</head>
+<body>
+<br>
+<table style="" border="0" cellpadding="5" cellspacing="0" width="100%">
+  <tbody>
+    <tr>
+      <td bgcolor="#000033"><a href="index.html"><font color="#ccccff">Java<sup><font
+ -2="">TM</font></sup> Adventure Builder Reference
+application - Version 1.0.5 &gt; </font></a><font color="#ffffff">
+Configuring Mail Notifications</font> </td>
+      <td bgcolor="#000033">
+      <div align="right"> <a href="http://java.sun.com/blueprints/"> <font
+ color="#ccccff"> Java BluePrints </font> </a> </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p> The Java<sup><font -2="">TM</font></sup> Adventure Builder
+Reference application (referred to as adventure builder) also allows
+you to get
+e-mail notifications as an
+order goes through various stages in the workflow. This document
+describes
+the steps to configure mail notifications. </p>
+<font size="+2">1. Setup Mailer Properties</font>
+<p> The mail support is setup through a configurable resource in the
+J2EE 1.4 SDK. The e-mail notifcations are sent via
+this resource. The setup script in the adventure builder root
+directory utilizes entries from a properties files in order to create
+the proper resources. The steps for this are:</p>
+<ol>
+  <li>Open file <tt>&lt;adventure.home&gt;/project/setup/setup.properties</tt></li>
+  <li>Set <tt>mail.host</tt> with the name of your mail server</li>
+  <li>Set <tt>mail.username </tt>to the username to be used in the <tt>
+mail.host </tt>to send mails</li>
+  <li>Set <tt>mail.fromaddress </tt>to your mail address</li>
+  <li>Save and close this file</li>
+</ol>
+<font size="+2">2. Create Mail Resources</font>
+<p> Once the mailer properties are setup, the next and final step is to
+create the JavaMail resources in the J2EE 1.4 SDK as follows :</p>
+<ol>
+  <li>Go to <tt>&lt;adventure.home&gt;</tt></li>
+  <li>Run setup script as follows : <tt>setup.{bat|sh}
+create-mail-resource</tt></li>
+</ol>
+<font size="+2">3. Modify the Order Processing Center (OPC) Deployment
+Descriptors</font>
+<p> The first step is to enable the mail notification option for OPC
+module. The steps for this are : </p>
+<ol>
+  <li>Open file <tt>&lt;adventure.home&gt;/project/apps/opc/opc-ejb/src/conf/ejb-jar.xml</tt></li>
+  <li>Search for "<tt>SendMail</tt>"</li>
+  <li>Change the <tt>env-entry-value </tt>for <tt>SendMail </tt>
+to <tt>true</tt></li>
+  <li>Save and close this file</li>
+</ol>
+<font size="+2">4. Build and Deploy the Re-Configured Module</font>
+<p>Once the e-mail notification is enabled, next step is to deploy the
+new e-mail enabled OPC module. The steps for this are:<br>
+</p>
+<ol>
+  <li>Go to <tt>&lt;adventure.home&gt;/project</tt></li>
+  <li>Build new OPC module with command <tt>asant</tt><br>
+See <a href="building.html">Building the demo</a><a> for the
+information of how to build.</a></li>
+  <a> <li>Undeploy existing OPC module with command <tt>asadmin
+undeploy OPC</tt></li>
+  <li>Deploy newly built OPC module with command <tt>asadmin deploy
+apps/opc/build/opc.ear</tt></li>
+  </a>
+</ol>
+<a> </a>
+<p><a> With the above steps, the mailer configured. Now you can create
+some adventure package and the OPC module will send e-mail
+notifications. The e-mail address used will be the one specified in the
+billing, shipping address of the customer web side page that is
+displayed before placing the order.</a></p>
+<a> </a>
+<hr noshade="noshade" size="3"><a> </a>
+<p><a href="copyright.html">Copyright &copy; 2006 Sun Microsystems,
+Inc.&nbsp;
+All Rights Reserved.</a></p>
+</body>
+</html>
