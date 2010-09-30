@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+
+
+
+<project name="reuso" default="core" basedir=".">
+	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+		<classpath>
+			<pathelement location="C:/Sun/AppServer/lib/aspectjtools.jar" />
+		</classpath>
+	</taskdef>
+
+	<target name="init">
+		<!-- include user specific build properties first -->
+		<property file="${user.home}/petstore.properties" />
+		<!-- include top-level common properties -->
+		<property name="main.src.path" value="../../../" />
+		<property file="../../../build.properties" />
+		<property name="appserver.cpath" value="C:/Sun/AppServer/lib/appserv-rt.jar" />
+		<property name="aspect.runtime" value="C:/Sun/AppServer/lib/aspectjrt.jar" />
+		<property name="aspect.tools" value="C:/Sun/AppServer/lib/aspectjtools.jar" />
+		<property name="jee.lib" value="C:/Sun/AppServer/lib/j2ee.jar" />
+		<property name="consumerwebsite.path" value="../../../apps/consumerwebsite/build/classes" />
+
+		<!-- The root directory of the workspace -->
+		<property name="reuso.home" value=".." />
+
+		<!-- The destination directory for the build -->
+		<property name="reuso.build" value="${reuso.home}/build" />
+
+		<property name="reuso.src" value="${reuso.home}/src" />
+
+		<!-- The destination directory for all the compiled classes. -->
+		<property name="reuso.classbindir" value="${reuso.build}/classes" />
+
+		<!-- The destination directory for the clientjar. -->
+		<property name="reuso.buildjardir" value="${reuso.build}/jartemp" />
+
+		<!-- The name for the client jar -->
+		<property name="reuso.client.jar" value="reuso.jar" />
+
+		<property name="serv.path" value="../../../components/servicelocator/build/servicelocator.jar" />
+		<property name="lod.path" value="../../../apps/lodgingsupplier/build/jar/lodgingsupplier-ejb.jar" />
+		<property name="act.path" value="../../../apps/activitysupplier/build/jar/activitysupplier-ejb.jar" />
+		<property name="ar.path" value="../../../apps/airlinesupplier/build/jar/airlinesupplier-ejb.jar" />
+		<property name="opc.path" value="../../../apps/opc/build/jar/opc-ejb.jar" />
+		<property name="waf-ejb.path" value="../../../components/waf/build/waf-ejb.jar" />
+		<property name="war-web.path" value="../../../components/waf/build/waf-web.jar" />
+		<property name="util.path" value="../../../components/util/tracer/src" />
+		
+		<path id="util1.path">
+			<fileset dir="" id="id">
+			    <include name="**/*.java"/>
+			</fileset>
+		</path>
+
+		<!-- The classpath used for building the workspace. -->
+		<property name="reuso.classpath" value="${appserver.cpath}:${aspect.runtime}:${aspect.tools}:${jee.lib}:${consumerwebsite.path}" />
+	</target>
+
+	<target name="compile" depends="init">
+		<mkdir dir="${reuso.classbindir}" />
+		<mkdir dir="../libs" />
+		<mkdir dir="../libs/classes" />
+		<copy todir="../libs/classes" overwrite="true">
+			<fileset dir="../../../apps/consumerwebsite/build/classes">
+				<include name="**/*.class" />
+			</fileset>
+		</copy>
+		<copy todir="../libs" overwrite="true">
+			<fileset dir="../../../apps/lodgingsupplier/build/jar/">
+				<include name="lodgingsupplier-ejb.jar" />
+			</fileset>
+			<fileset dir="../../../components/servicelocator/build/">
+				<include name="servicelocator.jar" />
+			</fileset>
+			<fileset dir="../../../apps/activitysupplier/build/jar/">
+				<include name="activitysupplier-ejb.jar" />
+			</fileset>
+			<fileset dir="../../../apps/airlinesupplier/build/jar/">
+				<include name="airlinesupplier-ejb.jar" />
+			</fileset>
+			<fileset dir="../../../apps/opc/build/jar/">
+				<include name="opc-ejb.jar" />
+			</fileset>
+			<fileset dir="../../../components/waf/build/">
+				<include name="waf-ejb.jar" />
+			</fileset>
+			<fileset dir="../../../components/waf/build/">
+				<include name="waf-web.jar" />
+			</fileset>
+		</copy>
+		<iajc verbose="true" 
+			sourceroots="${reuso.src}" 
+			destdir="${reuso.classbindir}" 
+			includes="com/**" 
+			classpath="${reuso.classpath}:${serv.path}:${lod.path}:${act.path}:${ar.path}:${opc.path}:${waf-ejb.path}:${war-web.path}:${util1.path}"
+			XnoWeave="true" />
+	</target>
+
+	<target name="clientjar" depends="init">
+		<delete dir="${reuso.buildjardir}" quiet="true" />
+		<mkdir dir="${reuso.buildjardir}" />
+		<copy todir="${reuso.buildjardir}">
+			<fileset dir="${reuso.classbindir}" />
+		</copy>
+		<jar jarfile="${reuso.build}/${reuso.client.jar}" basedir="${reuso.buildjardir}" />
+		<delete dir="${reuso.buildjardir}" />
+	</target>
+
+	<target name="clean" depends="init">
+		<delete dir="${reuso.build}" />
+	</target>
+
+	<target name="core" depends="compile, clientjar" />
+	<target name="all" depends="core" />
+
+</project>
+

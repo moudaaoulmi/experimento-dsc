@@ -1,0 +1,4223 @@
+<project>
+  <measurements class="linked-list"/>
+  <name>blueprints</name>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.catalog.dao</name>
+    <type>
+      <metric name="LOCC" value="7"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>JNDINames</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>DatabaseNames</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CatalogDAOException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="276"/>
+      <metric name="NOT" value="7"/>
+      <metric name="NOC" value="7"/>
+      <metric name="NOF" value="7"/>
+      <metric name="LOCEH" value="65"/>
+      <metric name="CDO" value="7"/>
+      <metric name="CDLOC" value="28"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="14"/>
+      <metric name="DOF" value="0.2798256668767065"/>
+      <name>PointbaseCatalogDAO</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="9"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CatalogDAO</name>
+      <kind>interface</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.servicelocator</name>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ServiceLocatorException</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.crm.ejb</name>
+    <type>
+      <metric name="LOCC" value="88"/>
+      <metric name="NOT" value="4"/>
+      <metric name="NOC" value="5"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="21"/>
+      <metric name="CDO" value="3"/>
+      <metric name="CDLOC" value="16"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="5"/>
+      <metric name="DOF" value="0.2732438016528925"/>
+      <name>CrmBean</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.purchaseorder.ejb</name>
+    <type>
+      <metric name="LOCC" value="52"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AddressBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="40"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CreditCardBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="19"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>LodgingLocal</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="15"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AddressLocal</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>LodgingLocalHome</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="63"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>LodgingBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CreditCardLocalHome</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>JNDINames</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="66"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>TransportationBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="17"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityLocal</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityLocalHome</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="57"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.7389966143428748"/>
+      <name>ContactInfoBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="13"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ContactInfoLocal</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>PurchaseOrderLocalHome</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="37"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>PurchaseOrderLocal</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="59"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="9"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CreditCardLocal</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ContactInfoLocalHome</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AddressLocalHome</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="153"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.898158827801273"/>
+      <name>PurchaseOrderBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>TransportationLocalHome</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="21"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>TransportationLocal</name>
+      <kind>interface</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.airlinesupplier.purchaseorder.ejb</name>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AirlineOrderLocal</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="42"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AirlineOrderBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AirlineOrderLocalHome</name>
+      <kind>interface</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.signon.web</name>
+    <type>
+      <metric name="LOCC" value="133"/>
+      <metric name="NOT" value="2"/>
+      <metric name="NOC" value="2"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="9"/>
+      <metric name="CDO" value="2"/>
+      <metric name="CDLOC" value="8"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.7476397761320595"/>
+      <name>SignOnFilter</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="176"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="5"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="17"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="5"/>
+      <metric name="DOF" value="0.6509555785123968"/>
+      <name>ConfigFileSignOnDAO</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="23"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ProtectedResource</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.activitysupplier.pomessagebean</name>
+    <type>
+      <metric name="LOCC" value="77"/>
+      <metric name="NOT" value="5"/>
+      <metric name="NOC" value="6"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="23"/>
+      <metric name="CDO" value="4"/>
+      <metric name="CDLOC" value="18"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="6"/>
+      <metric name="DOF" value="0.16208466857817508"/>
+      <name>ActivityMessageBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>BrokerServiceIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>BrokerServiceIntf_Impl</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>WebServiceBroker</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ProcessingException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="100"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Invoice</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>InvalidDocumentException</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.webservicebroker.requestor</name>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>LodgingPOIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>WSClient</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="16"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.25"/>
+      <name>LodgingSupplierClient</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>InvalidOrderException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AirlinePOIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AirlinePOIntf_Impl</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="18"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="2"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="7"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.04938271604938274"/>
+      <name>WSClientFactory</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="16"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.25"/>
+      <name>ActivitySupplierClient</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AirlinePurchaseOrderService</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>LodgingPOIntf_Impl</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="16"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.25"/>
+      <name>AirlineSupplierClient</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="34"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.5847750865051903"/>
+      <name>BrokerRequestorBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityPOIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityPOIntf_Impl</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>LodgingPurchaseOrderService</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityPurchaseOrderService</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OrderSubmissionException</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.waf.controller.ejb</name>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>EJBControllerLocal</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="53"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.7208971164115344"/>
+      <name>StateMachine</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="23"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>EJBControllerLocalEJB</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>EJBCommandSupport</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>EJBCommand</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>EJBControllerLocalHome</name>
+      <kind>interface</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.serviceexceptions</name>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ProcessingException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>InvalidDocumentException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>InvalidPOException</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.processmanager.manager.ejb</name>
+    <type>
+      <metric name="LOCC" value="5"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ManagerLocalHome</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="42"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ManagerBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="13"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ManagerLocal</name>
+      <kind>interface</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.waf.controller.web.html</name>
+    <type>
+      <metric name="LOCC" value="19"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>HTMLActionSupport</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>HTMLAction</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>HTMLActionException</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.waf.controller.web.html.impl</name>
+    <type>
+      <metric name="LOCC" value="17"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ChangeLocaleHTMLAction</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.signon</name>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>SignOnLongIdException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>SignOnException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>SignOnDupKeyException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>SignOnInvalidCharException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="47"/>
+      <metric name="NOT" value="2"/>
+      <metric name="NOC" value="3"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="11"/>
+      <metric name="CDO" value="2"/>
+      <metric name="CDLOC" value="8"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="3"/>
+      <metric name="DOF" value="0.282933454051607"/>
+      <name>SignOnFacade</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.utils</name>
+    <type>
+      <metric name="LOCC" value="86"/>
+      <metric name="NOT" value="4"/>
+      <metric name="NOC" value="8"/>
+      <metric name="NOF" value="2"/>
+      <metric name="LOCEH" value="52"/>
+      <metric name="CDO" value="2"/>
+      <metric name="CDLOC" value="8"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="10"/>
+      <metric name="DOF" value="0.04380746349378041"/>
+      <name>JMSUtils</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.airlinesupplier</name>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>JNDINames</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.otwebservice</name>
+    <type>
+      <metric name="LOCC" value="32"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="3"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="0.66015625"/>
+      <name>OtMessageHandler</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OrderNotFoundException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="43"/>
+      <metric name="NOT" value="2"/>
+      <metric name="NOC" value="2"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="8"/>
+      <metric name="CDO" value="2"/>
+      <metric name="CDLOC" value="8"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.3942671714440238"/>
+      <name>OtEndpointBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OrderTrackingIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="19"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OrderDetails</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.waf.controller.impl</name>
+    <type>
+      <metric name="LOCC" value="13"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ChangeLocaleEvent</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="43"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="3"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="10"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="3"/>
+      <metric name="DOF" value="0.28610059491617096"/>
+      <name>ClientStateFlowHandler</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.waf.controller.web</name>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>FlowHandlerException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ComponentManager</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="16"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>WebComponentManager</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="12"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>DefaultWebController</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="90"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="5"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.7901234567901234"/>
+      <name>RequestProcessor</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="57"/>
+      <metric name="NOT" value="3"/>
+      <metric name="NOC" value="4"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="15"/>
+      <metric name="CDO" value="3"/>
+      <metric name="CDLOC" value="12"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="4"/>
+      <metric name="DOF" value="0.22437673130193903"/>
+      <name>DefaultComponentManager</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>WebController</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="18"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ScreenFlowData</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="15"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ErrorMapping</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Action</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="96"/>
+      <metric name="NOT" value="2"/>
+      <metric name="NOC" value="2"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="8"/>
+      <metric name="CDO" value="2"/>
+      <metric name="CDLOC" value="8"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.6944444444444444"/>
+      <name>ScreenFlowManager</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActionException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="117"/>
+      <metric name="NOT" value="4"/>
+      <metric name="NOC" value="9"/>
+      <metric name="NOF" value="1"/>
+      <metric name="LOCEH" value="63"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="10"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="10"/>
+      <metric name="DOF" value="0.0059171597633136015"/>
+      <name>MainServlet</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="23"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.42533081285444235"/>
+      <name>EJBProxyWebController</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="5"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>FlowHandler</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="53"/>
+      <metric name="NOT" value="2"/>
+      <metric name="NOC" value="2"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="9"/>
+      <metric name="CDO" value="2"/>
+      <metric name="CDLOC" value="8"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.4360982556069777"/>
+      <name>ApplicationComponentManager</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="18"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>EventMapping</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="64"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>URLMapping</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="302"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="5"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="17"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="5"/>
+      <metric name="DOF" value="0.7875093197666769"/>
+      <name>URLMappingsXmlDAO</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.processmanager.transitions</name>
+    <type>
+      <metric name="LOCC" value="16"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.25"/>
+      <name>TransitionDelegateFactory</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="23"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>TransitionInfo</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="33"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>TransitionException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>TransitionDelegate</name>
+      <kind>interface</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.waf.controller</name>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CommandSupport</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="5"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Command</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="5"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AppException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>EventResponse</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="5"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Event</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="13"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>GeneralFailureException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>EventException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>EventResponseSupport</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="12"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>EventSupport</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="29"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.5243757431629013"/>
+      <name>CommandFactory</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.orderfiller</name>
+    <type>
+      <metric name="LOCC" value="159"/>
+      <metric name="NOT" value="3"/>
+      <metric name="NOC" value="3"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="13"/>
+      <metric name="CDO" value="3"/>
+      <metric name="CDLOC" value="12"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="3"/>
+      <metric name="DOF" value="0.6996954234405285"/>
+      <name>OrderFillerBean</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.waf.view.template</name>
+    <type>
+      <metric name="LOCC" value="199"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.921214110754779"/>
+      <name>TemplateServlet</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="28"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Screen</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="67"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Screens</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="257"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="5"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="17"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="5"/>
+      <metric name="DOF" value="0.752910717800421"/>
+      <name>ScreenDefinitionDAO</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="61"/>
+      <metric name="NOT" value="3"/>
+      <metric name="NOC" value="3"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="12"/>
+      <metric name="CDO" value="2"/>
+      <metric name="CDLOC" value="12"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.3679118516527815"/>
+      <name>InsertTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="23"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Parameter</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.activitysupplier.purchaseorder.ejb</name>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityPurchaseOrderLocal</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="36"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityDetailsBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="50"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.7056"/>
+      <name>ActivityPurchaseOrderBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityDetailsLocal</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityDetailsLocalHome</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityPurchaseOrderLocalHome</name>
+      <kind>interface</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc</name>
+    <type>
+      <metric name="LOCC" value="30"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>JNDINames</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.servicelocator.ejb</name>
+    <type>
+      <metric name="LOCC" value="86"/>
+      <metric name="NOT" value="9"/>
+      <metric name="NOC" value="9"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="36"/>
+      <metric name="CDO" value="8"/>
+      <metric name="CDLOC" value="32"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="9"/>
+      <metric name="DOF" value="0.026500811249323963"/>
+      <name>ServiceLocator</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.customer.dao</name>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AccountDAOFinderException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AccountLongIdException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AccountDAO</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AccountDAOException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="7"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>JNDINames</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>DatabaseNames</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AccountDAODBUpdateException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="131"/>
+      <metric name="NOT" value="3"/>
+      <metric name="NOC" value="3"/>
+      <metric name="NOF" value="3"/>
+      <metric name="LOCEH" value="26"/>
+      <metric name="CDO" value="3"/>
+      <metric name="CDLOC" value="12"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="6"/>
+      <metric name="DOF" value="0.3636734456034031"/>
+      <name>PointbaseAccountDAO</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AccountException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AccountDAODupKeyException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AccountInvalidCharException</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.airlinesupplier.powebservice</name>
+    <type>
+      <metric name="LOCC" value="83"/>
+      <metric name="NOT" value="4"/>
+      <metric name="NOC" value="5"/>
+      <metric name="NOF" value="1"/>
+      <metric name="LOCEH" value="39"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="6"/>
+      <metric name="DOF" value="0.003628973726230225"/>
+      <name>AirlinePOEndpointBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>InvalidOrderException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="101"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="5"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.8117831585138712"/>
+      <name>AirlineOrder</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OrderSubmissionException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AirlinePOIntf</name>
+      <kind>interface</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.processmanager.ejb</name>
+    <type>
+      <metric name="LOCC" value="13"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OrderStatusNames</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ProcessManagerLocalHome</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="11"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ProcessManagerLocal</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="71"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.7873437809958341"/>
+      <name>ProcessManagerBean</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.waf.util</name>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>JNDINames</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="140"/>
+      <metric name="NOT" value="3"/>
+      <metric name="NOC" value="3"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="11"/>
+      <metric name="CDO" value="3"/>
+      <metric name="CDLOC" value="12"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.7104081632653061"/>
+      <name>I18nUtil</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.activitysupplier</name>
+    <type>
+      <metric name="LOCC" value="7"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>JNDINames</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.airlinesupplier.pomessagebean</name>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>BrokerServiceIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>BrokerServiceIntf_Impl</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>WebServiceBroker</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ProcessingException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="110"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Invoice</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>InvalidDocumentException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="77"/>
+      <metric name="NOT" value="5"/>
+      <metric name="NOC" value="6"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="23"/>
+      <metric name="CDO" value="4"/>
+      <metric name="CDLOC" value="18"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="6"/>
+      <metric name="DOF" value="0.16208466857817508"/>
+      <name>AirlineMessageBean</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.activitysupplier.powebservice</name>
+    <type>
+      <metric name="LOCC" value="74"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="5"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.7479912344777211"/>
+      <name>ActivityOrder</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="83"/>
+      <metric name="NOT" value="4"/>
+      <metric name="NOC" value="5"/>
+      <metric name="NOF" value="1"/>
+      <metric name="LOCEH" value="39"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="6"/>
+      <metric name="DOF" value="0.003628973726230225"/>
+      <name>ActivityPOEndpointBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="40"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityDetails</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ActivityPOIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>InvalidOrderException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OrderSubmissionException</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.customer</name>
+    <type>
+      <metric name="LOCC" value="36"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ContactInformation</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="27"/>
+      <metric name="NOT" value="2"/>
+      <metric name="NOC" value="2"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="8"/>
+      <metric name="CDO" value="2"/>
+      <metric name="CDLOC" value="8"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.16598079561042528"/>
+      <name>CustomerFacade</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CustomerException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="41"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Address</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="24"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Account</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.mailer</name>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>MailerException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="24"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="6"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.25"/>
+      <name>MailHelper</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>JNDINames</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="28"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="3"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="0.6173469387755103"/>
+      <name>ByteArrayDataSource</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="57"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.7389966143428748"/>
+      <name>Mail</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.util.dao</name>
+    <type>
+      <metric name="LOCC" value="55"/>
+      <metric name="NOT" value="4"/>
+      <metric name="NOC" value="4"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="20"/>
+      <metric name="CDO" value="4"/>
+      <metric name="CDLOC" value="16"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="4"/>
+      <metric name="DOF" value="0.07438016528925619"/>
+      <name>DAOUtils</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>DAOSystemException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="16"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="2"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="7"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.015625"/>
+      <name>DAOFactory</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.workflowmanager</name>
+    <type>
+      <metric name="LOCC" value="87"/>
+      <metric name="NOT" value="4"/>
+      <metric name="NOC" value="7"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="25"/>
+      <metric name="CDO" value="4"/>
+      <metric name="CDLOC" value="16"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="7"/>
+      <metric name="DOF" value="0.18086933544721895"/>
+      <name>WorkFlowManagerBean</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.workflowmanager.handlers</name>
+    <type>
+      <metric name="LOCC" value="78"/>
+      <metric name="NOT" value="4"/>
+      <metric name="NOC" value="5"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="26"/>
+      <metric name="CDO" value="2"/>
+      <metric name="CDLOC" value="8"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="5"/>
+      <metric name="DOF" value="0.1111111111111111"/>
+      <name>InvoiceHandler</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="106"/>
+      <metric name="NOT" value="3"/>
+      <metric name="NOC" value="5"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="29"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="5"/>
+      <metric name="DOF" value="0.20505517977928084"/>
+      <name>POHandler</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>HandlerException</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.financial</name>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CreditCardService</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CreditCardIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="20"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.36000000000000004"/>
+      <name>CreditCardVerifier</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CreditCardIntf_Impl</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.consumerwebsite</name>
+    <type>
+      <metric name="LOCC" value="40"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.6400000000000001"/>
+      <name>SignOnNotifier</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="113"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CustomerBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="43"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CartBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="13"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CheckoutBean</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="66"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Address</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="152"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Cart</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="79"/>
+      <metric name="NOT" value="2"/>
+      <metric name="NOC" value="2"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="8"/>
+      <metric name="CDO" value="2"/>
+      <metric name="CDLOC" value="8"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.6359557763178978"/>
+      <name>AdventureComponentManager</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="16"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AdventureKeys</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="47"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>TransportationBean</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.signon.dao</name>
+    <type>
+      <metric name="LOCC" value="4"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>UserDAO</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>InvalidPasswordException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="64"/>
+      <metric name="NOT" value="2"/>
+      <metric name="NOC" value="2"/>
+      <metric name="NOF" value="2"/>
+      <metric name="LOCEH" value="17"/>
+      <metric name="CDO" value="2"/>
+      <metric name="CDLOC" value="8"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="4"/>
+      <metric name="DOF" value="0.2197265625"/>
+      <name>PointbaseUserDAO</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>SignOnDAODupKeyException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="8"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>SignOnDAOFinderException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="7"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>JNDINames</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>DatabaseNames</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.powebservice</name>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>PurchaseOrderIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="31"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>PoEndpointBean</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.taglibs.smart</name>
+    <type>
+      <metric name="LOCC" value="15"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>SelectTag$OptionItem</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="78"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="1"/>
+      <metric name="LOCEH" value="11"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.5154503616042077"/>
+      <name>FormTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="149"/>
+      <metric name="NOT" value="3"/>
+      <metric name="NOC" value="3"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="12"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="12"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="3"/>
+      <metric name="DOF" value="0.7037971262555741"/>
+      <name>ClientStateTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="40"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.6400000000000001"/>
+      <name>CheckboxTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="13"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ValueTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="75"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>DateSelectorTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="13"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>NameTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="19"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ClientStateValueTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="117"/>
+      <metric name="NOT" value="2"/>
+      <metric name="NOC" value="2"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="8"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="8"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.7451968734020017"/>
+      <name>CacheTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="17"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CheckedTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="34"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OptionTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="106"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.8547525809896761"/>
+      <name>SelectTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="18"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CacheTag$Entry</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="13"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>SelectedTag</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="73"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.7928316757365359"/>
+      <name>InputTag</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.consumerwebsite.exceptions</name>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OrderNotFoundException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>SignOnException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CustomerException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="20"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>MissingFormDataException</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.bank.creditcardservice</name>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CreditCardIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="20"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CreditCardEndpointBean</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.util.tracer</name>
+    <type>
+      <metric name="LOCC" value="18"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Debug</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.invoice</name>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>XMLException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="74"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.7954711468224982"/>
+      <name>Invoice</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.catalog</name>
+    <type>
+      <metric name="LOCC" value="66"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Transportation</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="36"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Activity</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="43"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>AdventurePackage</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CatalogException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="70"/>
+      <metric name="NOT" value="7"/>
+      <metric name="NOC" value="7"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="28"/>
+      <metric name="CDO" value="7"/>
+      <metric name="CDLOC" value="28"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="7"/>
+      <metric name="DOF" value="0.03999999999999998"/>
+      <name>CatalogFacade</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="36"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Lodging</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="61"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>LineItem</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.purchaseorder</name>
+    <type>
+      <metric name="LOCC" value="117"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.8679231499744321"/>
+      <name>Transportation</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="104"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.8520710059171599"/>
+      <name>Activity</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="14"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>XMLException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="63"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Address</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="54"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ContactInfo</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="115"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.8657088846880907"/>
+      <name>Lodging</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="67"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.7754511026954779"/>
+      <name>CreditCard</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="144"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>PurchaseOrder</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.webservicebroker.provider</name>
+    <type>
+      <metric name="LOCC" value="130"/>
+      <metric name="NOT" value="5"/>
+      <metric name="NOC" value="6"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="22"/>
+      <metric name="CDO" value="3"/>
+      <metric name="CDLOC" value="12"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="5"/>
+      <metric name="DOF" value="0.4376331360946746"/>
+      <name>BrokerTransformer</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>BrokerServiceIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="42"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="5"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.5804988662131518"/>
+      <name>BrokerEntityResolver</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="26"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>BrokerTransformer$1</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="11"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>BrokerXMLMessageErrorHandler</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="69"/>
+      <metric name="NOT" value="2"/>
+      <metric name="NOC" value="2"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="8"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="8"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.5900021003990759"/>
+      <name>BrokerServiceBean</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.opc.orderreceiver</name>
+    <type>
+      <metric name="LOCC" value="11"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>POReceiver</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.waf.controller.web.util</name>
+    <type>
+      <metric name="LOCC" value="22"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>WebKeys</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.consumerwebsite.actions</name>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OrderNotFoundException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OpcPurchaseOrderService</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OrderTrackingIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="24"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OrderDetails</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>PurchaseOrderIntf_Impl</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="103"/>
+      <metric name="NOT" value="3"/>
+      <metric name="NOC" value="3"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="15"/>
+      <metric name="CDO" value="3"/>
+      <metric name="CDLOC" value="12"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="3"/>
+      <metric name="DOF" value="0.5023093599773776"/>
+      <name>CustomerHTMLAction</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="72"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Lodging</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="45"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.6760493827160493"/>
+      <name>TransportSearchHTMLAction</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="32"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CreditCard</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>InvalidPOException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="144"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>PurchaseOrder</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="220"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="4"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="1"/>
+      <metric name="DOF" value="0.9285950413223141"/>
+      <name>CheckoutHTMLAction</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>PurchaseOrderIntf</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="32"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="2"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="9"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.19140625"/>
+      <name>OrderTrackingHTMLAction</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="3"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OpcOrderTrackingService</name>
+      <kind>interface</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="11"/>
+      <metric name="NOT" value="1"/>
+      <metric name="NOC" value="1"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="3"/>
+      <metric name="CDO" value="1"/>
+      <metric name="CDLOC" value="4"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="0.20661157024793392"/>
+      <name>SignOffHTMLAction</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="80"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Transportation</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="6"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>OrderTrackingIntf_Impl</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="64"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Activity</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="305"/>
+      <metric name="NOT" value="3"/>
+      <metric name="NOC" value="3"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="11"/>
+      <metric name="CDO" value="3"/>
+      <metric name="CDLOC" value="12"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="2"/>
+      <metric name="DOF" value="0.860940607363612"/>
+      <name>CartHTMLAction</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="56"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>Address</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="48"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ContactInfo</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="10"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>ProcessingException</name>
+      <kind>class</kind>
+    </type>
+    <type>
+      <metric name="LOCC" value="11"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CreateSignOnHTMLAction</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.consumerwebsite.handlers</name>
+    <type>
+      <metric name="LOCC" value="79"/>
+      <metric name="NOT" value="0"/>
+      <metric name="NOC" value="0"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="0"/>
+      <metric name="CDO" value="0"/>
+      <metric name="CDLOC" value="0"/>
+      <metric name="CDC" value="0"/>
+      <metric name="NOEH" value="0"/>
+      <metric name="DOF" value="1.0"/>
+      <name>CartFlowHandler</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>com.sun.j2ee.blueprints.servicelocator.web</name>
+    <type>
+      <metric name="LOCC" value="131"/>
+      <metric name="NOT" value="10"/>
+      <metric name="NOC" value="10"/>
+      <metric name="NOF" value="0"/>
+      <metric name="LOCEH" value="40"/>
+      <metric name="CDO" value="9"/>
+      <metric name="CDLOC" value="36"/>
+      <metric name="CDC" value="1"/>
+      <metric name="NOEH" value="10"/>
+      <metric name="DOF" value="0.15156459413787077"/>
+      <name>ServiceLocator</name>
+      <kind>class</kind>
+    </type>
+  </package>
+  <package>
+    <measurements class="linked-list"/>
+    <name>General in Project</name>
+    <type>
+      <metric name="DOS" value="0.9763295389989497"/>
+      <name>General in Project</name>
+      <kind>General in Project</kind>
+    </type>
+  </package>
+</project>

@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<!-- Copyright 2005 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: using.html,v 1.19 2006/11/14 19:49:25 smitha Exp $ -->
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Java[tm] Adventure Builder Reference application - Version
+1.0.5 &gt; Using the Demo</title>
+</head>
+<body>
+<table style="" border="0" cellpadding="5" cellspacing="0" width="100%">
+  <tbody>
+    <tr>
+      <td bgcolor="#000033"><a href="index.html"><font color="#ccccff">Java<sup><font
+ -2="">TM</font></sup> Adventure Builder Reference
+application - Version 1.0.5 &gt; </font></a><font color="#ffffff">
+Using the Demo</font> </td>
+      <td bgcolor="#000033">
+      <div align="right"> <a href="http://java.sun.com/blueprints/"> <font
+ color="#ccccff"> Java BluePrints </font> </a> </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p> This section describes how to use the Java<sup><font -2="">TM</font></sup>
+Adventure Builder Reference
+application, version 1.0.5 (referred to as adventure builder). It
+starts
+by describing the high-level components of adventure builder, and then
+shows how to use it. </p>
+<ul>
+  <li> <b>Demo At A Glance</b></li>
+  <li> <b>Using the Consumer Website</b></li>
+</ul>
+<font size="+2"> <b>Demo At A Glance</b></font> The adventure builder
+consists
+of the following high level components:
+<ul>
+  <li> <b>The Consumer Website</b>--Presents the main interface to
+existing / new customers. Customers use this Web site to browse the
+various adventure packages that are available, create new accounts as
+well as book an adventure package.The Web site also enables the
+customer to track the status of orders that were placed earlier. </li>
+</ul>
+<ul>
+  <li> <b>The Order Processing Center (OPC)</b>--Receives and
+processes customer bookings by coordinating with various business
+partners, such as airlines, hotels, activity providers and so forth. </li>
+  <li><b>Bank--</b>Authorizes credit for customer's orders.</li>
+  <li><b>ActivitySupplier--</b>Receives activity reservation orders
+from OPC, fills the order and sends back an invoice. </li>
+  <li><b>AirlineSupplier--</b>Receives airline reservation orders from
+OPC, fills the order and sends back an invoice. </li>
+  <li><b>LodgingSupplier--</b>Receives lodging reservations orders from
+OPC, fills the order and sends back an invoice. </li>
+</ul>
+<font size="+2"> Using the Consumer Web Site</font>
+<p> <font size="+1"> Accessing the Consumer Web Site</font> Using a
+browser, access the following URL: </p>
+<p><a href="http://localhost:8080/ab">http://localhost:8080/ab</a> </p>
+<p>Click the "Start building an adventure" link.</p>
+<p><i>Note that if the J2EE server is not running on localhost, you
+need to replace "localhost" in the URL listed above with the name
+ofserver where the J2EE server is running. And also if you had chosen a
+different port for the server, you need to replace "8080" in the URL
+listed above with the port of your choice. </i></p>
+<b> Browsing the Consumer Web Site And Choosing an Adventure</b>
+<p> The home page of the Consumer Web site gives an array of choices
+for different
+categories of available adventures. Clicking these major categories of
+adventures
+displays the specific adventure packages available for the chosen
+category.
+Each adventure is pre-packaged meaing that each has a default set of
+lodging
+and activities. Click the adventure package of interest to display the
+details
+of the adventure along with the default lodging and activities
+available
+with the package. </p>
+<p> Click the link "Purchase Package" to go to a Web page where you are
+asked to enter package details such as the number of people, number of
+days, start date, and number of rooms. Once you choose these details
+and click "Continue" a subsequent page lets you specify the city of
+origin and choose the mode of transport to the adventure locale. If you
+plan to arrange
+your own transportation, you may do so in this same page. You may also
+choose from a set of available flights. </p>
+<b> Changing Cart Contents</b>
+<p> When you complete the above steps, you see a summary of the package
+you have chosen. You can either make more changes (using the links
+provided) or choose to confirm the purchase of the adventure package.
+The Web site
+allows you to change the number of nights lodging, the number of people
+per activity, and the type of lodging, activity, and transportation
+mode. If
+you want to change the number of people or number of days, choose the
+appropriate fields in the "Summary" screen and click the "update"
+button. If you want to change the Lodging / Activities / Transportation
+details, you may do so using the appropriate links provided. </p>
+<b> Booking Your Vacation</b>
+<p> Once you have finalized the contents of your adventure package,
+book your vacation by clicking the "Checkout" link. Clicking this link
+places your reservation for confirmation with the Order Processing
+(OPC) component. If you have not yet signed in, you will first have to
+sign in (and possibly create a new account) before placing your
+reservation for confirmation with the OPC. When you place your
+reservation, you get an order id for your reference. </p>
+<b>Tracking Order Status</b>
+<p> Track the status of your order by clicking the "Track Order" Link
+on the top left of the page and entering the order ID.</p>
+<b> Sign in or Create New Account</b>
+<p> To sign in as an existing user or create a new user account, click
+the "Account" link available at the top left corner of your browser
+window. You can either sign in (if you already have an account) or
+create a new account (in which case, you will be asked to enter some
+identifying information). </p>
+<hr noshade="noshade"><a href="copyright.html">Copyright &copy; 2006
+Sun Microsystems,
+Inc. All Rights Reserved.</a> &nbsp;
+</body>
+</html>

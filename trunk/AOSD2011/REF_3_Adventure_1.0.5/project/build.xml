@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<!-- Copyright 2004 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: build.xml,v 1.12 2004/10/08 18:15:32 yutayoshida Exp $ -->
+
+<!DOCTYPE project [
+  <!ENTITY commonAntCommands SYSTEM "setup/common-ant.xml">
+<!ENTITY appServerAntCommands SYSTEM "setup/app-server-ant.xml">
+]>
+
+<project name="blueprints" default="all" basedir=".">
+
+	
+	<property file="../../../common.properties"/>
+
+	<!-- path to root -->
+	<property name="root.dir" value="." />
+
+  &commonAntCommands; <!-- include common ant commands -->
+	
+	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+			<classpath>
+				<pathelement location="C:/Sun/AppServer/lib/aspectjtools.jar" />
+			</classpath>
+	</taskdef>
+
+	<property name="adventure.javadocs.dir" value="docs/api" />
+	<property name="verify.dest.dir" value="verifierResult" />
+	<property name="aopmetrics" value="../aopmetrics" />
+	<property name="activitysupplier.home" value="apps/activitysupplier/activitysupplier-ejb/" />
+	<property name="airlinesupplier.home" value="apps/airlinesupplier/airlinesupplier-ejb/" />
+	<property name="bank.home" value="apps/bank/bank-ejb/" />
+	<property name="consumerwebsite.home" value="apps/consumerwebsite/" />
+	<property name="opc.process.home" value="apps/opc/processmanager-ejb/" />
+	<property name="servicelocator" value="components/servicelocator/" />
+	<property name="dao.home" value="components/util/dao/" />
+	<property name="tracer.home" value="components/util/tracer/" />
+	<property name="waf.home" value="components/waf/" />
+	<property name="opc.home" value="apps/opc/opc-ejb/" />
+
+
+	<target name="ehmeter">
+		<path id="cp.ehmeter">
+			<fileset dir="lib">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+
+		<taskdef name="ehmeter" classname="br.upe.dsc.ehmeter.EHMeterTask">
+			<classpath refid="cp.ehmeter" />
+		</taskdef>
+
+		<path id="cp.compile">
+			<fileset dir="lib">
+				<include name="**/*.jar" />				
+			</fileset>
+		</path>
+
+		<mkdir dir="${aopmetrics}" />
+
+		<copy todir="${aopmetrics}" overwrite="true">
+
+			<fileset dir="${activitysupplier.home}/src/java" includes="**/*.java" />
+			<fileset dir="${activitysupplier.home}/src/java" includes="**/*.aj" />
+			<fileset dir="${activitysupplier.home}/build/classes" includes="**/*.java" />
+
+			<fileset dir="${airlinesupplier.home}/src/java/" includes="**/*.java" />
+			<fileset dir="${airlinesupplier.home}/src/java/" includes="**/*.aj" />
+			<fileset dir="${airlinesupplier.home}/build/classes/" includes="**/*.java" />
+			
+			<fileset dir="apps/lodgingsupplier/lodgingsupplier-ejb/src/java/" includes="**/*.java" />
+			<fileset dir="apps/lodgingsupplier/lodgingsupplier-ejb//src/java/" includes="**/*.aj" />
+			<fileset dir="apps/lodgingsupplier/lodgingsupplier-ejb/build/classes/" includes="**/*.java" />
+
+			<fileset dir="${bank.home}/src/java/" includes="**/*.java" />
+			<fileset dir="${bank.home}/src/java/" includes="**/*.aj" />
+			<fileset dir="${bank.home}/build/classes/" includes="**/*.java" />
+
+			<fileset dir="${consumerwebsite.home}/src/java/" includes="**/*.java" />
+			<fileset dir="${consumerwebsite.home}/src/java/" includes="**/*.aj" />
+			<fileset dir="${consumerwebsite.home}/build/" includes="**/*.java" />
+
+			<fileset dir="${opc.process.home}/src/java/" includes="**/*.java" />
+			<fileset dir="${opc.process.home}/src/java/" includes="**/*.aj" />
+			<fileset dir="${opc.process.home}/build/classes/" includes="**/*.java" />
+
+			<fileset dir="${servicelocator}/src/java/" includes="**/*.java" />
+			<fileset dir="${servicelocator}/src/java/" includes="**/*.aj" />
+			<fileset dir="${servicelocator}/build/classes/" includes="**/*.java" />
+
+			<fileset dir="${dao.home}/src/java/" includes="**/*.java" />
+			<fileset dir="${dao.home}/src/java/" includes="**/*.aj" />
+			<fileset dir="${dao.home}/build/classes/" includes="**/*.java" />
+
+			<fileset dir="${tracer.home}/src/java/" includes="**/*.java" />
+			<fileset dir="${tracer.home}/src/java/" includes="**/*.aj" />
+			<fileset dir="${tracer.home}/build/classes/" includes="**/*.java" />
+
+			<fileset dir="${waf.home}/src/java/" includes="**/*.java" />
+			<fileset dir="${waf.home}/src/java/" includes="**/*.aj" />
+			<fileset dir="${waf.home}/build/classes/" includes="**/*.java" />
+
+			<fileset dir="${opc.home}/src/java/" includes="**/*.java" />
+			<fileset dir="${opc.home}/src/java/" includes="**/*.aj" />
+			<fileset dir="${opc.home}/build/classes/" includes="**/*.java" />
+			<fileset dir="${opc.home}/build/jaxrpc/" includes="**/*.java" />
+			
+			<fileset dir="aspectos/reuso/src/" includes="**/*.aj" />
+			<fileset dir="aspectos/reuso/src/" includes="**/*.java" />
+
+		</copy>
+
+		<ehmeter workdir="build/workdir" 
+			export="xls" sourcelevel="1.5"
+			resultsfile="build/REF_3_Adventure1.0.5.xls">
+			<fileset dir="${aopmetrics}" includes="**/*.*" />
+			<classpath refid="cp.compile" />
+		</ehmeter>
+		<jar jarfile="aspectos/reuso/build/reuso.jar" basedir="aspectos/reuso/build/classes"/>
+		
+	</target>
+	<target name="core" depends="ehmeter">
+
+		<ant dir="components" target="core" inheritAll="false" inheritRefs="false" />
+		<!-- waf is moved under components
+    <ant dir="waf" target="core" inheritAll="false" inheritRefs="false"/>
+    -->
+		<ant dir="apps" target="core" inheritAll="false" inheritRefs="false" />
+	</target>
+
+	<target name="deploy-apps">
+		<ant dir="apps" target="deploy-apps" inheritAll="false" inheritRefs="false" />
+	</target>
+
+	<target name="verify-apps" description="Static archive tests for all apps">
+		<mkdir dir="${verify.dest.dir}" />
+		<echo>Adventurebuilder must be built before invoking this task.</echo>
+		<echo>The result files are stored in ${verify.dest.dir}</echo>
+
+		<ant dir="apps" target="verify-apps" inheritAll="false" inheritRefs="false" />
+
+	</target>
+
+	<target name="undeploy-apps">
+		<ant dir="apps" target="undeploy-apps" inheritAll="false" inheritRefs="false" />
+	</target>
+
+	<target name="check_if_ContactInfo_OrderDetails_classes_exist">
+		<available file="apps/consumerwebsite/build/jaxrpc/client/classes" type="dir" property="already.built" />
+	</target>
+
+	<target name="check_if_CreditCardIntf_class_exist">
+		<available file="apps/opc/opc-ejb/build/jaxrpc/client/classes" type="dir" property="already.built" />
+	</target>
+
+	<target name="check_if_built" depends="check_if_ContactInfo_OrderDetails_classes_exist, check_if_CreditCardIntf_class_exist" />
+
+	<target name="build_if_needed" unless="already.built">
+		<antcall target="core" />
+	</target>
+
+	<target name="docs" depends="check_if_built, build_if_needed">
+		<echo message="Generating API Javadocs...." />
+		<mkdir dir="${adventure.javadocs.dir}" />
+		<javadoc packagenames="com.sun.j2ee.blueprints.*" destdir="${adventure.javadocs.dir}" author="false" version="true" use="true" windowtitle="Java Adventure Builder Reference application API" doctitle="Java Adventure Builder Reference application" additionalparam="-linksource" bottom="Copyright &#169; 2004 Sun Microsystems Inc. All Rights Reserved.">
+			<classpath>
+				<pathelement path="${j2ee.home}/lib/j2ee.jar" />
+				<pathelement path="lib/base64/base64.jar" />
+				<pathelement path="components/servicelocator/build/classes" />
+				<pathelement path="components/util/dao/build/classes" />
+				<pathelement path="components/util/tracer/build/classes" />
+				<pathelement path="components/waf/build/classes" />
+				<pathelement path="apps/consumerwebsite/build/classes" />
+				<pathelement path="apps/consumerwebsite/build/jaxrpc/client/classes" />
+				<pathelement path="apps/activitysupplier/activitysupplier-ejb/build/classes" />
+				<pathelement path="apps/airlinesupplier/airlinesupplier-ejb/build/classes" />
+				<pathelement path="apps/bank/bank-ejb/build/classes" />
+				<pathelement path="apps/lodgingsupplier/lodgingsupplier-ejb/build/classes" />
+				<pathelement path="apps/opc/opc-ejb/build/classes" />
+				<pathelement path="apps/opc/opc-ejb/build/jaxrpc/client/classes" />
+				<pathelement path="apps/opc/processmanager-ejb/build/classes" />
+			</classpath>
+			<sourcepath>
+				<pathelement path="components/servicelocator/src/java" />
+				<pathelement path="components/util/dao/src/java" />
+				<pathelement path="components/util/tracer/src/java" />
+				<pathelement path="components/waf/src/java" />
+				<pathelement path="apps/consumerwebsite/src/java" />
+				<pathelement path="apps/activitysupplier/activitysupplier-ejb/src/java" />
+				<pathelement path="apps/airlinesupplier/airlinesupplier-ejb/src/java" />
+				<pathelement path="apps/bank/bank-ejb/src/java" />
+				<pathelement path="apps/lodgingsupplier/lodgingsupplier-ejb/src/java" />
+				<pathelement path="apps/opc/opc-ejb/src/java" />
+				<pathelement path="apps/opc/processmanager-ejb/src/java" />
+			</sourcepath>
+		</javadoc>
+	</target>
+
+	<target name="cleanall">
+		<ant dir="components" target="clean" inheritAll="false" inheritRefs="false" />
+		<!-- waf is moved under components
+    <ant dir="waf" target="clean" inheritAll="false" inheritRefs="false"/>
+    -->
+		<ant dir="apps" target="clean" inheritAll="false" inheritRefs="false" />
+		<delete dir="${adventure.javadocs.dir}" />
+	</target>
+
+	<target name="all" depends="core, docs" />
+</project>

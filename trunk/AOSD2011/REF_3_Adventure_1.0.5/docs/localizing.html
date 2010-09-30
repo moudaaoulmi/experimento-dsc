@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<!-- Copyright 2005 Sun Microsystems, Inc. All rights reserved. You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at:
+http://adventurebuilder.dev.java.net/LICENSE.txt
+$Id: localizing.html,v 1.10 2006/11/14 19:49:24 smitha Exp $ -->
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Java[tm] Adventure Builder Reference application - Version
+1.0.5&gt; Localizing Adventure Builder</title>
+</head>
+<body>
+<table style="" border="0" cellpadding="5" cellspacing="0" width="100%">
+  <tbody>
+    <tr>
+      <td bgcolor="#000033"><a href="index.html"><font color="#ccccff">Java<sup><font
+ -2="">TM</font></sup> Adventure Builder Reference
+application - Version 1.0.5 &gt;</font></a><font color="#ffffff">
+Localizing Adventure Builder</font> </td>
+      <td bgcolor="#000033">
+      <div align="right"><a href="http://java.sun.com/blueprints/"> <font
+ color="#ccccff">Java BluePrints</font></a> </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Adventure Builder is much like Pet Store but it is the next generation
+so the data is stored a little differently. Both applications share
+the&nbsp; same framework so all of the programmatic portions are the
+same. It&nbsp; may be helpful to look at Pet Store in that it has been
+localized&nbsp; into three languages. <br>
+<br>
+Here is a set of steps that should get you up and running in another
+language.<br>
+<br>
+<big><br>
+1. Localize and Populate the Data</big> <br>
+<br>
+The data used by the Adventure Builder web site is maintained in a file
+called adventurebuilder/setup/sql/derby.sql. This file is
+responsible for both creating the tables and for populating the tables
+with data. You may choose to modify this file by adding entries for the
+content you choose to localize. It is recommended that you localize all
+the entries if you expect the web site to work properly. <br>
+<br>
+Notice that all the tables now have a column called local. This will
+need to be ISO 639 Language code and the ISO 3166 Country&nbsp; code
+with an '_' between them. For example Japanese would be 'ja_JP' and
+traditional Chinese would be 'zh_CN' and so forth. See the <span
+ style="text-decoration: underline;">Standard Locale Naming Conventions</span>
+for more details. In the case of AdventureBuilder you can not set the
+locale with Just a Language code, you need to also add a country code.
+Remember to keep this naming consistent throughout the application or
+the localized content will not be displayed.<br>
+<br>
+If you were going to localize the following category name "Island
+Adventures" from United States English<br>
+<br>
+INSERT INTO category VALUES ('ISLAND', 'en_US', 'Island Adventures',
+'Experience an island paradise in a way fit for your
+needs.','Island_Adventures.gif');<br>
+<br>
+Add (don't delete the previous entry) the following to provide a
+Japanese localized version of this entry:<br>
+<br>
+INSERT INTO category VALUES ('ISLAND', 'ja_JP', 'Island Adventures for
+Japan',
+'Experience an island paradise in a way fit for your
+needs.','Island_Adventures.gif');<br>
+<br style="font-weight: bold;">
+<span style="font-weight: bold;">Populating the Data</span><br>
+<br>
+&nbsp;The Adventure Builder
+workspace contains a utility that will allow you to populate database
+on any database supporting JDBC with any encoding supported by Java. We
+recommend using UTF-8 as the encoding in that you can include contain
+in multiple languages in the same file. You may also want to consider
+having the localized&nbsp; content in a separate file. Keep in mind you
+do not need to have the database creating in the localized files. The
+database tables are designed to support multiple languages. The
+populating tool may be used as an ant task in the adventurebuilder/setup<span
+ style="font-weight: bold;">/</span>setup.xml file. The following task
+will populate data to the derby Database that comes with the Java 2
+Enterprise Edition 1.4 Platform Edition. <br>
+<br>
+&nbsp;&lt;target name="populate"&gt; <br>
+&nbsp;&nbsp;&nbsp; &lt;sql driver="org.apache.derby.jdbc.ClientDriver"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; encoding="utf-8"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+url="jdbc:derby://${j2ee.server.name}:${db.port}/${db.name};create=true"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; userid="APP"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; password="APP"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+classpath="${j2ee.home}/derby/lib/derbyclient.jar"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; delimiter=";"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; autocommit="true"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; onerror="continue" &gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;transaction
+src="${db.create.src}"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/sql&gt;<br>
+&nbsp;&lt;/target&gt;<br>
+<br>
+In this case it is assumed that you have also saved the
+adventurebuilder/setup/sql/derby.sql file encoded as UTF-8. Make
+sure your JDBC drivers and database support the encoding
+of the language you are using. <br>
+<br style="font-weight: bold;">
+<span style="font-weight: bold;">Enable Localized Database Data to Be
+Displayed by the Application in JSP Pages</span><br>
+<br>
+All pages that contain the localized data will need to have the data
+base queries set to lookup the correct data.&nbsp; For example in all
+the DB calls we are looking up the English data. So you will need to
+change this from:<br>
+<br>
+&nbsp;&lt;sql:query var="packageContents"&gt; <br>
+&nbsp;select p.name, p.description,p.location, p.price , l.name as
+lodgingname, l.description as lodgingdescription, l.price as
+lodgingprice, p.imageuri, l.imageuri as lodgingimageuri from package p,
+lodging l where p.lodgingid = l.lodgingid and p.packageid = ? and
+p.locale = ?<br>
+&nbsp;&lt;sql:param&gt;${param.PACKAGE_ID}&lt;/sql:param&gt;<br>
+&nbsp;&lt;sql:param&gt;en_US&lt;/sql:param&gt;<br>
+&lt;/sql:query&gt;<br>
+<br>
+To:<br>
+<br>
+&nbsp;&lt;sql:query var="packageContents"&gt; <br>
+&nbsp;select p.name, p.description,p.location, p.price , l.name as
+lodgingname, l.description as lodgingdescription, l.price as
+lodgingprice, p.imageuri, l.imageuri as lodgingimageuri from package p,
+lodging l where p.lodgingid = l.lodgingid and p.packageid = ? and
+p.locale = ?<br>
+&nbsp;&lt;sql:param&gt;${param.PACKAGE_ID}&lt;/sql:param&gt;<br>
+&nbsp;&lt;sql:param&gt;ja_JP&lt;/sql:param&gt;<br>
+&lt;/sql:query&gt;<br>
+<br>
+<big>2. Enable the ChangeLocaleHTMLAction:</big><br>
+<br>
+Add the following line to the mappings.xml file located in:<br>
+<br>
+adventurebuilder/apps/customerwebsite/src/conf/ directory<br>
+<br>
+&nbsp;&lt;url-mapping url="changelocale.do" screen="main.screen" &gt;<br>
+&nbsp;&lt;web-action-class&gt;com.sun.j2ee.blueprints.waf.controller.web.html.impl.ChangeLocaleHTMLAction&lt;/web-action-class&gt;<br>
+&nbsp;&lt;/url-mapping&gt;<br>
+<br>
+This will default you to the front page when the language is changed
+(but it should be in the target language).<br>
+<big><br>
+</big><big>3. Localize the JSP pages<br>
+<br>
+<small>The directory name is this case can be any arbitrary name. In
+the case of Japanese I choose
+adventurebuilder/apps/customerwebsite/web/ja as the name. This name
+only has the pages referenced by the templating mechanism. All mappings
+to JSP pages in this directory are manually mapped in the template
+setup files which will be explained in setup 6. It is best to localize
+all the pages or put copies of the English pages in the </small></big><big><small>adventurebuilder/apps/customerwebsite/web/ja
+directory. </small></big><big><br>
+</big>
+<br>
+These pages will also need to contain a JSP Directive which sets the
+language used in that page.<br>
+<br>
+&lt;%@ page contentType="text/html;charset=UTF-8" %&gt;<br>
+<br>
+All pages will need this JSP declaration and it should be done near the
+top of the page before any localized content. All pages that contain
+the localized content
+including the template.jsp page and files such as the sidebar.jsp and
+cart.jsp will need this directive tag.<br>
+<big><br>
+4. Provide a User Interface Button/Image to Change the Language</big><br>
+<br>
+In your JSP page (maybe the banner) use the following form to change
+the language.<br>
+<br>
+&nbsp;&lt;form method="post"<br>
+&nbsp;action="changelocale.do"&gt;<br>
+&nbsp;imageURL="images/us_flag.gif"&gt;<br>
+&nbsp;&lt;input type="hidden" name="locale" value="ja_JP"/&gt;<br>
+&nbsp;&lt;input type="submit" value="Japanese"/&gt;<br>
+&nbsp;&lt;/form&gt;<br>
+<big><br>
+5. Set the Request Encoding</big><br>
+<br>
+The Request Encoding will need to be set for language that are not
+support by 8895-1. To do this you can use an a filter that is mapped to
+every request. This should not be a problem in the case of Spanish but
+will be a problem in Chinese, Japanese, or Korean for example.<br>
+<br>
+The encoding filter from the Pet Store Reference application may be
+used to set the request encoding properly for every page in the web
+application. You will need to also define and configure the Encoding
+Filter component in the web.xml as follows:<br>
+<br>
+&nbsp; &lt;!-- Encoding Filter Declaration Start --&gt;<br>
+&nbsp; &lt;filter&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;filter-name&gt;EncodingFilter&lt;/filter-name&gt;<br>
+&nbsp;&nbsp;&nbsp;
+&lt;filter-class&gt;com.sun.j2ee.blueprints.encodingfilter.web.EncodingFilter&lt;/filter-class&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;init-param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-name&gt;encoding&lt;/param-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-value&gt;UTF-8&lt;/param-value&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/init-param&gt;<br>
+&nbsp; &lt;/filter&gt;<br>
+<br>
+Notice that the encoding is set to UTF-8 this will provide broad
+support for most languages.<br>
+<br>
+You will also need to map the encoding filter to all requests using the
+following filter mapping entry:<br>
+<br>
+&nbsp; &lt;!-- Encoding Filter Mapping Start--&gt;<br>
+&nbsp; &lt;filter-mapping&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;filter-name&gt;EncodingFilter&lt;/filter-name&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;url-pattern&gt;/*&lt;/url-pattern&gt;<br>
+&nbsp; &lt;/filter-mapping&gt;<br>
+&nbsp; &lt;!-- Encoding Filter Mapping End--&gt;<br>
+<br>
+<big>6. Add the screen definitions for the Language</big><br>
+<br>
+You will need to provide a screendefintions file for the language you
+are adding. To do this create a file called screendefinitions_ja_JP.xml
+(in the case of Japanese) and place it in the
+adventurebuilder/apps/customerwebsite/web/WEB-INF/ directory. You can
+copy the
+adventurebuilder/apps/customerwebsite/src/conf/screendefinitions_en_US.xml
+file (but be sure to place it in the
+adventurebuilder/apps/customerwebsite/web/WEB-INF/ directory). You will
+need to change
+the encoding of that file as well (UTF-8 is recommended).<br>
+<br>
+In this file you will provide the location relative to the context root
+of the localized content for each screen you want to localize. For
+example if you want to localize the main.screen (the front page you
+could change:<br>
+<br>
+&nbsp; &lt;screen name="main"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;parameter key="title" value="Welcome to the
+Adventure Builder Reference application" direct="true"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;parameter key="banner" value="/banner.jsp" /&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;parameter key="sidebar" value="/sidebar.jsp"
+/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;parameter key="body" value="/main.jsp" /&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;parameter key="footer" value="/footer.jsp" /&gt;<br>
+&nbsp;&nbsp; &lt;/screen&gt;<br>
+<br>
+To support Japanese by doing the following.<br>
+<br>
+&nbsp; &lt;screen name="main"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;parameter key="title" value="Welcome to the
+Japanese Adventure Builder Reference application" direct="true"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;parameter key="banner" value="/ja/banner.jsp"
+/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;parameter key="sidebar" value="/ja/sidebar.jsp"
+/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;parameter key="body" value="/main.jsp" /&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;parameter key="footer" value="/footer.jsp" /&gt;<br>
+&nbsp;&nbsp; &lt;/screen&gt;<br>
+<br>
+Notice that the location of the files references the files in the
+adventurebuilder/apps/customerwebsite/web/ja directory that we earlier
+localized. If you choose not to localize some screens Adventure Builder
+will use the default English screens defined in the
+screendefinitions_en_US.xml file.<br>
+<br>
+Next you will need to have the TemplateServlet load the screen
+definitions that you created. To do this change the following entry in
+the web.xml file:<br>
+<br>
+&lt;!-- Template Servlet Configuration --&gt;<br>
+&nbsp; &lt;servlet&gt;<br>
+&nbsp;&nbsp;&nbsp;
+&lt;servlet-name&gt;TemplateServlet&lt;/servlet-name&gt;<br>
+&nbsp;&nbsp;&nbsp;
+&lt;servlet-class&gt;com.sun.j2ee.blueprints.waf.view.template.TemplateServlet&lt;/servlet-class&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;init-param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-name&gt;locales&lt;/param-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-value&gt;en_US&lt;/param-value&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/init-param&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;init-param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-name&gt;default_locale&lt;/param-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-value&gt;en_US&lt;/param-value&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/init-param&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;init-param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-name&gt;cache_previous_screen_attributes&lt;/param-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-value&gt;false&lt;/param-value&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/init-param&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;init-param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-name&gt;cache_previous_screen_parameters&lt;/param-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-value&gt;false&lt;/param-value&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/init-param&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;load-on-startup&gt;2&lt;/load-on-startup&gt;<br>
+&nbsp; &lt;/servlet&gt;<br>
+<br>
+To:<br>
+<br>
+&lt;!-- Template Servlet Configuration --&gt;<br>
+&nbsp; &lt;servlet&gt;<br>
+&nbsp;&nbsp;&nbsp;
+&lt;servlet-name&gt;TemplateServlet&lt;/servlet-name&gt;<br>
+&nbsp;&nbsp;&nbsp;
+&lt;servlet-class&gt;com.sun.j2ee.blueprints.waf.view.template.TemplateServlet&lt;/servlet-class&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;init-param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-name&gt;locales&lt;/param-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-value&gt;en_US,ja_JP&lt;/param-value&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/init-param&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;init-param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-name&gt;default_locale&lt;/param-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-value&gt;en_US&lt;/param-value&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/init-param&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;init-param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-name&gt;cache_previous_screen_attributes&lt;/param-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-value&gt;false&lt;/param-value&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/init-param&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;init-param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-name&gt;cache_previous_screen_parameters&lt;/param-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-value&gt;false&lt;/param-value&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/init-param&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;load-on-startup&gt;2&lt;/load-on-startup&gt;<br>
+&nbsp; &lt;/servlet&gt;<br>
+<br>
+Notice that you can change the default language used by the
+application if you choose to do so.<br>
+<br>
+<big>7. Viewing the localized content</big><br>
+<br>
+Keep in mind you may need to install additional fonts to view the data.
+You may also need to add additional input method support to enter text
+as well. If you have trouble viewing the content you may want to change
+the browser encoding before viewing the page.<br>
+<br>
+<hr noshade="noshade"><a href="copyright.html">Copyright &copy; 2006
+Sun Microsystems,
+Inc. All Rights Reserved.</a>
+</body>
+</html>

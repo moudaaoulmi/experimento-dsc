@@ -1,0 +1,532 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Java Adventure Builder Reference Application Architecture</title>
+</head>
+<body style="background-color: rgb(255, 255, 255);">
+<h2>Java Adventure Builder Reference Application
+Architecture<br>
+</h2>
+<p>This document will briefly describe the Java Adventure Builder
+Reference
+application architecture. The Adventure Builder is composed of six
+applications that use various J2EE technologies&nbsp; for implementing
+Web services and
+show how developers can apply these technologies. A complete
+description of the architecture is discussed in the book by the Java
+BluePrints team: <a
+ href="http://java.sun.com/blueprints/guidelines/designing_webservices/"><i>Designing
+Web Services with the J2EE<sup><font size="-2">TM</font></sup> 1.4
+Platform: JAX-RPC, SOAP, and XML
+Technologies</i></a>.<br>
+</p>
+<h3>
+1.1 Overview of Adventure Builder
+</h3>
+<p>Let's start with a brief explanation of the Adventure Builder
+applications
+from a high-level perspective.</p>
+<p>The adventure builder enterprise provides customers with
+a catalog of adventure packages, accommodations, and transportation
+options. From a browser, customers select from these options to build a
+vacation, such as an Adventure on Mt Kilimanjaro. Building a vacation
+includes selecting accommodations, mode of transport, and adventure
+activities, such as mountaineering, mountain biking to a hidden
+waterfall, and hiking the mountain. After assembling the vacation
+package, the customer clicks the submit order option. The customer Web
+site builds a purchase order and sends it to the order processing
+center (OPC). The order processing center, which is responsible for
+fulfilling the order, interacts with its internal departments, the
+bank(financial institution), and suppliers to complete the order.</p>
+<p>In essence, the adventure builder enterprise consists of a front-end
+customer Web site, which provides a face to its customers, and a
+back-end order processing center, which handles the order fulfillment
+processing. Additionally there is a bank and three suppliers. See
+<a href="#figure1">Figure1</a>.<br>
+</p>
+<p><img src="images/architecture1.gif" border="0" height="400"
+ hspace="0" vspace="0" width="360"></p>
+<blockquote>
+  <p><b>Figure 1<a name="figure1"></a> </b> Adventure Builder
+Enterprise and Its
+Environment </p>
+</blockquote>
+<p>As you can see from this diagram, there many
+participants in adventure builder's business process. Customers
+of the adventure builder Web site
+shop and place orders for vacation packages. They expect to have
+certain services available to them, such as the ability to track orders
+and receive e-mails about order status. Customers are expected to be
+browser based. The Java Adventure Builder consists of six applications.
+Each application is implemented as a J2EE apllication and the
+applications interact&nbsp; using Web services. These applications may
+be clients of a Web service and may also expose one or more Web service
+endpoints. Let's briefly discuss the six applications and the Web
+services they access and that they expose for other applications to
+access.<br>
+</p>
+<ol>
+  <li> <strong>Customer Web site application</strong>--The
+customer Web site provides the
+Web pages that let customers shop and place orders. The Web site
+application interacts with the order processing center Web services to
+submit
+purchase orders and also to track orders. It does not expose any Web
+services, but is a client of two Web services on the order processing
+center application.<br>
+  </li>
+  <li> <strong>Order processing center application</strong>--The
+order processing center
+(OPC) is at the heart of the adventure builder enterprise, responsible
+for coordinating all activities necessary to fulfil a customer order.
+It interacts with all the other applications through Web services. It
+exposes three different Web services that are accessed by the other
+applications: an order submitting service, and order tracking service,
+and a centralized broker service for interactions with suppliers. It
+also acts as a client and accesses the bank's Web service and the
+suppliers' Web services.<br>
+  </li>
+  <li> <strong>Transportation supplier application</strong>--Supplies
+the airline tickets for vacations. It exposes a Web service to accept a
+supplier purchase order. When it
+finishes its part of the order, it sends an invice to the order
+processing center Web service.</li>
+  <li><strong>Lodging supplier application</strong>--Supplies the
+hotels for vacations. It exposes a Web service to accept a supplier
+purchase order. When it finishes its part of the order, it sends an
+invice to the order processing center Web service.<br>
+  </li>
+  <li><strong>Activity supplier application</strong>--Supplies the
+activities for vacations. It exposes a Web service to accept a supplier
+purchase order. When it
+finishes its part of the order, it sends an invice to the order
+processing center Web service. </li>
+  <li><strong>Bank/financial institution application</strong>--Handles
+the credit card verification and approval. Exposes this functionality
+as a Web service which is called by the order processing center
+application.</li>
+</ol>
+<p>Since these applications have lots of Web service endpoints, it
+might
+be useful to list the services that are deployed by each application.
+Each Web service endpoint has a WSDL describing its service. (Note the
+URL listed for the WSDL files in the tables assumes that the
+application is deployed at the specified URLs, so you may need to
+modify the URL for hostname and port. Just copy and paste these URLs
+into a browser <span style="font-weight: bold;">after deploying</span>
+the applications and you can see the
+WSDL files.) Here is a table listing of all the Web services that will
+be available after deploying the Java Adventure Builder:<br>
+</p>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">Application
+Name</span><br>
+      </td>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">Endpoint
+Description</span><br>
+      </td>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">WSDL
+for&nbsp; Web service </span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Order Processing Center<br>
+      </td>
+      <td style="vertical-align: top;">Purchase order submitting<br>
+      </td>
+      <td style="vertical-align: top;"><span
+ class="moz-txt-link-freetext">http://localhost:8080//webservice/PoEndpointBean?WSDL<br>
+      </span></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;">Order Tracking<br>
+      </td>
+      <td style="vertical-align: top;">http://localhost:8080//webservice/OtEndpointBean?WSDL<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;">Centralized supplier broker<br>
+      </td>
+      <td style="vertical-align: top;"><span
+ class="moz-txt-link-freetext">https://localhost:8181//webservice/WebServiceBroker?WSDL<br>
+      </span></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Lodging supplier<br>
+      </td>
+      <td style="vertical-align: top;">supplier purchase order<br>
+      </td>
+      <td style="vertical-align: top;">https://localhost:8181//webservice/LodgingPOService?WSDL<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Activity supplier<br>
+      </td>
+      <td style="vertical-align: top;">supplier purchase order</td>
+      <td style="vertical-align: top;"><span
+ class="moz-txt-link-freetext">https://localhost:8181//webservice/ActivityPOService?WSDL<br>
+      </span></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Transportation supplier<br>
+      </td>
+      <td style="vertical-align: top;">supplier purchase order</td>
+      <td style="vertical-align: top;">https://localhost:8181//webservice/AirlinePOService?WSDL<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Bank<br>
+      </td>
+      <td style="vertical-align: top;">Credit card approval<br>
+      </td>
+      <td style="vertical-align: top;">https://localhost:8181//webservice/CreditCardService?WSDL<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<p>Since the order processing center is the core
+application, let's look at it in more detail, starting with its
+responsibilities for coordinating and communicating with other business
+units to fulfill orders. (This document is focussed on the interactions
+between the applications and the Web services, we do
+not cover the design of the customer Web site in detail. See the <a
+ href="http://java.sun.com/blueprints">Java BluePrints website</a> for
+additional information)<br>
+</p>
+<h4>1.1.1 Order Processing Center Sub-Modules and Interactions
+</h4>
+<p>The order processing center module needs to perform the following
+functions:</p>
+<blockquote>
+  <ul>
+    <li>Receive customer orders from the customer Web site and
+process these
+orders </li>
+    <li> Coordinate activities according to
+the business workflow rules </li>
+    <li> Track an order's progress through
+the steps of the order fulfillment process </li>
+    <li> Manage customer relations,
+including tracking customer preferences and
+updating customers on the status of an order. This includes sending
+formatted e-mails to customers about order status. </li>
+    <li>Interact with a bank(financial institution) for verifying and
+obtaining approval for payment </li>
+    <li> Interact with suppliers--airlines, hotels, and activity
+providers--to
+fulfill a customer's adventure package.<br>
+    </li>
+  </ul>
+</blockquote>
+<p>First, let's examine the order processing center by decomposing it
+into its logical sub-modules. <a href="#figure2">Figure 2</a> shows
+the main sub-modules of the order processing center and
+their relationships to the other participants.</p>
+<blockquote>
+  <ul>
+    <li>Order Receiver--Accepts purchase
+orders
+from the customer Web site. This sub-module starts the order
+fulfillment processing in the back end of the enterprise. Each order is
+identified by a unique ID. </li>
+    <li> Workflow Manager--Enforces the
+process
+flow rules within the adventure builder application and tracks the
+state of each order during its processing. The workflow manager
+interacts with the internal departments and coordinates all the
+participants in the business process. </li>
+  </ul>
+</blockquote>
+<p><img src="images/architecture2.gif" border="0" height="405"
+ hspace="0" vspace="0" width="360"></p>
+<blockquote>
+  <p>&nbsp;<b>Figure 2<a name="figure2"></a> </b> Order Processing
+Center Sub-Modules </p>
+</blockquote>
+<blockquote>
+  <ul>
+    <li>Finance--Interacts with external banks and credit card
+services that
+collect payments, and manages financial information. </li>
+    <li> Customer Relations Manager
+(CRM)--Provides order tracking information to the customer Web site
+application. This sub-module also sends formatted e-mail notices about
+order status directly to clients. </li>
+    <li> Order Filler--Exchanges messages
+with the
+various external suppliers to fulfill purchase orders. Messages include
+supplier purchase orders and invoices. </li>
+  </ul>
+</blockquote>
+<p>Keeping the picture of the various sub-modules in mind, let's map
+out the processing flow that occurs when a customer places an order. In
+particular, it is important to trace the messages and documents
+exchanged among participants. </p>
+<blockquote>
+  <ul>
+    <li>&nbsp;A purchase order flows from the customer Web site to the
+order
+processing center. </li>
+    <li> The finance department and the
+credit card services exchange credit card payment requests and
+verifications. </li>
+    <li> The order processing center order
+filler and the external suppliers
+exchange supplier purchase orders, invoices, and other documents. </li>
+    <li> The workflow manager and other
+departments or sub-modules within the order processing center exchange
+internal messages. </li>
+  </ul>
+</blockquote>
+<p><a href="#figure3">Figure 3</a>
+shows the order fulfillment workflow. When it receives an order for an
+adventure package from a customer, the order processing center persists
+a purchase order. Before proceeding, it verifies that the customer has
+the available funds or credit for the purchase. If not, the order
+processing center cancels the order, notifies the customer, and updates
+the order status. Otherwise, it proceeds to fulfill the order, which
+entails breaking the entire adventure package order into sub-orders
+(such as a sub-order for a hotel room, another sub-order for airline
+reservations, and so forth). It sends the sub-orders to the appropriate
+suppliers, who fulfill these portions of the order and return invoices.
+The order processing center then joins these invoices for sub-orders so
+that the entire order is invoiced. The order processing center also
+updates the status of the order and notifies the -customer.<br>
+</p>
+<h3>
+1.2 Order Processing Center Architecture and Design
+</h3>
+<p>We start the examination of the order processing center architecture
+and design with the problem statement. We then look at the key design
+choices that were made to solve the problem.</p>
+<p><img src="images/architecture3.gif" border="0" height="389"
+ hspace="0" vspace="0" width="360">
+</p>
+<blockquote>
+  <p>&nbsp; <b>Figure 3<a name="figure3"></a> </b> Order Fulfillment
+Workflow </p>
+</blockquote>
+<br>
+<h4>1.2.1 Web Service Interaction and Message Exchange </h4>
+<p>The key architectural problem that the adventure builder enterprise
+must solve is the communication and interaction among different
+entities or applications, both internal and external entities. (Refer
+to <a href="#figure2">Figure 2</a>&nbsp;
+which shows the lines of communication between the application
+entities.) These entities and applications must communicate with each
+other, often exchanging messages such of documents of various types
+across numerous boundaries, and work together in a coordinated fashion
+to solve particular business problems. </p>
+<p>Let's take a closer look at the message exchanges that occur during
+the order fulfillment process, starting with the communication between
+the customer and the customer Web site, and then from that Web site to
+the order processing center. Such communication is fairly typical of
+most Web services-based applications. </p>
+<blockquote>
+  <ul>
+    <li>&nbsp;
+Clients or customers communicate with the customer Web site via a Web
+browser. </li>
+    <li>&nbsp;
+Once a customer places an order, the customer Web site communicates a
+purchase order to the order processing center. </li>
+    <li>&nbsp;
+The customer Web site also follows up with the order processing center
+to ascertain the current status of an order. </li>
+    <li>&nbsp;
+The order processing center sends credit card processing details for
+verification to the bank credit card service. </li>
+    <li>&nbsp;
+The order processing center sends purchase orders to suppliers <br>
+    </li>
+    <li>&nbsp; Each supplier sends an invoice to the order processing
+center<br>
+    </li>
+    <li>&nbsp;
+The order processing
+receives invoices from these suppliers. </li>
+  </ul>
+</blockquote>
+<p>Besides the communication with other applications, within the order
+processing center application, different application
+entities handle such functions as receiving, tracking, and processing
+orders. These entities need to interact with each other to coordinate
+the processing of an order. Other application entities handle requests
+for order status. </p>
+<p>Since you are building an application that enables different
+entities to communicate and interact to accomplish a set of tasks, you
+need to make design choices that foster this interaction. These choices
+center around communication technologies and message formats.</p>
+&nbsp; <b>1.2.1.1 Communication Technologies&nbsp;</b>
+<p>On the J2EE platform, you can use such
+communication technologies as JMS, RMI/IIOP, Web services, and so
+forth. Each technology is appropriate for different circumstances. For
+each interaction among the order processing center entities, we chose a
+particular communication technology.</p>
+<p>For adventure builder, we chose to use secure mutually authenticated
+Web services as the
+technology for communication between the order processing center and
+entities external to the order processing center, such as for the
+exchange of purchase orders and invoices with the bank and
+suppliers. We made this choice because we are primarily interested in
+achieving the greatest degree of secure interoperability among all
+modules and
+among all types of particpants.&nbsp; More information on mutual
+authentication and Web services is located <a target="_blank"
+ href="securingWebServices.html">here</a>.<br>
+</p>
+<ul>
+  <li>For communication between the order
+processing center and entities external to the order processing center,
+we chose to use secure mutually authenticated Web services. </li>
+</ul>
+Within the order processing center application, the communication
+among
+sub-modules primarily uses JMS. Since the order processing center
+controls the entire environment within the module, communication can be
+more tightly coupled. Most of the communication is between the order
+processing center workflow manager and the various department
+sub-modules, and all sub-modules are within this environment. Given the
+control over the environment and that most communication is
+asynchronous, using JMS is appropriate.<br>
+<ul>
+  <li>We chose to use JMS for communications among entities
+within
+the order processing center.</li>
+</ul>
+<p>For the interactions between the order processing center application
+and the consumer Web site application, we chose to use Web
+services.&nbsp; The order processing center module makes its services
+available as a Web service to the customer Web site, and the customer
+Web site application uses those services for submitting an order and
+also for using the order tracking service.&nbsp; Due to a high
+likelyhood that the consumer Web site and the order processing center
+application would be co-located, mutual authenication was not used.<br>
+</p>
+&nbsp;
+<b>1.2.1.2 Message Format</b>
+<p>The adventure builder business problem involves the exchange of many
+different types of messages, whose payloads contain documents such as
+purchase orders and invoices from different suppliers. Some of these
+message payloads adhere to an internal format and others follow
+standard formats. Since the system must handle multiple message types,
+we use XML as the message payload format. </p>
+<p>While we can pass information either as XML documents or as Java
+objects, the choice of communication technology has implications for
+how information is passed through the system. Primarily, we use XML
+documents for communication on the edges on the enterprise, especially
+for messages exchanged with trading partners. </p>
+<p>But since we also use JMS internally within the order processing
+center, we had to choose to either pass XML documents between
+sub-modules or to convert documents to Java objects. Since we are
+modelling a document-oriented system, and since the sub-modules
+represent different departments, we decided to pass XML documents among
+them. By passing information in this format, internally each department
+has control over binding to the particular Java objects they need
+within their module. Had we bound from XML documents to Java objects at
+the edges of the enterprise, then this sub-module independence would
+not be the case. Passing XML documents also plays well for our
+particular architecture, which has a centralized workflow coordinator
+or manager that keeps the individual sub-modules and departments from
+directly communicating. In short, this keeps the sub-modules
+more loosely coupled. </p>
+<ul>
+  <li>We chose XML to be the message format for communication with
+internal as well as external entities. </li>
+</ul>
+<h4>1.2.2 Communication Architecture </h4>
+<p><a href="#figure4">Figure 4</a> shows the architecture of the
+communication infrastructure for
+adventure builder. </p>
+<p><img src="images/architecture4.gif" border="0" height="332"
+ hspace="0" vspace="0" width="360">
+</p>
+<blockquote>
+  <p>&nbsp; <b>Figure 4<a name="figure4"></a> </b> Adventure Builder
+Communication
+Structure </p>
+</blockquote>
+<br>
+<p>Note the following about the architecture:</p>
+<blockquote>
+  <ul>
+    <li>The order processing center uses a workflow manager, which
+contains all
+process rules and flow logic, to coordinate processing of the orders.
+The workflow manager also keeps track of the current state of each
+order while it is processed. </li>
+    <li>Each participant knows its business
+functionality and how to execute its own step in the workflow; it does
+not need to know other steps in the process. </li>
+    <li>Generally, each order processing center
+participant (such as the order filler) has a JMS resource and receives
+XML documents. The JMS resource is the integration point between the
+manager and each work module. </li>
+    <li>A broker endpoint manages the
+interactions between the suppliers and the order processing center.
+Rather than having a separate Web service endpoint for each supplier
+and each message,
+all interactions between the order processing center and suppliers are
+grouped together and handled by a common endpoint and interaction
+layer. </li>
+    <li>Other parts of the order processing center may act
+directly as clients
+to Web services without using the centralized endpoint. For example,
+the finance module uses the credit card service. </li>
+  </ul>
+</blockquote>
+<p>The order processing center internally uses a hub-and-spoke model
+where the workflow manager coordinates the participants in the order
+fulfillment process. Each participant receives an XML document from the
+workflow manager, processes the XML document by applying its portion of
+the business logic, and returns the result to the workflow manager. The
+workflow manager determines the next step to execute in the workflow
+and dispatches the appropriate request, by sending an XML document, to
+the proper participant. Each individual participant executes their part
+of the business functionality and has no need to know the overall
+process of the workflow.</p>
+<p>The Web service endpoints, used on the edges of the order processing
+center for interactions between the order processing center and its
+external entities, have different considerations. You should consider
+each endpoint design individually, based on its particular
+interactions. Sometimes, to make communication more manageable, it's
+possible to group together sets of interactions into a simplified
+structure such as&nbsp; a service broker. (See <a
+ href="http://java.sun.com/blueprints/guidelines/designing_webservices/html/architecture5.html#1138706">Web
+Service Communication Patterns</a> section in the full version of the
+Adventure Builder achitecture chapter for a discussion of more complex
+Web
+service interactions, as well as how to provide structure to Web
+service communications.) </p>
+<h3>References</h3>
+Here are some resources you can use to get more detail about the Java
+BluePrints Adventure Builder Reference applications:<br>
+<ul>
+  <li>This document contains excerpts from the architecture chapter of
+the book by the Java
+BluePrints team: team: <a
+ href="http://java.sun.com/blueprints/guidelines/designing_webservices/"><i>Designing
+Web Services with the J2EE<sup><font size="-2">TM</font></sup> 1.4
+Platform: JAX-RPC, SOAP, and XML
+Technologies</i></a>. The book contents are available online for free
+at the Java BluePrints website.</li>
+  <li>The Java BluePrints <a
+ href="http://java.sun.com/reference/blueprints/index.html">website</a></li>
+  <li>The <a href="https://adventurebuilder.dev.java.net/">adventurebuilder
+project</a> at java.net<br>
+  </li>
+</ul>
+<hr> <small><a
+ href="http://java.sun.com/blueprints/guidelines/designing_webservices/html/bpwsfront.html">Copyright</a>
+&copy; Sun Microsystems Inc 2006. All Rights Reserved </small>
+<hr>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!-- Copyright 2004 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: build.xml,v 1.11 2004/09/18 00:11:59 yutayoshida Exp $ -->
+
+<!DOCTYPE project [
+  <!ENTITY commonAntCommands SYSTEM "../../setup/common-ant.xml">
+  <!ENTITY appServerAntCommands SYSTEM "../../setup/app-server-ant.xml">
+]>
+
+<project name="AirSupApp" default="core" basedir=".">
+
+  <!-- path to root -->
+  <property name="root.dir" value="../.."/> 
+
+  <property name="AirSupApp.home" value="."/>
+
+  <property name="AirSupApp.conf" value="${AirSupApp.home}/src/conf"/>
+
+  <!-- The destination directory for the build -->
+  <property name="build.dir" value="${AirSupApp.home}/build"/>
+
+  &commonAntCommands; <!-- include common ant commands -->
+
+  <property name="build.jardir" value="${build.dir}/jar"/>
+  <property name="AirlineEJB.jar" value="${AirSupApp.home}/airlinesupplier-ejb/build/airlinesupplier-ejb.jar"/>
+
+  <property name="AirSupApp.components.basedir" value="../../components"/>
+
+  <!-- The Service Locator Component -->
+  <property name="AirSupApp.servloc.home" value="${AirSupApp.components.basedir}/servicelocator"/>
+  <property name="AirSupApp.servloc.jar" value="${AirSupApp.servloc.home}/build/servicelocator.jar"/>
+
+  <!-- The OPC Component -->
+  <property name="AirSupApp.opc.home" value="../opc/opc-ejb"/>
+  <property name="AirSupApp.broker.wsdl" value="${AirSupApp.opc.home}/build/classes/WebServiceBroker.wsdl"/>
+
+  <!-- verifier result destination -->
+  <property name="verify.dest.dir" value="${root.dir}/verifierResult"/>
+
+  <path id="AirSupApp.classpath">
+    <path refid="compile.classpath" />
+    <pathelement path="${AirSupApp.servloc.jar}"/>
+  </path>
+
+  <property name="app.name" value="AirlineSupplier"/>
+  <property name="app.module" value="${build.dir}/airlinesupplier.ear"/>
+  <!-- Banner Title for build -->
+  <property name="banner.title" value="Airline Supplier Application"/>
+
+  <target name="ear" depends="airsupp-component">
+    <delete dir="${build.jardir}" quiet="true"/>
+    <mkdir dir="${build.jardir}"/>
+    <mkdir dir="${build.jardir}/META-INF"/>
+    <copy file="${AirSupApp.conf}/application.xml" todir="${build.jardir}/META-INF" />
+    <copy file="${AirSupApp.servloc.jar}" todir="${build.jardir}" />
+    <copy file="${AirlineEJB.jar}" todir="${build.jardir}" />
+    <delete file="${app.module}" quiet="true"/>
+    <jar jarfile="${app.module}" basedir="${build.jardir}" />
+  </target>
+
+  <target name="airsupp-component">
+    <ant dir="${AirSupApp.servloc.home}" target="core" inheritAll="false" inheritRefs="false"/>
+    <ant dir="${AirSupApp.opc.home}" target="ws-broker-interface" inheritAll="false" inheritRefs="false"/>
+    <ant dir="${AirSupApp.home}/airlinesupplier-ejb" target="core" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+  <target name="ws-interface">
+    <ant dir="${AirSupApp.home}/airlinesupplier-ejb" target="airlinesupplier-interface" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+  <target name="clean-all" depends="clean">
+    <ant dir="${AirSupApp.home}/airlinesupplier-ejb" target="clean" inheritAll="false" inheritRefs="false"/>
+  </target>
+  
+  <target name="core" depends="banner, airsupp-component, ear" />
+  <target name="all" depends="core" />
+
+</project>

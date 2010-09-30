@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!-- Copyright 2004 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at: 
+ http://adventurebuilder.dev.java.net/LICENSE.txt
+ $Id: build.xml,v 1.10 2006/11/09 22:34:01 smitha Exp $ -->
+
+<!DOCTYPE project [
+  <!ENTITY commonAntCommands SYSTEM "../../setup/common-ant.xml">
+  <!ENTITY appServerAntCommands SYSTEM "../../setup/app-server-ant.xml">
+]>
+
+<project name="BankApp" default="core" basedir=".">
+
+  <!-- path to root -->
+  <property name="root.dir" value="../.."/> 
+
+  <property name="BankApp.home" value="."/>
+
+  <property name="BankApp.conf" value="${BankApp.home}/src/conf"/>
+
+  <!-- The destination directory for the build -->
+  <property name="build.dir" value="${BankApp.home}/build"/>
+
+  &commonAntCommands; <!-- include common ant commands -->
+
+  <property name="build.jardir" value="${build.dir}/jar"/>
+  <property name="BankEJB.jar" value="${BankApp.home}/bank-ejb/build/bank-ejb.jar"/>
+
+  <!-- verifier result destination -->
+  <property name="verify.dest.dir" value="${root.dir}/verifierResult"/>
+
+  <path id="BankApp.classpath">
+    <path refid="compile.classpath" />
+  </path>
+
+  <property name="app.name" value="Bank"/>
+  <property name="app.module" value="${build.dir}/bank.ear"/>
+  <!-- Banner Title for build -->
+  <property name="banner.title" value="Bank Application"/>
+
+  <target name="ear" depends="components">
+    <delete dir="${build.jardir}" quiet="true"/>
+    <mkdir dir="${build.jardir}"/>
+    <mkdir dir="${build.jardir}/META-INF"/>
+    <copy file="${BankApp.conf}/application.xml" todir="${build.jardir}/META-INF" />
+    <copy file="${BankEJB.jar}" todir="${build.jardir}" />
+    <delete file="${app.module}" quiet="true"/>
+    <jar jarfile="${app.module}" basedir="${build.jardir}" />
+  </target>
+
+  <target name="components">
+    <ant dir="${BankApp.home}/bank-ejb" target="core" inheritAll="false" inheritRefs="false"/>
+  </target>
+  
+  <target name="clean-all" depends="clean">
+    <ant dir="${BankApp.home}/bank-ejb" target="clean" inheritAll="false" inheritRefs="false"/>
+  </target>
+
+  <target name="core" depends="banner, components, ear" />
+  <target name="all" depends="core" />
+
+</project>

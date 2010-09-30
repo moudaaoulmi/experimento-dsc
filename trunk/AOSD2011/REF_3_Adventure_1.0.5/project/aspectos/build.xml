@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+
+<project name="aspectos" default="core" basedir=".">
+
+  <target name="all" depends="core"/>
+
+  <target name="core">
+    <ant dir="reuso/src" target="core"/>    
+  </target>
+
+  <target name="clean">
+    <ant dir="reuso/src" target="clean"/>  	
+  </target>
+
+</project>
